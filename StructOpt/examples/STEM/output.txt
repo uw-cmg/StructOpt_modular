@@ -1,0 +1,2508 @@
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001J2Fs4e'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 2
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=2
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001AVjui0'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001ws0kFF'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 3
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=3
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001JaHO0b'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 4
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=4
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001L0FD8O'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=6
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps0000014Rwl9B'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001It_FFP'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=7
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001eZUxvn'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001w3OQx1'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001fWS50l'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=8
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001EPeEbF'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000016BOGIf'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=10
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001iec65h'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+5)mLAGC17
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+5)mLAGC17
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000019v_0pB'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps0000012ojWV4'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001Dy7CtS'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+8)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+2)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001NCQeix'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001vS3vwz'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+1)mR109
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+1)mR109
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+5)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001p3a4gO'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+2)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001FIARle'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001kN6MYL'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+0)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+3)mLAGC14
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+3)mLAGC14
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001zPZ4fS'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps0000016JgCYT'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+5)mLAGC35
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+5)mLAGC35
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+6)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001yyXn6N'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+3)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001cj1OWA'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+2)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001qG6ZQA'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+4)mLA21
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+4)mLA21
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001eZ_CBW'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+8)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+8)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps00000118pnKX'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001p_gUWa'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001V786OY'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+5)mLA56
+    Setting individual energy to 50000.
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001hdsYpt'
+Warning: Found oddly large energy from Lammps in structure HI=(2+5)mLA56
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001N4cWRS'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+3)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+6)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001SkmKwf'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001dAifL_'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001GBDPdm'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001D2sbFR'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+0)mR24
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+0)mR24
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1107 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001Vmo7V0'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+3)mLAGC32
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+3)mLAGC32
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001Ss_W7T'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+6)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+6)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001mijHPf'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001SLQdMt'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+2)mLAGC47
+    Setting individual energy to 50000.
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+Warning: Found oddly large energy from Lammps in structure HI=(3+2)mLAGC47
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001OFy_tl'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0mR14
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0mR14
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 2mLA9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=2mLA9
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001lNGODT'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1127 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001fy2EFl'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+0)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001mnJceQ'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001rhYdY9'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1mLA22
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1mLA22
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001tyDORk'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5mLAGC7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5mLAGC7
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001UyNVoJ'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001_t4989'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001K7J32r'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001imPGNl'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+8)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+8)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001y7OErT'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001CGobFe'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001Yp2dao'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+9)
+    Setting individual energy to 50000.
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001NyO_jW'
+Warning: Found oddly large energy from Lammps in structure HI=(6+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+5)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+5)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(9+6)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001pFi1oj'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001ZhNUkQ'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=10
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001eZBBN6'
+Error in Fitness fuction : 'stem_cost'
+index 1023 is out of bounds for axis 1 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1664 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1014 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1141 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001VITl8o'
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1143 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps0000017Aw7QP'
+Error in Fitness fuction : 'stem_cost'
+index 1146 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps0000010e9vDM'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+7)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001XHs0D3'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps0000018ZAe04'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=6
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001FUnrEW'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=8
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001JWgoxa'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001267QQR'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001Opus6v'
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 2mR17
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=2mR17
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+2)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001ExxVgm'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+5)mLAGC37
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+5)mLAGC37
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001vhW8Nd'
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps00000168MKQq'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+7)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1039 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001kHxBxp'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001ybRMIl'
+Error in Fitness fuction : 'stem_cost'
+index 1128 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+10)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1204 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1185 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1144 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000019aJKWg'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000014BdIvE'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+9)mLA54
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+9)mLA54
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001Ady6d5'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001FZLbtP'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+6)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+3)mR84
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+3)mR84
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps0000012qtUJT'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+6)mLAGC39
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+6)mLAGC39
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1026 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1082 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001gVcbpE'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+8)mLAGC6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+8)mLAGC6
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1132 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001rogZfT'
+Error in Fitness fuction : 'stem_cost'
+index 1140 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+8)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1589 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001mC0vnF'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001uK6Gsn'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+6)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+4)mLA4
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+4)mLA4
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1179 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1081 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001e0b5pB'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+0)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1141 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1023 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy EvaluationERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001rowqW8'
+
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001UNCN1D'
+Error in Fitness fuction : 'stem_cost'
+index 1102 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+0)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+0)Warning: Found oddly large energy from Lammps in structure HI=(8+9)
+    Setting fitness to 10000
+
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1026 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001EQcLkO'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+1)mLAGC12
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+1)mLAGC12
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001OPK4pn'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps0000019zX6tG'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 3
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=3
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001fDnk6I'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=10
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1040 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001coradG'
+Error in Fitness fuction : 'stem_cost'
+index 1107 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001jR_LOz'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+1)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001NMB0Jl'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001WD46Vh'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+2)mLA21
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+2)mLA21
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1133 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001NBkzlN'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1195 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1031 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001_HAGw2'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001sJmsJH'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001_1cLeH'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+11)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+6)
+    Setting individual energy to 50000.
+Error in Fitness fuction : 'stem_cost'
+index 1656 is out of bounds for axis 0 with size 976
+Warning: Found oddly large energy from Lammps in structure HI=(2+6)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1195 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1204 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001__CLG6'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001QiEkmZ'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+4)mR83
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+4)mR83
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1156 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001bU9uAl'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001FmFjRJ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000016moP3T'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001ODGL_F'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001fEJd1T'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001H_BmiU'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001MMZ0mC'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001Qe22q1'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001jmvbH4'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+5)mLA54
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+5)mLA54
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+8)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=6
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+9)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+10)mLA4
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+4)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(5+10)mLA4
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9mLA38
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+2)
+    Setting individual energy to 50000.Warning: Found oddly large energy from Lammps in structure HI=9mLA38
+    Setting fitness to 10000
+
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+2)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(2+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1284 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1188 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1133 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1211 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1145 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1187 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001E1CjK_'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+10)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1120 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001oNv5D5'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001Q0yJ23'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001oT5rMU'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1100 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001yJ7ExS'
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+5)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001iLYrw5'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+8)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001BTzkpb'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+1)mLAGC11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+1)mLAGC11
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001qjkjW7'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001_lnbtj'
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+0)mLA4
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+0)mLA4
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps00000163BsB7'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5mR8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5mR8
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1173 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001IFgNzN'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+0)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps0000011whG_1'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001YxCXso'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+9)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1496 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 980 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001a5coLe'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10mR10
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=10mR10
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001lRVf62'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001prMlSU'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+8)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+4)mLA1
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+4)mLA1
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001xKiI1Z'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001NPiTiD'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001KbZ5To'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+10)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+10)mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+4)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+4)
+Warning: Found oddly large energy from Lammps in structure HI=(7+10)
+    Setting fitness to 10000
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1142 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001M7JD_5'
+Error in Fitness fuction : 'stem_cost'
+index 1666 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000012KfdjN'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1482 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976Error in Fitness fuction : 'stem_cost'
+index 1140 is out of bounds for axis 0 with size 976
+
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001n4AzmI'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+0)mLA11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+0)mLA11
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001_mu4Vs'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001ew1YZQ'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+7)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+10)mLA7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+7)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(11+10)mLA7
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001Z9RcJD'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1002 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1640 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1187 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1209 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000015jx5U0'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 4
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=4
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps0000019Zrsad'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001CkFHgq'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=7
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001uH4_Lg'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001oECBiB'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001WBFZKE'
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+7)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001M2mgwn'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001p0ISkM'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=8
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001GfSqyP'
+Error in Fitness fuction : 'stem_cost'
+index 1131 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1197 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001ZbVTZd'
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001oNtaLD'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+4)mLAGC46
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+4)mLAGC46
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+8)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001PVUrpR'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1032 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1198 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001Lv4xL_'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+0)mLA40
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+0)mLA40
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001feArK1'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+1)mLA15
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+1)mLA15
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001i9DiyX'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001bSCDy_'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=10mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+8)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 992 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001J4StNl'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=7
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1638 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps0000011Le3hB'
+Error in Fitness fuction : 'stem_cost'
+index 1142 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1194 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001OXinbj'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001HTdtRm'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+3)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001iUC1RU'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+7)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001TDMixV'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+10)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+6)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001KGwp5U'
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+11)mLA50
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+11)mLA50
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1107 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1144 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 984 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001cCPxga'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 4mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=4mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1280 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001UWp7v8'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+1)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001ITXM1l'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001QEq6i9'
+Error in Fitness fuction : 'stem_cost'
+index 1144 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+5)mLAGC41
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+5)mLAGC41
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+11)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps0000015o5lbr'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+2)mLAGC49
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+2)mLAGC49
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001p16prX'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 8
+    Setting individual energy to 50000.
+Error in Fitness fuction : 'stem_cost'
+index 2664 is out of bounds for axis 0 with size 976
+Warning: Found oddly large energy from Lammps in structure HI=8
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1145 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001HwOfq6'
+Error in Fitness fuction : 'stem_cost'
+index 1252 is out of bounds for axis 1 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+5)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001ElwNeZ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001VHYDMJ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001IfkJKe'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+5)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 3
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=3
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+3)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1048 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001XThrpn'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001nzsNgv'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001J2WbHy'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+4)mLAGC59
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+4)mLAGC59
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1107 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1141 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1047 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000019o49N5'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+11)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001AW3Jkk'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps0000014qAdZ0'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps0000013adnZY'
+Error in Fitness fuction : 'stem_cost'
+index 1141 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+4)mZPR
+    Setting individual energy to 50000.
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001dhCg9r'
+Warning: Found oddly large energy from Lammps in structure HI=(5+4)mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001zhJVWb'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=6
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1112 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1195 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1265 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1661 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000016WJaBI'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001VLPtaA'
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001nRVp5x'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10mLA23
+    Setting individual energy to 50000.
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001qsJUEu'
+Warning: Found oddly large energy from Lammps in structure HI=10mLA23
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001r7YV8b'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+10)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+9)mR83
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+9)mR83
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+5)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+5)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(9+11)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001gqagzU'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1125 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1662 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1322 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001O37hce'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+0)mLAGC41
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+0)mLAGC41
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001xvDOQH'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+9)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001a2t0wN'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+4)mLAGC35
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+4)mLAGC35
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000018mQZ0H'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+9)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1145 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001gpjMeq'
+Error in Fitness fuction : 'stem_cost'
+index 1009 is out of bounds for axis 1 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11
+    Setting individual energy to 50000.
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001tPlStZ'
+Warning: Found oddly large energy from Lammps in structure HI=11
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+3)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001Bdnjbh'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001Lg_mqa'
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+0)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+6)mZPR
+    Setting individual energy to 50000.Warning: Found oddly large energy from Lammps in structure HI=(3+0)
+    Setting fitness to 10000
+
+Warning: Found oddly large energy from Lammps in structure HI=(4+6)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001gHqgAt'
+Error in Fitness fuction : 'stem_cost'
+index 1123 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=6
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000010XzkU7'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001X3Vimm'[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001pfSy0j'
+
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+2)mLA6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(9+2)mLA6
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1424 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1118 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 992 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000015xJN4T'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001uzOoxf'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+0)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+0)mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1017 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001hpLCJg'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001MDyhMo'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001QKa1YX'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+8)mZPR
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+8)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+Warning: Found oddly large energy from Lammps in structure HI=(10+3)
+    Setting fitness to 10000
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001SZs_tO'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+0)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+7)mLAGC34
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+7)mLAGC34
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001uXHa4H'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001ia8qAd'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1198 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps0000019JxM49'
+Error in Fitness fuction : 'stem_cost'
+index 1189 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 2007 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+7)mLAGC35
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+7)mLAGC35
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001gsex2W'
+Error in Fitness fuction : 'stem_cost'
+index 1101 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1663 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001ARUPLI'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001BhLlvy'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1197 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps0000015GbNaA'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001_dV4a0'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+7)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001jbPVVY'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+5)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps0000015SHRih'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps0000019HCyBK'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001EzuG5z'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+6)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1202 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001YxCYJQ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001p3YCNW'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+10)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+1)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+1)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001EwLDVm'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+5)
+    Setting individual energy to 50000.
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001vDpPf0'
+Warning: Found oddly large energy from Lammps in structure HI=(8+5)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+8)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001JgVMQV'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1147 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001CD0KX9'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+8)
+    Setting individual energy to 50000.
+Error in Fitness fuction : 'stem_cost'
+index 1034 is out of bounds for axis 1 with size 976
+Warning: Found oddly large energy from Lammps in structure HI=(5+8)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001aaMUwY'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+1)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+1)mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 977 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001hswuoG'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001uCnN4G'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+9)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001qPqWl2'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001AAsaX_'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+8)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+3)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001pNBx3y'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001APD6ef'
+Error in Fitness fuction : 'stem_cost'
+index 1182 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1117 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+5)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1125 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1142 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps0000013OD4f4'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001OhYr29'
+Error in Fitness fuction : 'stem_cost'
+index 1129 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1676 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001HAmPM9'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 2
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=2
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001AZ7WPH'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps0000011iWiTf'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=8
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+5)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001aMNPhB'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001M1K7Rg'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001ZsTYvi'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+4)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=7
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001JQ8Ypb'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps0000019VsY3h'
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001Hl4KuN'
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001Os4P29'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+7)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+7)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=8
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001darwyH'
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001IrsVUF'
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 2mR8
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=2mR8
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1072 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+1)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001W50F9u'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001sz0iWA'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001XM6pkT'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+3)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+1)mR34
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+3)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(3+1)mR34
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1146 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1196 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1104 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001oHFmB8'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001FO46oR'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001jeoEEY'
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+3)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 6
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=6
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1029 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1109 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps0000019mAa2u'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+8)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000019Ymnh9'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps00000112c5KB'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+5)Warning: Found oddly large energy from Lammps in structure HI=10
+    Setting fitness to 10000
+
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+5)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps0000014U2_Vj'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001u8tr2W'
+Error in Fitness fuction : 'stem_cost'
+index 1132 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001jrWSq1'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 0mLAGC50
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=0mLAGC50
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001fBiZrc'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001NjMa9D'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+5)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1752 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001v29gJL'
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+2)mR77
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+2)mR77
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1140 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1185 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001knIqvg'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001VqWP6R'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001exogaX'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps0000017H5Gpr'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps0000012ffuq0'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001XWdwuU'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+3)mR31
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+3)mR31
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001jSkyIK'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001JuoqtG'
+ERROR: Problem in Energy Evaluation
+ERROR: Problem in Energy Evaluation[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001nQ4YsJ'
+
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001MLHTGS'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+6)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+11)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+11)mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+10)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+2)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+10)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(4+2)mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+10)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+4)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+1)
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+11)mLAGC39
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+1)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(2+4)
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(1+11)mLAGC39
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1007 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1200 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1669 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1030 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 987 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1140 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1656 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1553 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001XqAMT_'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+4)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001xhJe1E'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1mR35
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1mR35
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1194 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001aNU9OL'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001Tj6quV'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+8)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+10)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+10)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001P98759'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+3)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+3)mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1195 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1296 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001A4tsW7'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps0000018r2jNk'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps0000014fACQC'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+7)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001UJzA1n'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+1)mLA58
+    Setting individual energy to 50000.
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+1)mLA58
+    Setting fitness to 10000
+Warning: Found oddly large energy from Lammps in structure HI=(5+11)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1197 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps0000018zeFHo'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001TYFRWh'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001ANoOwS'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+5)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1660 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001ow7SZ8'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001dEJ9LW'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+1)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'Error in Fitness fuction : 'stem_cost'
+
+index 1143 is out of bounds for axis 0 with size 976
+index 1124 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+6)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+5)
+    Setting individual energy to 50000.
+Error in Fitness fuction : 'stem_cost'
+index 1141 is out of bounds for axis 0 with size 976
+Warning: Found oddly large energy from Lammps in structure HI=(0+5)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1662 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1026 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1189 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001gLbUlB'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+5)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001vzL1Le'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 10
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=10
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001aOuWzJ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps0000011JcYa7'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+11)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+11)mZPR
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+0)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001T6old9'
+Error in Fitness fuction : 'stem_cost'
+index 1133 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001WOyRXI'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001dd648Q'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+7)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+10)mLA5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+10)mLA5
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001AFkqTb'
+Error in Fitness fuction : 'stem_cost'
+index 1209 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=7
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001bUKmEP'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+4)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1116 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001pSqcMf'
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+1)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001wTWZZT'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps0000015pE9dH'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 5
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=5
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1mLAGC56
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1mLAGC56
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 989 is out of bounds for axis 1 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001UpUUu1'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001y4FWR0'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (9+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(9+11)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 11
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=11
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001ocN0_7'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001lD07l8'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 1
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=1
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001v7rvMw'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+11)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001pVV2AQ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps0000015vufg4'
+Error in Fitness fuction : 'stem_cost'
+index 1667 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001M66KaH'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+9)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+9)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 7
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=7
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1307 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+1)mR79
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+1)mR79
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1193 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001lR8qEm'
+Error in Fitness fuction : 'stem_cost'
+index 1672 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+3)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+3)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001m83H7j'
+Error in Fitness fuction : 'stem_cost'
+index 1651 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+0)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1146 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001uhKJHA'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001Dz4fKF'
+Error in Fitness fuction : 'stem_cost'
+index 1066 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+4)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+4)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+6)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+6)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1032 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1078 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1130 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001S3XF9T'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001DEtFay'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps0000017e49M9'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+11)mR58
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+11)mR58
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (4+2)mLA60
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(4+2)mLA60
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001WLVSre'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+5)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+5)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001TfpFgP'
+Error in Fitness fuction : 'stem_cost'
+index 1207 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (0+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(0+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001z7vKbp'
+Error in Fitness fuction : 'stem_cost'
+index 1654 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001ofOOFM'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+4)mR31
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+4)mR31
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1086 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+8)mLAGC60
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+8)mLAGC60
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001znP27_'
+Error in Fitness fuction : 'stem_cost'
+index 1138 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (5+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(5+8)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps000001TVzz8o'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+0)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+0)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps000001TUZQeN'
+Error in Fitness fuction : 'stem_cost'
+index 2435 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1134 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+3)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001WrCL8h'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+11)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1107 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001qHnlP8'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1136 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1110 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-9/in_lammps000001ncgCwJ'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+2)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+2)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1135 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-8/in_lammps000001j5d1wb'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (2+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(2+8)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-3/in_lammps000001QwwnvZ'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-1/in_lammps000001IGyRU4'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 9
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=9
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-10/in_lammps000001szNme2'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (11+8)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(11+8)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-4/in_lammps000001X_7Aim'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (3+1)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(3+1)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (6+7)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(6+7)
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-2/in_lammps0000013MqTaF'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : 2
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=2
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-0/in_lammps000001R_E9Vw'
+Error in Fitness fuction : 'stem_cost'
+index 1665 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+11)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+11)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-7/in_lammps00000175In00'
+Error in Fitness fuction : 'stem_cost'
+index 1105 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1192 is out of bounds for axis 1 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1031 is out of bounds for axis 1 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (10+8)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(10+8)mZPR
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-11/in_lammps000001wckIPH'
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-6/in_lammps000001ctjJZI'
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (1+3)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(1+3)
+    Setting fitness to 10000
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (8+10)
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(8+10)
+    Setting fitness to 10000
+ERROR: Problem in Energy Evaluation
+[Errno 2] No such file or directory: '/home/usitguest/MAST-structopt_VASP/MAST/structopt/examples/STEM/Output-rank0/LAMMPSFiles/rank-5/in_lammps000001uGU5MT'
+Error in Fitness fuction : 'stem_cost'
+index 1139 is out of bounds for axis 0 with size 976
+    Writing structure to problemstructures.xyz file. Structure (hindex) : (7+6)mZPR
+    Setting individual energy to 50000.
+Warning: Found oddly large energy from Lammps in structure HI=(7+6)mZPR
+    Setting fitness to 10000
+Error in Fitness fuction : 'stem_cost'
+index 1137 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 989 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1195 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1129 is out of bounds for axis 0 with size 976
+Error in Fitness fuction : 'stem_cost'
+index 1284 is out of bounds for axis 1 with size 976
