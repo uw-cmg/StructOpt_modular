@@ -55,6 +55,15 @@ def setup_energy_calculator(Optimizer,mod,relax):
             parameters = { 'pair_style' : args["pair_style"], 
             'pair_coeff' : pair_coeff , 'mass' : mass }
             filesL = [ args["pot_file"] ]
+        elif args["pair_style"]=='eam/alloy':
+            if debug:
+                logger.info('Setting up LAMMPS calculator with EAM/ALLOY potential')
+            parcoff = '* * {0}'.format(args["pot_file"])
+            for one in atomlist:
+                parcoff+=' {0}'.format(one[0])
+            pair_coeff = [parcoff]
+            parameters = { 'pair_style' : args["pair_style"], 'pair_coeff' : pair_coeff}
+            filesL = [ args["pot_file"] ]
         elif args["pair_style"]=='eam/cd':
             if debug:
                 logger.info('Setting up LAMMPS calculator with EAM/CD potential')
