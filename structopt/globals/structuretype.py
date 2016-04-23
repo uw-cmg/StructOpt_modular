@@ -5,37 +5,53 @@ import structopt
 
 
 class StructureType(object):
-	"""An abstract base class for a structure type."""
+    """An abstract base class for a structure type."""
 
-	def __init__(self, cls_name):
-		self.logger = logging.getLogger('default')
-		for k, v in structopt.parameters.items():
-            setattr(self, k, v)
+    def __init__(self, cls_name):
+        self.logger = logging.getLogger('default')
+        self.parameters = structopt.globals
 
-        self.relaxation_modules = []
-        for relaxation in self.relaxations:
-            mod = import_module('structopt.{cls_name}.relaxations.{module_name}'.format(cls_name=cls_name, module_name=relaxation))  # Import the module package
-            cls = getattr(mod, '{cls_name}_eval'.format(cls_name=relaxation))  # Get's the class from the module package
-            self.relaxation_modules.append(cls())
+        globals()['crossovers'] = import_module('structopt.{cls_name}.crossovers'.format(cls_name=cls_name))
+        globals()['fingerprinters'] = import_module('structopt.{cls_name}.fingerprinters'.format(cls_name=cls_name))
+        globals()['fitnesses'] = import_module('structopt.{cls_name}.fitnesses'.format(cls_name=cls_name))
+        globals()['generators'] = import_module('structopt.{cls_name}.generators'.format(cls_name=cls_name))
+        globals()['mutations'] = import_module('structopt.{cls_name}.mutations'.format(cls_name=cls_name))
+        globals()['postprocessing'] = import_module('structopt.{cls_name}.postprocessing'.format(cls_name=cls_name))
+        globals()['predators'] = import_module('structopt.{cls_name}.predators'.format(cls_name=cls_name))
+        globals()['relaxations'] = import_module('structopt.{cls_name}.relaxations'.format(cls_name=cls_name))
+        globals()['selections'] = import_module('structopt.{cls_name}.selections'.format(cls_name=cls_name))
+        globals()['switches'] = import_module('structopt.{cls_name}.switches'.format(cls_name=cls_name))
+        globals()['tools'] = import_module('structopt.{cls_name}.tools'.format(cls_name=cls_name))
 
-        self.fitness_modules = []
-        for fitness in self.modules:
-            mod = import_module('structopt.{cls_name}.fitnesses.{module_name}'.format(cls_name=cls_name, module_name=fitness))  # Import the module package
-            cls = getattr(mod, '{cls_name}_eval'.format(cls_name=fitness))  # Get's the class from the module package
-            self.fitness_modules.append(cls())
+        self.crossovers = crossovers.Crossovers(structopt.parameters.crossovers)
+        self.fingerprinters = fingerprinters.Fingerprinters(structopt.parameters.fingerprinters)
+        self.fitnesses = fitnesses.Fitnesses(structopt.parameters.fitnesses)
+        self.generators = generators.Generators(structopt.parameters.generators)
+        self.mutations = mutations.Mutations(structopt.parameters.mutations)
+        self.postprocessing = postprocessing.Postprocessing(structopt.parameters.postprocessing)
+        self.predators = predators.Predators(structopt.parameters.predators)
+        self.relaxations = relaxations.Relaxations(structopt.parameters.relaxations)
+        self.selections = selections.Selections(structopt.parameters.selections)
+        self.switches = switches.Switches(structopt.parameters.switches)
+        self.tools = tools.Tools(structopt.parameters.tools)
 
-    	# Setup the output files
+        # Setup the output files
 
-    	# Set starting convergence and generations
+        # Set starting convergence
+        self.converged = False
 
-    	# Prep output monitoring
+        # Prep output monitoring
 
-    	# Initialize random number seed
-    	random.seed(self.seed)
+        # Initialize random number seed
+        random.seed(self.seed)
 
-    	# Write the input parameters to the output file
-    	self.logger.debug('Writing the input parameters to output file')
+        # Write the input parameters to the output file
+        self.logger.debug('Writing the input parameters to output file')
         structopt.fileio.parameters.write(self)
 
         # Allow structopt to see me
         structopt.parameters.globals.structuretype = self
+
+    def mutate(self):
+        self.mutations.select_mutation()
+        self.mutations.mutate(individuals)
