@@ -20,7 +20,6 @@ class StructureType(object):
         globals()['predators'] = import_module('structopt.{cls_name}.predators'.format(cls_name=cls_name))
         globals()['relaxations'] = import_module('structopt.{cls_name}.relaxations'.format(cls_name=cls_name))
         globals()['selections'] = import_module('structopt.{cls_name}.selections'.format(cls_name=cls_name))
-        globals()['switches'] = import_module('structopt.{cls_name}.switches'.format(cls_name=cls_name))
         globals()['tools'] = import_module('structopt.{cls_name}.tools'.format(cls_name=cls_name))
 
         self.crossovers = crossovers.Crossovers(structopt.parameters.crossovers)
@@ -32,7 +31,6 @@ class StructureType(object):
         self.predators = predators.Predators(structopt.parameters.predators)
         self.relaxations = relaxations.Relaxations(structopt.parameters.relaxations)
         self.selections = selections.Selections(structopt.parameters.selections)
-        self.switches = switches.Switches(structopt.parameters.switches)
         self.tools = tools.Tools(structopt.parameters.tools)
 
         # Setup the output files
@@ -52,6 +50,25 @@ class StructureType(object):
         # Allow structopt to see me
         structopt.parameters.globals.structuretype = self
 
+    def crossover(self):
+        self.crossovers.select_crossover()
+        return self.crossovers.crossover(self.individuals)
+
     def mutate(self):
         self.mutations.select_mutation()
-        self.mutations.mutate(individuals)
+        return self.mutations.mutate(self.individuals)
+
+    def relax(self):
+        return self.relaxations.relax(self.individuals)
+
+    def fitness(self):
+        return self.fitness(self.individuals)
+
+    def select(self):
+        self.selections.select_selection()
+        return self.selections.select(self.individuals)
+
+    def kill(self):
+        self.predators.select_predator()
+        return self.predators.kill(self.individuals)
+
