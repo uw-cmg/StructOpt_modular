@@ -24,14 +24,14 @@ def setup(parameter_file):
 
     if parameters.globals.rank == 0:
         logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.output_filename, name="output", level=logging_level)
-        logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.loggername, name="default", level=logging_level)
+        default_logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.loggername, name="default", level=logging_level)
 
         if logging_level <= logging.DEBUG:
             debug_logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.loggername, name="debug", level=logging_level)
 
     else:
         logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.output_filename, name="output", level=logging_level, disable_output=True)
-        logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.loggername, name="default", level=logging_level, disable_output=True)
+        default_logger = fileio.logger_utils.initialize_logger(filename=parameters.globals.loggername, name="default", level=logging_level, disable_output=True)
 
     logger_by_rank = fileio.logger_utils.initialize_logger(filename=parameters.globals.loggername, name="by-rank", level=logging_level)
 
@@ -41,5 +41,8 @@ def setup(parameter_file):
     # Set defaults for parameters and globally scope them
     parameters = fileio.parameters.set_default(parameters)
     globals()["parameters"] = parameters
+
+    structopt.fileio.parameters.write(self)
+
 
     return None

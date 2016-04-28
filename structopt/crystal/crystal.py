@@ -1,4 +1,4 @@
-from structopt.globals.structure import StructureType
+from structopt.globals.individual.structuretype import StructureType
 
 
 class Crystal(StructureType):

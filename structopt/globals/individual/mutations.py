@@ -1,5 +1,5 @@
 import functools.wraps
-import structopt.globals._mutations
+import structopt.globals.individual._mutations
 
 
 class Mutations(object):
@@ -16,16 +16,16 @@ class Mutations(object):
         return self.selected_mutation(individual)
 
     @staticmethod
-    @functools.wraps(structopt.globals._mutations.add_atoms)
+    @functools.wraps(structopt.globals.individual._mutations.add_atoms)
     def add_atoms(individual):
-        return structopt.globals._mutations.add_atoms(individual)
+        return structopt.globals.individual._mutations.add_atoms(individual)
 
     @staticmethod
-    @functools.wraps(structopt.globals._mutations.remove_atoms)
+    @functools.wraps(structopt.globals.individual._mutations.remove_atoms)
     def remove_atoms(individual):
-        return structopt.globals._mutations.remove_atoms(individual)
+        return structopt.globals.individual._mutations.remove_atoms(individual)
 
     @staticmethod
-    @functools.wraps(structopt.globals._mutations.remove_surface_atoms)
+    @functools.wraps(structopt.globals.individual._mutations.remove_surface_atoms)
     def remove_surface_atoms(individual):
-        return structopt.globals._mutations.remove_surface_atoms(individual)
+        return structopt.globals.individual._mutations.remove_surface_atoms(individual)

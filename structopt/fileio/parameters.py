@@ -1,6 +1,6 @@
 import commentjson
 import logging
-from structopt.globals.tools.dictionaryobject import DictionaryObject
+from structopt.tools.dictionaryobject import DictionaryObject
 
 
 def read(input):
@@ -35,7 +35,7 @@ def set_default(parameters):
 
     if 'fitnesses' not in parameters.globals or not parameters.globals['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
-	
+
 	parameters.globals.setdefault('weights', [1.0 for _ in parameters.globals['fitnesses']])
 
     if 'relaxations' not in parameters.globals or not parameters.globals['relaxations']:

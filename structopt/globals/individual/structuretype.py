@@ -8,7 +8,6 @@ class StructureType(object):
     """An abstract base class for a structure type."""
 
     def __init__(self, cls_name):
-        self.logger = logging.getLogger('default')
         self.parameters = structopt.globals
 
         globals()['crossovers'] = import_module('structopt.{cls_name}.crossovers'.format(cls_name=cls_name))
@@ -33,27 +32,6 @@ class StructureType(object):
         self.selections = selections.Selections(structopt.parameters.selections)
         self.tools = tools.Tools(structopt.parameters.tools)
 
-        # Setup the output files
-
-        # Set starting convergence
-        self.converged = False
-
-        # Prep output monitoring
-
-        # Initialize random number seed
-        random.seed(self.seed)
-
-        # Write the input parameters to the output file
-        self.logger.debug('Writing the input parameters to output file')
-        structopt.fileio.parameters.write(self)
-
-        # Allow structopt to see me
-        structopt.parameters.globals.structuretype = self
-
-    def crossover(self):
-        self.crossovers.select_crossover()
-        return self.crossovers.crossover(self.individuals)
-
     def mutate(self):
         self.mutations.select_mutation()
         return self.mutations.mutate(self.individuals)
@@ -63,12 +41,4 @@ class StructureType(object):
 
     def fitness(self):
         return self.fitness(self.individuals)
-
-    def select(self):
-        self.selections.select_selection()
-        return self.selections.select(self.individuals)
-
-    def kill(self):
-        self.predators.select_predator()
-        return self.predators.kill(self.individuals)
 
