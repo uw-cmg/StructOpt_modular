@@ -11,10 +11,10 @@ class Optimizer(object):
     def run(self):
         while not self.converged:
             self.step()
-            self.check_convergence()
 
     def step(self):
         pass
+        self.check_convergence()
 
     def check_convergence(self):
         self.converged = False
