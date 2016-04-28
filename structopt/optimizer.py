@@ -3,6 +3,9 @@ class Optimizer(object):
         # Initialize random number seed
         random.seed(self.seed)
 
+        # Create the population
+        self.population = Population()
+
         # Prep output monitoring
 
         # Set starting convergence
@@ -13,7 +16,15 @@ class Optimizer(object):
             self.step()
 
     def step(self):
-        pass
+        population.crossover()
+        for individual in self.population:
+            individual.mutate()
+        for individual in self.population:
+            individual.relax()
+        for individual in self.population:
+            individual.fitness()
+        population.kill()
+        population.select()
         self.check_convergence()
 
     def check_convergence(self):

@@ -1,13 +1,14 @@
 import functools.wraps
-import structopt.globals.individual.mutations
+import structopt.individual.mutations
 
 
-class Mutations(structopt.globals.individual.mutations.Mutations):
+class Mutations(structopt.individual.mutations.Mutations):
     """ """
     @staticmethod
-    @functools.wraps(structopt.globals.individual.mutations.add_atoms)
+    @functools.wraps(structopt.individual.mutations.add_atoms)
     def add_atoms(individual):
         # Do something interesting to the individual here
-        individual = structopt.globals.individual.mutations.add_atoms(individual)
+        individual = structopt.individual.mutations.add_atoms(individual)
         # Undo that interesting thing to the individual here
         return individual
+
