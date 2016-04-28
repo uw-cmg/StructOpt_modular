@@ -1,7 +1,7 @@
 {
     "globals":
     {
-        "USE_MP4PY": True,
+        "USE_MP4PY": true,
     },
     "generators": [
         {
@@ -65,7 +65,7 @@
 
     "crossovers": {},
     "predators": {},
-    "selections": {}
+    "selections": {},
 
     "fileio": {},
     "postprocessing": {},
