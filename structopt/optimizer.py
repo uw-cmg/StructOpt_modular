@@ -16,15 +16,12 @@ class Optimizer(object):
             self.step()
 
     def step(self):
-        population.crossover()
-        for individual in self.population:
-            individual.mutate()
-        for individual in self.population:
-            individual.relax()
-        for individual in self.population:
-            individual.fitness()
-        population.kill()
-        population.select()
+        self.population.crossover()
+        self.population.mutate()
+        self.population.relax()
+        self.population.fitness()
+        self.population.kill()
+        self.population.select()
         self.check_convergence()
 
     def check_convergence(self):

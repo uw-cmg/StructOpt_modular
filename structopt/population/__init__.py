@@ -4,6 +4,8 @@ import structopt.parameters
 from structopt.population.crossovers import Crossovers
 from structopt.population.predators import Predators
 from structopt.population.selections import Selections
+import structopt.population.fitness
+
 
 
 class Population(list):
@@ -33,4 +35,16 @@ class Population(list):
     def kill(self):
         self.predators.select_predator()
         return self.predators.kill(self)
+
+    def fitness(self):
+        for individual in self:
+            individual.fitness()
+
+    def relax(self):
+        for individual in self:
+            individual.relax()
+
+    def mutate(self)
+        for individual in self:
+            individual.mutate()
 
