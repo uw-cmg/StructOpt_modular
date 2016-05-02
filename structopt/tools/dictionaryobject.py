@@ -9,6 +9,17 @@ class DictionaryObject(object):
         for k, v in dictionary.items():
             setattr(self, k, DictionaryObject._render(v))
 
+    def get(self, key, default=None):
+        try:
+            getattr(self, key)
+        except AttributeError:
+            return default
+
+    def setdefault(self, key, value):
+        if not hasattr(self, key):
+            setattr(self, key, value)
+
+    @staticmethod
     def _render(obj):
         if isinstance(obj, int) or isinstance(obj, float):
             return obj
