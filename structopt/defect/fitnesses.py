@@ -1,4 +1,4 @@
-import functools.wraps
+import functools
 import structopt.individual.fitnesses
 
 

@@ -1,11 +1,11 @@
 import time
 import logging
 
-import fileio
+from . import fileio
 from optimizer import Optimizer
 
 def setup(parameter_file):
-    params = fileio.parameters.read(parameter_file)
+    parameters = fileio.parameters.read(parameter_file)
     if parameters.globals.USE_MPI4PY:
         try:
             from mpi4py import MPI
@@ -44,8 +44,9 @@ def setup(parameter_file):
     parameters = fileio.parameters.set_default(parameters)
     globals()["parameters"] = parameters
 
-    structopt.fileio.parameters.write(parameters)
+    fileio.parameters.write(parameters)
 
 
     return None
 
+__all__ = ['parameters', 'Optimizer', 'cluster', 'crystal', 'defect', 'surface']

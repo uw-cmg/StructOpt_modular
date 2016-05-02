@@ -1,7 +1,15 @@
+import random
+
+import structopt
+from structopt.population import Population
+
+
 class Optimizer(object):
     def __init__(self):
         # Initialize random number seed
-        random.seed(self.seed)
+        random.seed(structopt.parameters.globals.seed)
+
+        self.nsteps = 0
 
         # Create the population
         self.population = Population()
@@ -23,9 +31,13 @@ class Optimizer(object):
         self.population.kill()
         self.population.select()
         self.check_convergence()
+        self.nsteps += 1
 
     def check_convergence(self):
-        self.converged = False
+        if self.nsteps > 10:
+            self.converged = True
+        else:
+            self.converged = False
 
 if __name__ == "__main__":
     import sys

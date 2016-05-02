@@ -1,2 +1,2 @@
-import functools.wraps
+import functools
 from structopt.individual.generators import generate

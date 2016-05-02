@@ -1,24 +1,31 @@
-import import_module
+import importlib
 
-import structopt.parameters
+import structopt
+import structopt.cluster
 from structopt.population.crossovers import Crossovers
 from structopt.population.predators import Predators
 from structopt.population.selections import Selections
-import structopt.population.fitness
+import structopt.population.fitnesses
 
 
 
 class Population(list):
     def __init__(self):
-        self.crossovers = Crossovers(structopt.parameters.crossovers)
-        self.predators = Predators(structopt.parameters.predators)
-        self.selections = Selections(structopt.parameters.selections)
+        self.crossovers = Crossovers()
+        self.predators = Predators()
+        self.selections = Selections()
 
         # Generate/load initial structures
+        print(structopt.parameters.generators[0])
+        print(type(structopt.parameters.generators[0]))
         for structure_information in structopt.parameters.generators:
-            # Import the correct structure type class: e.g. structopt.crystal.Crystal
-            Structure = import_module('structopt.{structure_type}.{title_case}'.format(structure_type=structure_information.structure_type.lower(),
-                                                                                       title_case=structure_information.structure_type.title()))
+            # Import the correct structure type class: e.g. from structopt.crystal import Crystal
+            # Unfortunately `from` doesn't seem to work implicitly so a getattr on the module is needed
+            print(structure_information)
+            Structure = getattr(
+                importlib.import_module('structopt.{structure_type}'.format(structure_type=structure_information.structure_type.lower())),
+                structure_information.structure_type.title()
+            )
 
             for i in range(structure_information.number_of_individuals):
                 structure = Structure(**structure_information.data)
@@ -44,7 +51,7 @@ class Population(list):
         for individual in self:
             individual.relax()
 
-    def mutate(self)
+    def mutate(self):
         for individual in self:
             individual.mutate()
 

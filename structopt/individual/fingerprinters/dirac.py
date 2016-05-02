@@ -1,2 +1,2 @@
-def LAMMPS():
+def dirac():
     return None

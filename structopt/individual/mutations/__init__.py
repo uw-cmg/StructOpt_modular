@@ -1,7 +1,14 @@
-import functools.wraps
+import functools
+import random
 
-import structopt.parameters
-from . import add_atom, remove_atom, remove_surface_atom
+import structopt
+from .add_atoms import add_atoms
+from .remove_atoms import remove_atoms
+from .remove_surface_atoms import remove_surface_atoms
+from .lattice_alteration import lattice_alteration
+from .lattice_alteration_group import lattice_alteration_group
+from .rotation import rotation
+from .rotation_geo import rotation_geo
 
 
 class Mutations(object):
@@ -31,4 +38,24 @@ class Mutations(object):
     @functools.wraps(remove_surface_atoms)
     def remove_surface_atoms(individual):
         return remove_surface_atoms(individual)
+
+    @staticmethod
+    @functools.wraps(lattice_alteration)
+    def lattice_alteration(individual):
+        return lattice_alteration(individual)
+
+    @staticmethod
+    @functools.wraps(lattice_alteration_group)
+    def lattice_alteration_group(individual):
+        return lattice_alteration_group(individual)
+
+    @staticmethod
+    @functools.wraps(rotation)
+    def rotation(individual):
+        return rotation(individual)
+
+    @staticmethod
+    @functools.wraps(rotation_geo)
+    def rotation_geo(individual):
+        return rotation_geo(individual)
 

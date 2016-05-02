@@ -11,7 +11,7 @@ def read(input):
     if isinstance(input, dict):
         parameters = input
     elif isinstance(input, str) and os.path.exists(input):
-        parameters = json.load(open(input))
+        parameters = DictionaryObject(json.load(open(input)))
     else:
         raise IOError('Error in input or input file')
 
@@ -24,23 +24,27 @@ def read(input):
 def write(parameters):
     output = logging.getLogger('output')
     output.info('Current parameters:')
-    ouptut.info(parameters.to_json(sorted=True, indent=2))
+    output.info(parameters.to_json(sort_keys=True, indent=2))
 
     return
 
 def set_default(parameters):
     logger = logging.getLogger('default')
 
-    parameters.globals.setdefault('parallel', False)
+    parameters.globals.setdefault('seed', None)
 
-    if 'fitnesses' not in parameters.globals or not parameters.globals['fitnesses']:
+    print(parameters.globals)
+    if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
-	parameters.globals.setdefault('weights', [1.0 for _ in parameters.globals['fitnesses']])
+    parameters.setdefault('weights', [1.0 for _ in parameters.fitnesses.weights])
 
-    if 'relaxations' not in parameters.globals or not parameters.globals['relaxations']:
+    if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
 
+    return parameters
+
+"""
     if 'structure' not in parameters:
         logger.critical("Input file/dictionary must include a structure for the simulation as 'structure':'Cluster/Crystal/Defect'")
         logger.debug("Current parameters include:\n"+repr(parameters))
@@ -399,4 +403,4 @@ def set_default(parameters):
         parameters['demin'] = 0.005
         logger.info('Setting cutoff convergence energy (demin) = {0}'.format(parameters['demin']))
 
-    return parameters
+"""
