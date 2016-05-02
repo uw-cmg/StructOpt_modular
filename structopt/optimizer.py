@@ -27,3 +27,11 @@ class Optimizer(object):
     def check_convergence(self):
         self.converged = False
 
+if __name__ == "__main__":
+    import sys
+    import structopt
+    
+    structopt.setup(sys.argv[1])
+
+    optimizer = structopt.Optimizer()
+    optimizer.run()

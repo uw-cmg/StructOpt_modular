@@ -1,5 +1,6 @@
 import commentjson
 import logging
+import os
 from structopt.tools.dictionaryobject import DictionaryObject
 
 
@@ -25,8 +26,9 @@ def read(input):
 def write(parameters):
     output = logging.getLogger('output')
     output.info('Current parameters:')
-    ouptut.info(parameters.to_json(sorted=True, indent=2)
+    ouptut.info(parameters.to_json(sorted=True, indent=2))
 
+    return
 
 def set_default(parameters):
     logger = logging.getLogger('default')
@@ -41,8 +43,6 @@ def set_default(parameters):
     if 'relaxations' not in parameters.globals or not parameters.globals['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
 
-
-"""
     if 'structure' not in parameters:
         logger.critical("Input file/dictionary must include a structure for the simulation as 'structure':'Cluster/Crystal/Defect'")
         logger.debug("Current parameters include:\n"+repr(parameters))
@@ -400,5 +400,5 @@ def set_default(parameters):
     if 'demin' not in parameters:
         parameters['demin'] = 0.005
         logger.info('Setting cutoff convergence energy (demin) = {0}'.format(parameters['demin']))
-"""
+
     return parameters

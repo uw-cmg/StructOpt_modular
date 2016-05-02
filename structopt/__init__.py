@@ -1,8 +1,10 @@
-def setup(parameter_file):
-    import time
-    import logging
-    import fileio
+import time
+import logging
 
+import fileio
+from optimizer import Optimizer
+
+def setup(parameter_file):
     parameters = fileio.parameters.read(parameter_file)
     if parameters.globals.USE_MPI4PY:
         try:
@@ -42,7 +44,7 @@ def setup(parameter_file):
     parameters = fileio.parameters.set_default(parameters)
     globals()["parameters"] = parameters
 
-    structopt.fileio.parameters.write(self)
+    structopt.fileio.parameters.write(parameters)
 
 
     return None
