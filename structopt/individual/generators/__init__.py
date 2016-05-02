@@ -1,6 +1,6 @@
-import functools.wraps
+import functools
 
-import structopt.parameters
+import structopt
 from structopt.individual import Individual
 
 
@@ -10,6 +10,6 @@ def generate(individual, *args, **kwargs):
         Args:
             individual (Individual): an Individual that is uninitialized
             *args, **kwargs: arguments for either ase.Atoms or a different generator function
-        """
-        return None
+    """
+    return None
 

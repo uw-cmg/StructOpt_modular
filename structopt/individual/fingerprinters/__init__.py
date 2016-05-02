@@ -1,6 +1,6 @@
-import functools.wraps
+import functools
 
-import structopt.parameters
+import structopt
 from . import dirac
 
 
@@ -8,7 +8,7 @@ class Fingerprinters(object):
     """ """
     def __init__(self):
         self.parameters = structopt.parameters.fingerprinters
-        self.fingerprinters = [getattr(self, name) for name in self.parameters.fingerprinters.options]
+        self.fingerprinters = [getattr(self, name) for name in self.parameters.options]
         self.selected_fingerprinter = None
 
     def select_fingerprinter(self):

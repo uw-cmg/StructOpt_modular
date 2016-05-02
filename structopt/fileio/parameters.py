@@ -26,30 +26,32 @@ def read(input):
 def write(parameters):
     output = logging.getLogger('output')
     output.info('Current parameters:')
-    ouptut.info(parameters.to_json(sorted=True, indent=2))
+    output.info(parameters.to_json(sort_keys=True, indent=2))
 
     return
 
 def set_default(parameters):
     logger = logging.getLogger('default')
 
-    parameters.globals.setdefault('parallel', False)
+    parameters.globals.setdefault('seed', None)
 
-    if 'fitnesses' not in parameters.globals or not parameters.globals['fitnesses']:
+    print(parameters.globals)
+    if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
-    parameters.globals.setdefault('weights', [1.0 for _ in parameters.globals['fitnesses']])
+    parameters.setdefault('weights', [1.0 for _ in parameters.fitnesses.weights])
 
-    if 'relaxations' not in parameters.globals or not parameters.globals['relaxations']:
+    if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
 
+    return parameters
+
+"""
     if 'structure' not in parameters:
         logger.critical("Input file/dictionary must include a structure for the simulation as 'structure':'Cluster/Crystal/Defect'")
         logger.debug("Current parameters include:\n"+repr(parameters))
         raise RuntimeError("Input file/dictionary must include a structure for the simulation as 'structure':'Cluster/Crystal/Defect'")
 
-    return parameters
-"""
     if 'atomlist' not in parameters:
         logger.critical("Input file/string/dictionary must include an atomlist defined as 'atomlist':[('Xx', Concentration, Mass, Chemical Potential)]")
         logger.debug("Current parameters include:\n" + repr(parameters))

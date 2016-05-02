@@ -61,11 +61,19 @@
             "rotation"
         ]
     },
-    "fingerprinters": {},
+    "fingerprinters": {
+        "options": []
+    },
 
-    "crossovers": {},
-    "predators": {},
-    "selections": {},
+    "crossovers": {
+        "options": ["do_nothing"]
+    },
+    "predators": {
+        "options": ["do_nothing"]
+    },
+    "selections": {
+        "options": ["do_nothing"]
+    },
 
     "fileio": {},
     "postprocessing": {},

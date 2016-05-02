@@ -6,7 +6,7 @@ import structopt.parameters
 def fitness(population):
     logger = logging.getLogger('output')
     chisqs = []
-    if structopt.paramters.rank == 0:
+    if structopt.parameters.rank == 0:
         # Setup each individual and get the command for each individual
         commands = []
         for individual in population:

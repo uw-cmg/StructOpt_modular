@@ -1,7 +1,7 @@
 import time
 import logging
 
-import fileio
+from . import fileio
 from optimizer import Optimizer
 
 def setup(parameter_file):
@@ -44,8 +44,9 @@ def setup(parameter_file):
     parameters = fileio.parameters.set_default(parameters)
     globals()["parameters"] = parameters
 
-    structopt.fileio.parameters.write(parameters)
+    fileio.parameters.write(parameters)
 
 
     return None
 
+__all__ = ['parameters', 'Optimizer', 'cluster', 'crystal', 'defect', 'surface']
