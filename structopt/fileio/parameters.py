@@ -8,10 +8,8 @@ def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""
 
     # Read and store the input
-    if isinstance(input, DictionaryObject):
+    if isinstance(input, dict):
         parameters = input
-    elif isinstance(input, dict):
-        parameters = DictionaryObject(input)
     elif isinstance(input, str) and os.path.exists(input):
         parameters = DictionaryObject(json.load(open(input)))
     else:
