@@ -5,7 +5,7 @@ import fileio
 from optimizer import Optimizer
 
 def setup(parameter_file):
-    parameters = fileio.parameters.read(parameter_file)
+    params = fileio.parameters.read(parameter_file)
     if parameters.globals.USE_MPI4PY:
         try:
             from mpi4py import MPI

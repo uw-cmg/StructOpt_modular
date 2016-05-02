@@ -1,4 +1,4 @@
-import commentjson
+import json
 import logging
 import os
 from structopt.tools.dictionaryobject import DictionaryObject
@@ -8,12 +8,10 @@ def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""
 
     # Read and store the input
-    if isinstance(input, DictionaryObject):
+    if isinstance(input, dict):
         parameters = input
-    elif isinstance(input, dict):
-        parameters = DictionaryObject(input)
     elif isinstance(input, str) and os.path.exists(input):
-        parameters = DictionaryObject(commentjson.load(open(input)))
+        parameters = json.load(open(input))
     else:
         raise IOError('Error in input or input file')
 
