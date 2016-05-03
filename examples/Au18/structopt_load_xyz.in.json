@@ -60,10 +60,11 @@
     },
     "mutations": {
         "options": [
-            "lattice_alteration",
-            "lattice_alteration_group",
-            "rotation_geo",
-            "rotation"
+            "move_atoms",
+            "swap_positions",
+            "swap_species",
+            "rotate_atoms",
+            "rotate_cluster"
         ]
     },
     "fingerprinters": {

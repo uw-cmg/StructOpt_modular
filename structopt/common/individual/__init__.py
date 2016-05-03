@@ -2,6 +2,7 @@ import logging
 import random
 import ase
 from importlib import import_module
+import numpy as np
 
 import structopt
 
@@ -29,19 +30,29 @@ class Individual(ase.Atoms):
         generators = import_module('structopt.{cls_name}.individual.generators'.format(cls_name=cls_name))
         generators.generate(self, **kwargs)
 
+
     def mutate(self):
         self.mutations.select_mutation()
         return self.mutations.mutate(self)
 
+
     def relax(self):
         return self.relaxations.relax(self)
+
 
     def fitness(self):
         return self.fitnesses.fitness(self)
 
+
     def fingerprint(self):
         return self.fingerprinters.fingerprint(self)
 
-    #def __repr__(self):
-    #    return "<{cls} object at {loc}>".format(cls=self.__class__.__name__, loc=hex(id(self)))
+
+    def get_atom_indices_within_distance_of_atom(self, atom_index, distance):
+        dists = self.get_distances(atom_index, slice(None, None, None))
+        return np.where(dists < distance)]
+
+    def get_nearest_atom_indices(self, atom_index, count):
+        dists = self.get_distances(atom_index, slice(None, None, None))
+        return np.argsort(dists)[:count]
 

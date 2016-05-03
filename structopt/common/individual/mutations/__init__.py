@@ -2,13 +2,11 @@ import functools
 import random
 
 import structopt
-from .add_atoms import add_atoms
-from .remove_atoms import remove_atoms
-from .remove_surface_atoms import remove_surface_atoms
-from .lattice_alteration import lattice_alteration
-from .lattice_alteration_group import lattice_alteration_group
-from .rotation import rotation
-from .rotation_geo import rotation_geo
+from .swap_positions import swap_positions
+from .swap_species import swap_species
+from .move_atoms import move_atoms
+from .rotate_atoms import rotate_atoms
+from .rotate_cluster import rotate_cluster
 
 
 class Mutations(object):
@@ -28,37 +26,27 @@ class Mutations(object):
         return self.selected_mutation(individual)
 
     @staticmethod
-    @functools.wraps(add_atoms)
-    def add_atoms(individual):
-        return add_atoms(individual)
+    @functools.wraps(swap_positions)
+    def swap_positions(individual):
+        return swap_positions(individual)
 
     @staticmethod
-    @functools.wraps(remove_atoms)
-    def remove_atoms(individual):
-        return remove_atoms(individual)
+    @functools.wraps(swap_species)
+    def swap_species(individual):
+        return swap_species(individual)
 
     @staticmethod
-    @functools.wraps(remove_surface_atoms)
-    def remove_surface_atoms(individual):
-        return remove_surface_atoms(individual)
+    @functools.wraps(move_atoms)
+    def move_atoms(individual):
+        return move_atoms(individual)
 
     @staticmethod
-    @functools.wraps(lattice_alteration)
-    def lattice_alteration(individual):
-        return lattice_alteration(individual)
+    @functools.wraps(rotate_atoms)
+    def rotate_atoms(individual):
+        return rotate_atoms(individual)
 
     @staticmethod
-    @functools.wraps(lattice_alteration_group)
-    def lattice_alteration_group(individual):
-        return lattice_alteration_group(individual)
-
-    @staticmethod
-    @functools.wraps(rotation)
-    def rotation(individual):
-        return rotation(individual)
-
-    @staticmethod
-    @functools.wraps(rotation_geo)
-    def rotation_geo(individual):
-        return rotation_geo(individual)
+    @functools.wraps(rotate_cluster)
+    def rotate_cluster(individual):
+        return rotate_cluster(individual)
 
