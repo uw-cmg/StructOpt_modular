@@ -39,10 +39,11 @@ class Optimizer(object):
         else:
             self.converged = False
 
+
 if __name__ == "__main__":
     import sys
     import structopt
-    
+
     structopt.setup(sys.argv[1])
 
     optimizer = structopt.Optimizer()

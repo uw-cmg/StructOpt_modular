@@ -3,18 +3,20 @@
     {
         "USE_MP4PY": true
     },
-    "generators": [
-        {
-            "structure_type": "cluster",
-            "number_of_individuals": 5,
-            "data": {
-                "symbol": "Au",
-                "natoms": 18,
-                "mass": 196.9665,
-                "chemical_potential": 0.0
+    "generators": {
+        "structure_type": "cluster",
+        "initializers": [
+            {
+                "number_of_individuals": 5,
+                "data": {
+                    "symbol": "Au",
+                    "natoms": 18,
+                    "mass": 196.9665,
+                    "chemical_potential": 0.0
+                }
             }
-        }
-    ],
+        ]
+    },
     "fitnesses":
     {
         "modules": [

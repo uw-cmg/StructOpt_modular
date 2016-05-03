@@ -21,13 +21,9 @@ class Fitnesses(object):
 
             # Save the fitness value for the module to each individual
             for j, individual in enumerate(population):
-                print(i, j)
-                print(self.parameters.modules)
-                print(fits)
-                print(population)
                 setattr(individual, self.parameters.modules[i], fits[j])
 
-            fits = np.multiply(fits, self.parameters.weights)
+            fits = np.multiply(fits, self.parameters.weights[i])
             fitnesses = np.add(fitnesses, fits)
 
         return fitnesses

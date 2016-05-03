@@ -24,7 +24,7 @@ def read(input):
 def write(parameters):
     output = logging.getLogger('output')
     output.info('Current parameters:')
-    output.info(json.dumps(parameters, sort_keys=True, indent=2))
+    output.info(json.dumps(parameters, sort_keys=True, indent=4))
 
     return
 

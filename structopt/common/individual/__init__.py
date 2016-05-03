@@ -1,13 +1,12 @@
 import logging
 import random
-#import ase
+import ase
 from importlib import import_module
 
 import structopt
 
 
-#class Individual(ase.Atoms):
-class Individual(object):
+class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
     def __init__(self, **kwargs):
@@ -39,4 +38,7 @@ class Individual(object):
 
     def fingerprint(self):
         return self.fingerprinters.fingerprint(self)
+
+    def __repr__(self):
+        return "<{cls} object at {loc}>".format(cls=self.__class__.__name__, loc=hex(id(self)))
 

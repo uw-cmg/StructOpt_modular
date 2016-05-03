@@ -6,7 +6,6 @@ class LAMMPS(object):
         return 0.0
 
     def relax(self, individual):
-        #print("Running: {}".format(command))
-        #subprocess.call(command)
+        #subprocess.call(command, shell=True)
         return individual
 
