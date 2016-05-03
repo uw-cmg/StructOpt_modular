@@ -1,7 +1,6 @@
-import json
-
-
 class DictionaryObject(dict):
+    """A dictionary-like object that allows attribute access (both getting and setting) via an object's dot notation."""
+    # Unless you really like python, you probably don't want to worry about this implementation.
     def __init__(self, dictionary):
         self.update(dictionary)
         for k, v in self.items():
@@ -9,13 +8,9 @@ class DictionaryObject(dict):
 
     @staticmethod
     def _render(obj):
-        if isinstance(obj, int) or isinstance(obj, float):
+        # JSON can only handle a few input types: int/float, str, bool, null, dict, and list
+        if isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, str) or isinstance(obj, bool) or obj is None:
             return obj
-        elif  isinstance(obj, str):
-            try:
-                return eval(obj)
-            except:
-                return obj
         elif isinstance(obj, dict):
             return DictionaryObject(obj)
         elif isinstance(obj, list):
@@ -27,8 +22,3 @@ class DictionaryObject(dict):
     def __setattr__(self, key, value):
         self[key] = value
 
-    def to_json(self, *args, **kwargs):
-        return json.dumps(self, *args, **kwargs)
-
-    def __str__(self):
-        return self.to_json()

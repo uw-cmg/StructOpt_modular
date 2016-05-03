@@ -1,2 +1,0 @@
-def LAMMPS():
-    return None

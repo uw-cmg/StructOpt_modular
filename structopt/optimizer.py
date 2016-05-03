@@ -1,7 +1,7 @@
 import random
 
 import structopt
-from structopt.population import Population
+from structopt.common.population import Population
 
 
 class Optimizer(object):
@@ -39,10 +39,11 @@ class Optimizer(object):
         else:
             self.converged = False
 
+
 if __name__ == "__main__":
     import sys
     import structopt
-    
+
     structopt.setup(sys.argv[1])
 
     optimizer = structopt.Optimizer()

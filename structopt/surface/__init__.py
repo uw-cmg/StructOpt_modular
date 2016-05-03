@@ -1,8 +1,6 @@
-from structopt.individual import Individual
+from structopt.common.individual import Individual
 
 
 class Surface(Individual):
-    """ """
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)  #  if this is the entire init, we can just delete it!
+    """A stucture containing surface atoms and other others inside the surface."""
 
