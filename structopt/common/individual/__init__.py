@@ -9,7 +9,9 @@ import structopt
 class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, index, **kwargs):
+        self.index = index
+
         cls_name = self.__class__.__name__.lower()
         # Load in the appropriate functionality
         fingerprinters = import_module('structopt.{cls_name}.individual.fingerprinters'.format(cls_name=cls_name))
@@ -23,6 +25,7 @@ class Individual(ase.Atoms):
         self.relaxations = relaxations.Relaxations()
 
         # Initialize the ase.Atoms structure
+        super().__init__()
         generators = import_module('structopt.{cls_name}.individual.generators'.format(cls_name=cls_name))
         generators.generate(self, **kwargs)
 
@@ -39,6 +42,6 @@ class Individual(ase.Atoms):
     def fingerprint(self):
         return self.fingerprinters.fingerprint(self)
 
-    def __repr__(self):
-        return "<{cls} object at {loc}>".format(cls=self.__class__.__name__, loc=hex(id(self)))
+    #def __repr__(self):
+    #    return "<{cls} object at {loc}>".format(cls=self.__class__.__name__, loc=hex(id(self)))
 

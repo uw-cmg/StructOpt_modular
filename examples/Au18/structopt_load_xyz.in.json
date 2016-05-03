@@ -1,0 +1,86 @@
+{
+    "globals":
+    {
+        "USE_MPI4PY": true
+    },
+    "generators": {
+        "structure_type": "cluster",
+        "initializers": [
+            {
+                "number_of_individuals": 5,
+                "data": {
+                    "filenames": [
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure1.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure2.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure3.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure4.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure5.xyz"
+                    ]
+                }
+            }
+        ]
+    },
+    "fitnesses":
+    {
+        "modules": [
+            "LAMMPS",
+            "FEMSIM"
+        ],
+        "weights": [
+            1.0,
+            1.0
+        ],
+        "FEMSIM": {
+            "parameter_filename": "/home/maldonis/USIT/StructOpt/StructOpt/fitness/FEMSIM/femsim-hrmc/parameters/femsim.in",
+            "vk_data_filename": "/home/maldonis/USIT/StructOpt/StructOpt/fitness/FEMSIM/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
+            "xsize": 28.2842712474619,
+            "ysize": 28.2842712474619,
+            "zsize": 28.2842712474619,
+            "Q": 0.0305,
+            "nphi": 1,
+            "npsi": 40,
+            "ntheta": 20,
+            "thickness_scaling_factor": 28.6378
+        },
+        "LAMMPS":{
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "pot_file": "/home/maldonis/USIT/StructOpt/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        }
+    },
+    "relaxations":
+    {
+        "modules": [
+            "LAMMPS"
+        ]
+    },
+    "mutations": {
+        "options": [
+            "lattice_alteration",
+            "lattice_alteration_group",
+            "rotation_geo",
+            "rotation"
+        ]
+    },
+    "fingerprinters": {
+        "options": []
+    },
+
+    "crossovers": {
+        "options": ["do_nothing"]
+    },
+    "predators": {
+        "options": ["do_nothing"]
+    },
+    "selections": {
+        "options": ["do_nothing"]
+    },
+
+    "fileio": {},
+    "postprocessing": {},
+    "tools": {}
+}

@@ -32,7 +32,7 @@ class Population(list):
         # Generate/load initial structures
         for structure_information in structopt.parameters.generators.initializers:
             for i in range(structure_information.number_of_individuals):
-                structure = Structure(**structure_information.data)
+                structure = Structure(index=i, **structure_information.data)
                 self.append(structure)
 
 
