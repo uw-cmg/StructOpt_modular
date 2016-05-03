@@ -1,20 +1,22 @@
 import logging
 import random
-import ase
+#import ase
 from importlib import import_module
 
 import structopt
 
 
-class Individual(ase.Atoms):
+#class Individual(ase.Atoms):
+class Individual(object):
     """An abstract base class for a structure."""
 
     def __init__(self, **kwargs):
+        cls_name = self.__class__.__name__.lower()
         # Load in the appropriate functionality
-        fingerprinters = import_module('structopt.{cls_name}.fingerprinters'.format(cls_name=self.__class__.__name__.lower()))
-        fitnesses = import_module('structopt.{cls_name}.fitnesses'.format(cls_name=self.__class__.__name__.lower()))
-        mutations = import_module('structopt.{cls_name}.mutations'.format(cls_name=self.__class__.__name__.lower()))
-        relaxations = import_module('structopt.{cls_name}.relaxations'.format(cls_name=self.__class__.__name__.lower()))
+        fingerprinters = import_module('structopt.{cls_name}.individual.fingerprinters'.format(cls_name=cls_name))
+        fitnesses = import_module('structopt.{cls_name}.individual.fitnesses'.format(cls_name=cls_name))
+        mutations = import_module('structopt.{cls_name}.individual.mutations'.format(cls_name=cls_name))
+        relaxations = import_module('structopt.{cls_name}.individual.relaxations'.format(cls_name=cls_name))
 
         self.fingerprinters = fingerprinters.Fingerprinters()
         self.fitnesses = fitnesses.Fitnesses()
@@ -22,7 +24,7 @@ class Individual(ase.Atoms):
         self.relaxations = relaxations.Relaxations()
 
         # Initialize the ase.Atoms structure
-        generators = import_module('structopt.{cls_name}.generators'.format(cls_name=self.__class__.__name__.lower()))
+        generators = import_module('structopt.{cls_name}.individual.generators'.format(cls_name=cls_name))
         generators.generate(self, **kwargs)
 
     def mutate(self):

@@ -18,8 +18,11 @@ class Mutations(object):
         self.mutations = [getattr(self, name) for name in self.parameters.options]
         self.selected_mutation = None
 
-    def select_mutation(self):
-        self.selected_mutation = random.choice(self.mutations)
+    def select_mutation(self, name=None):
+        if name is not None:
+            self.selected_mutation = getattr(self, name)
+        else:
+            self.selected_mutation = random.choice(self.mutations)
 
     def mutate(self, individual):
         return self.selected_mutation(individual)

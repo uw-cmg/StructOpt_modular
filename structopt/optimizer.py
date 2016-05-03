@@ -1,7 +1,7 @@
 import random
 
 import structopt
-from structopt.population import Population
+from structopt.common.population import Population
 
 
 class Optimizer(object):
