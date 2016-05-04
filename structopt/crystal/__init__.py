@@ -2,5 +2,5 @@ from structopt.common.individual import Individual
 
 
 class Crystal(Individual):
-    """A crystal stucture."""
+    """A stucture with periodic boundary conditions."""
 
