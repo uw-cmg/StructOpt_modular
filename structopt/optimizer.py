@@ -9,7 +9,7 @@ class Optimizer(object):
         # Initialize random number seed
         random.seed(structopt.parameters.globals.seed)
 
-        self.nsteps = 0
+        self.generation = 0
 
         # Create the population
         self.population = Population()
@@ -31,10 +31,10 @@ class Optimizer(object):
         self.population.kill()
         self.population.select()
         self.check_convergence()
-        self.nsteps += 1
+        self.generation += 1
 
     def check_convergence(self):
-        if self.nsteps > 10:
+        if self.generation > 10:
             self.converged = True
         else:
             self.converged = False
