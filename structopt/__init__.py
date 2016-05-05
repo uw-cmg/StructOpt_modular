@@ -1,8 +1,10 @@
 import time
 import logging
+import os
 
 from . import fileio
-from optimizer import Optimizer
+from .optimizer import Optimizer
+from . import common
 
 def setup(parameter_file):
     parameters = fileio.parameters.read(parameter_file)
@@ -39,6 +41,9 @@ def setup(parameter_file):
 
     if logging_level <= logging.DEBUG:
         debug_logger = fileio.logger_utils.initialize_logger(filename='{}-by-rank-debug.log'.format(parameters.globals.loggername), name="by-rank-debug", level=logging_level)
+
+    if not os.path.exists(parameters.globals.output_filename):
+        os.mkdir(parameters.globals.output_filename)
 
     # Set defaults for parameters and globally scope them
     parameters = fileio.parameters.set_default(parameters)

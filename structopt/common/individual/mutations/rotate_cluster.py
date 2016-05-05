@@ -18,13 +18,14 @@ def rotate_cluster(individual, max_natoms=0.20):
 
         if isinstance(max_natoms, float):
             max_natoms = int(len(individual)*max_natoms)
+        max_natoms = max(max_natoms, 1)
         natoms_to_rotate = random.randint(1, max_natoms)
 
         point = (random.uniform(cell_min, cell_max),
                  random.uniform(cell_min, cell_max),
                  random.uniform(cell_min, cell_max))
         atom = Atom('Si', point)
-        nearest_indices = individual.get_nearest_atom_indices(atom=atom, count=natoms_to_rotate)
+        nearest_indices = individual.get_nearest_atom_indices(atom_index=atom.index, count=natoms_to_rotate)
 
 
         atoms = individual[nearest_indices]  # This creates a copy of the atoms I think

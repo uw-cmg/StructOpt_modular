@@ -14,8 +14,9 @@ def rotate_atoms(individual, max_natoms=0.20):
     if len(individual):
         if isinstance(max_natoms, float):
             max_natoms = int(len(individual)*max_natoms)
+        max_natoms = max(max_natoms, 1)
         natoms_to_rotate = random.randint(1, max_natoms)
-        atom_indices = range(len(individual))
+        atom_indices = list(range(len(individual)))
         random.shuffle(atom_indices)  # Using random.shuffle on the indices guarantees no duplicates
         atom_indices = atom_indices[:natoms_to_rotate]
         atoms = individual[atom_indices]  # This creates a copy of the atoms I think

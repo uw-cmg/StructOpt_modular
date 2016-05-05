@@ -5,12 +5,14 @@ from importlib import import_module
 import numpy as np
 
 import structopt
+from . import relaxations, fitnesses, mutations, fingerprinters, mutations
 
 
 class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
-    def __init__(self, index, **kwargs):
+    def __init__(self, index=None, **kwargs):
+        self._kwargs = kwargs  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
 
         cls_name = self.__class__.__name__.lower()
@@ -50,9 +52,16 @@ class Individual(ase.Atoms):
 
     def get_atom_indices_within_distance_of_atom(self, atom_index, distance):
         dists = self.get_distances(atom_index, slice(None, None, None))
-        return np.where(dists < distance)]
+        return np.where(dists < distance)
 
     def get_nearest_atom_indices(self, atom_index, count):
-        dists = self.get_distances(atom_index, slice(None, None, None))
+        dists = self.get_distances(atom_index, slice(None, None, None))[0]
         return np.argsort(dists)[:count]
+
+    def copy(self):
+        new = self.__class__()
+        new.index = self.index  # TODO
+        new.extend(self)
+        return new
+
 

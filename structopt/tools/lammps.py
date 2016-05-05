@@ -384,7 +384,7 @@ class LAMMPS:
         if 'thermosteps' in parameters:
             f.write('thermo_style custom {}\n'
                     'thermo_modify flush yes\n'
-                    'thermo {}\n'.format(' '.join(self._custom_thermo_args), repr(parameters['thermosteps']).encode('utf-8'))
+                    'thermo {}\n'.format(' '.join(self._custom_thermo_args), repr(parameters['thermosteps'])).encode('utf-8'))
         else:
             f.write('thermo_style custom {}\n'
                     'thermo_modify flush yes\n'

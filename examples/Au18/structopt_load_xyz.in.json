@@ -48,7 +48,7 @@
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
             "parallel": true, 
-            "pot_file": "/home/maldonis/USIT/StructOpt/examples/Au18/Au_u3.eam", 
+            "potential_file": "/home/jmaldonis/StructOpt/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
         }
     },
@@ -56,7 +56,16 @@
     {
         "modules": [
             "LAMMPS"
-        ]
+        ],
+        "LAMMPS":{
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "/home/jmaldonis/StructOpt/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        }
     },
     "mutations": {
         "options": [
