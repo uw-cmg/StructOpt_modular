@@ -17,7 +17,7 @@ def fitness(population):
         # Run the parallelized `mpiexec` command
         commands = ['-np 1 {command}'.format(command=command) for command in commands]  # TODO: correctly allocate cores
         command = 'mpiexec {}'.format(' : '.join(commands))
-        subprocess.call(command, shell=True)
+        subprocess.call(command, shell=True, stdout=subprocess.DEVNULL)
 
         # Collect the results for each chisq and return them
         for i, individual in enumerate(population):

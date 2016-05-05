@@ -1,4 +1,5 @@
 import structopt
+from . import LAMMPS
 
 
 class Relaxations(object):

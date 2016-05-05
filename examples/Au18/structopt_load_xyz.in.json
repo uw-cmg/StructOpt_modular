@@ -1,7 +1,7 @@
 {
     "globals":
     {
-        "USE_MP4PY": true
+        "USE_MPI4PY": true
     },
     "generators": {
         "structure_type": "cluster",
@@ -9,10 +9,13 @@
             {
                 "number_of_individuals": 5,
                 "data": {
-                    "symbol": "Au",
-                    "natoms": 18,
-                    "mass": 196.9665,
-                    "chemical_potential": 0.0
+                    "filenames": [
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure1.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure2.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure3.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure4.xyz",
+                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure5.xyz"
+                    ]
                 }
             }
         ]
@@ -45,7 +48,7 @@
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
             "parallel": true, 
-            "pot_file": "/home/maldonis/USIT/StructOpt/examples/Au18/Au_u3.eam", 
+            "potential_file": "/home/jmaldonis/StructOpt/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
         }
     },
@@ -53,7 +56,16 @@
     {
         "modules": [
             "LAMMPS"
-        ]
+        ],
+        "LAMMPS":{
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "/home/jmaldonis/StructOpt/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        }
     },
     "mutations": {
         "options": [

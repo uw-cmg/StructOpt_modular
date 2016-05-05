@@ -1,13 +1,11 @@
 import subprocess
-from mpi4py import MPI
 
 import structopt
 
 
 def relax(population):
+    # TODO update this so that it correctly distributes which core relaxes which individual
     for i, individual in enumerate(population):
         if structopt.parameters.globals.rank == i:
-            print(individual.relaxations.LAMMPS)
             individual.relaxations.LAMMPS.relax(individual)
-    return None
 

@@ -33,7 +33,6 @@ def set_default(parameters):
 
     parameters.globals.setdefault('seed', None)
 
-    print(parameters.globals)
     if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
