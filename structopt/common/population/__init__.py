@@ -36,14 +36,19 @@ class Population(list):
                 self.append(structure)
 
 
+    def replace(self, a_list):
+        self.clear()
+        self.extend(a_list)
+
+
     def crossover(self):
         self.crossovers.select_crossover()
         return self.crossovers.crossover(self)
 
 
-    def select(self):
+    def select(self, fits):
         self.selections.select_selection()
-        return self.selections.select(self)
+        return self.selections.select(self, fits)
 
 
     def kill(self):
@@ -52,7 +57,10 @@ class Population(list):
 
 
     def fitness(self):
-        return self.fitnesses.fitness(self)
+        fits = self.fitnesses.fitness(self)
+        for i, individual in enumerate(self):
+            individual._fitness = fits[i]
+        return fits
 
 
     def relax(self):

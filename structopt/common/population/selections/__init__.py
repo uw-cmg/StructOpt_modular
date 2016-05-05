@@ -3,6 +3,7 @@ import random
 
 import structopt
 from .do_nothing import do_nothing
+from .cost import cost
 
 
 class Selections(object):
@@ -15,11 +16,15 @@ class Selections(object):
     def select_selection(self):
         self.selected_selection = random.choice(self.selections)
 
-    def select(self, individual):
-        return self.selected_selection(individual)
+    def select(self, population, fits, nkeep):
+        return self.selected_selection(population, fits, nkeep)
 
     @staticmethod
     @functools.wraps(do_nothing)
-    def do_nothing(individual):
-        return do_nothing(individual)
+    def do_nothing(population, fits, nkeep):
+        return do_nothing(population, fits, nkeep)
 
+    @staticmethod
+    @functools.wraps(cost)
+    def cost(population, fits, nkeep):
+        return cost(population, fits, nkeep)

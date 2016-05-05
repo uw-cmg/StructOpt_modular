@@ -1,3 +1,6 @@
+import os.path
+
+
 class DictionaryObject(dict):
     """A dictionary-like object that allows attribute access (both getting and setting) via an object's dot notation."""
     # Unless you really like python, you probably don't want to worry about this implementation.
@@ -9,8 +12,10 @@ class DictionaryObject(dict):
     @staticmethod
     def _render(obj):
         # JSON can only handle a few input types: int/float, str, bool, null, dict, and list
-        if isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, str) or isinstance(obj, bool) or obj is None:
+        if isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, bool) or obj is None:
             return obj
+        if isinstance(obj, str):
+            return os.path.expandvars(obj)
         elif isinstance(obj, dict):
             return DictionaryObject(obj)
         elif isinstance(obj, list):

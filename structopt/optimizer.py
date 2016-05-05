@@ -24,12 +24,16 @@ class Optimizer(object):
             self.step()
 
     def step(self):
-        self.population.crossover()
+        child1, child2 = self.population.crossover()
+        if child1 is not None:
+            self.append(child1)
+        if child2 is not None:
+            self.append(child2)
         self.population.mutate()
         self.population.relax()
-        self.population.fitness()
+        fits = self.population.fitness()
         self.population.kill()
-        self.population.select()
+        self.population.select(fits, structopt.parameters.globals.total_number_of_individuals)
         self.check_convergence()
         self.generation += 1
 
