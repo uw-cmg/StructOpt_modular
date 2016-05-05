@@ -112,6 +112,8 @@ class LAMMPS:
         # re-populated by the read_log method.
         self.thermo_content = []
 
+        self.pea = []
+
         if tmp_dir is None:
             self.tmp_dir = mkdtemp(prefix='LAMMPS-')
         else:
@@ -166,6 +168,8 @@ class LAMMPS:
         self.prism = prism(cell)
         self.run()
 
+        return {'thermo': self.thermo_content, 'atoms': self.atoms, 'pea': self.pea}
+
     def _lmp_alive(self):
         # Return True if this calculator is currently handling a running lammps process
         return self._lmp_handle and not isinstance(self._lmp_handle.poll(), int)
@@ -198,12 +202,10 @@ class LAMMPS:
         else:
             lammps_options = shlex.split('-echo log -screen none')
 
-
         # change into subdirectory for LAMMPS calculations
         cwd = os.getcwd()
         os.chdir(self.tmp_dir)
  
-
         # setup file names for LAMMPS calculation
         label = '{}{:>06}'.format(self.label, self.calls)
         lammps_in = uns_mktemp(prefix='in_'+label, dir=self.tmp_dir)
@@ -220,6 +222,11 @@ class LAMMPS:
             lammps_data = lammps_data_fd.name
             lammps_data_fd.flush()
 
+        # Save the names of the files
+        self.lammps_trj = lammps_trj_fd.name
+        self.lammps_in = lammps_in
+        self.lammps_log = lammps_log
+        self.lammps_data = lammps_data
 
         # see to it that LAMMPS is started
         if not self._lmp_alive():
@@ -227,7 +234,6 @@ class LAMMPS:
             self._lmp_handle = Popen(lammps_cmd_line+lammps_options+['-log', '/dev/stdout'],
                                     stdin=PIPE, stdout=PIPE)
         lmp_handle = self._lmp_handle
-
 
         # Create thread reading lammps stdout (for reference, if requested,
         # also create lammps_log, although it is never used)
@@ -238,7 +244,6 @@ class LAMMPS:
             fd = lmp_handle.stdout
         thr_read_log = Thread(target=self.read_lammps_log, args=(fd,))
         thr_read_log.start()
-
 
         # write LAMMPS input (for reference, also create the file lammps_in,
         # although it is never used)
@@ -251,7 +256,6 @@ class LAMMPS:
 
         if self.keep_tmp_files:
             lammps_in_fd.close()
-
 
         # Wait for log output to be read (i.e., for LAMMPS to finish)
         # and close the log file if there is one
@@ -273,7 +277,6 @@ class LAMMPS:
         if int(self.thermo_content[-1]['atoms']) != len(self.atoms):
             # This obviously shouldn't happen, but if prism.fold_...() fails, it could
             raise RuntimeError('Atoms have gone missing')
-
 
         self.read_lammps_trj(lammps_trj=lammps_trj, set_atoms=True)  # Changed from ASE version: Added `set_atoms=True`
         lammps_trj_fd.close()
@@ -378,22 +381,47 @@ class LAMMPS:
                     'pair_coeff * * 1 1 \n'
                     'mass * 1.0 \n'.encode('utf-8'))
 
-        f.write('\n### run\n'
-                'fix fix_nve all nve\n'
-                'dump dump_all all custom 1 {} id type x y z vx vy vz fx fy fz\n'.format(lammps_trj).encode('utf-8'))
-        f.write(('thermo_style custom {}\n'
-                'thermo_modify flush yes\n'
-                'thermo 1\n').format(' '.join(self._custom_thermo_args)).encode('utf-8'))
+        if 'thermosteps' in parameters:
+            f.write('thermo_style custom {}\n'
+                    'thermo_modify flush yes\n'
+                    'thermo {}\n'.format(' '.join(self._custom_thermo_args), repr(parameters['thermosteps']).encode('utf-8'))
+        else:
+            f.write('thermo_style custom {}\n'
+                    'thermo_modify flush yes\n'
+                    'thermo 1\n'.format(' '.join(self._custom_thermo_args)).encode('utf-8'))
 
-        if 'minimize' in parameters:
+        f.write('\n### run\n'.encode('utf-8'))
+        if 'lammps_command' in parameters:
+            f.write('fix fix_nve all nve\n'.encode('utf-8'))
             f.write('minimize {}\n'.format(parameters['minimize']).encode('utf-8'))
-        if 'run' in parameters:
-            f.write('run {}\n'.format(parameters['run']).encode('utf-8'))
-        if not (('minimize' in parameters) or ('run' in parameters)):
-            f.write('run 0\n'.encode('utf-8'))
+            f.write('unfix fix_nve \n'.encode('utf-8'))
+
+            f.write('{} \n'.format(parameters['lammps_command']).encode('utf-8'))
+            f.write('minimize {}\n'.format(parameters['minimize']).encode('utf-8'))
+        else:
+            f.write('fix fix_nve all nve\n'.encode('utf-8'))
+
+            if 'minimize' in parameters:
+                f.write('minimize {}\n'.format(parameters['minimize']).encode('utf-8'))
+            if 'run' in parameters:
+                f.write('run {}\n'.format(parameters['run']).encode('utf-8'))
+            if not (('minimize' in parameters) or ('run' in parameters)):
+                f.write('run 0\n'.encode('utf-8'))
+
+
+        #f.write(('thermo_style custom {}\n'
+        #        'thermo_modify flush yes\n'
+        #        'thermo 1\n').format(' '.join(self._custom_thermo_args)).encode('utf-8'))
+        f.write('compute  pea all pe/atom \n'.encode('utf-8'))
+        #f.write('dump dump_all all custom 1 {} id type x y z vx vy vz fx fy fz\n'.format(lammps_trj).encode('utf-8'))  # This was up higher
+        #f.write('dump dump_all all custom 2 {} id type x y z vx vy vz fx fy fz\n'.format(lammps_trj).encode('utf-8'))
+        f.write('dump dump_all all custom 2 {} id type x y z c_pea \n'.format(lammps_trj).encode('utf-8'))
+        #f.write('dump dump_all all custom 2 {} id type x y z \n'.format(lammps_trj.encode('utf-8'))
+        f.write('run 1\n'.encode('utf-8'))
 
         f.write('print "{}"\n'.format(CALCULATION_END_MARK).encode('utf-8'))
         f.write('log /dev/stdout\n'.encode('utf-8')) # Force LAMMPS to flush log
+        f.write('undump dump_all\n'.encode('utf-8')) # Force LAMMPS to flush trj
 
         if close_in_file:
             f.flush()
@@ -454,8 +482,7 @@ class LAMMPS:
                 n_atoms = 0
                 lo = [] ; hi = [] ; tilt = []
                 id = [] ; type = []
-                #positions = [] ; pea = [] ; velocities = [] ; forces = []
-                positions = [] ; velocities = [] ; forces = []
+                positions = [] ; pea = [] #; velocities = [] ; forces = []
 
             if 'ITEM: NUMBER OF ATOMS' in line:
                 line = f.readline()
@@ -484,9 +511,9 @@ class LAMMPS:
                     id.append( int(fields[atom_attributes['id']]) )
                     type.append( int(fields[atom_attributes['type']]) )
                     positions.append( [ float(fields[atom_attributes[x]]) for x in ['x', 'y', 'z'] ] )
-                    #pea.append( [ float(fields[atom_attributes[x]]) for x in ['c_pea'] ] )
+                    pea.append( [ float(fields[atom_attributes[x]]) for x in ['c_pea'] ] )
                     #velocities.append( [ float(fields[atom_attributes[x]]) for x in ['vx', 'vy', 'vz'] ] )
-                    forces.append( [ float(fields[atom_attributes[x]]) for x in ['fx', 'fy', 'fz'] ] )
+                    #forces.append( [ float(fields[atom_attributes[x]]) for x in ['fx', 'fy', 'fz'] ] )
         f.close()
 
         if nlines==0:
@@ -553,14 +580,14 @@ class LAMMPS:
             type_atoms = self.atoms.get_atomic_numbers()
             positions_atoms = np.array( [np.dot(np.array(r), rotation_lammps2ase) for r in positions] )
             #velocities_atoms = np.array( [np.dot(np.array(v), rotation_lammps2ase) for v in velocities] )
-            forces_atoms = np.array( [np.dot(np.array(f), rotation_lammps2ase) for f in forces] )
+            #forces_atoms = np.array( [np.dot(np.array(f), rotation_lammps2ase) for f in forces] )
 
         if (set_atoms):
             # assume periodic boundary conditions here (like also below in write_lammps)
             self.atoms = Atoms(type_atoms, positions=positions_atoms, cell=cell_atoms)
-            #self.pea = pea
+            self.pea = pea
 
-        self.forces = forces_atoms
+        #self.forces = forces_atoms
 
 
 class special_tee:
