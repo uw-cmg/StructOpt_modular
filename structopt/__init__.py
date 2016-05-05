@@ -27,20 +27,20 @@ def setup(parameter_file):
         raise ValueError("'loggername' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
 
     if parameters.globals.rank == 0:
-        logger = fileio.logger_utils.initialize_logger(filename='{}.log'.format(parameters.globals.output_filename), name="output", level=logging_level)
+        logger = fileio.logger_utils.initialize_logger(filename='{}.out'.format(parameters.globals.output_filename), name="output", level=logging_level)
         default_logger = fileio.logger_utils.initialize_logger(filename='{}.log'.format(parameters.globals.loggername), name="default", level=logging_level)
 
         if logging_level <= logging.DEBUG:
-            debug_logger = fileio.logger_utils.initialize_logger(filename='{}-debug.log'.format(parameters.globals.loggername), name="debug", level=logging_level)
+            debug_logger = fileio.logger_utils.initialize_logger(filename='{}.debug'.format(parameters.globals.loggername), name="debug", level=logging_level)
 
     else:
-        logger = fileio.logger_utils.initialize_logger(filename='{}.log'.format(parameters.globals.output_filename), name="output", level=logging_level, disable_output=True)
+        logger = fileio.logger_utils.initialize_logger(filename='{}.out'.format(parameters.globals.output_filename), name="output", level=logging_level, disable_output=True)
         default_logger = fileio.logger_utils.initialize_logger(filename='{}.log'.format(parameters.globals.loggername), name="default", level=logging_level, disable_output=True)
 
-    logger_by_rank = fileio.logger_utils.initialize_logger(filename='{}-by-rank.log'.format(parameters.globals.loggername), name="by-rank", level=logging_level)
+    logger_by_rank = fileio.logger_utils.initialize_logger(filename='{}-by-rank.out'.format(parameters.globals.loggername), name="by-rank", level=logging_level)
 
     if logging_level <= logging.DEBUG:
-        debug_logger = fileio.logger_utils.initialize_logger(filename='{}-by-rank-debug.log'.format(parameters.globals.loggername), name="by-rank-debug", level=logging_level)
+        debug_logger = fileio.logger_utils.initialize_logger(filename='{}-by-rank.debug'.format(parameters.globals.loggername), name="by-rank-debug", level=logging_level)
 
     if not os.path.exists(parameters.globals.output_filename):
         os.mkdir(parameters.globals.output_filename)
