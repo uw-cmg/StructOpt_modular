@@ -2,6 +2,7 @@ import functools
 import random
 from itertools import accumulate
 from bisect import bisect
+from collections import defaultdict
 
 import structopt
 from .swap_positions import swap_positions
@@ -15,12 +16,16 @@ class Mutations(object):
     """ """
     def __init__(self):
         self.parameters = structopt.parameters.mutations
+        self.kwargs = defaultdict(dict)
+        self.kwargs.update( {getattr(self, name): kwords for name, kwords in self.parameters.kwargs.items()} )
+
         self.mutations = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
+
         self.selected_mutation = None
 
-    def select_mutation(self)
+    def select_mutation(self):
         # Implementation from https://docs.python.org/3/library/random.html -- Ctrl+F "weights"
         choices, weights = zip(*self.mutations.items())
         cumdist = list(accumulate(weights))
@@ -32,7 +37,7 @@ class Mutations(object):
             return individual
         else:
             individual._modified = True
-            return self.selected_mutation(individual)
+            return self.selected_mutation(individual, **self.kwargs[self.selected_mutation])
 
     @staticmethod
     @functools.wraps(swap_positions)

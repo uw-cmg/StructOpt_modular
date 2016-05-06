@@ -10,21 +10,32 @@ def cost(population, fits, nkeep):
     # TODO I don't actually think that this is true: This method will allow duplicate structures to exist within the selection list but will prevent duplicates from being selected adjacently.
 
     # Sort by fitnesses and calculate the cumulative probability of selecting each individual
-    sorted_fits, sorted_population = zip(*sorted(zip(fits, population)))
+    sorted_fits, sorted_population = zip(*sorted(zip(fits, population), key=lambda pair: pair[0]))
     population.replace(list(sorted_population))
 
     try:
         norms = [fit - fits[nkeep+1] for fit in fits[0:nkeep]]
     except IndexError:
         norms = [fit - fits[nkeep-1] for fit in fits[0:nkeep]]
-    cumulative_probability = list(accumulate(norms))
+    sumn = sum(norms)
+    # TODO one thing I don't like about this is that the when nkeep == len(population), norms[-1] == 0. That means cumprob[-1] == cumprob[-2] and the last individual can never be selected unless it's random chance
+    print(fits)
+    print(norms)
+    if sumn == 0.0:
+        raise ZeroDivisionError
+    probability = [x/sumn for x in norms]
+    cumulative_probability = list(accumulate(probability))
+    print(probability)
+    print(cumulative_probability)
 
     chosen = []
     for i in range(nkeep):
         rand = random.random()
         counter = 0
-        while cumprob[counter] < rand:
+        print(rand)
+        while cumulative_probability[counter] < rand:
             counter += 1
+            print(counter)
         if population[counter] in chosen:
             a = random.choice(population)
             chosen.append(a)

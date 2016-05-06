@@ -22,9 +22,6 @@ class Predators(object):
         x = random.random() * cumdist[-1]
         self.selected_predator = choices[bisect(cumdist, x)]
 
-    def kill(self, individual1, individual2):
-        if self.selected_predator is None:
-            return None, None
-        else:
-            return self.selected_predator(individual1, individual2)
+    def kill(self, population):
+        pass # TODO
 

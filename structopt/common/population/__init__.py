@@ -35,6 +35,8 @@ class Population(list):
                 structure = Structure(index=i, **structure_information.data)
                 self.append(structure)
 
+        self.total_number_of_individuals = len(self)
+
 
     def replace(self, a_list):
         self.clear()
@@ -42,13 +44,13 @@ class Population(list):
 
 
     def crossover(self):
-        self.crossovers.select_crossover()
-        return self.crossovers.crossover(self)
+        children = self.crossovers.crossover(self)
+        self.extend(children)
 
 
     def select(self, fits):
         self.selections.select_selection()
-        return self.selections.select(self, fits)
+        return self.selections.select(self, fits, nkeep=self.total_number_of_individuals)
 
 
     def kill(self):

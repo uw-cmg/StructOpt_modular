@@ -22,9 +22,15 @@ class Crossovers(object):
         x = random.random() * cumdist[-1]
         self.selected_crossover = choices[bisect(cumdist, x)]
 
-    def crossover(self, individual1, individual2):
-        if self.selected_crossover is None:
-            return None, None
-        else:
-            return self.selected_crossover(individual1, individual2)
+    def crossover(self, population):
+        children = []
+        for individual1, individual2 in zip(population[::2], population[1::2]):
+            self.select_crossover()
+            if self.selected_crossover is not None:
+                child1, child2 = self.selected_crossover(individual1, individual2)
+                if child1 is not None:
+                    children.append(child1)
+                if child2 is not None:
+                    children.append(child2)
+        return children
 

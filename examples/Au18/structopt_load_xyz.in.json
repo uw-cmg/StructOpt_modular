@@ -5,7 +5,6 @@
     },
     "generators": {
         "structure_type": "cluster",
-        "total_number_of_individuals": 5,
         "initializers": [
             {
                 "number_of_individuals": 5,
@@ -43,13 +42,13 @@
             "ntheta": 20,
             "thickness_scaling_factor": 28.6378
         },
-        "LAMMPS":{
+        "LAMMPS": {
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
             "parallel": true, 
-            "potential_file": "$HOME/repos/StructOpt/examples/Au18/Au_u3.eam", 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
         }
     },
@@ -58,13 +57,13 @@
         "modules": [
             "LAMMPS"
         ],
-        "LAMMPS":{
+        "LAMMPS": {
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
             "parallel": true, 
-            "potential_file": "$HOME/repos/StructOpt/examples/Au18/Au_u3.eam", 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
         }
     },
@@ -74,8 +73,9 @@
             "swap_positions": 0.05,
             "swap_species": 0.10,
             "rotate_atoms": 0.05,
-            "rotate_cluster: 0.10
-        }
+            "rotate_cluster": 0.10
+        },
+        "kwargs": {}
     },
     "fingerprinters": {
         "options": []
@@ -95,3 +95,4 @@
     "postprocessing": {},
     "tools": {}
 }
+
