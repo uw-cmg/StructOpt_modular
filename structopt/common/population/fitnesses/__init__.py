@@ -26,5 +26,9 @@ class Fitnesses(object):
             fits = np.multiply(fits, self.parameters.weights[i])
             fitnesses = np.add(fitnesses, fits)
 
+        # Set each individual to unmodified so that the fitnesses don't need to be recalculated
+        for individual in population:
+            individual._modifed = False
+
         return fitnesses
 

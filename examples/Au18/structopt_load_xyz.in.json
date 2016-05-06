@@ -31,8 +31,8 @@
             1.0
         ],
         "FEMSIM": {
-            "parameter_filename": "/home/maldonis/USIT/StructOpt/StructOpt/fitness/FEMSIM/femsim-hrmc/parameters/femsim.in",
-            "vk_data_filename": "/home/maldonis/USIT/StructOpt/StructOpt/fitness/FEMSIM/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
+            "parameter_filename": "$HOME/femsim-hrmc/parameters/femsim.in",
+            "vk_data_filename": "$HOME/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
             "xsize": 28.2842712474619,
             "ysize": 28.2842712474619,
             "zsize": 28.2842712474619,

@@ -4,8 +4,9 @@ import structopt
 
 
 def relax(population):
-    # TODO update this so that it correctly distributes which core relaxes which individual
-    for i, individual in enumerate(population):
-        if structopt.parameters.globals.rank == i:
+    to_relax = [individual for individual in population if individual._modified]
+    ncores = structopt.parameters.globals.ncores
+    for i, individual in enumerate(to_relax):
+        if structopt.parameters.globals.rank % structopt.parameters.globals.ncores == 0:
             individual.relaxations.LAMMPS.relax(individual)
 

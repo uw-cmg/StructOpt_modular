@@ -5,23 +5,23 @@ import structopt
 
 
 def fitness(population):
+    to_fit = [individual for individual in population if individual._modified]
+
     if structopt.parameters.globals.USE_MPI4PY:
         from mpi4py import MPI
         logger = logging.getLogger('by-rank')
     else:
         logger = logging.getLogger('output')
 
-    energies = []
-    for i, individual in enumerate(population):
-        # TODO update this so that it correctly parallelizes
-        if structopt.parameters.globals.USE_MPI4PY and structopt.parameters.globals.rank == i:
+    for i, individual in enumerate(to_fit):
+        if structopt.parameters.globals.USE_MPI4PY and structopt.parameters.globals.rank % structopt.parameters.globals.ncores == 0:
             energy = individual.fitnesses.LAMMPS.get_energy(individual)
+            individual.LAMMPS = energy
             logger.info('Individual {0} for LAMPPS evaluation had energy {1}'.format(i, energy))
-            energies = MPI.COMM_WORLD.gather(energy, root=0)
         else:
             energy = individual.fitnesses.LAMMPS.get_energy(individual)
+            individual.LAMMPS = energy
             logger.info('Individual {0} for LAMPPS evaluation had energy {1}'.format(i, energy))
-            energies.append(energy)
  
-    return energies
+    return [individual.LAMMPS for individual in population]
 

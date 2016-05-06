@@ -14,6 +14,7 @@ def setup(parameter_file):
         except ImportError:
             raise ImportError("mpi4py must be installed to use StructOpt.")
         parameters.globals.rank = MPI.COMM_WORLD.Get_rank()
+        parameters.globals.ncores = MPI.COMM_WORLD.Get_size()
     else:
         parameters.globals.rank = 0
 

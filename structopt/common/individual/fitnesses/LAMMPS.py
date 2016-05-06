@@ -11,5 +11,11 @@ class LAMMPS(object):
 
 
     def get_energy(self, individual):
-        return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False)
+        # Don't rerun lammps if:
+        # 1) the individual is unmodified
+        # 2) the energy has already been calculated via the relaxation
+        if individual._modified and 'LAMMPS' not in structopt.parameters.relaxations.modules:
+            return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False)
+        else:
+            return individual.LAMMPS
 

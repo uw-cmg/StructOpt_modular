@@ -42,10 +42,11 @@ def run(parameters, individual, relax):
     buli = None
     individual = structure
 
-    individual.buli = buli
-    individual.energy = energy
-    individual.pressure = pressure
-    individual.volume = volume
+    #individual.buli = buli
+    #individual.energy = energy
+    individual.LAMMPS = energy
+    #individual.pressure = pressure
+    #individual.volume = volume
 
     structure.calc.clean()
 
