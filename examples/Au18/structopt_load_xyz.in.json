@@ -5,16 +5,17 @@
     },
     "generators": {
         "structure_type": "cluster",
+        "total_number_of_individuals": 5,
         "initializers": [
             {
                 "number_of_individuals": 5,
                 "data": {
                     "filenames": [
-                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure1.xyz",
-                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure2.xyz",
-                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure3.xyz",
-                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure4.xyz",
-                        "/home/jmaldonis/StructOpt_modular/examples/Au18/structure5.xyz"
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure1.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure2.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure3.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure4.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure5.xyz"
                     ]
                 }
             }
@@ -48,7 +49,7 @@
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
             "parallel": true, 
-            "potential_file": "/home/jmaldonis/StructOpt/examples/Au18/Au_u3.eam", 
+            "potential_file": "$HOME/repos/StructOpt/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
         }
     },
@@ -63,31 +64,31 @@
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
             "parallel": true, 
-            "potential_file": "/home/jmaldonis/StructOpt/examples/Au18/Au_u3.eam", 
+            "potential_file": "$HOME/repos/StructOpt/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
         }
     },
     "mutations": {
-        "options": [
-            "move_atoms",
-            "swap_positions",
-            "swap_species",
-            "rotate_atoms",
-            "rotate_cluster"
-        ]
+        "options": {
+            "move_atoms": 0.10,
+            "swap_positions": 0.05,
+            "swap_species": 0.10,
+            "rotate_atoms": 0.05,
+            "rotate_cluster: 0.10
+        }
     },
     "fingerprinters": {
         "options": []
     },
 
     "crossovers": {
-        "options": ["do_nothing"]
+        "options": {}
     },
     "predators": {
-        "options": ["do_nothing"]
+        "options": {}
     },
     "selections": {
-        "options": ["do_nothing"]
+        "options": {"cost": 1.0}
     },
 
     "fileio": {},

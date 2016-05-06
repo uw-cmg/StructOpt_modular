@@ -1,5 +1,7 @@
 import functools
 import random
+from itertools import accumulate
+from bisect import bisect
 
 import structopt
 from .swap_positions import swap_positions
@@ -13,17 +15,24 @@ class Mutations(object):
     """ """
     def __init__(self):
         self.parameters = structopt.parameters.mutations
-        self.mutations = [getattr(self, name) for name in self.parameters.options]
+        self.mutations = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
+        total_probability = sum(self.mutations.values())
+        self.mutations[None] = 1.0 - total_probability
         self.selected_mutation = None
 
-    def select_mutation(self, name=None):
-        if name is not None:
-            self.selected_mutation = getattr(self, name)
-        else:
-            self.selected_mutation = random.choice(self.mutations)
+    def select_mutation(self)
+        # Implementation from https://docs.python.org/3/library/random.html -- Ctrl+F "weights"
+        choices, weights = zip(*self.mutations.items())
+        cumdist = list(accumulate(weights))
+        x = random.random() * cumdist[-1]
+        self.selected_mutation = choices[bisect(cumdist, x)]
 
     def mutate(self, individual):
-        return self.selected_mutation(individual)
+        if self.selected_mutation is None:
+            return individual
+        else:
+            individual._modified = True
+            return self.selected_mutation(individual)
 
     @staticmethod
     @functools.wraps(swap_positions)

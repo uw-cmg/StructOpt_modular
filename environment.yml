@@ -1,0 +1,11 @@
+name: structopt3
+channels:
+dependencies:
+   - python=3.5
+   - numpy
+   - ipython
+   - mpi4py
+   - pip:
+     - ase
+     - "--editable=git+https://github.com/jjmaldonis/commentjson.git@master"
+
