@@ -6,13 +6,20 @@ from structopt.common.population import Population
 
 class Optimizer(object):
     def __init__(self):
+        
+        ### self.logger = logging.getLogger('default')
+
+        # Get parameters from StructOpt space
+        setattr(self, 'parameters', structopt.parameters)
+        
         # Initialize random number seed
-        random.seed(structopt.parameters.globals.seed)
+        random.seed(self.parameters.globals.seed)
 
         self.generation = 0
 
-        # Create the population
-        self.population = Population()
+        # Create the population (not ready yet)
+        ### self.population = Population() 
+    
 
         # Prep output monitoring
 
