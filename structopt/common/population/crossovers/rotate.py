@@ -19,6 +19,8 @@ def rotate(individual1, individual2, conserve_composition=True):
     Returns:
         Individual: The first child
         Individual: The second child
+
+    The children are returned without indicies.
     """
     logger = logging.getLogger('output')
     logger.info('Rotate Cut/Splice Cx between individual {} and individual {}\n'.format(repr(individual1.index), repr(individual2.index)))
@@ -116,29 +118,29 @@ def rotate(individual1, individual2, conserve_composition=True):
     child2.extend(below_xy_plane2)
 
     # DEBUG: Check structure of atoms exchanged
-    for sym, c, m, u in Optimizer.atomlist:
+    for sym, c, m, u in ind1:
         nc = len([atm for atm in child1 if atm.symbol == sym])
         logger.debug('CX ROTCT: Individual 1 contains '+repr(nc)+' '+repr(sym)+' atoms\n')
+    for sym, c, m, u in ind2:
         nc = len([atm for atm in child2 if atm.symbol == sym])
         logger.debug('CX ROTCT: Individual 2 contains '+repr(nc)+' '+repr(sym)+' atoms\n')
 
-    # Need to have at least one atom of each structure in atomlist to prevent LAMMPS from erroring
-    if conserve_composition:
-        for i in range(len(Optimizer.atomlist)):
-            atms1 = [inds for inds in child1 if inds.symbol == Optimizer.atomlist[i][0]]
-            atms2 = [inds for inds in child2 if inds.symbol == Optimizer.atomlist[i][0]]
-            if len(atms1) == 0:
-                if len(atms2) == 0:
-                    child1[random.randint(0, len(child1)-1)].symbol == Optimizer.atomlist[i][0]
-                    child2[random.randint(0, len(child2)-1)].symbol == Optimizer.atomlist[i][0]
-                else:
-                    child1.append(atms2[random.randint(0, len(atms2)-1)])
-                    child1.pop(random.randint(0, len(child1)-2))
-            else:
-                if len(atms2) == 0:
-                    child2.append(atms1[random.randint(0, len(atms1)-1)])
-                    child2.pop(random.randint(0, len(child2)-2))
+    # Need to have at least one atom of each specie in atomlist to prevent LAMMPS from erroring
+    if not conserve_composition:
+        for i in range(len(ind1)):
+            atoms1 = [atom for atom in child1 if atom.symbol == individual1[i]]
+            atoms2 = [atom for atom in child2 if atom.symbol == individual1[i]]
+            if len(atoms1) == 0 and len(atoms2) == 0:
+                random.choice(child1).symbol = individual1[i].symbol
+                random.choice(child2).symbol = individual1[i].symbol
+            elif len(atoms1) == 0 and len(atoms2) != 0:
+                del child1[random.randint(0, len(child1))]
+                child1.append(random.choice(atoms2))
+            elif len(atoms1) != 0 and len(atoms2) == 0:
+                del child2[random.randint(0, len(child2))]
+                child2.append(random.choice(atoms1))
 
+    # Unrotate and untranslate the children
     child1.rotate(rax, a=-1*rang, center='COM', rotate_cell=False)
     child2.rotate(rax, a=-1*rang, center='COM', rotate_cell=False)
     child1.translate(com1)
