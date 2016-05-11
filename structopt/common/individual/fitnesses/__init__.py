@@ -9,7 +9,7 @@ class Fitnesses(object):
         self.modules = []
 
         for module in self.parameters.modules:
-            setattr(self, module, globals()[module]()  # Initialized the class that was imported at the top of the file
+            setattr(self, module, globals()[module]())  # Initialized the class that was imported at the top of the file
             self.modules.append(getattr(self, module))
 
 

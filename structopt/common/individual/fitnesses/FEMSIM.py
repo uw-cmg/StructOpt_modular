@@ -40,7 +40,7 @@ class FEMSIM(object):
 
     def get_chisq(self, individual):
         vk = self.get_vk_data()
-        return = self.chi2(vk)
+        return self.chi2(vk)
 
 
     def setup_individual_evaluation(self, individual):
