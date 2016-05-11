@@ -3,15 +3,38 @@
 * Introduction
 The purpose of this document is to hold scripts for testing all of the modules, classes, and functions implemented in StructOpt. I (Zhongnan) will be writing and executing scripts through code blocks in this document through Emacs. If you don't use Emacs, I will be tangling the code blocks out. If the test generates files or takes input files, it will ideally take place in its own directory
 
-* Initializing StructOpt with input
-** Load the input file
-For running interactively, structopt must first be imported.
+* structopt
+** Initialization 
 
-#+BEGIN_SRC python :tangle test_input.py
+#+BEGIN_SRC python :tangle structopt_test.py
 import sys; sys.path.insert(1, '../')
 import structopt
 
-# structopt.setup('sample-inputs/Au309/structopt.in.json')
 structopt.setup('sample-inputs/Au18/structopt.in.json')
 #+END_SRC
+
+#+RESULTS:
+
+* io
+** write_xyz
+#+BEGIN_SRC python :tangle fileio/write_xyz-test.py
+import sys; sys.path.insert(1, '../')
+from structopt.fileio import write_xyz
+
+from ase.lattice import bulk
+from ase.visualize import view
+
+atoms = bulk('Pt')
+write_xyz('fileio/write_xyz-test.xyz', atoms, append=False)
+
+with open('fileio/write_xyz-test.xyz') as f:
+    print(f.read())
+
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 0
+: Pt      0.000000000000000      0.000000000000000      0.000000000000000
+: 
 
