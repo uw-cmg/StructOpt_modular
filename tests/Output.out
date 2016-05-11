@@ -1,0 +1,79 @@
+2016-05-11 16:03:03,243 : INFO : Current parameters:
+2016-05-11 16:03:03,244 : INFO : {
+    "crossovers": {},
+    "fileio": {},
+    "fingerprinters": {},
+    "fitnesses": {
+        "FEMSIM": {
+            "Q": 0.0305,
+            "nphi": 1,
+            "npsi": 40,
+            "ntheta": 20,
+            "parameter_filename": "/home/maldonis/USIT/StructOpt/StructOpt/fitness/FEMSIM/femsim-hrmc/parameters/femsim.in",
+            "thickness_scaling_factor": 28.6378,
+            "vk_data_filename": "/home/maldonis/USIT/StructOpt/StructOpt/fitness/FEMSIM/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
+            "xsize": 28.2842712474619,
+            "ysize": 28.2842712474619,
+            "zsize": 28.2842712474619
+        },
+        "LAMMPS": {
+            "keep_files": true,
+            "min_style": "cg\nmin_modify line quadratic",
+            "minimize": "1e-8 1e-8 5000 10000",
+            "pair_style": "eam",
+            "parallel": true,
+            "pot_file": "/home/maldonis/USIT/StructOpt/examples/Au18/Au_u3.eam",
+            "thermo_steps": 1000
+        },
+        "modules": [
+            "LAMMPS",
+            "FEMSIM"
+        ],
+        "weights": [
+            1.0,
+            1.0
+        ]
+    },
+    "generators": [
+        {
+            "data": {
+                "chemical_potential": 0.0,
+                "mass": 196.9665,
+                "natoms": 18,
+                "symbol": "Au"
+            },
+            "number_of_individuals": 5,
+            "structure_type": "cluster"
+        }
+    ],
+    "globals": {
+        "USE_MP4PY": true,
+        "USE_MPI4PY": true,
+        "loggername": "Output-rank0-20160511160303",
+        "ncores": 1,
+        "output_filename": "Output",
+        "rank": 0,
+        "seed": null
+    },
+    "mutations": {
+        "options": [
+            "lattice_alteration",
+            "lattice_alteration_group",
+            "rotation_geo",
+            "rotation"
+        ]
+    },
+    "postprocessing": {},
+    "predators": {},
+    "relaxations": {
+        "modules": [
+            "LAMMPS"
+        ]
+    },
+    "selections": {},
+    "tools": {},
+    "weights": [
+        1.0,
+        1.0
+    ]
+}
