@@ -34,3 +34,6 @@ class Crossovers(object):
                     children.append(child2)
         return children
 
+    def post_processing(self):
+        pass
+

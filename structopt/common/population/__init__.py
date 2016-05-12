@@ -46,29 +46,35 @@ class Population(list):
     def crossover(self):
         children = self.crossovers.crossover(self)
         self.extend(children)
+        self.crossovers.post_processing()
 
 
     def select(self, fits):
         self.selections.select_selection()
-        return self.selections.select(self, fits, nkeep=self.total_number_of_individuals)
+        self.selections.select(self, fits, nkeep=self.total_number_of_individuals)
+        self.selections.post_processing()
 
 
     def kill(self):
         self.predators.select_predator()
-        return self.predators.kill(self)
+        self.predators.kill(self)
+        self.predators.post_processing()
 
 
     def fitness(self):
         fits = self.fitnesses.fitness(self)
         for i, individual in enumerate(self):
             individual._fitness = fits[i]
+        self.fitnesses.post_processing()
         return fits
 
 
     def relax(self):
-        return self.relaxations.relax(self)
+        self.relaxations.relax(self)
+        self.relaxations.post_processing()
 
 
     def mutate(self):
-        return self.mutations.mutate(self)
+        self.mutations.mutate(self)
+        self.mutations.post_processing()
 

@@ -19,3 +19,6 @@ class Relaxations(object):
 
         return None
 
+    def post_processing(self):
+        pass
+

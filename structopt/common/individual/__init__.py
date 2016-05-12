@@ -36,19 +36,24 @@ class Individual(ase.Atoms):
 
     def mutate(self):
         self.mutations.select_mutation()
-        return self.mutations.mutate(self)
+        self.mutations.mutate(self)
+        self.mutations.post_processing()
 
 
     def relax(self):
-        return self.relaxations.relax(self)
+        self.relaxations.relax(self)
+        self.relaxations.post_processing()
 
 
     def fitness(self):
-        return self.fitnesses.fitness(self)
+        fits = self.fitnesses.fitness(self)
+        self.fitnesses.post_processing()
+        return fits
 
 
     def fingerprint(self):
-        return self.fingerprinters.fingerprint(self)
+        self.fingerprinters.fingerprint(self)
+        self.fingerprinters.post_processing()
 
 
     def get_atom_indices_within_distance_of_atom(self, atom_index, distance):

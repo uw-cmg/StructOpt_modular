@@ -32,3 +32,6 @@ class Fitnesses(object):
 
         return fitnesses
 
+    def post_processing(self):
+        pass
+

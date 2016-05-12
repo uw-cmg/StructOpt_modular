@@ -18,3 +18,6 @@ class Relaxations(object):
             module.relax(individual)
         return None
 
+    def post_processing(self):
+        pass
+

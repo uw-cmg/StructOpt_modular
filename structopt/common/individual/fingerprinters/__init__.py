@@ -17,6 +17,9 @@ class Fingerprinters(object):
     def fingerprint(self, individual):
         return self.selected_fingerprinter(individual)
 
+    def post_processing(self):
+        pass
+
     @staticmethod
     @functools.wraps(dirac)
     def dirac(individual):

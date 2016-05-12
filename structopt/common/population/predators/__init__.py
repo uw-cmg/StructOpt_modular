@@ -25,3 +25,6 @@ class Predators(object):
     def kill(self, population):
         pass # TODO
 
+    def post_processing(self):
+        pass
+

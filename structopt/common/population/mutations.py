@@ -16,3 +16,6 @@ class Mutations(object):
                 individual.mutate()
         return population
 
+    def post_processing(self):
+        pass
+

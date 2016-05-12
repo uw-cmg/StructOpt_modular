@@ -39,6 +39,9 @@ class Mutations(object):
             individual._modified = True
             return self.selected_mutation(individual, **self.kwargs[self.selected_mutation])
 
+    def post_processing(self):
+        pass
+
     @staticmethod
     @functools.wraps(swap_positions)
     def swap_positions(individual):

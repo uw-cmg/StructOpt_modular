@@ -25,6 +25,9 @@ class Selections(object):
     def select(self, population, fits, nkeep):
         return self.selected_selection(population, fits, nkeep)
 
+    def post_processing(self):
+        pass
+
     @staticmethod
     @functools.wraps(cost)
     def cost(population, fits, nkeep):

@@ -19,3 +19,6 @@ class Fitnesses(object):
             fit += module.fitness(individual) * self.parameters.weights[i]
         return fit
 
+    def post_processing(self):
+        pass
+
