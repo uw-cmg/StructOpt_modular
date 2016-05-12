@@ -3,6 +3,7 @@ import importlib
 
 import structopt
 from . import LAMMPS
+from . import hard_sphere_cutoff
 
 
 class Relaxations(object):
