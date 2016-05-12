@@ -1,3 +1,8 @@
+.. structopt documentation master file, created by
+   sphinx-quickstart on Thu May 12 13:35:36 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
 StructOpt Documentation
 ########################
 
@@ -66,3 +71,4 @@ Index and Search
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
