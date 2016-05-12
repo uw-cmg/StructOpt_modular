@@ -6,6 +6,8 @@ from structopt.common.population import Population
 
 
 class Optimizer(object):
+    __version__  = 'StructOpt_v3.0'
+
     def __init__(self):
         
         self.logger = logging.getLogger('default')
