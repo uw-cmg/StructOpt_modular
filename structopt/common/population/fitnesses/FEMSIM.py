@@ -9,6 +9,10 @@ def fitness(population):
     to_fit = [individual for individual in population if individual._modified]
     cores_per_individual = structopt.parameters.globals.ncores // len(to_fit)
     # Round cores_per_individual down to nearest power of 2
+    if cores_per_individual == 0:
+        # We have too more individuals than cores, so each fitness scheme needs to be run multiple times
+        cores_per_individual = 1
+
     pow(2.0, math.floor(math.log2(cores_per_individual)))
 
     logger = logging.getLogger('output')
@@ -26,8 +30,9 @@ def fitness(population):
 
         # Collect the results for each chisq and return them
         for i, individual in enumerate(population):
+            print("RUNNING FEMSIM FOR INDIVIDUAL", individual)
             chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
             individual.FEMSIM = chisq
             logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
-    return [individual.chisq for individual in population]
+    return [individual.FEMSIM for individual in population]
 

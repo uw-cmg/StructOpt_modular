@@ -1,4 +1,5 @@
 import random
+import logging
 
 import structopt
 from structopt.common.population import Population
@@ -7,7 +8,7 @@ from structopt.common.population import Population
 class Optimizer(object):
     def __init__(self):
         
-        ### self.logger = logging.getLogger('default')
+        self.logger = logging.getLogger('default')
 
         # Get parameters from StructOpt space
         setattr(self, 'parameters', structopt.parameters)
@@ -18,7 +19,7 @@ class Optimizer(object):
         self.generation = 0
 
         # Create the population (not ready yet)
-        ### self.population = Population() 
+        self.population = Population() 
     
 
         # Prep output monitoring

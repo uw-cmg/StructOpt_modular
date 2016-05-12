@@ -50,9 +50,9 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.index))
 
         # Make individual folder and copy files there
-        self.folder = '{filename}-rank0/FEMSIMFiles/Individual{i}'.format(filename=structopt.parameters.output_filename, i=individual.index)
+        self.folder = '{filename}-rank0/FEMSIMFiles/Individual{i}'.format(filename=structopt.parameters.globals.output_filename, i=individual.index)
         if not os.path.exists(self.folder):
-            os.mkdir(self.folder)
+            os.makedirs(self.folder)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
             shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
 

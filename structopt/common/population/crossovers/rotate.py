@@ -3,7 +3,6 @@ import random
 import numpy
 from ase import Atoms
 
-from structopt.fileio import write_xyz
 from structopt.commond.individual import Individual
 
 def rotate(individual1, individual2, conserve_composition=True):
