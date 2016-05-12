@@ -15,7 +15,7 @@ class Population(list):
 
     def __init__(self):
         self.structure_type = structopt.parameters.generators.structure_type.lower()
-        importlib.import_module('structopt.{structure_type}'.format(structure_type=self.structure_type))
+        importlib.import_module('structopt.{}'.format(self.structure_type))
         self.crossovers = Crossovers()
         self.predators = Predators()
         self.selections = Selections()
@@ -23,12 +23,12 @@ class Population(list):
         self.relaxations = Relaxations()
         self.mutations = Mutations()
 
-        # Import the correct structure type class: e.g. from structopt.crystal import Crystal
-        # Unfortunately `from` doesn't seem to work implicitly so a getattr on the module is needed
-        Structure = getattr(
-            importlib.import_module('structopt.{structure_type}'.format(structure_type=self.structure_type)),
-            self.structure_type.title()
-        )
+        # Import the structure type class: e.g from structopt.crystal import Crystal
+        # Unfortunately `from` doesn't seem to work implicitly
+        # so a getattr on the module is needed
+        Structure = getattr(importlib.import_module('structopt.{}'.format(self.structure_type)),
+                            self.structure_type.title())
+
         # Generate/load initial structures
         for structure_information in structopt.parameters.generators.initializers:
             for i in range(structure_information.number_of_individuals):

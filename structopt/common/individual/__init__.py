@@ -18,10 +18,10 @@ class Individual(ase.Atoms):
 
         cls_name = self.__class__.__name__.lower()
         # Load in the appropriate functionality
-        fingerprinters = import_module('structopt.{cls_name}.individual.fingerprinters'.format(cls_name=cls_name))
-        fitnesses = import_module('structopt.{cls_name}.individual.fitnesses'.format(cls_name=cls_name))
-        mutations = import_module('structopt.{cls_name}.individual.mutations'.format(cls_name=cls_name))
-        relaxations = import_module('structopt.{cls_name}.individual.relaxations'.format(cls_name=cls_name))
+        fingerprinters = import_module('structopt.{}.individual.fingerprinters'.format(cls_name))
+        fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
+        mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
+        relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
 
         self.fingerprinters = fingerprinters.Fingerprinters()
         self.fitnesses = fitnesses.Fitnesses()
@@ -30,7 +30,7 @@ class Individual(ase.Atoms):
 
         # Initialize the ase.Atoms structure
         super().__init__()
-        generators = import_module('structopt.{cls_name}.individual.generators'.format(cls_name=cls_name))
+        generators = import_module('structopt.{}.individual.generators'.format(cls_name))
         generators.generate(self, **kwargs)
 
 
