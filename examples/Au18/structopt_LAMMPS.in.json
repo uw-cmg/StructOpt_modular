@@ -1,0 +1,85 @@
+{
+    "globals":
+    {
+        "USE_MPI4PY": true
+    },
+    "generators": {
+        "structure_type": "cluster",
+        "initializers": [
+            {
+                "number_of_individuals": 5,
+                "data": {
+                    "filenames": [
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure1.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure2.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure3.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure4.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure5.xyz"
+                    ]
+                }
+            }
+        ]
+    },
+    "fitnesses":
+    {
+        "modules": [
+            "LAMMPS"
+        ],
+        "weights": [
+            1.0,
+            1.0
+        ],
+        "LAMMPS": {
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        }
+    },
+    "relaxations":
+    {
+        "modules": [
+            "LAMMPS"
+        ],
+        "LAMMPS": {
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        }
+    },
+    "mutations": {
+        "options": {
+            "move_atoms": 0.10,
+            "swap_positions": 0.05,
+            "swap_species": 0.10,
+            "rotate_atoms": 0.05,
+            "rotate_cluster": 0.10
+        },
+        "kwargs": {}
+    },
+    "fingerprinters": {
+        "options": []
+    },
+
+    "crossovers": {
+        "options": {}
+    },
+    "predators": {
+        "options": {}
+    },
+    "selections": {
+        "options": {"cost": 1.0}
+    },
+
+    "fileio": {},
+    "postprocessing": {},
+    "tools": {}
+}
+

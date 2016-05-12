@@ -14,7 +14,7 @@ class Individual(ase.Atoms):
     def __init__(self, index=None, **kwargs):
         self._kwargs = kwargs  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
-        self._modifed = True
+        self._modified = True
 
         cls_name = self.__class__.__name__.lower()
         # Load in the appropriate functionality

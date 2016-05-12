@@ -1,5 +1,6 @@
 import structopt
-from . import LAMMPS
+from .LAMMPS import LAMMPS
+from .hard_sphere_cutoff import HardSphereCutoff
 
 
 class Relaxations(object):
@@ -7,10 +8,9 @@ class Relaxations(object):
         self.parameters = structopt.parameters.relaxations
         self.modules = []
 
-        if 'LAMMPS' in self.parameters.modules:
-            from .LAMMPS import LAMMPS
-            self.LAMMPS = LAMMPS()
-            self.modules.append(self.LAMMPS )
+        for module in self.parameters.modules:
+            setattr(self, module, globals()[module]())  # Initialized the class that was imported at the top of the file
+            self.modules.append(getattr(self, module))
 
 
     def relax(self, individual):

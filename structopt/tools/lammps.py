@@ -118,8 +118,7 @@ class LAMMPS:
             self.tmp_dir = mkdtemp(prefix='LAMMPS-')
         else:
             self.tmp_dir=os.path.realpath(tmp_dir)
-            if not os.path.isdir(self.tmp_dir):
-                os.mkdir(self.tmp_dir, 0o755)
+            os.makedirs(self.tmp_dir, 0o755, exist_ok=True)
         
         for f in files:
             shutil.copy(f, os.path.join(self.tmp_dir, os.path.basename(f)))

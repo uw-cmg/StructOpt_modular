@@ -43,8 +43,7 @@ def setup(parameter_file):
     if logging_level <= logging.DEBUG:
         debug_logger = fileio.logger_utils.initialize_logger(filename='{}-by-rank.debug'.format(parameters.globals.loggername), name="by-rank-debug", level=logging_level)
 
-    if not os.path.exists(parameters.globals.output_filename):
-        os.mkdir(parameters.globals.output_filename)
+    os.makedirs(parameters.globals.output_filename, exist_ok=True)
 
     # Set defaults for parameters and globally scope them
     parameters = fileio.parameters.set_default(parameters)

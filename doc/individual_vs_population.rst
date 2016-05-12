@@ -1,6 +1,0 @@
-The Individual
-==============
-
-The Population
-==============
-
