@@ -34,11 +34,12 @@ class Optimizer(object):
             self.step()
 
     def step(self):
-        self.population.crossover()
-        self.population.mutate()
+        if self.generation > 0:
+            self.population.crossover()
+            self.population.mutate()
         self.population.relax()
         fits = self.population.fitness()
-        self.population.kill()
+        self.population.kill(fits)
         self.population.select(fits)
         self.check_convergence()
         self.generation += 1

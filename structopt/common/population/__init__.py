@@ -55,9 +55,9 @@ class Population(list):
         self.selections.post_processing()
 
 
-    def kill(self):
+    def kill(self, fits):
         self.predators.select_predator()
-        self.predators.kill(self)
+        self.predators.kill(self, fits)
         self.predators.post_processing()
 
 

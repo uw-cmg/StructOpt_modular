@@ -22,7 +22,7 @@ class Predators(object):
         x = random.random() * cumdist[-1]
         self.selected_predator = choices[bisect(cumdist, x)]
 
-    def kill(self, population):
+    def kill(self, population, fits):
         pass # TODO
 
     def post_processing(self):
