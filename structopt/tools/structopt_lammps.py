@@ -29,8 +29,7 @@ def run(parameters, individual, relax):
         logger.critical('Error in energy evaluation: {0}'.format(error), exc_info=True)
         # Copy files to TroubledLammps directory
         path = os.path.join(cwd,'TroubledLammps')
-        if not os.path.exists(path):
-            os.mkdir(path)
+        os.makedirs(path, exist_ok=True)
         calc = structure.get_calculator()
         shutil.copyfile(calc.lammps_traj, os.path.join(path, os.path.basename(calc.lammps_traj)))
         shutil.copyfile(calc.lammps_in, os.path.join(path, os.path.basename(calc.lammps_in)))
@@ -99,10 +98,7 @@ def setup_lammps(parameters, relax):
         path = os.path.join(os.getcwd(), structopt.parameters.globals.output_filename)
         rank = structopt.parameters.globals.rank
         logger.debug('Setting up directory for keeping LAMMPS files')
-        if structopt.parameters.globals.USE_MPI4PY:
-            if not os.path.exists(os.path.join(path, 'LAMMPSFiles')):
-                os.mkdir(os.path.join(path, 'LAMMPSFiles'))
-                logger.info('Making directory: {0}'.format(os.path.join(path, 'LAMMPSFiles')))
+        os.makedirs(os.path.join(path, 'LAMMPSFiles'), exist_ok=True)
 
         # Update kwargs
         kwargs['keep_tmp_files'] = True
