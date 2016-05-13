@@ -16,17 +16,8 @@ Overview
     for_devs
 
 
-For Users
-=========
-
-.. toctree::
-    :maxdepth: 1
-
-    example_input_file
-    example
-
 Calculators
-^^^^^^^^^^^
+===========
 
 .. toctree::
     lammps
@@ -34,9 +25,18 @@ Calculators
     stem
     femsim
 
+Examples
+========
+
+.. toctree::
+    :maxdepth: 1
+
+    example_input_file
+    example
+
 
 For Developers
-==============
+##############
 
 Architecture Details
 ^^^^^^^^^^^^^^^^^^^^
@@ -46,16 +46,6 @@ Architecture Details
 
     workflow
     individual_vs_population
-
-Calculators
-^^^^^^^^^^^
-
-.. toctree::
-    lammps
-    vasp
-    stem
-    femsim
-
 
 Classes and Functions
 ===========
