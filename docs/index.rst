@@ -44,6 +44,7 @@ Architecture Details
 .. toctree::
     :maxdepth: 1
 
+    workflow
     individual_vs_population
 
 Calculators
