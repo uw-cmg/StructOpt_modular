@@ -32,6 +32,7 @@ def parallel(func):
     def wrapper(*args, **kwargs):
         return func(*args, **kwargs):
     wrapper.__doc__ += "\nDesigned to run code that runs differently on different cores.\n"
+                       "The MPI functionality should be implemented inside these functions.\n"
     return wrapper
 
 
