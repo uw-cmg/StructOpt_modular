@@ -6,11 +6,13 @@ import numpy as np
 
 import structopt
 from . import relaxations, fitnesses, mutations, fingerprinters, mutations
+from structopt.tools import root, single_core, parallel
 
 
 class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
+    @single_core
     def __init__(self, index=None, **kwargs):
         self._kwargs = kwargs  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
@@ -34,40 +36,47 @@ class Individual(ase.Atoms):
         generators.generate(self, **kwargs)
 
 
+    @parallel
     def mutate(self):
         self.mutations.select_mutation()
         self.mutations.mutate(self)
         self.mutations.post_processing()
 
 
+    @parallel
     def relax(self):
         self.relaxations.relax(self)
+        self._modified = True
         self.relaxations.post_processing()
 
 
+    @parallel
     def fitness(self):
         fits = self.fitnesses.fitness(self)
         self.fitnesses.post_processing()
         return fits
 
 
+    @parallel
     def fingerprint(self):
         self.fingerprinters.fingerprint(self)
         self.fingerprinters.post_processing()
 
 
+    @single_core
     def get_atom_indices_within_distance_of_atom(self, atom_index, distance):
         dists = self.get_distances(atom_index, slice(None, None, None))
         return np.where(dists < distance)
 
+    @single_core
     def get_nearest_atom_indices(self, atom_index, count):
         dists = self.get_distances(atom_index, slice(None, None, None))[0]
         return np.argsort(dists)[:count]
 
+    @single_core
     def copy(self):
         new = self.__class__()
         new.index = self.index  # TODO
         new.extend(self)
         return new
-
 

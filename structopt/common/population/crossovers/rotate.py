@@ -4,7 +4,10 @@ import numpy
 from ase import Atoms
 
 from structopt.commond.individual import Individual
+from structopt.tools import root, single_core, parallel
 
+
+@single_core
 def rotate(individual1, individual2, conserve_composition=True):
     """Rotates the two individuals around their centers of mass,
     splits them in half at the xy-plane, then splices them together.

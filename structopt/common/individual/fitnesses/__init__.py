@@ -1,9 +1,13 @@
 import structopt
 from .FEMSIM import FEMSIM
 from .LAMMPS import LAMMPS
+from structopt.tools import root, single_core, parallel
 
 
 class Fitnesses(object):
+    """ """
+
+    @single_core
     def __init__(self):
         self.parameters = structopt.parameters.fitnesses
         self.modules = []
@@ -13,12 +17,15 @@ class Fitnesses(object):
             self.modules.append(getattr(self, module))
 
 
+    @parallel
     def fitness(self, individual):
         fit = 0.0
         for i, module in enumerate(self.modules):
             fit += module.fitness(individual) * self.parameters.weights[i]
         return fit
 
+
+    @single_core
     def post_processing(self):
         pass
 

@@ -1,3 +1,4 @@
+rm *.pyc
 rm cluster/*.pyc
 rm cluster/individual/*.pyc
 rm cluster/population/*.pyc
@@ -27,31 +28,32 @@ rm surface/individual/*.pyc
 rm surface/population/*.pyc
 rm tools/*.pyc
 
+rm -rf __pycache__
 rm -rf cluster/__pycache__
-rm -rf cluster/individual/pycache__
-rm -rf cluster/population/pycache__
-rm -rf common/pycache__
-rm -rf common/individual/pycache__
-rm -rf common/individual/fingerprinters/pycache__
-rm -rf common/individual/fitnesses/pycache__
-rm -rf common/individual/generators/pycache__
-rm -rf common/individual/mutations/pycache__
-rm -rf common/individual/relaxations/pycache__
-rm -rf common/population/pycache__
-rm -rf common/population/crossovers/pycache__
-rm -rf common/population/fitnesses/pycache__
-rm -rf common/population/predators/pycache__
-rm -rf common/population/relaxations/pycache__
-rm -rf common/population/selections/pycache__
-rm -rf crystal/pycache__
-rm -rf crystal/individual/pycache__
-rm -rf crystal/population/pycache__
-rm -rf defect/pycache__
-rm -rf defect/individual/pycache__
-rm -rf defect/population/pycache__
-rm -rf fileio/pycache__
-rm -rf postprocessing/pycache__
-rm -rf surface/pycache__
-rm -rf surface/individual/pycache__
-rm -rf surface/population/pycache__
-rm -rf tools/pycache__
+rm -rf cluster/individual/__pycache__
+rm -rf cluster/population/__pycache__
+rm -rf common/__pycache__
+rm -rf common/individual/__pycache__
+rm -rf common/individual/fingerprinters/__pycache__
+rm -rf common/individual/fitnesses/__pycache__
+rm -rf common/individual/generators/__pycache__
+rm -rf common/individual/mutations/__pycache__
+rm -rf common/individual/relaxations/__pycache__
+rm -rf common/population/__pycache__
+rm -rf common/population/crossovers/__pycache__
+rm -rf common/population/fitnesses/__pycache__
+rm -rf common/population/predators/__pycache__
+rm -rf common/population/relaxations/__pycache__
+rm -rf common/population/selections/__pycache__
+rm -rf crystal/__pycache__
+rm -rf crystal/individual/__pycache__
+rm -rf crystal/population/__pycache__
+rm -rf defect/__pycache__
+rm -rf defect/individual/__pycache__
+rm -rf defect/population/__pycache__
+rm -rf fileio/__pycache__
+rm -rf postprocessing/__pycache__
+rm -rf surface/__pycache__
+rm -rf surface/individual/__pycache__
+rm -rf surface/population/__pycache__
+rm -rf tools/__pycache__

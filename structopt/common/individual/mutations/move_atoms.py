@@ -28,3 +28,4 @@ def move_atoms(individual, max_natoms=0.20):
                                       random.uniform(cell_min[1], cell_max[1]),
                                       random.uniform(cell_min[2], cell_max[2]))
     return None
+

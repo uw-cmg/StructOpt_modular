@@ -3,8 +3,10 @@ import subprocess
 import math
 
 import structopt
+from structopt.tools import root, single_core, parallel
 
 
+@root
 def fitness(population):
     to_fit = [individual for individual in population if individual._modified]
     cores_per_individual = structopt.parameters.globals.ncores // len(to_fit)

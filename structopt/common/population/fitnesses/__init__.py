@@ -4,16 +4,20 @@ import numpy as np
 
 import structopt
 from . import LAMMPS, FEMSIM
+from structopt.tools import root, single_core, parallel
 
 
 class Fitnesses(object):
     """Holds the parameters for each fitness module and defines a utility function to compute the fitnesses for each fitness module."""
+
+    @single_core
     def __init__(self):
         self.parameters = structopt.parameters.fitnesses
 
         self.modules = [globals()[module] for module in self.parameters.modules]
 
 
+    @single_core
     def fitness(self, population):
         fitnesses = np.zeros((len(population),), dtype=np.float)
         for i, module in enumerate(self.modules):
@@ -32,6 +36,8 @@ class Fitnesses(object):
 
         return fitnesses
 
+
+    @single_core
     def post_processing(self):
         pass
 

@@ -10,10 +10,13 @@ from .swap_species import swap_species
 from .move_atoms import move_atoms
 from .rotate_atoms import rotate_atoms
 from .rotate_cluster import rotate_cluster
+from structopt.tools import root, single_core, parallel
 
 
 class Mutations(object):
     """ """
+
+    @single_core
     def __init__(self):
         self.parameters = structopt.parameters.mutations
         self.kwargs = defaultdict(dict)
@@ -25,6 +28,7 @@ class Mutations(object):
 
         self.selected_mutation = None
 
+    @single_core
     def select_mutation(self):
         # Implementation from https://docs.python.org/3/library/random.html -- Ctrl+F "weights"
         choices, weights = zip(*self.mutations.items())
@@ -32,6 +36,7 @@ class Mutations(object):
         x = random.random() * cumdist[-1]
         self.selected_mutation = choices[bisect(cumdist, x)]
 
+    @single_core
     def mutate(self, individual):
         if self.selected_mutation is None:
             return individual
@@ -39,6 +44,7 @@ class Mutations(object):
             individual._modified = True
             return self.selected_mutation(individual, **self.kwargs[self.selected_mutation])
 
+    @single_core
     def post_processing(self):
         pass
 

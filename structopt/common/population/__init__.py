@@ -1,18 +1,19 @@
 import importlib
 
 import structopt
-from structopt.common.population.crossovers import Crossovers
-from structopt.common.population.predators import Predators
-from structopt.common.population.selections import Selections
-from structopt.common.population.fitnesses import Fitnesses
-from structopt.common.population.relaxations import Relaxations
-from structopt.common.population.mutations import Mutations
-
+from .crossovers import Crossovers
+from .predators import Predators
+from .selections import Selections
+from .fitnesses import Fitnesses
+from .relaxations import Relaxations
+from .mutations import Mutations
+from structopt.tools import root, single_core, parallel
 
 
 class Population(list):
     """A list-like class that contains the Individuals and the operations to be run on them."""
 
+    @single_core
     def __init__(self):
         self.structure_type = structopt.parameters.generators.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
@@ -38,29 +39,26 @@ class Population(list):
         self.total_number_of_individuals = len(self)
 
 
+    @single_core
     def replace(self, a_list):
         self.clear()
         self.extend(a_list)
 
 
+    @parallel
     def crossover(self):
         children = self.crossovers.crossover(self)
         self.extend(children)
         self.crossovers.post_processing()
 
 
-    def select(self, fits):
-        self.selections.select_selection()
-        self.selections.select(self, fits, nkeep=self.total_number_of_individuals)
-        self.selections.post_processing()
+    @root
+    def mutate(self):
+        self.mutations.mutate(self)
+        self.mutations.post_processing()
 
 
-    def kill(self, fits):
-        self.predators.select_predator()
-        self.predators.kill(self, fits)
-        self.predators.post_processing()
-
-
+    @parallel
     def fitness(self):
         fits = self.fitnesses.fitness(self)
         for i, individual in enumerate(self):
@@ -69,12 +67,22 @@ class Population(list):
         return fits
 
 
+    @parallel
     def relax(self):
         self.relaxations.relax(self)
         self.relaxations.post_processing()
 
 
-    def mutate(self):
-        self.mutations.mutate(self)
-        self.mutations.post_processing()
+    @root
+    def kill(self, fits):
+        self.predators.select_predator()
+        self.predators.kill(self, fits)
+        self.predators.post_processing()
+
+
+    @root
+    def select(self, fits):
+        self.selections.select_selection()
+        self.selections.select(self, fits, nkeep=self.total_number_of_individuals)
+        self.selections.post_processing()
 

@@ -4,10 +4,13 @@ from itertools import accumulate
 from bisect import bisect
 
 import structopt
+from structopt.tools import root, single_core, parallel
 
 
 class Crossovers(object):
     """ """
+
+    @single_core
     def __init__(self):
         self.parameters = structopt.parameters.crossovers
         self.crossovers = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
@@ -15,6 +18,8 @@ class Crossovers(object):
         self.crossovers[None] = 1.0 - total_probability
         self.selected_crossover = None
 
+
+    @single_core
     def select_crossover(self):
         # Implementation from https://docs.python.org/3/library/random.html -- Ctrl+F "weights"
         choices, weights = zip(*self.crossovers.items())
@@ -22,6 +27,8 @@ class Crossovers(object):
         x = random.random() * cumdist[-1]
         self.selected_crossover = choices[bisect(cumdist, x)]
 
+
+    @single_core
     def crossover(self, population):
         children = []
         for individual1, individual2 in zip(population[::2], population[1::2]):
@@ -34,6 +41,8 @@ class Crossovers(object):
                     children.append(child2)
         return children
 
+
+    @single_core
     def post_processing(self):
         pass
 

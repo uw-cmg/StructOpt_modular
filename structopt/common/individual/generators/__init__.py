@@ -4,7 +4,9 @@ import numpy as np
 import structopt
 from structopt.common.individual import Individual
 from .read_xyz import read_xyz
+from structopt.tools import root, single_core, parallel
 
+@single_core
 def generate(individual, **kwargs):
     """ Uses the relevant parameters from structopt to intialize the input Individual by modifying it in-place.
 

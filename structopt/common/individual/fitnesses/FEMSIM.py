@@ -5,16 +5,20 @@ import shutil
 
 import structopt
 from structopt.fileio import write_xyz
+from structopt.tools import root, single_core, parallel
 
 
 class FEMSIM(object):
+    """ """
 
+    @single_core
     def __init__(self):
         self.parameters = self.read_inputs()
 
         self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)  # Multiply the experimental data by the thickness scaling factor
 
 
+    @single_core
     def read_inputs(self):
         parameters = structopt.parameters.fitnesses.FEMSIM
         data = open(parameters.vk_data_filename).readlines()
@@ -28,21 +32,25 @@ class FEMSIM(object):
         return parameters
 
 
+    @single_core
     def update_parameters(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self.parameters, key, value)
 
 
+    @single_core
     def get_command(self, individual):
         self.setup_individual_evaluation(individual)
         return '$FEMSIM_COMMAND {base} {paramfile}'.format(base=self.base, paramfile=self.paramfilename)
 
 
+    @single_core
     def get_chisq(self, individual):
         vk = self.get_vk_data()
         return self.chi2(vk)
 
 
+    @single_core
     def setup_individual_evaluation(self, individual):
 
         logger = logging.getLogger('by-rank')
@@ -65,6 +73,7 @@ class FEMSIM(object):
         self.base = base
 
 
+    @single_core
     def write_paramfile(self, individual):
         # Write structure file to disk so that the fortran femsim can read it in
         #ase.io.write('structure_{i}.xyz'.format(i=individual.index), individual)
@@ -80,6 +89,7 @@ class FEMSIM(object):
             f.write('{}\n'.format(self.parameters.thickness_scaling_factor))
 
 
+    @single_core
     def get_vk_data(self):
         data = open(os.path.join(self.folder, 'vk_initial_{base}.txt'.format(base=self.base))).readlines()
         data = [line.strip().split()[:2] for line in data]
@@ -88,6 +98,7 @@ class FEMSIM(object):
         return vk
 
 
+    @single_core
     def chi2(self, vk):
         return np.sum(((self.vk - vk) / self.vk)**2) / len(self.k)
 
