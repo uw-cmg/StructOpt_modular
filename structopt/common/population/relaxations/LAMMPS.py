@@ -1,10 +1,16 @@
 import subprocess
 
 import structopt
+from structopt.tools import root, single_core, parallel
 
 
 @parallel
 def relax(population):
+    """Relax the entire population using LAMMPS.
+
+    Args:
+        population (Population): the population to relax
+    """
     to_relax = [individual for individual in population if individual._modified]
     ncores = structopt.parameters.globals.ncores
     # TODO MPI send the individuals out to their respective cores

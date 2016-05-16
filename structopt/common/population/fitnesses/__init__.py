@@ -17,9 +17,15 @@ class Fitnesses(object):
         self.modules = [globals()[module] for module in self.parameters.modules]
 
 
-    @single_core
+    @parallel
     def fitness(self, population):
+        """Perform the fitness calculations on an entire population.
+
+        Args:
+            population (Population): the population to evaluate
+        """
         fitnesses = np.zeros((len(population),), dtype=np.float)
+        # Run each fitness module on the population
         for i, module in enumerate(self.modules):
             fits = module.fitness(population)
 
@@ -27,12 +33,9 @@ class Fitnesses(object):
             for j, individual in enumerate(population):
                 setattr(individual, self.parameters.modules[i], fits[j])
 
+            # Calculate the full objective function with weights
             fits = np.multiply(fits, self.parameters.weights[i])
             fitnesses = np.add(fitnesses, fits)
-
-        # Set each individual to unmodified so that the fitnesses don't need to be recalculated
-        for individual in population:
-            individual._modifed = False
 
         return fitnesses
 

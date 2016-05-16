@@ -1,5 +1,5 @@
 structopt
-================
+#########
 
 .. automodule:: structopt
     :members:

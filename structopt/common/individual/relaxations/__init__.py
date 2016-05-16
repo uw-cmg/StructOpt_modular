@@ -19,6 +19,11 @@ class Relaxations(object):
 
     @parallel
     def relax(self, individual):
+        """Relax an individual.
+
+        Args:
+            individual (Individual): the individual to relax
+        """
         for module in self.modules:
             module.relax(individual)
         return None

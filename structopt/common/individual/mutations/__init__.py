@@ -38,6 +38,7 @@ class Mutations(object):
 
     @single_core
     def mutate(self, individual):
+        print("Performing mutation {}".format(self.selected_mutation))
         if self.selected_mutation is None:
             return individual
         else:

@@ -7,6 +7,11 @@ from structopt.tools import root, single_core, parallel
 
 @parallel
 def fitness(population):
+    """Perform the LAMMPS fitness calculation on an entire population.
+
+    Args:
+        population (Population): the population to evaluate
+    """
     to_fit = [individual for individual in population if individual._modified]
 
     if structopt.parameters.globals.USE_MPI4PY:

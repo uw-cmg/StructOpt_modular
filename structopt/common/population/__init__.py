@@ -47,6 +47,7 @@ class Population(list):
 
     @parallel
     def crossover(self):
+        """Perform crossovers on the population."""
         children = self.crossovers.crossover(self)
         self.extend(children)
         self.crossovers.post_processing()
@@ -54,27 +55,43 @@ class Population(list):
 
     @root
     def mutate(self):
+        """Relax the entire population."""
         self.mutations.mutate(self)
         self.mutations.post_processing()
 
 
     @parallel
     def fitness(self):
+        """Perform the fitness evaluations on the entire population."""
         fits = self.fitnesses.fitness(self)
+
+        # Store the individuals total fitness for each individual
         for i, individual in enumerate(self):
             individual._fitness = fits[i]
+
+        # Set each individual to unmodified so that the fitnesses wont't be recalculated
+        for individual in self:
+            individual._modifed = False
+
         self.fitnesses.post_processing()
         return fits
 
 
     @parallel
     def relax(self):
+        """Relax the entire population. """
         self.relaxations.relax(self)
         self.relaxations.post_processing()
 
 
     @root
     def kill(self, fits):
+        """Remove individuals from the population whose fingerprints are very similar.
+        The goal of this selection-like scheme is to encourage diversity in the population.
+
+        Args:
+            fits (list<float>): the fitnesses of each individual in the population
+        """
         self.predators.select_predator()
         self.predators.kill(self, fits)
         self.predators.post_processing()
@@ -82,6 +99,11 @@ class Population(list):
 
     @root
     def select(self, fits):
+        """Select the individuals in the population to keep for the next generation.
+
+        Args:
+            fits (list<float>): the fitnesses of each individual in the population
+        """
         self.selections.select_selection()
         self.selections.select(self, fits, nkeep=self.total_number_of_individuals)
         self.selections.post_processing()

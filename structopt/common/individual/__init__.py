@@ -38,6 +38,11 @@ class Individual(ase.Atoms):
 
     @parallel
     def mutate(self):
+        """Mutate an individual.
+
+        Args:
+            individual (Individual): the individual to mutate
+        """
         self.mutations.select_mutation()
         self.mutations.mutate(self)
         self.mutations.post_processing()
@@ -45,6 +50,11 @@ class Individual(ase.Atoms):
 
     @parallel
     def relax(self):
+        """Relax an individual.
+
+        Args:
+            individual (Individual): the individual to relax
+        """
         self.relaxations.relax(self)
         self._modified = True
         self.relaxations.post_processing()
@@ -52,6 +62,11 @@ class Individual(ase.Atoms):
 
     @parallel
     def fitness(self):
+        """Perform the fitness calculations on an individual.
+
+        Args:
+            individual (Individual): the individual to evaluate
+        """
         fits = self.fitnesses.fitness(self)
         self.fitnesses.post_processing()
         return fits
@@ -59,6 +74,11 @@ class Individual(ase.Atoms):
 
     @parallel
     def fingerprint(self):
+        """Fingerprint on an individual.
+
+        Args:
+            individual (Individual): the individual to fingerprint
+        """
         self.fingerprinters.fingerprint(self)
         self.fingerprinters.post_processing()
 

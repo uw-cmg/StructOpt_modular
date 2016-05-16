@@ -8,6 +8,11 @@ from structopt.tools import root, single_core, parallel
 
 @root
 def fitness(population):
+    """Perform the FEMSIM fitness calculation on an entire population.
+
+    Args:
+        population (Population): the population to evaluate
+    """
     to_fit = [individual for individual in population if individual._modified]
     cores_per_individual = structopt.parameters.globals.ncores // len(to_fit)
     # Round cores_per_individual down to nearest power of 2

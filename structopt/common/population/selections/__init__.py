@@ -5,6 +5,7 @@ from bisect import bisect
 
 import structopt
 from .cost import cost
+from structopt.tools import root, single_core, parallel
 
 
 class Selections(object):
