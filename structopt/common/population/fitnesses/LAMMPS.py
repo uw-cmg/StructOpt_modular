@@ -22,7 +22,7 @@ def fitness(population):
 
     # TODO MPI send the individuals out to their respective cores
     for i, individual in enumerate(to_fit):
-        if structopt.parameters.globals.USE_MPI4PY and structopt.parameters.globals.rank % structopt.parameters.globals.ncores == 0:
+        if structopt.parameters.globals.USE_MPI4PY and i % structopt.parameters.globals.ncores == structopt.parameters.globals.rank:
             energy = individual.fitnesses.LAMMPS.get_energy(individual)
             individual.LAMMPS = energy
             logger.info('Individual {0} for LAMPPS evaluation had energy {1}'.format(i, energy))

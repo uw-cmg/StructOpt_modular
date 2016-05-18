@@ -4,7 +4,7 @@ from itertools import accumulate
 from bisect import bisect
 
 import structopt
-from .cost import cost
+from .random_selection import random_selection
 from structopt.tools import root, single_core, parallel
 
 
@@ -29,8 +29,10 @@ class Selections(object):
 
 
     @single_core
-    def select(self, population, fits, nkeep):
-        return self.selected_selection(population, fits, nkeep)
+    def select(self, population, fits):
+        pairs = self.selected_selection(population=population, fits=fits, prob=self.parameters.crossover_probability)
+        self.post_processing()
+        return pairs
 
 
     @single_core
@@ -38,7 +40,7 @@ class Selections(object):
         pass
 
     @staticmethod
-    @functools.wraps(cost)
-    def cost(population, fits, nkeep):
-        return cost(population, fits, nkeep)
+    @functools.wraps(random_selection)
+    def random_selection(population, fits, prob):
+        return random_selection(population, fits, prob=prob)
 

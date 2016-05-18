@@ -5,6 +5,7 @@ from bisect import bisect
 
 import structopt
 from structopt.tools import root, single_core, parallel
+from .rotate import rotate
 
 
 class Crossovers(object):
@@ -45,4 +46,9 @@ class Crossovers(object):
     @single_core
     def post_processing(self):
         pass
+
+    @staticmethod
+    @functools.wraps(rotate)
+    def rotate(individual1, individual2):
+        return rotate(individual1, individual2)
 

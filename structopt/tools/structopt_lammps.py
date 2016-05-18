@@ -44,7 +44,6 @@ def run(parameters, individual, relax):
     #individual.buli = buli
     #individual.energy = energy
     individual.LAMMPS = energy
-    #print("SET {}.LAMMPS to {}".format(individual, energy))  # TODO
     #individual.pressure = pressure
     #individual.volume = volume
 

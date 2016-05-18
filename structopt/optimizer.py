@@ -1,3 +1,4 @@
+import sys
 import random
 import logging
 
@@ -32,6 +33,7 @@ class Optimizer(object):
     def run(self):
         while not self.converged:
             self.step()
+        print("FINISHED!!!")
 
     def step(self):
         if self.generation > 0:
@@ -43,6 +45,7 @@ class Optimizer(object):
         self.population.select(fits)
         self.check_convergence()
         self.generation += 1
+        sys.stdout.flush()
 
     def check_convergence(self):
         if self.generation > 10:

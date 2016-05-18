@@ -13,8 +13,18 @@ def relax(population):
     """
     to_relax = [individual for individual in population if individual._modified]
     ncores = structopt.parameters.globals.ncores
+    rank = structopt.parameters.globals.rank
+
+    individuals_per_core = {r: [] for r in range(ncores)}
     for i, individual in enumerate(to_relax):
-        if structopt.parameters.globals.rank % structopt.parameters.globals.ncores == 0:
-            individual.relaxations.LAMMPS.relax(individual)
-    # TODO MPI collect
+        individuals_per_core[i % ncores].append(individual.index)
+
+    for index in individuals_per_core[rank]:
+        individual = population[index]
+        assert individual.index == index
+        #individual.relaxations.HardSphereCutoff.relax()
+        individual.relaxations.hard_sphere_cutoff.relax(individual)
+
+    from mpi4py import MPI
+    MPI.COMM_WORLD.allgather(population)
 

@@ -3,7 +3,7 @@ import random
 import numpy
 from ase import Atoms
 
-from structopt.commond.individual import Individual
+from structopt.common.individual import Individual
 from structopt.tools import root, single_core, parallel
 
 
@@ -43,7 +43,7 @@ def rotate(individual1, individual2, conserve_composition=True):
         rang = random.random() * 90
         ind1c.rotate(rax, a=rang, center='COM', rotate_cell=False)
         # Search for atoms in individual 1 that are above the xy plane
-        above_xy_plane1 = Atoms(cell=ind1[0].get_cell(), pbc=ind1[0].get_pbc())
+        above_xy_plane1 = Atoms(cell=individual1.get_cell(), pbc=individual1.get_pbc())
         indices1 = []
         for atom in ind1c:
             if atom.z >= 0:
@@ -57,7 +57,7 @@ def rotate(individual1, individual2, conserve_composition=True):
     ind2c.rotate(rax, a=rang, center='COM', rotate_cell=False)
 
     # Generate `above_xy_plane2`, with the same concentration as `above_xy_plane1` if needed
-    above_xy_plane2 = Atoms(cell=ind2[0].get_cell(), pbc=ind2[0].get_pbc())
+    above_xy_plane2 = Atoms(cell=individual2.get_cell(), pbc=individual2.get_pbc())
     indices2 = []
     dellist = []
     if conserve_composition:
@@ -104,11 +104,11 @@ def rotate(individual1, individual2, conserve_composition=True):
 
     below_xy_plane1 = Atoms()
     below_xy_plane2 = Atoms()
-    below_xy_plane2 = Atoms(cell=ind2[0].get_cell(), pbc=ind2[0].get_pbc())
+    below_xy_plane2 = Atoms(cell=individual2.get_cell(), pbc=individual2.get_pbc())
     for atom in ind2c:
         if atom.index not in indices2:
             below_xy_plane2.append(atom)
-    below_xy_plane1 = Atoms(cell=ind1[0].get_cell(), pbc=ind1[0].get_pbc())
+    below_xy_plane1 = Atoms(cell=individual1.get_cell(), pbc=individual1.get_pbc())
     for atom in ind1c:
         if atom.index not in indices1:
             below_xy_plane1.append(atom)
@@ -118,14 +118,6 @@ def rotate(individual1, individual2, conserve_composition=True):
     child1.extend(below_xy_plane1)
     child2 = above_xy_plane1.copy()
     child2.extend(below_xy_plane2)
-
-    # DEBUG: Check structure of atoms exchanged
-    for sym, c, m, u in ind1:
-        nc = len([atm for atm in child1 if atm.symbol == sym])
-        logger.debug('CX ROTCT: Individual 1 contains '+repr(nc)+' '+repr(sym)+' atoms\n')
-    for sym, c, m, u in ind2:
-        nc = len([atm for atm in child2 if atm.symbol == sym])
-        logger.debug('CX ROTCT: Individual 2 contains '+repr(nc)+' '+repr(sym)+' atoms\n')
 
     # Need to have at least one atom of each specie in atomlist to prevent LAMMPS from erroring
     if not conserve_composition:
@@ -148,5 +140,8 @@ def rotate(individual1, individual2, conserve_composition=True):
     child1.translate(com1)
     child2.translate(com2)
 
-    return Individual().extend(child1), Individual().extend(child2)
+    Structure = individual1.__class__
+    child1 = Structure().extend(child1)
+    child2 = Structure().extend(child2)
+    return child1, child2
 

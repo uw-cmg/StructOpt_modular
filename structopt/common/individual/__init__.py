@@ -14,18 +14,34 @@ class Individual(ase.Atoms):
 
     @single_core
     def __init__(self, index=None, **kwargs):
+        """Additional class parameters that extend ASE.Atoms:
+            index
+            _kwargs
+            _modified
+
+            fitnesses
+            relaxations
+            mutations
+
+        Methods:
+            fitness
+            relax
+            mutate
+            copy
+            get_nearest_atom_indices
+            get_atom_indices_within_distance_of_atom
+        """
         self._kwargs = kwargs  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
         self._modified = True
+        self._fitness = None
 
         cls_name = self.__class__.__name__.lower()
         # Load in the appropriate functionality
-        fingerprinters = import_module('structopt.{}.individual.fingerprinters'.format(cls_name))
         fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
         mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
         relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
 
-        self.fingerprinters = fingerprinters.Fingerprinters()
         self.fitnesses = fitnesses.Fitnesses()
         self.mutations = mutations.Mutations()
         self.relaxations = relaxations.Relaxations()
@@ -34,6 +50,20 @@ class Individual(ase.Atoms):
         super().__init__()
         generators = import_module('structopt.{}.individual.generators'.format(cls_name))
         generators.generate(self, **kwargs)
+
+
+    def __getstate__(self):
+        # Copy the object's state from self.__dict__ which contains
+        # all our instance attributes. Always use the dict.copy()
+        # method to avoid modifying the original state.
+        state = self.__dict__.copy()
+        # Remove the unpicklable entries.
+        del state['fitnesses']
+        del state['relaxations']
+        del state['mutations']
+        del state['_calc']
+        del state['_kwargs']
+        return state
 
 
     @parallel
@@ -70,17 +100,6 @@ class Individual(ase.Atoms):
         fits = self.fitnesses.fitness(self)
         self.fitnesses.post_processing()
         return fits
-
-
-    @parallel
-    def fingerprint(self):
-        """Fingerprint on an individual.
-
-        Args:
-            individual (Individual): the individual to fingerprint
-        """
-        self.fingerprinters.fingerprint(self)
-        self.fingerprinters.post_processing()
 
 
     @single_core

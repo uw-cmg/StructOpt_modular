@@ -3,7 +3,8 @@ from ase.calculators.neighborlist import NeighborList
 from structopt.tools import root, single_core, parallel
 
 
-class HardSphereCutoff(object):
+#class HardSphereCutoff(object):
+class hard_sphere_cutoff(object):
     """A relaxation module to ensure atoms in an individual are not too close together.
     This is often a preliminary relaxation before LAMMPS for VASP to ensure the models do not explode.
     """
@@ -14,7 +15,7 @@ class HardSphereCutoff(object):
 
 
     @single_core
-    def relax(individual):
+    def relax(self, individual):
         """Relaxes the individual using a hard-sphere cutoff method.
         Args:
             individual (Individual):  the individual to relax
@@ -33,4 +34,5 @@ class HardSphereCutoff(object):
                         individual.set_distance(atom.index, neigh, self.cutoff, fix=0.5)
                         modified = True
             nl.update(individual)
+            individual.wrap()
 

@@ -23,6 +23,7 @@ from __future__ import print_function
 
 
 import os
+import time
 import shutil
 import shlex
 from subprocess import Popen, PIPE
@@ -466,14 +467,25 @@ class LAMMPS:
         """Method which reads a LAMMPS dump file."""
         if (lammps_trj == None):
             lammps_trj = self.label + '.lammpstrj'
+        #import structopt
+        #print("LAMMPS_TRJ", lammps_trj, structopt.parameters.globals.rank)  #TODO DELTE this and above import line
 
         f = paropen(lammps_trj, 'r')
         nlines = 0
         while True:
             line = f.readline()
 
+            attempts = 1
             if not line:
-                break
+                if nlines == 0:
+                    f.close()
+                    time.sleep(1)
+                    f = paropen(lammps_trj, 'r')
+                    attempts += 1
+                    if attempts > 3:
+                        break
+                else:
+                    break
             nlines += 1
 
             #TODO: extend to proper dealing with multiple steps in one trajectory file

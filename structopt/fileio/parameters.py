@@ -41,6 +41,8 @@ def set_default(parameters):
     if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
 
+    parameters.selections.crossover_probability = sum(parameters.crossovers.options.values())
+
     return parameters
 
 """

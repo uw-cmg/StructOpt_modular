@@ -1,3 +1,4 @@
+import logging
 import functools
 import importlib
 
@@ -23,8 +24,11 @@ class Relaxations(object):
         Args:
             population (Population): the population to relax
         """
+        logger = logging.getLogger("default")
+        to_relax = [individual for individual in population if individual._modified]
+        logger.info("Relaxing individuals: {}".format(to_relax))
         for i, module in enumerate(self.modules):
-            population = module.relax(population)
+            module.relax(population)
 
         return None
 

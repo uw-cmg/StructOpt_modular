@@ -5,6 +5,8 @@ from bisect import bisect
 
 import structopt
 from structopt.tools import root, single_core, parallel
+from .best import best
+from .roulette import roulette
 
 
 class Predators(object):
@@ -29,11 +31,21 @@ class Predators(object):
 
 
     @single_core
-    def kill(self, population, fits):
-        pass # TODO
+    def kill(self, population, fits, nkeep):
+        self.selected_predator(population=population, fits=fits, nkeep=nkeep)
 
 
     @single_core
     def post_processing(self):
         pass
+
+    @staticmethod
+    @functools.wraps(best)
+    def best(population, fits, nkeep):
+        return best(population, fits, nkeep)
+
+    @staticmethod
+    @functools.wraps(roulette)
+    def roulette(population, fits, nkeep):
+        return roulette(population, fits, nkeep)
 
