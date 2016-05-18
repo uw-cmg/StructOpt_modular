@@ -21,7 +21,7 @@ rm crystal/population/*.pyc
 rm defect/*.pyc
 rm defect/individual/*.pyc
 rm defect/population/*.pyc
-rm fileio/*.pyc
+rm io/*.pyc
 rm postprocessing/*.pyc
 rm surface/*.pyc
 rm surface/individual/*.pyc
@@ -51,7 +51,7 @@ rm -rf crystal/population/__pycache__
 rm -rf defect/__pycache__
 rm -rf defect/individual/__pycache__
 rm -rf defect/population/__pycache__
-rm -rf fileio/__pycache__
+rm -rf io/__pycache__
 rm -rf postprocessing/__pycache__
 rm -rf surface/__pycache__
 rm -rf surface/individual/__pycache__
