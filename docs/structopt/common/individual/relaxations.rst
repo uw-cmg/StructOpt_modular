@@ -1,5 +1,5 @@
 structopt.common.individual.relaxations
-#####################################
+#######################################
 
 .. autoclass:: structopt.common.individual.relaxations.Relaxations
     :members:
