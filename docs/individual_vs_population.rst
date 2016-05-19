@@ -1,6 +1,0 @@
-Individual
-==========
-
-Population
-==========
-

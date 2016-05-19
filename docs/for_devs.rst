@@ -1,3 +1,0 @@
-StructOpt Developer Documentation
-=================================
-

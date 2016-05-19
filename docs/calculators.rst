@@ -1,0 +1,11 @@
+Calculators
+===========
+
+.. toctree::
+    :maxdepth: 1
+
+    lammps
+    vasp
+    stem
+    femsim
+

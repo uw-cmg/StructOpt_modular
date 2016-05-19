@@ -15,18 +15,17 @@ Overview
 .. toctree::
     :maxdepth: 1
 
-    for_users
-    for_devs
+    users
+    developers
 
 
 Calculators
 ===========
 
 .. toctree::
-    lammps
-    vasp
-    stem
-    femsim
+    :maxdepth: 2
+
+    calculators
 
 Examples
 ========
@@ -34,8 +33,7 @@ Examples
 .. toctree::
     :maxdepth: 1
 
-    example_input_file
-    example
+    examples
 
 
 For Developers
@@ -48,7 +46,7 @@ Architecture Details
     :maxdepth: 1
 
     workflow
-    individual_vs_population
+    core_concepts
 
 Classes and Functions
 ===========
