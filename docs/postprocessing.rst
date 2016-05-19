@@ -1,7 +1,7 @@
-structopt.common.Optimizer
-##########################
+structopt.postprocessing
+########################
 
-.. autoclass:: structopt.common.Optimizer
+.. automodule:: structopt.postprocessing
     :members:
     :undoc-members:
     :inherited-members:

@@ -1,7 +1,7 @@
-structopt.common.Optimizer
-##########################
+structopt.io
+############
 
-.. autoclass:: structopt.common.Optimizer
+.. automodule:: structopt.io
     :members:
     :undoc-members:
     :inherited-members:
