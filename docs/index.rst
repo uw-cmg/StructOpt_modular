@@ -67,3 +67,18 @@ Index and Search
 * :ref:`modindex`
 * :ref:`search`
 
+
+Test
+####
+
+.. automodule:: structopt.common.individual
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :imported-members:
+    :show-inheritance:
+
+Test2
+#####
+
+Introduction </structopt/common/individual>
