@@ -56,6 +56,8 @@ Classes and Functions
 
     structopt/common/population/index
     structopt/common/individual/index
+    structopt/common/population
+    structopt/common/individual
    
 
 Index and Search
