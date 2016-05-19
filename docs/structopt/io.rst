@@ -1,9 +1,11 @@
 structopt.io
 ############
 
-.. automodule:: structopt.io
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
+.. autofunction:: structopt.io.parameters
+
+.. autofunction:: structopt.io.logger_utils
+
+.. autofunction:: structopt.io.read_xyz
+
+.. autofunction:: structopt.io.write_xyz
 
