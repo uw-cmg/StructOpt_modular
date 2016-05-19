@@ -1,15 +1,15 @@
 Parallelism
-===========
+###########
 
 mpi4py
-######
+======
 
 Main idea:  One structure per core, or multiple structures per core that execute serially in a for-loop.
 
 `mpi4py <https://mpi4py.scipy.org/docs/usrman/tutorial.html>`_ allows MPI commands to be run within python. Some fitness and relaxations modules may want to parallelize along the lines of one structure per core. mpi4py is used for this functionality.
 
 Cases
-=====
+-----
 
 1) ``ncores == len(population)``
 
@@ -18,7 +18,7 @@ Cases
 3) ``ncores > len(population)`` (unused cores)
 
 MPMD
-####
+====
 
 Main idea:  Multiple cores per structure.
 
