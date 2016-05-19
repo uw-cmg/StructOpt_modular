@@ -9,8 +9,6 @@ from .relaxations import Relaxations
 from .mutations import Mutations
 from structopt.tools import root, single_core, parallel
 
-from mpi4py import MPI
-
 
 class Population(list):
     """A list-like class that contains the Individuals and the operations to be run on them."""
@@ -90,6 +88,7 @@ class Population(list):
     @parallel
     def fitness(self):
         """Perform the fitness evaluations on the entire population."""
+
         fits = self.fitnesses.fitness(self)
 
         # Store the individuals total fitness for each individual
@@ -102,6 +101,7 @@ class Population(list):
 
         self.fitnesses.post_processing()
 
+        from mpi4py import MPI
         fits = MPI.COMM_WORLD.bcast(fits, root=0)
         return fits
 

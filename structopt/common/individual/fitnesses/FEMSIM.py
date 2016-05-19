@@ -4,7 +4,7 @@ import numpy as np
 import shutil
 
 import structopt
-from structopt.io import write_xyz
+from structopt.fileio import write_xyz
 from structopt.tools import root, single_core, parallel
 
 

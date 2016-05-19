@@ -1,6 +1,6 @@
-import structopt.io
+import structopt.fileio
 
 
 def read_xyz(filename):
-    return structopt.io.read_xyz(filename)
+    return structopt.fileio.read_xyz(filename)
 

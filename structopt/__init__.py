@@ -2,7 +2,7 @@ import time
 import logging
 import os
 
-from . import io as structopt_io
+from . import fileio as structopt_io
 from .optimizer import Optimizer
 from . import common
 
