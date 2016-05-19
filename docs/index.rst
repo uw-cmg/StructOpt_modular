@@ -47,14 +47,15 @@ Architecture Details
 
     workflow
     core_concepts
+    parallelism
 
 Classes and Functions
 =====================
 .. toctree::
     :maxdepth: 2
 
-    structopt/common/population
-    structopt/common/individual
+    structopt/common/population/index
+    structopt/common/individual/index
    
 
 Index and Search
