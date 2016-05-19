@@ -1,8 +1,8 @@
 Algorithm Workflow
-==================
+##################
 
 Interaction Between Crossovers/Mutations and Relaxation/Fitness Evalutions
-##########################################################################
+==========================================================================
 
 Crossovers and mutations modify individuals. During relaxation and fitness evaluations, only individuals that have been modified by mutations and crossovers are computed. This avoids recomputing relaxations and fitnesses for individuals who were unchanged during the generation's crossover/mutation/selection scheme.
 
@@ -23,4 +23,10 @@ What does it mean to have the chance of crossover be 100%? Is that all individua
 
 Should we put a cap on the number of children that can be generated?
 
+
+Crossovers and Selection Schemes
+================================
+
+Predators and Selection Schemes
+===============================
 

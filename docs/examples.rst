@@ -1,6 +1,6 @@
-An Example Input File
-=====================
+Example Input File
+==================
 
-An Example
-==========
+Example 1: ...
+==============
 
