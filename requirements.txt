@@ -7,4 +7,4 @@ mpi4py
 ase
 
 # github
-https://github.com/jjmaldonis/commentjson.git@master
+#https://github.com/jjmaldonis/commentjson.git@master
