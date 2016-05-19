@@ -9,7 +9,7 @@ install_requires = [
     "ase",
     "numpy",
     "scipy",
-    "mpi4py"
+    #"mpi4py"
 ]
 
 setup(
