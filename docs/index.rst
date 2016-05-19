@@ -55,9 +55,20 @@ Classes and Functions
 .. toctree::
     :maxdepth: 1
 
-    structopt/index
+    structopt/common/index
     structopt/common/population/index
+    structopt/common/population/crossovers
+    structopt/common/population/fitnesses
+    structopt/common/population/relaxations
+    structopt/common/population/mutations
+    structopt/common/population/predators
+    structopt/common/population/selections
     structopt/common/individual/index
+    structopt/common/individual/mutations
+    structopt/common/individual/fitnesses
+    structopt/common/individual/relaxations
+    structopt/common/individual/generators
+    structopt/common/individual/fingerprinters
    
 
 Index and Search

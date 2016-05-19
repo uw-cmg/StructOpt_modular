@@ -23,7 +23,7 @@ def root(method=None, broadcast=True):
             from mpi4py import MPI
             data = MPI.COMM_WORLD.bcast(data, root=0)
         return data
-    wrapper.__doc__ += "\nDesigned to run on the root node only.\n"
+    wrapper.__doc__ += "\n\n(@root) Designed to run on the root node only.\n"
     return wrapper
 
 
@@ -34,7 +34,7 @@ def parallel(method):
     @functools.wraps(method)
     def wrapper(*args, **kwargs):
         return method(*args, **kwargs)
-    wrapper.__doc__ += ("\nDesigned to run code that runs differently on different cores.\n"
+    wrapper.__doc__ += ("\n\n(@parallel) Designed to run code that runs differently on different cores.\n"
                        "The MPI functionality should be implemented inside these functions.\n")
     return wrapper
 
