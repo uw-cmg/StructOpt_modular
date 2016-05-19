@@ -52,8 +52,9 @@ Architecture Details
 Classes and Functions
 =====================
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
+    :ref:`modindex`
     structopt/common/population/index
     structopt/common/individual/index
     structopt/common/population
@@ -67,18 +68,3 @@ Index and Search
 * :ref:`modindex`
 * :ref:`search`
 
-
-Test
-####
-
-.. automodule:: structopt.common.individual
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :imported-members:
-    :show-inheritance:
-
-Test2
-#####
-
-Introduction </structopt/common/individual>
