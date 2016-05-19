@@ -64,17 +64,17 @@ def allgather(stuff, stuffs_per_core):
         type(stuff): the correct stuff is returned on each core
 
     Example:
-        This is going to take the values
+        This is going to take the values::
 
             values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
         and convert each of them to strings.
 
-        In this example there are 5 cores, so stuffs_per_core looks like
+        In this example there are 5 cores, so ``stuffs_per_core`` looks like::
 
             stuffs_per_core = {0: [0, 5], 1: [1, 6], 2: [2, 7], 3: [3, 8], 4: [4, 9]}
 
-        Now for the code that precedes `allgather()` and then calls `allgather()`:
+        Now for the code that precedes ``allgather()`` and then calls ``allgather()``::
 
             for i in stuffs_per_core[rank]:
                 values[i] = str(inds[i])
