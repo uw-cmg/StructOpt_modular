@@ -13,7 +13,7 @@ Overview
 ========
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     users
     developers
@@ -31,7 +31,7 @@ Examples
 ========
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     examples
 
@@ -43,18 +43,18 @@ Architecture Details
 ^^^^^^^^^^^^^^^^^^^^
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     workflow
     core_concepts
 
 Classes and Functions
-===========
+=====================
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
-    common/population/index
-    common/individual/index
+    structopt/common/population
+    structopt/common/individual
    
 
 Index and Search

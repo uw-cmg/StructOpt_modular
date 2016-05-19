@@ -1,7 +1,7 @@
-structopt.common.individual
+structopt.common.population
 ###########################
 
-.. automodule:: structopt.common.individual
+.. automodule:: structopt.common.population
     :members:
     :undoc-members:
     :inherited-members:
