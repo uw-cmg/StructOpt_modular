@@ -1,7 +1,7 @@
 structopt.common.individual.fitnesses
 #####################################
 
-.. autoclass:: structopt.common.individual.fitnesses.Fitness
+.. autoclass:: structopt.common.individual.fitnesses.Fitnesses
     :members:
     :undoc-members:
     :inherited-members:

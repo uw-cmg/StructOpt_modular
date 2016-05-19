@@ -8,14 +8,6 @@ structopt.common.population.fitnesses
     :show-inheritance:
 
 .. autofunction:: structopt.common.population.fitnesses.LAMMPS.fitness
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
 
 .. autofunction:: structopt.common.population.fitnesses.FEMSIM.fitness
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
 

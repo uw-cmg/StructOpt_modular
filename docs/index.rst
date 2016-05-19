@@ -55,7 +55,7 @@ Classes and Functions
 .. toctree::
     :maxdepth: 1
 
-    structopt/common/index
+    structopt/index
     structopt/common/population/index
     structopt/common/population/crossovers
     structopt/common/population/fitnesses
