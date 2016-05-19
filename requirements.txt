@@ -1,2 +1,10 @@
+# conda
+numpy
+scipy
+mpi4py
+
 # pip
-commentjson
+ase
+
+# github
+https://github.com/jjmaldonis/commentjson.git@master

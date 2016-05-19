@@ -42,7 +42,8 @@
     "relaxations":
     {
         "modules": [
-            "LAMMPS"
+            "LAMMPS",
+            "hard_sphere_cutoff"
         ],
         "LAMMPS": {
             "keep_files": true, 
@@ -56,7 +57,7 @@
     },
     "mutations": {
         "options": {
-            "move_atoms": 0.10,
+            "move_atoms": 0.70,
             "swap_positions": 0.05,
             "swap_species": 0.10,
             "rotate_atoms": 0.05,
@@ -69,13 +70,13 @@
     },
 
     "crossovers": {
-        "options": {}
+        "options": {"rotate": 0.0}
     },
     "predators": {
-        "options": {}
+        "options": {"best": 1.0}
     },
     "selections": {
-        "options": {"cost": 1.0}
+        "options": {"random_selection": 1.0}
     },
 
     "fileio": {},
