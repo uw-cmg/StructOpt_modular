@@ -201,3 +201,8 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+
+
+# http://stackoverflow.com/questions/12206334/sphinx-autosummary-toctree-contains-reference-to-nonexisting-document-warnings
+numpydoc_show_class_members = False
