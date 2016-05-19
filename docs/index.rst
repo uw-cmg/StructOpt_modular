@@ -51,10 +51,13 @@ Architecture Details
 
 Classes and Functions
 =====================
+    :ref:`modindex`
+
 .. toctree::
     :maxdepth: 1
 
-    :ref:`modindex`
+    structopt
+    structopt/index
     structopt/common/population/index
     structopt/common/individual/index
     structopt/common/population
@@ -67,4 +70,5 @@ Index and Search
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+* :ref:`glossary`
 
