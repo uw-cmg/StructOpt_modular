@@ -40,7 +40,7 @@ For Developers
 ##############
 
 Architecture Details
-^^^^^^^^^^^^^^^^^^^^
+====================
 
 .. toctree::
     :maxdepth: 2

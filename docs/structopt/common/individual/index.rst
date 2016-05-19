@@ -1,10 +1,9 @@
-structopt.common.individual
-###########################
+structopt.common.individual.Individual
+######################################
 
-.. automodule:: structopt.common.individual
+.. autoclass:: structopt.common.individual.Individual
     :members:
     :undoc-members:
     :inherited-members:
-    :imported-members:
     :show-inheritance:
 

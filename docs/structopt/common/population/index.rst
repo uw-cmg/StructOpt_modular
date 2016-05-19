@@ -1,10 +1,9 @@
-structopt.common.population
-###########################
+structopt.common.population.Population
+######################################
 
-.. automodule:: structopt.common.population
+.. autoclass:: structopt.common.population.Population
     :members:
     :undoc-members:
     :inherited-members:
-    :imported-members:
     :show-inheritance:
 

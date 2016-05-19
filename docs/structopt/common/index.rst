@@ -1,10 +1,9 @@
-structopt.common
-################
+structopt.common.Optimizer
+##########################
 
-.. automodule:: structopt.common
+.. autoclass:: structopt.common.Optimizer
     :members:
     :undoc-members:
     :inherited-members:
-    :imported-members:
     :show-inheritance:
 
