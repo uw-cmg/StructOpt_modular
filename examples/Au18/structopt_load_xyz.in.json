@@ -1,7 +1,7 @@
 {
     "globals":
     {
-        "USE_MPI4PY": true
+        "USE_MPI4PY": false
     },
     "generators": {
         "structure_type": "cluster",
@@ -30,6 +30,15 @@
             1.0,
             1.0
         ],
+        "LAMMPS": {
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        },
         "FEMSIM": {
             "parameter_filename": "$HOME/femsim-hrmc/parameters/femsim.in",
             "vk_data_filename": "$HOME/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
@@ -41,21 +50,13 @@
             "npsi": 40,
             "ntheta": 20,
             "thickness_scaling_factor": 28.6378
-        },
-        "LAMMPS": {
-            "keep_files": true, 
-            "min_style": "cg\nmin_modify line quadratic", 
-            "minimize": "1e-8 1e-8 5000 10000", 
-            "pair_style": "eam", 
-            "parallel": true, 
-            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
-            "thermo_steps": 1000
         }
     },
     "relaxations":
     {
         "modules": [
-            "LAMMPS"
+            "LAMMPS",
+            "hard_sphere_cutoff"
         ],
         "LAMMPS": {
             "keep_files": true, 
@@ -69,7 +70,7 @@
     },
     "mutations": {
         "options": {
-            "move_atoms": 0.10,
+            "move_atoms": 0.70,
             "swap_positions": 0.05,
             "swap_species": 0.10,
             "rotate_atoms": 0.05,
@@ -82,13 +83,13 @@
     },
 
     "crossovers": {
-        "options": {}
+        "options": {"rotate": 0.0}
     },
     "predators": {
-        "options": {}
+        "options": {"best": 1.0}
     },
     "selections": {
-        "options": {"cost": 1.0}
+        "options": {"random_selection": 1.0}
     },
 
     "fileio": {},

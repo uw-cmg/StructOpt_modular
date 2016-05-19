@@ -41,7 +41,8 @@ class FEMSIM(object):
     @single_core
     def get_command(self, individual):
         self.setup_individual_evaluation(individual)
-        return '$FEMSIM_COMMAND {base} {paramfile}'.format(base=self.base, paramfile=self.paramfilename)
+        femsim_command = os.environ['FEMSIM_COMMAND']
+        return '-wdir {folder} {femsim_command} {base} {paramfile}'.format(folder=self.folder, femsim_command=femsim_command, base=self.base, paramfile=self.paramfilename)
 
 
     @single_core
@@ -58,15 +59,14 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.index))
 
         # Make individual folder and copy files there
-        self.folder = '{filename}-rank0/FEMSIMFiles/Individual{i}'.format(filename=structopt.parameters.globals.output_filename, i=individual.index)
+        self.folder = os.path.abspath('{filename}-rank0/FEMSIMFiles/Individual{i}'.format(filename=structopt.parameters.globals.output_filename, i=individual.index))
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
             shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
 
-        self.paramfilename = '{}.{}'.format(self.parameters.parameter_filename, individual.index)
-        shutil.copy(self.paramfilename, self.folder)  # Not necessary?
-        self.paramfilename = os.path.join(self.folder, self.paramfilename)
+        self.paramfilename = os.path.join(self.folder, "femsim.{}.in".format(individual.index))
+        shutil.copy(self.parameters.parameter_filename, self.paramfilename)
         self.write_paramfile(individual)
 
         base = 'indiv{i}'.format(i=individual.index) # TODO Add generation number

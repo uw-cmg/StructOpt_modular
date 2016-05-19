@@ -57,13 +57,18 @@ class Individual(ase.Atoms):
         # all our instance attributes. Always use the dict.copy()
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
-        # Remove the unpicklable entries.
+        # Remove the unpicklable entries. The unpickled object WILL NOT have these attributes at all!
         del state['fitnesses']
         del state['relaxations']
         del state['mutations']
         del state['_calc']
         del state['_kwargs']
         return state
+
+
+    def __setstate__(self, state):
+        # Restore instance attributes
+        self.__dict__.update(state)
 
 
     @parallel

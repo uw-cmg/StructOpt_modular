@@ -8,15 +8,6 @@ from . import common
 
 def setup(parameter_file):
     parameters = structopt_io.parameters.read(parameter_file)
-    if parameters.globals.USE_MPI4PY:
-        try:
-            from mpi4py import MPI
-        except ImportError:
-            raise ImportError("mpi4py must be installed to use StructOpt.")
-        parameters.globals.rank = MPI.COMM_WORLD.Get_rank()
-        parameters.globals.ncores = MPI.COMM_WORLD.Get_size()
-    else:
-        parameters.globals.rank = 0
 
     # Setup all the loggers
     logging_level = parameters.globals.get("logging_level", "info")

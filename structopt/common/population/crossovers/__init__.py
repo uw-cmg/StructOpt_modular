@@ -30,9 +30,9 @@ class Crossovers(object):
 
 
     @single_core
-    def crossover(self, population):
+    def crossover(self, pairs):
         children = []
-        for individual1, individual2 in zip(population[::2], population[1::2]):
+        for individual1, individual2 in pairs:
             self.select_crossover()
             if self.selected_crossover is not None:
                 child1, child2 = self.selected_crossover(individual1, individual2)

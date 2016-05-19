@@ -33,25 +33,37 @@ class Optimizer(object):
     def run(self):
         while not self.converged:
             self.step()
-        print("FINISHED!!!")
+        if structopt.parameters.globals.rank == 0:
+            print("Finished!")
 
     def step(self):
+        if structopt.parameters.globals.rank == 0:
+            print("Starting generation {}".format(self.generation))
+        sys.stdout.flush()
         if self.generation > 0:
-            self.population.crossover()
+            fits = [individual._fitness for individual in self.population]
+            pairs = self.population.select(fits)
+            self.population.crossover(pairs)
             self.population.mutate()
         self.population.relax()
         fits = self.population.fitness()
         self.population.kill(fits)
-        self.population.select(fits)
         self.check_convergence()
         self.generation += 1
-        sys.stdout.flush()
+
 
     def check_convergence(self):
-        if self.generation > 10:
+        if self.generation >= 5:
             self.converged = True
         else:
             self.converged = False
+    
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        pass
 
 
 if __name__ == "__main__":
@@ -60,5 +72,5 @@ if __name__ == "__main__":
 
     structopt.setup(sys.argv[1])
 
-    optimizer = structopt.Optimizer()
-    optimizer.run()
+    with structopt.Optimizer() as optimizer:
+        optimizer.run()

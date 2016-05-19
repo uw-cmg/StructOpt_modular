@@ -22,9 +22,9 @@ def relax(population):
     for index in individuals_per_core[rank]:
         individual = population[index]
         assert individual.index == index
-        #individual.relaxations.HardSphereCutoff.relax()
+        #individual.relaxations.HardSphereCutoff.relax(individual)
         individual.relaxations.hard_sphere_cutoff.relax(individual)
 
-    from mpi4py import MPI
-    MPI.COMM_WORLD.allgather(population)
+    if structopt.parameters.globals.ncores > 0:
+        population.allgather(individuals_per_core)
 

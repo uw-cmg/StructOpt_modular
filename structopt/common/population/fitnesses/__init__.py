@@ -1,4 +1,5 @@
 import functools
+import logging
 import importlib
 import numpy as np
 
@@ -37,10 +38,12 @@ class Fitnesses(object):
             fits = np.multiply(fits, self.parameters.weights[i])
             fitnesses = np.add(fitnesses, fits)
 
+        self.post_processing(fitnesses)
         return fitnesses
 
 
     @single_core
-    def post_processing(self):
-        pass
+    def post_processing(self, fitnesses):
+        logger = logging.getLogger("output")
+        logger.info("Total fitnesses for the population: {} (rank {})".format(fitnesses, structopt.parameters.globals.rank))
 

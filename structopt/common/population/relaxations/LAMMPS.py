@@ -25,6 +25,6 @@ def relax(population):
         assert individual.index == index
         individual.relaxations.LAMMPS.relax(individual)
 
-    from mpi4py import MPI
-    MPI.COMM_WORLD.allgather(population)
+    if structopt.parameters.globals.ncores > 1:
+        population.allgather(individuals_per_core)
 

@@ -15,8 +15,20 @@ def read(input):
     else:
         raise IOError('Error in input or input file')
 
-    parameters.globals.setdefault('USE_MPI4PY', True)
     parameters.globals.setdefault('output_filename', 'Output')
+
+    parameters.globals.setdefault('USE_MPI4PY', True)
+    if parameters.globals.USE_MPI4PY:
+        try:
+            from mpi4py import MPI
+        except ImportError:
+            raise ImportError("mpi4py must be installed to use StructOpt.")
+        parameters.globals.rank = MPI.COMM_WORLD.Get_rank()
+        parameters.globals.ncores = MPI.COMM_WORLD.Get_size()
+    else:
+        parameters.globals.rank = 0
+        parameters.globals.ncores = 1
+
 
     return parameters
 

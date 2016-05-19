@@ -1,4 +1,5 @@
 import importlib
+import numpy as np
 
 import structopt
 from .crossovers import Crossovers
@@ -55,6 +56,41 @@ class Population(list):
         return state
 
 
+    @parallel
+    def allgather(self, individuals_per_core):
+        """Performs an MPI.allgather on self (the population) and updates the
+        correct individuals that have been modified based on the inputs from 
+        individuals_per_core.
+
+        See stuctopt.tools.parallel.allgather for a similar function.
+        """
+        if structopt.parameters.globals.ncores > 1:
+            from mpi4py import MPI
+            populations_per_rank = MPI.COMM_WORLD.allgather(self)
+            #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
+            correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
+            for rank, indices in individuals_per_core.items():
+                for index in indices:
+                    assert populations_per_rank[rank][index].index == index
+                    correct_population[index] = populations_per_rank[rank][index]
+
+            # If something didn't get sent, use the value on the core
+            for i, individual in enumerate(correct_population):
+                if individual is None:
+                    correct_population[i] = self[i]
+
+            for i, individual in enumerate(correct_population):
+                # See Individual.__getstate__; the below attributes don't get passed via MPI
+                # so we need to reset them
+                individual.fitnesses = self[i].fitnesses
+                individual.relaxations = self[i].relaxations
+                individual.mutations = self[i].mutations
+                individual._calc = self[i]._calc
+                individual._kwargs = self[i]._kwargs
+
+            self.replace(correct_population)
+
+
     @single_core
     def replace(self, a_list):
         self.clear()
@@ -70,18 +106,16 @@ class Population(list):
             individual.index = i
 
     @parallel
-    def crossover(self):
+    def crossover(self, pairs):
         """Perform crossovers on the population."""
-        children = self.crossovers.crossover(self)
+        children = self.crossovers.crossover(pairs)
         self.extend(children)
-        self.crossovers.post_processing()
 
 
     @root
     def mutate(self):
         """Relax the entire population."""
         self.mutations.mutate(self)
-        self.mutations.post_processing()
         return self
 
 
@@ -99,10 +133,6 @@ class Population(list):
         for individual in self:
             individual._modifed = False
 
-        self.fitnesses.post_processing()
-
-        from mpi4py import MPI
-        fits = MPI.COMM_WORLD.bcast(fits, root=0)
         return fits
 
 
@@ -110,7 +140,6 @@ class Population(list):
     def relax(self):
         """Relax the entire population. """
         self.relaxations.relax(self)
-        self.relaxations.post_processing()
 
 
     @root
@@ -123,19 +152,17 @@ class Population(list):
         """
         self.predators.select_predator()
         self.predators.kill(self, fits, nkeep=self.total_number_of_individuals)
-        self.predators.post_processing()
         return self
 
 
     @root
     def select(self, fits):
-        """Select the individuals in the population to keep for the next generation.
+        """Select the individuals in the population to perform crossovers on.
 
         Args:
             fits (list<float>): the fitnesses of each individual in the population
         """
         self.selections.select_selection()
-        self.selections.select(self, fits)
-        self.selections.post_processing()
-        return self
+        pairs = self.selections.select(self, fits)
+        return pairs
 
