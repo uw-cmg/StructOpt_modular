@@ -1,5 +1,3 @@
-structopt
-
 # conda
 #numpy
 #scipy
