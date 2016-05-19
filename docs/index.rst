@@ -69,6 +69,9 @@ Classes and Functions
     structopt/common/individual/relaxations
     structopt/common/individual/generators
     structopt/common/individual/fingerprinters
+    structopt/io
+    structopt/postprocessing
+    structopt/tools
    
 
 Index and Search
