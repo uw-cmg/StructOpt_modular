@@ -2,7 +2,6 @@ import functools
 import numpy as np
 
 import structopt
-from structopt.common.individual import Individual
 from .read_xyz import read_xyz
 from structopt.tools import root, single_core, parallel
 
@@ -14,20 +13,13 @@ def generate(individual, **kwargs):
             individual (Individual): an Individual that is uninitialized
             **kwargs: keyword arguments for either ase.Atoms or a different generator function
     """
-    if 'filenames' in kwargs:
-        filename = kwargs['filenames'][individual.index]
+    if 'filenames' in kwargs or 'filename' in kwargs:
+        if 'filenames' in kwargs:
+            filename = kwargs['filenames'][individual.index]
+        else:
+            filename = kwargs['filename']
         atoms = read_xyz(filename)
         individual.extend(atoms)
-        #individual.set_atomic_numbers(atoms.get_atomic_numbers())
-        #individual.set_charges(atoms.get_charges())
-        #individual.set_chemical_symbols(atoms.get_chemical_symbols())
-        #individual.set_initial_magnetic_moments(atoms.get_initial_magnetic_moments())
-        #individual.set_masses(atoms.get_masses())
-        #individual.set_momenta(atoms.get_momenta())
-        #individual.set_positions(atoms.get_positions())
-        #individual.set_scaled_positions(atoms.get_scaled_positions())
-        #individual.set_tags(atoms.get_tags())
-        #individual.set_velocities(atoms.get_velocities())
 
         individual.set_pbc(True)
         with open(filename) as of:

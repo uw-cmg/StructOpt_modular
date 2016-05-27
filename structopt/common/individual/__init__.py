@@ -31,20 +31,22 @@ class Individual(ase.Atoms):
             get_nearest_atom_indices
             get_atom_indices_within_distance_of_atom
         """
-        self._kwargs = kwargs  # Store the parameters necessary for initializing for making a copy of self
+        self._kwargs = kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
         self._modified = True
         self._fitness = None
 
         cls_name = self.__class__.__name__.lower()
-        # Load in the appropriate functionality
-        fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
-        mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
-        relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
+        load_modules = kwargs.pop('load_modules', True)
+        if load_modules:
+            # Load in the appropriate functionality
+            fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
+            mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
+            relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
 
-        self.fitnesses = fitnesses.Fitnesses()
-        self.mutations = mutations.Mutations()
-        self.relaxations = relaxations.Relaxations()
+            self.fitnesses = fitnesses.Fitnesses()
+            self.mutations = mutations.Mutations()
+            self.relaxations = relaxations.Relaxations()
 
         # Initialize the ase.Atoms structure
         super().__init__()
@@ -112,15 +114,22 @@ class Individual(ase.Atoms):
         dists = self.get_distances(atom_index, slice(None, None, None))
         return np.where(dists < distance)
 
+
     @single_core
     def get_nearest_atom_indices(self, atom_index, count):
         dists = self.get_distances(atom_index, slice(None, None, None))[0]
         return np.argsort(dists)[:count]
 
+
     @single_core
     def copy(self):
-        new = self.__class__()
+        new = self.__class__(**self._kwargs)
         new.index = self.index  # TODO
-        new.extend(self)
+        new.arrays = self.arrays.copy()
         return new
+
+
+    @single_core
+    def empty(self):
+        del self[:]
 

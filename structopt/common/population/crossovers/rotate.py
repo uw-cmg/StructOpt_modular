@@ -140,8 +140,11 @@ def rotate(individual1, individual2, conserve_composition=True):
     child1.translate(com1)
     child2.translate(com2)
 
-    Structure = individual1.__class__
-    child1 = Structure().extend(child1)
-    child2 = Structure().extend(child2)
-    return child1, child2
+    full_child1 = individual1.copy()
+    full_child1.empty()
+    full_child1.extend(child1)
+    full_child2 = individual2.copy()
+    full_child2.empty()
+    full_child2.extend(child2)
+    return full_child1, full_child2
 
