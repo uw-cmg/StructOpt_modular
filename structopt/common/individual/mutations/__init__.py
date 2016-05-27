@@ -40,11 +40,13 @@ class Mutations(object):
     @single_core
     def mutate(self, individual):
         logger = logging.getLogger("default")
-        logger.info("Performing mutation {}".format(self.selected_mutation))
+        logger.info("Performing mutation {} on individual {}".format(self.selected_mutation, individual.index))
+        print("Performing mutation {} on individual {}".format(self.selected_mutation, individual.index))
         if self.selected_mutation is None:
             return individual
         else:
-            individual._modified = True
+            individual._relaxed = False
+            individual._fitted = False
             return self.selected_mutation(individual, **self.kwargs[self.selected_mutation])
 
     @single_core

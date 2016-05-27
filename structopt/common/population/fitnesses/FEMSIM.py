@@ -13,34 +13,37 @@ def fitness(population):
     Args:
         population (Population): the population to evaluate
     """
-    to_fit = [individual for individual in population if individual._modified]
-    cores_per_individual = structopt.parameters.globals.ncores // len(to_fit)
-    # Round cores_per_individual down to nearest power of 2
-    if cores_per_individual == 0:
-        # We have more individuals than cores, so each fitness scheme needs to be run multiple times
-        cores_per_individual = 1
+    to_fit = [individual for individual in population if not individual._fitted]
 
-    pow(2.0, math.floor(math.log2(cores_per_individual)))
+    if to_fit:
+        cores_per_individual = structopt.parameters.globals.ncores // len(to_fit)
+        # Round cores_per_individual down to nearest power of 2
+        if cores_per_individual == 0:
+            # We have more individuals than cores, so each fitness scheme needs to be run multiple times
+            cores_per_individual = 1
 
-    logger = logging.getLogger('output')
+        pow(2.0, math.floor(math.log2(cores_per_individual)))
 
-    # Setup each individual and get the command for each individual
-    commands = []
-    for individual in to_fit:
-        command = individual.fitnesses.FEMSIM.get_command(individual)
-        commands.append(command)
+        logger = logging.getLogger('output')
 
-    # Run the parallelized `mpiexec` command
-    commands = ['-np {cores} {command}'.format(command=command, cores=cores_per_individual) for command in commands]
-    command = 'mpiexec {}'.format(' : '.join(commands))
-    logger.info("Running: {}".format(command))
-    subprocess.call(command, shell=True, stdout=subprocess.DEVNULL)
+        # Setup each individual and get the command for each individual
+        commands = []
+        for individual in to_fit:
+            command = individual.fitnesses.FEMSIM.get_command(individual)
+            commands.append(command)
 
-    # Collect the results for each chisq and return them
-    for i, individual in enumerate(population):
-        chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
-        individual.FEMSIM = chisq
-        logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
+        # Run the parallelized `mpiexec` command
+        commands = ['-np {cores} {command}'.format(command=command, cores=cores_per_individual) for command in commands]
+        command = 'mpiexec {}'.format(' : '.join(commands))
+        logger.info("Running: {}".format(command))
+        print("Running: {}".format(command))
+        subprocess.call(command, shell=True, stdout=subprocess.DEVNULL)
+
+        # Collect the results for each chisq and return them
+        for i, individual in enumerate(population):
+            chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
+            individual.FEMSIM = chisq
+            logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
 
     return [individual.FEMSIM for individual in population]
 

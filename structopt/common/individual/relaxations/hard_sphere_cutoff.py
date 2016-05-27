@@ -20,12 +20,14 @@ class hard_sphere_cutoff(object):
         Args:
             individual (Individual):  the individual to relax
         """
+        print("Relaxing individual {} with hard-sphere cutoff method".format(individual.index))
         radii = [2.0 for atom in individual]
         nl = NeighborList(radii, bothways=True, self_interaction=False)
         nl.update(individual)
 
+        ntries = 0
         modified = True
-        while modified:
+        while modified and ntries < 100:
             modified = False
             for atom in individual:
                 indices, offsets = nl.get_neighbors(atom.index)
@@ -35,4 +37,7 @@ class hard_sphere_cutoff(object):
                         modified = True
             nl.update(individual)
             individual.wrap()
+            ntries += 1
+        if ntries == 100:
+            print("WARNING! Iterated through the hard-sphere cutoff relaxation 100 times and it still did not converge!")
 

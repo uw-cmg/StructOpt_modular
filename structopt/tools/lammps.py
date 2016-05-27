@@ -761,6 +761,8 @@ def write_lammps_data(fileobj, atoms, specorder=None, force_skew=False,
 
     f.write('{} (written by ASE) \n\n'.format(f.name).encode('utf-8'))
 
+    atoms.wrap()
+    atoms.center()
     symbols = atoms.get_chemical_symbols()
     n_atoms = len(symbols)
     f.write('{} \t atoms \n'.format(n_atoms).encode('utf-8'))

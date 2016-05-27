@@ -18,8 +18,11 @@ def fitness(population):
     else:
         logger = logging.getLogger('output')
 
-    to_fit = [individual for individual in population if individual._modified]
-    ncores = structopt.parameters.globals.ncores
+    to_fit = [individual for individual in population if not individual._fitted]
+    if structopt.parameters.globals.USE_MPI4PY:
+        ncores = structopt.parameters.globals.ncores
+    else:
+        ncores = 1
     rank = structopt.parameters.globals.rank
 
     individuals_per_core = {r: [] for r in range(ncores)}
@@ -29,13 +32,14 @@ def fitness(population):
     for index in individuals_per_core[rank]:
         individual = population[index]
         assert individual.index == index
+        print("Running LAMMPS fitness evaluation on individual {}".format(individual.index))
         energy = individual.fitnesses.LAMMPS.get_energy(individual)
         individual.LAMMPS = energy
         logger.info('Individual {0} for LAMPPS evaluation had energy {1}'.format(i, energy))
 
     fits = [individual.LAMMPS for individual in population]
 
-    if structopt.parameters.globals.ncores > 1:
+    if structopt.parameters.globals.USE_MPI4PY:
         fits = allgather(fits, individuals_per_core)
 
     return fits

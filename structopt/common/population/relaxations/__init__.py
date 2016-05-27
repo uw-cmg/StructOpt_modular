@@ -25,11 +25,14 @@ class Relaxations(object):
             population (Population): the population to relax
         """
         logger = logging.getLogger("default")
-        to_relax = [individual for individual in population if individual._modified]
+        to_relax = [individual for individual in population if not individual._relaxed]
         logger.info("Relaxing individuals: {}".format(to_relax))
         for i, module in enumerate(self.modules):
+            print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
             module.relax(population)
 
+        for individual in population:
+            individual._relaxed = True
         return None
 
 

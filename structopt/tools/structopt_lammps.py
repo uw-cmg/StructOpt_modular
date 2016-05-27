@@ -31,7 +31,7 @@ def run(parameters, individual, relax):
         path = os.path.join(cwd,'TroubledLammps')
         os.makedirs(path, exist_ok=True)
         calc = structure.get_calculator()
-        shutil.copyfile(calc.lammps_traj, os.path.join(path, os.path.basename(calc.lammps_traj)))
+        shutil.copyfile(calc.lammps_trj, os.path.join(path, os.path.basename(calc.lammps_trj)))
         shutil.copyfile(calc.lammps_in, os.path.join(path, os.path.basename(calc.lammps_in)))
         shutil.copyfile(calc.lammps_log, os.path.join(path, os.path.basename(calc.lammps_log)))
         shutil.copyfile(calc.lammps_data, os.path.join(path, os.path.basename(calc.lammps_data)))
@@ -57,26 +57,36 @@ def run(parameters, individual, relax):
 
 def setup_lammps(parameters, relax):
     logger = logging.getLogger('by-rank')
+
+    # We need to get the ordered list of symbols from the potential file
+    potential = structopt.io.eam.read_eam(parameters["potential_file"], kind=parameters["pair_style"])
+    ordered_symbols = potential[1][0]  # https://github.com/libAtoms/matscipy/blob/master/matscipy/calculators/eam/io.py
+    masses = potential[1][2]
+    masses = ["{i} {m}".format(i=i, m=m) for i, m in enumerate(masses, start=1)]
+
     # TODO I only copied one of the pair_style options
     if parameters["pair_style"] == 'eam/alloy':
-        parcoff = '* * {0}'.format(parameters["pot_file"])
-        for one in atomlist:
-            parcoff += ' {0}'.format(one[0])
-        pair_coeff = [parcoff]
-        lammps_parameters = {'pair_style': parameters["pair_style"],
-                      'pair_coeff': pair_coeff}
+        pair_coeff = '* * {0} {1}'.format(parameters["potential_file"], ' '.join(ordered_symbols))
+        lammps_parameters = {
+                'pair_style': parameters["pair_style"],
+                'pair_coeff': [pair_coeff],
+                'mass': masses
+        }
         files = [parameters["potential_file"]]
     elif parameters["pair_style"] == 'eam':
         pair_coeff = ['* * {0}'.format(parameters["potential_file"])]
-        lammps_parameters = {'pair_style': parameters["pair_style"],
-                      'pair_coeff': pair_coeff}
+        lammps_parameters = {
+                'pair_style': parameters["pair_style"],
+                'pair_coeff': [pair_coeff],
+                'mass': masses
+        }
         files = [parameters["potential_file"]]
 
     if parameters["minimize"] != None:
         try:
             lammps_parameters['mass'][len(lammps_parameters['mass'])-1] += '\nmin_style {0}'.format(parameters["min_style"])
         except KeyError:
-            lammps_parameters['pair_coeff'][0] += '\nmin_style {0}'.format(parameters["min_style"])
+            lammps_parameters['pair_coeff'][-1] += '\nmin_style {0}'.format(parameters["min_style"])
         lammps_parameters['minimize'] = parameters["minimize"]
 
     if not relax:

@@ -17,7 +17,8 @@ class Individual(ase.Atoms):
         """Additional class parameters that extend ASE.Atoms:
             index
             _kwargs
-            _modified
+            _relaxed
+            _fitted
 
             fitnesses
             relaxations
@@ -33,7 +34,8 @@ class Individual(ase.Atoms):
         """
         self._kwargs = kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
-        self._modified = True
+        self._fitted = False
+        self._relaxed = False
         self._fitness = None
 
         cls_name = self.__class__.__name__.lower()
@@ -93,7 +95,8 @@ class Individual(ase.Atoms):
             individual (Individual): the individual to relax
         """
         self.relaxations.relax(self)
-        self._modified = True
+        self._relaxed = True
+        self._fitted = False
         self.relaxations.post_processing()
 
 
@@ -105,6 +108,7 @@ class Individual(ase.Atoms):
             individual (Individual): the individual to evaluate
         """
         fits = self.fitnesses.fitness(self)
+        self._fitted = True
         self.fitnesses.post_processing()
         return fits
 
@@ -122,10 +126,18 @@ class Individual(ase.Atoms):
 
 
     @single_core
-    def copy(self):
-        new = self.__class__(**self._kwargs)
-        new.index = self.index  # TODO
-        new.arrays = self.arrays.copy()
+    def copy(self, include_atoms=True):
+        """Return a copy."""
+        kwargs = self._kwargs.copy()
+        kwargs.pop('filenames', None)
+        kwargs.pop('filename', None)
+        new = self.__class__(**kwargs, index=self.index)
+        if include_atoms:
+            new.arrays = self.arrays.copy()
+        else:
+            new.empty()
+        new.set_cell(self.get_cell())
+        new.set_pbc(self.get_pbc())
         return new
 
 

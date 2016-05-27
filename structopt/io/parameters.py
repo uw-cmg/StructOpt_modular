@@ -27,7 +27,10 @@ def read(input):
         parameters.globals.ncores = MPI.COMM_WORLD.Get_size()
     else:
         parameters.globals.rank = 0
-        parameters.globals.ncores = 1
+        ncores = parameters.globals.get('MPMD', False)
+        if not ncores:
+            ncores = 1
+        parameters.globals.ncores = ncores
 
 
     return parameters

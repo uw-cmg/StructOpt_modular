@@ -81,7 +81,7 @@ def allgather(stuff, stuffs_per_core):
             x = allgather(values, stuffs_per_core)
             print(x)  # returns:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     """
-    if structopt.parameters.globals.ncores > 1:
+    if structopt.parameters.globals.USE_MPI4PY:
         from mpi4py import MPI
         stuffs_per_rank = MPI.COMM_WORLD.allgather(stuff)
         correct_stuff = [None for _ in range(np.amax(list(stuffs_per_core.values()))+1)]

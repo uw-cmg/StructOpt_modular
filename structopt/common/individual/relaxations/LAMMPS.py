@@ -22,5 +22,6 @@ class LAMMPS(object):
         Args:
             individual (Individual): the individual to relax
         """
+        print("Relaxing individual {} with LAMMPS".format(individual.index))
         return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=True)
 

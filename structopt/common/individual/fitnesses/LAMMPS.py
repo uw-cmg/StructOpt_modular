@@ -20,7 +20,8 @@ class LAMMPS(object):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation
-        if individual._modified or 'LAMMPS' not in structopt.parameters.relaxations.modules:
+        if not individual._relaxed or 'LAMMPS' not in structopt.parameters.relaxations.modules:
+            print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
             return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False)
         else:
             return individual.LAMMPS

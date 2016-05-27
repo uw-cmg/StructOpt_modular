@@ -1,31 +1,20 @@
 {
     "globals":
     {
-        "USE_MPI4PY": false
+        "USE_MPI4PY": false,
+        "MPMD": 16
     },
     "generators": {
         "structure_type": "cluster",
         "initializers": [
             {
-                "number_of_individuals": 16,
+                "number_of_individuals": 4,
                 "data": {
                     "filenames": [
                         "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/Zr50Cu35Al15_start.xyz",
                         "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/Zr50Cu35Al15_t1_final.xyz",
                         "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/Zr50Cu35Al15_t2_final.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/Zr50Cu35Al15_t3_final.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t1xStart_rotate_child1.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t1xStart_rotate_child2.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t1xt2_rotate_child1.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t1xt2_rotate_child2.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t1xt3_rotate_child1.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t1xt3_rotate_child2.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t2xStart_rotate_child1.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t2xStart_rotate_child2.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t2xt3_rotate_child1.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t2xt3_rotate_child2.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t3xStart_rotate_child1.xyz",
-                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/t3xStart_rotate_child2.xyz"
+                        "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/Zr50Cu35Al15_t3_final.xyz"
                     ]
                 }
             }
@@ -45,8 +34,7 @@
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
-            "pair_style": "eam", 
-            "parallel": true, 
+            "pair_style": "eam/alloy", 
             "potential_file": "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/ZrCuAl2011.eam.alloy", 
             "thermo_steps": 1000
         },
@@ -66,15 +54,14 @@
     "relaxations":
     {
         "modules": [
-            "LAMMPS",
-            "hard_sphere_cutoff"
+            "hard_sphere_cutoff",
+            "LAMMPS"
         ],
         "LAMMPS": {
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
-            "pair_style": "eam", 
-            "parallel": true, 
+            "pair_style": "eam/alloy", 
             "potential_file": "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/ZrCuAl2011.eam.alloy", 
             "thermo_steps": 1000
         }

@@ -64,7 +64,7 @@ class Population(list):
 
         See stuctopt.tools.parallel.allgather for a similar function.
         """
-        if structopt.parameters.globals.ncores > 1:
+        if structopt.parameters.globals.USE_MPI4PY:
             from mpi4py import MPI
             populations_per_rank = MPI.COMM_WORLD.allgather(self)
             #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
@@ -131,7 +131,7 @@ class Population(list):
 
         # Set each individual to unmodified so that the fitnesses wont't be recalculated
         for individual in self:
-            individual._modifed = False
+            individual._fitted = True
 
         return fits
 
