@@ -8,7 +8,7 @@ Setup an Anaconda virtual environment with the latest version of Python 3.
 mpi4py
 ======
 
-On Madion's ACI:
+On Madison's ACI:
 
 ::
 

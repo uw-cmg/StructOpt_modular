@@ -1,9 +1,11 @@
 Parallelism
 ###########
 
-Note: mpi4py needs to be installed from source. I followed the instructions here https://media.readthedocs.org/pdf/mpi4py/latest/mpi4py.pdf under 3.3: Using distutils.
+Note: mpi4py needs to be installed from source. I followed the instructions here https://media.readthedocs.org/pdf/mpi4py/latest/mpi4py.pdf under "3.3: Using distutils".
 
-    # Setup modules so that mpi/intel/openmpi is loaded and mpiexec finds that executable
+::
+
+    # Setup modules so that `mpi/intel/openmpi` is loaded and `mpiexec` finds that executable
     wget https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-X.Y.tar.gz
     tar -zxf mpi4py-X.Y.tar.gz
     cd mpi4py-X.Y
@@ -21,11 +23,11 @@ Main idea:  One structure per core, or multiple structures per core that execute
 Cases
 -----
 
-1) ``ncores == len(population)``
+* ``ncores == len(population)``
 
-2) ``ncores < len(population)``
+* ``ncores < len(population)``
 
-3) ``ncores > len(population)`` (unused cores)
+* ``ncores > len(population)`` (unused cores that were, for example, allocated for use within MDMP)
 
 MPMD
 ====
