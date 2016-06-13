@@ -19,6 +19,15 @@ Overview
     developers
 
 
+Setup
+=====
+
+.. toctree::
+    :maxdepth: 2
+
+    setup
+
+
 Calculators
 ===========
 
