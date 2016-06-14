@@ -2,7 +2,7 @@
     "globals":
     {
         "USE_MPI4PY": false,
-        "MPMD": 16
+        "MPMD": 16,
     },
     "generators": {
         "structure_type": "cluster",
@@ -30,8 +30,8 @@
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
-            "pair_style": "eam/alloy", 
-            "potential_file": "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/ZrCuAl2011.eam.alloy", 
+            "pair_style": "eam", 
+            "potential_file": "/home/zxu/research/PtMo-nanoparticles/Au_u3.eam",
             "thermo_steps": 1000
         }
     },
@@ -49,6 +49,9 @@
             "thermo_steps": 1000
         }
     },
+    "convergence":{
+	"maxgen": 10
+    }
     "mutations": {
         "options": {
             "move_atoms": 0.70,

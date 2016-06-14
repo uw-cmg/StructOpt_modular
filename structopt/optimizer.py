@@ -53,7 +53,7 @@ class Optimizer(object):
 
 
     def check_convergence(self):
-        if self.generation >= 5:
+        if self.generation >= structopt.parameters.convergence.maxgen:
             self.converged = True
         else:
             self.converged = False

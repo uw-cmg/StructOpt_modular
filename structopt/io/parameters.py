@@ -58,6 +58,8 @@ def set_default(parameters):
 
     parameters.selections.crossover_probability = sum(parameters.crossovers.options.values())
 
+    parameters.convergence.setdefault('maxgen', 10)
+
     return parameters
 
 """
