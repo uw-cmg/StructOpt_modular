@@ -9,8 +9,11 @@ The purpose of this document is to hold scripts for testing all of the modules, 
 #+BEGIN_SRC python :tangle structopt_test.py
 import sys; sys.path.insert(1, '../')
 import structopt
+from structopt.optimizer import Optimizer
 
 structopt.setup('sample-inputs/Au18/structopt.in.json')
+optimizer = Optimizer()
+print(optimizer.parameters)
 #+END_SRC
 
 #+RESULTS:
@@ -37,4 +40,279 @@ with open('fileio/write_xyz-test.xyz') as f:
 : 0
 : Pt      0.000000000000000      0.000000000000000      0.000000000000000
 : 
+
+* generate
+#+BEGIN_SRC python
+import sys; sys.path.insert(1, '../')
+from ase import Atom
+import structopt
+from structopt.cluster import Cluster
+
+structopt.setup('sample-inputs/Au18/structopt.in.json')
+
+atoms = Cluster()
+#+END_SRC
+
+#+RESULTS:
+
+* Test Au18 run
+
+#+BEGIN_SRC python
+import json
+import random
+import numpy as np
+from ase import Atom, Atoms
+from ase.visualize import view
+from ase.data import reference_states
+
+# First the initial population, which should form a sphere
+atomlist = (['Au', 18, 0, 0])
+
+def random_three_vector():
+    """Generates a random 3D unit vector (direction) with a 
+    uniform spherical distribution
+    Algo from http://stackoverflow.com/questions/5408276/python-uniform-spherical-distribution
+    :return:
+    """
+    
+    phi = np.random.uniform(0,np.pi*2)
+    costheta = np.random.uniform(-1,1)
+
+    theta = np.arccos( costheta )
+    x = np.sin( theta) * np.cos( phi )
+    y = np.sin( theta) * np.sin( phi )
+    z = np.cos( theta )
+    return (x,y,z)
+
+def get_particle_radius(atomlist, f=0.7):
+    """Returns an estimated nanoparticle radius given a
+    concentration of atoms and void fraction of the sphere.
+    """
+
+    # Get the average lattice constant
+    n = sum([atom[1] for atom in atomlist])
+    lat = 0
+    for atom in atomlist:
+        
+
+print(get_particle_radius(atomlist, 
+    
+def generate_sphere(atomlist, radius=None, min_dist=1.0, 
+                    tries_b4_expand=100):
+    """Generates a random sphere of particles given an atomlist, 
+    number of atoms
+    """
+    
+    indiv = Atoms()
+    for i in range(n):
+        # Always add the first atom to the origin
+        if i == 0:
+            indiv.append(Atom('Au', (0, 0, 0)))
+            continue
+
+        # We want to assure atoms are not close together. We do this
+        # by trial and error. At a certain point, we expand the radius
+        # and try again. This is 
+        j = 0
+        while j <= tries_b4_expand:
+            
+            # Get a random coordinate in the sphere
+            unit_vec = np.array(random_three_vector())
+            D = radius * random.uniform(0, 1.0) ** (1.0/3.0)
+            coord = unit_vec * D
+
+            # Check the distances with other atoms
+            pos = indiv.get_positions()
+            dists = [np.linalg.norm(xyz - coord) for xyz in pos]
+	    if min(dists) < min_dist and j < tries_b4_expand:
+                j += 1
+            elif j == tries_b4_expand:
+                print('expanded')
+                radius *= 1.1
+                j = 0
+            else:
+                break
+
+        indiv.append(Atom('Au', coord))
+
+    return indiv
+
+# for i in range(nindiv):
+#     indiv = generate_sphere(radius, n)
+#     view(indiv)
+    
+#+END_SRC
+
+#+RESULTS:
+: 1.00995049384
+
+* Writing a new generate sphere class
+#+BEGIN_SRC python
+import json
+import random
+import numpy as np
+from ase import Atom, Atoms
+from ase.visualize import view
+from ase.data import atomic_numbers, reference_states
+
+class Sphere(object):
+    """Class that handles the generation of a sphere."""
+
+    def __init__(self, atomlist, **kwargs):
+        self.atomlist = atomlist
+        self.fill_factor = 0.7
+        self.radius = None
+        self.min_dist_factor = 0.7
+        self.tries_b4_expand = 100
+        
+        for kw in kwargs:
+            setattr(self, kw, kwargs[kw])
+    
+    def random_three_vector(self):
+        """Generates a random 3D unit vector (direction) with a 
+        uniform spherical distribution
+        Algo from http://stackoverflow.com/questions/5408276/python-uniform-spherical-distribution
+        :return:
+        """
+
+        phi = np.random.uniform(0,np.pi*2)
+        costheta = np.random.uniform(-1,1)
+
+        theta = np.arccos( costheta )
+        x = np.sin( theta) * np.cos( phi )
+        y = np.sin( theta) * np.sin( phi )
+        z = np.cos( theta )
+        return (x,y,z)
+
+    def get_avg_radii(self):
+        """Returns the average atomic radius of a list of
+        atoms. The radius is the radius of the close packed sphere
+        in a given crystal structure
+        """
+
+        atomlist = self.atomlist
+    
+        # Get the average atomic radii of close packed atoms
+        n_tot = sum([atom[1] for atom in atomlist])
+        r = 0
+        for atom in atomlist:
+            n = atom[1]
+            conc = float(n)/float(n_tot)
+            atomic_number = atomic_numbers[atom[0]]
+            struct = reference_states[atomic_number]['symmetry']
+            if struct == 'fcc':
+                a = reference_states[atomic_number]['a']
+                r += conc * np.linalg.norm([a, a]) / 4.0
+            elif struct == 'bcc':
+                a = reference_states[atomic_number]['a']
+                r += conc * np.linalg.norm([a, a, a]) / 4.0
+            else:
+                raise IOError('{} structure not supported yet'.format(struct))
+
+        return r
+
+    def get_particle_radius(self):
+        """Returns an estimated nanoparticle radius given a
+        concentration of atoms and void fraction of the sphere.
+        Given an average sphere, this is given by the formula
+
+        R_sphere = (n_tot / f)**(1.0/3.0) * R_atom
+
+        where n_tot is the total number of atoms and f is
+        the fill factor of the particle.
+        """
+
+        atomlist = self.atomlist
+        fill_factor = self.fill_factor
+        
+        n_tot = sum([atom[1] for atom in atomlist])
+        R_atom = self.get_avg_radii()
+        R_sphere = (n_tot / fill_factor)**(1.0/3.0) * R_atom
+
+        return R_sphere
+
+    def get_individual(self):
+        """Generates a random sphere of particles given an
+        atomlist and radius. If radius is None, one is 
+        automatically estimated. min_dist and tries_b4_expand
+        are parameters that govern how stricly the proximity
+        of atoms are enforced.
+        """
+
+        atomlist = self.atomlist
+        radius = self.radius
+        fill_factor = self.fill_factor
+        min_dist_factor = self.min_dist_factor
+        tries_b4_expand = self.tries_b4_expand
+        
+        indiv = Atoms()
+
+        if radius is None:
+            radius = self.get_particle_radius()
+
+        avg_radii = self.get_avg_radii()
+        min_dist = min_dist_factor * 2 * avg_radii
+
+        # Create a list of random order of the atoms
+        all_atoms = []
+        for atom in atomlist:
+            all_atoms += [atom[0]] * atom[1]
+
+        random.shuffle(all_atoms)
+
+        for i, atom in enumerate(all_atoms):
+            # Always add the first atom to the origin
+            if i == 0:
+                indiv.append(Atom(atom, (0, 0, 0)))            
+                continue
+
+            # We want to assure atoms are not close together. We do this
+            # by trial and error. At a certain point, we expand the radius
+            # and try again. This is 
+            j = 0
+            while j <= tries_b4_expand:
+
+                # Get a random coordinate in the sphere
+                unit_vec = np.array(self.random_three_vector())
+                D = radius * random.uniform(0, 1.0) ** (1.0/3.0)
+                coord = unit_vec * D
+
+                # Check the distances with other atoms
+                pos = indiv.get_positions()
+                dists = [np.linalg.norm(xyz - coord) for xyz in pos]
+                if min(dists) < min_dist and j < tries_b4_expand:
+                    j += 1
+                elif j == tries_b4_expand:
+                    print('expanded')
+                    radius *= 1.1
+                    j = 0
+                else:
+                    break
+
+            indiv.append(Atom(atom, coord))
+
+        return indiv
+
+atomlist = [['Pt', 10, 0, 0]]
+generate = Sphere(atomlist, fill_factor=0.7)
+atoms = generate.get_individual()
+atoms.set_cell([25, 25, 25])
+center = np.sum(atoms.get_cell(), axis=0) * 0.5
+atoms.translate(center)
+print(atoms.get_positions())
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+[[ 12.5         12.5         12.5       ]
+ [ 11.2033007   12.042433    14.61882463]
+ [ 11.38453442  10.41449143  11.12914074]
+ [ 15.63337722  13.61310832  12.79099265]
+ [ 13.372229    11.49107971  10.85042698]
+ [ 11.4168184   14.50905678  13.82282659]
+ [ 14.21042836  10.64147567  13.1419343 ]
+ [ 13.66035728  12.55074892  14.52568259]
+ [ 11.59144214  15.21968443  11.17269034]
+ [ 12.00270725  12.88507614   9.95089547]]
+#+end_example
 
