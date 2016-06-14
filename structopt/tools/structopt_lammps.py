@@ -74,7 +74,7 @@ def setup_lammps(parameters, relax):
         }
         files = [parameters["potential_file"]]
     elif parameters["pair_style"] == 'eam':
-        pair_coeff = ['* * {0}'.format(parameters["potential_file"])]
+        pair_coeff = '* * {0}'.format(parameters["potential_file"])
         lammps_parameters = {
             'pair_style': parameters["pair_style"],
             'pair_coeff': [pair_coeff],
