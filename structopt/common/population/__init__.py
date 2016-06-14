@@ -12,7 +12,8 @@ from structopt.tools import root, single_core, parallel
 
 
 class Population(list):
-    """A list-like class that contains the Individuals and the operations to be run on them."""
+    """A list-like class that contains the Individuals 
+    and the operations to be run on them."""
 
     @single_core
     def __init__(self):

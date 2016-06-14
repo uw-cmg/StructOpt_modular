@@ -61,24 +61,23 @@ def setup_lammps(parameters, relax):
     # We need to get the ordered list of symbols from the potential file
     potential = structopt.io.eam.read_eam(parameters["potential_file"], kind=parameters["pair_style"])
     ordered_symbols = potential[1][0]  # https://github.com/libAtoms/matscipy/blob/master/matscipy/calculators/eam/io.py
-    masses = potential[1][2]
-    masses = ["{i} {m}".format(i=i, m=m) for i, m in enumerate(masses, start=1)]
 
     # TODO I only copied one of the pair_style options
     if parameters["pair_style"] == 'eam/alloy':
         pair_coeff = '* * {0} {1}'.format(parameters["potential_file"], ' '.join(ordered_symbols))
+        masses = potential[1][2]
+        masses = ["{i} {m}".format(i=i, m=m) for i, m in enumerate(masses, start=1)]
         lammps_parameters = {
-                'pair_style': parameters["pair_style"],
-                'pair_coeff': [pair_coeff],
-                'mass': masses
+            'pair_style': parameters["pair_style"],
+            'pair_coeff': [pair_coeff],
+            'mass': masses
         }
         files = [parameters["potential_file"]]
     elif parameters["pair_style"] == 'eam':
         pair_coeff = ['* * {0}'.format(parameters["potential_file"])]
         lammps_parameters = {
-                'pair_style': parameters["pair_style"],
-                'pair_coeff': [pair_coeff],
-                'mass': masses
+            'pair_style': parameters["pair_style"],
+            'pair_coeff': [pair_coeff],
         }
         files = [parameters["potential_file"]]
 
