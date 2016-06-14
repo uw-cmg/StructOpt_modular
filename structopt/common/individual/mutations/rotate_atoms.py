@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+from ase import Atom, Atoms
 
 def rotate_atoms(individual, max_natoms=0.20):
     """Randomly rotates a number of random atoms within the individual (in place).
@@ -19,9 +19,13 @@ def rotate_atoms(individual, max_natoms=0.20):
         atom_indices = list(range(len(individual)))
         random.shuffle(atom_indices)  # Using random.shuffle on the indices guarantees no duplicates
         atom_indices = atom_indices[:natoms_to_rotate]
-        atoms = individual[atom_indices]  # This creates a copy of the atoms I think
-        del individual[atom_indices]
 
+        # Extract out the atoms to be rotated
+        atom_indices.sort(reverse=True)
+        atoms = Atoms()
+        for ind in atom_indices:
+            atoms.append(individual.pop(ind))        
+        
         axis = random.choice(['x', '-x', 'y', '-y', 'z', '-z'])
         angle = random.uniform(30, 180)
         atoms.rotate(axis, a=angle, center='COM', rotate_cell=False)
