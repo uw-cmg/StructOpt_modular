@@ -34,7 +34,6 @@ class Selections(object):
         pairs = self.selected_selection(population=population,
                                         fits=fits,
                                         prob=self.parameters.crossover_probability)
-        print(fits)
         self.post_processing(pairs)
         return pairs
 
@@ -52,4 +51,4 @@ class Selections(object):
     @staticmethod
     @functools.wraps(rank)
     def rank(population, fits, prob):
-        return random_selection(population, fits, prob=prob)
+        return rank(population, fits, prob=prob)

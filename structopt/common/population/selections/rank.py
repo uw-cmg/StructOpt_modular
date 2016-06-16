@@ -62,22 +62,22 @@ def rank(population, fits, prob, p_min=None, repeat_pairs=False):
         del p_temp[ind_del]
 
         # Now remove mothers that would make repeat father/mother pairs
-        if not repeat_parents:
+        if not repeat_pairs:
             for pair in deepcopy(pairs_ind):
                 if ind_father in pair:
                     del pair[pair.index(ind_father)]
                     ind_mother = pair[0]
-                    ind_del = inds_population.index(ind_mother)
+                    ind_del = inds_population_temp.index(ind_mother)
                     del inds_population_temp[ind_del]
                     del p_temp[ind_del]
 
         p_temp /= sum(p_temp)
-        ind_mother = np.random.choice(new_fits, p=new_p)
+        ind_mother = np.random.choice(inds_population_temp, p=p_temp)
 
         pairs_ind.append([ind_father, ind_mother])
 
     # Construct the parents from the indices
-    pairs = [[population[i], population[j]] for i, j in pairs]
+    pairs = [[population[i], population[j]] for i, j in pairs_ind]
     return pairs
     
     # Delete these lines when the thing is done
