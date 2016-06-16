@@ -9,7 +9,14 @@ import structopt.tools.lammps
 def run(parameters, individual, relax):
     logger = logging.getLogger('by-rank')
     structure = individual #structure = compose_structure(individual)  # TODO
-    calculator = setup_lammps(parameters, relax=True)
+    # Currently turning keep_tmp_files on breaks lammps. Until then,
+    # manually delete
+    keep_files = parameters.setdefault('keep_files', True)
+    temp_parameters = parameters.copy()
+    temp_parameters['keep_files'] = True
+    
+    
+    calculator = setup_lammps(temp_parameters, relax=True)
     structure.set_calculator(calculator)
     structure.set_pbc(True)
 
@@ -31,10 +38,11 @@ def run(parameters, individual, relax):
         path = os.path.join(cwd,'TroubledLammps')
         os.makedirs(path, exist_ok=True)
         calc = structure.get_calculator()
-        shutil.copyfile(calc.lammps_trj, os.path.join(path, os.path.basename(calc.lammps_trj)))
-        shutil.copyfile(calc.lammps_in, os.path.join(path, os.path.basename(calc.lammps_in)))
-        shutil.copyfile(calc.lammps_log, os.path.join(path, os.path.basename(calc.lammps_log)))
-        shutil.copyfile(calc.lammps_data, os.path.join(path, os.path.basename(calc.lammps_data)))
+        for f in [calc.lammps_trj, calc.lammps_in, calc.lammps_log, calc.lammps_data]:
+            try:
+                shutil.copyfile(f, os.path.join(path, os.path.basename(f)))
+            except FileNotFoundError:
+                continue
         raise RuntimeError from error
 
     #individual, buli = decompose_structure(new_structure, individual)  # TODO
@@ -47,7 +55,16 @@ def run(parameters, individual, relax):
     #individual.pressure = pressure
     #individual.volume = volume
 
-    structure.calc.clean()
+    #structure.calc.clean()
+    if not keep_files:
+        for f in [calculator.lammps_trj,
+                  calculator.lammps_in,
+                  calculator.lammps_log,
+                  calculator.lammps_data]:
+            try:
+                os.remove(f)
+            except FileNotFoundError:
+                continue
 
     if relax:
         return individual

@@ -252,13 +252,15 @@ class LAMMPS:
             fd = special_tee(lmp_handle.stdin, lammps_in_fd)
         else:
             fd = lmp_handle.stdin
-        self.write_lammps_in(lammps_in=fd, lammps_trj=lammps_trj, lammps_data=lammps_data)
+        self.write_lammps_in(lammps_in=fd, lammps_trj=lammps_trj,
+                             lammps_data=lammps_data)
 
         if self.keep_tmp_files:
             lammps_in_fd.close()
 
         # Wait for log output to be read (i.e., for LAMMPS to finish)
         # and close the log file if there is one
+        print(self.keep_tmp_files)
         thr_read_log.join()
         if self.keep_tmp_files:
             lammps_log_fd.close()
