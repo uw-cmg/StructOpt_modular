@@ -29,8 +29,8 @@ class Population(list):
         # Import the structure type class: e.g from structopt.crystal import Crystal
         # Unfortunately `from` doesn't seem to work implicitly
         # so a getattr on the module is needed
-        Structure = getattr(importlib.import_module('structopt.{}'.format(self.structure_type)),
-                            self.structure_type.title())
+        module = importlib.import_module('structopt.{}'.format(self.structure_type))
+        Structure = getattr(module, self.structure_type.title())
 
         # Generate/load initial structures
         for structure_information in structopt.parameters.generators.initializers:

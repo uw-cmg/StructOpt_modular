@@ -299,20 +299,398 @@ atoms = generate.get_individual()
 atoms.set_cell([25, 25, 25])
 center = np.sum(atoms.get_cell(), axis=0) * 0.5
 atoms.translate(center)
-print(atoms.get_positions())
+view(atoms)
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
 [[ 12.5         12.5         12.5       ]
- [ 11.2033007   12.042433    14.61882463]
- [ 11.38453442  10.41449143  11.12914074]
- [ 15.63337722  13.61310832  12.79099265]
- [ 13.372229    11.49107971  10.85042698]
- [ 11.4168184   14.50905678  13.82282659]
- [ 14.21042836  10.64147567  13.1419343 ]
- [ 13.66035728  12.55074892  14.52568259]
- [ 11.59144214  15.21968443  11.17269034]
- [ 12.00270725  12.88507614   9.95089547]]
+ [ 11.37285955  11.92191707  10.27191673]
+ [ 13.45573718  12.28467891  14.52920171]
+ [ 13.50332378  11.12386375  11.17171647]
+ [ 10.04685901  13.17104333  12.1535002 ]
+ [ 12.01420451   9.90432009  12.17753833]
+ [ 14.47921882  10.45909799  12.80449471]
+ [ 14.36181325  14.99112536  12.73623534]
+ [ 13.42800081  12.81687098  10.09574564]
+ [ 11.59305283  12.93757018  15.06574869]]
 #+end_example
+
+* Selection for mating classes
+** Rank
+#+BEGIN_SRC python
+from copy import deepcopy
+import numpy as np
+import scipy.stats as ss
+"""Grefenstette and Baker 1989 Whitley 1989"""
+
+repeat_parents = False
+
+np.random.seed(0)
+
+p_min = 0.01
+
+# Get ranks of each population value based on its fitness
+fits = range(10)
+np.random.shuffle(fits)
+ranks = ss.rankdata(fits)
+
+# Get probabilities based on linear ranking
+N = len(fits)
+eta_min = p_min * N
+eta_max = 2 - eta_min
+p_max = eta_max / N
+ps = p_min + (p_max - p_min)*(N - ranks)/(N - 1)
+
+# Construct list of parents
+n_pairs = int(len(fits) / 2)
+pairs = []
+
+for i in range(n_pairs):
+    # Choose the first parent based on probabilties
+    father = np.random.choice(fits, p=ps)
+
+    # Choose the second parent based on renormalized probabilities
+    # First remove the father from the population
+    new_fits, new_ps = list(fits), list(ps)
+    ind_pop = new_fits.index(father)
+    new_fits.pop(ind_pop)
+    new_ps.pop(ind_pop)
+
+    # Now remove mothers that would make repeat father/mother pairs
+    if not repeat_parents:
+        for pair in deepcopy(pairs):
+            if father in pair:
+                del pair[pair.index(father)]
+                mother = pair[0]
+                ind_pop = new_fits.index(mother)
+                new_fits.pop(ind_pop)
+                new_ps.pop(ind_pop)
+
+    new_ps /= sum(new_ps)
+    mother = np.random.choice(new_fits, p=new_ps)
+    
+    print(father, mother)
+    pairs.append([father, mother])
+
+print(pairs)
+#+END_SRC
+
+#+RESULTS:
+: (1, 5)
+: (5, 4)
+: (0, 1)
+: (7, 5)
+: (2, 4)
+: [[1, 5], [5, 4], [0, 1], [7, 5], [2, 4]]
+
+* rotate cut and splice
+#+BEGIN_SRC python
+import json
+import random
+import numpy as np
+from ase import Atom, Atoms
+from ase.visualize import view
+from ase.data import atomic_numbers, reference_states
+
+
+class Sphere(object):
+    """Class that handles the generation of a sphere."""
+
+    def __init__(self, atomlist, **kwargs):
+        self.atomlist = atomlist
+        self.fill_factor = 0.7
+        self.radius = None
+        self.min_dist_factor = 0.7
+        self.tries_b4_expand = 100
+        
+        for kw in kwargs:
+            setattr(self, kw, kwargs[kw])
+    
+    def random_three_vector(self):
+        """Generates a random 3D unit vector (direction) with a 
+        uniform spherical distribution
+        Algo from http://stackoverflow.com/questions/5408276/python-uniform-spherical-distribution
+        :return:
+        """
+
+        phi = np.random.uniform(0,np.pi*2)
+        costheta = np.random.uniform(-1,1)
+
+        theta = np.arccos( costheta )
+        x = np.sin( theta) * np.cos( phi )
+        y = np.sin( theta) * np.sin( phi )
+        z = np.cos( theta )
+        return (x,y,z)
+
+    def get_avg_radii(self):
+        """Returns the average atomic radius of a list of
+        atoms. The radius is the radius of the close packed sphere
+        in a given crystal structure
+        """
+
+        atomlist = self.atomlist
+    
+        # Get the average atomic radii of close packed atoms
+        n_tot = sum([atom[1] for atom in atomlist])
+        r = 0
+        for atom in atomlist:
+            n = atom[1]
+            conc = float(n)/float(n_tot)
+            atomic_number = atomic_numbers[atom[0]]
+            struct = reference_states[atomic_number]['symmetry']
+            if struct == 'fcc':
+                a = reference_states[atomic_number]['a']
+                r += conc * np.linalg.norm([a, a]) / 4.0
+            elif struct == 'bcc':
+                a = reference_states[atomic_number]['a']
+                r += conc * np.linalg.norm([a, a, a]) / 4.0
+            else:
+                raise IOError('{} structure not supported yet'.format(struct))
+
+        return r
+
+    def get_particle_radius(self):
+        """Returns an estimated nanoparticle radius given a
+        concentration of atoms and void fraction of the sphere.
+        Given an average sphere, this is given by the formula
+
+        R_sphere = (n_tot / f)**(1.0/3.0) * R_atom
+
+        where n_tot is the total number of atoms and f is
+        the fill factor of the particle.
+        """
+
+        atomlist = self.atomlist
+        fill_factor = self.fill_factor
+        
+        n_tot = sum([atom[1] for atom in atomlist])
+        R_atom = self.get_avg_radii()
+        R_sphere = (n_tot / fill_factor)**(1.0/3.0) * R_atom
+
+        return R_sphere
+
+    def get_individual(self):
+        """Generates a random sphere of particles given an
+        atomlist and radius. If radius is None, one is 
+        automatically estimated. min_dist and tries_b4_expand
+        are parameters that govern how stricly the proximity
+        of atoms are enforced.
+        """
+
+        atomlist = self.atomlist
+        radius = self.radius
+        fill_factor = self.fill_factor
+        min_dist_factor = self.min_dist_factor
+        tries_b4_expand = self.tries_b4_expand
+        
+        indiv = Atoms()
+
+        if radius is None:
+            radius = self.get_particle_radius()
+
+        avg_radii = self.get_avg_radii()
+        min_dist = min_dist_factor * 2 * avg_radii
+
+        # Create a list of random order of the atoms
+        all_atoms = []
+        for atom in atomlist:
+            all_atoms += [atom[0]] * atom[1]
+
+        random.shuffle(all_atoms)
+
+        for i, atom in enumerate(all_atoms):
+            # Always add the first atom to the origin
+            if i == 0:
+                indiv.append(Atom(atom, (0, 0, 0)))            
+                continue
+
+            # We want to assure atoms are not close together. We do this
+            # by trial and error. At a certain point, we expand the radius
+            # and try again. This is 
+            j = 0
+            while j <= tries_b4_expand:
+
+                # Get a random coordinate in the sphere
+                unit_vec = np.array(self.random_three_vector())
+                D = radius * random.uniform(0, 1.0) ** (1.0/3.0)
+                coord = unit_vec * D
+
+                # Check the distances with other atoms
+                pos = indiv.get_positions()
+                dists = [np.linalg.norm(xyz - coord) for xyz in pos]
+                if min(dists) < min_dist and j < tries_b4_expand:
+                    j += 1
+                elif j == tries_b4_expand:
+                    print('expanded')
+                    radius *= 1.1
+                    j = 0
+                else:
+                    break
+
+            indiv.append(Atom(atom, coord))
+
+        return indiv
+
+
+def rotate(individual1, individual2, conserve_composition=True):
+    """Rotates the two individuals around their centers of mass,
+    splits them in half at the xy-plane, then splices them together.
+    Maintains number of atoms.
+
+    Args:
+        individual1 (Individual): The first parent
+        individual2 (Individual): The second parent
+        conserve_composition (bool): default True. If True, conserves composition.
+
+    Returns:
+        Individual: The first child
+        Individual: The second child
+
+    The children are returned without indicies.
+    """
+    #logger = logging.getLogger('output')
+    #logger.info('Rotate Cut/Splice Cx between individual {} and individual {}\n'.format(repr(individual1.index), repr(individual2.index)))
+
+    # Preserve starting conditions of individual
+    ind1c = individual1.copy()
+    ind2c = individual2.copy()
+
+    # Translate individuals so COM is at (0, 0, 0)
+    com1 = ind1c.get_center_of_mass()
+    ind1c.translate(-1 * com1)
+    com2 = ind2c.get_center_of_mass()
+    ind2c.translate(-1 * com2)
+
+    # Select random axis and random angle and rotate individuals
+    for _ in range(0, 10):
+        rax = random.choice(['x', '-x', 'y', '-y', 'z', '-z'])
+        rang = random.random() * 90
+        ind1c.rotate(rax, a=rang, center='COM', rotate_cell=False)
+        # Search for atoms in individual 1 that are above the xy plane
+        above_xy_plane1 = Atoms(cell=individual1.get_cell(), pbc=individual1.get_pbc())
+        indices1 = []
+        for atom in ind1c:
+            if atom.z >= 0:
+                above_xy_plane1.append(atom)
+                indices1.append(atom.index)
+        if len(above_xy_plane1) < 2 or len(above_xy_plane1) > len(ind1c):
+            # Try again; unrotate ind1c
+            ind1c.rotate(rax, a=-1*rang, center='COM', rotate_cell=False)
+        else:
+            break
+    ind2c.rotate(rax, a=rang, center='COM', rotate_cell=False)
+
+    # Generate `above_xy_plane2`, with the same concentration as `above_xy_plane1` if needed
+    above_xy_plane2 = Atoms(cell=individual2.get_cell(), pbc=individual2.get_pbc())
+    indices2 = []
+    dellist = []
+    if conserve_composition:
+        symbols = list(set(above_xy_plane1.get_chemical_symbols()))
+        # The below list contains atoms from ind2c, whereas `above_xy_plane1` contains atoms from ind1c
+        atoms_by_symbol = {sym: [atm for atm in ind2c if atm.symbol == sym] for sym in symbols}
+        for atom in above_xy_plane1:
+            if len(atoms_by_symbol[atom.symbol]) > 0:
+                # Get the atom from `atoms_by_symbol` that has the same type as `atom` and the largest `z` value
+                dist = [atom.z for atom in atoms_by_symbol[atom.symbol]]
+                pos = dist.index(max(dist))
+                above_xy_plane2.append(atoms_by_symbol[atom.symbol][pos])
+                indices2.append(atoms_by_symbol[atom.symbol][pos].index)
+                del atoms_by_symbol[atom.symbol][pos]
+            else:
+                dellist.append(atom.index)
+        if dellist:
+            dellist.sort(reverse=True)
+            for atom_index in dellist:
+                del above_xy_plane1[atom_index]
+                del indices1[atom_index]
+    else:
+        for atom in ind2c:
+            if atom.z >= 0:
+                above_xy_plane2.append(atom)
+                indices2.append(atom.index)
+        while len(above_xy_plane2) < len(above_xy_plane1)-len(dellist):
+            # Too many atoms in above_xy_plane1
+            dellist.append(random.choice(above_xy_plane1).index)
+        if dellist:
+            dellist.sort(reverse=True)
+            for atom in dellist:
+                del above_xy_plane1[atom]
+                del indices1[atom]
+        dellist = []
+        while len(above_xy_plane1) < len(above_xy_plane2)-len(dellist):
+            # Too many atoms in above_xy_plane2
+            dellist.append(random.choice(above_xy_plane2).index)
+        if dellist:
+            dellist.sort(reverse=True)
+            for atom in dellist:
+                del above_xy_plane2[atom]
+                del indices2[atom]
+
+    below_xy_plane1 = Atoms()
+    below_xy_plane2 = Atoms()
+    below_xy_plane2 = Atoms(cell=individual2.get_cell(), pbc=individual2.get_pbc())
+    for atom in ind2c:
+        if atom.index not in indices2:
+            below_xy_plane2.append(atom)
+    below_xy_plane1 = Atoms(cell=individual1.get_cell(), pbc=individual1.get_pbc())
+    for atom in ind1c:
+        if atom.index not in indices1:
+            below_xy_plane1.append(atom)
+
+
+    child1 = above_xy_plane2.copy()
+    child1.extend(below_xy_plane1)
+    child2 = above_xy_plane1.copy()
+    child2.extend(below_xy_plane2)
+
+    # Need to have at least one atom of each specie in atomlist to prevent LAMMPS from erroring
+    if not conserve_composition:
+        for i in range(len(ind1)):
+            atoms1 = [atom for atom in child1 if atom.symbol == individual1[i]]
+            atoms2 = [atom for atom in child2 if atom.symbol == individual1[i]]
+            if len(atoms1) == 0 and len(atoms2) == 0:
+                random.choice(child1).symbol = individual1[i].symbol
+                random.choice(child2).symbol = individual1[i].symbol
+            elif len(atoms1) == 0 and len(atoms2) != 0:
+                del child1[random.randint(0, len(child1))]
+                child1.append(random.choice(atoms2))
+            elif len(atoms1) != 0 and len(atoms2) == 0:
+                del child2[random.randint(0, len(child2))]
+                child2.append(random.choice(atoms1))
+
+    # Unrotate and untranslate the children
+    child1.rotate(rax, a=-1*rang, center='COM', rotate_cell=False)
+    child2.rotate(rax, a=-1*rang, center='COM', rotate_cell=False)
+    child1.translate(com1)
+    child2.translate(com2)
+
+    full_child1 = individual1.copy()
+    del full_child1[:]
+    full_child1.extend(child1)
+    full_child2 = individual2.copy()
+    del full_child2[:]
+    full_child2.extend(child2)
+    return full_child1, full_child2
+
+atomlist = [['Pt', 100, 0, 0]]
+generate = Sphere(atomlist, fill_factor=0.7)
+atoms1 = generate.get_individual()
+atoms2 = generate.get_individual()
+atoms1.set_cell([25, 25, 25])
+atoms2.set_cell([25, 25, 25])
+center = np.sum(atoms1.get_cell(), axis=0) * 0.5
+atoms1.translate(center)
+center = np.sum(atoms2.get_cell(), axis=0) * 0.5
+atoms2.translate(center)
+
+view(atoms1)
+view(atoms2)
+
+child1, child2 = rotate(atoms1, atoms2)
+view(child1)
+view(child2)
+#+END_SRC
+
+#+RESULTS:
 

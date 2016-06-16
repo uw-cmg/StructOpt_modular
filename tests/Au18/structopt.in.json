@@ -2,19 +2,16 @@
     "globals":
     {
         "USE_MPI4PY": false,
-        "MPMD": 16,
+        "MPMD": 16
     },
     "generators": {
         "structure_type": "cluster",
-	"atomlist": [["Au", 18, 0, 0]],
+	"atomlist": [["Au", 50, 0, 0]],
 	"cell": [25, 25, 25],
         "initializers": [
             {
                 "number_of_individuals": 4,
-                "data": {
-		    "sphere": {"fill_factor": 0.5
-		    }
-                }
+                "data": {"sphere": {"fill_factor": 0.5}}
             }
         ]
     },
@@ -27,7 +24,7 @@
             1.0
         ],
         "LAMMPS": {
-            "keep_files": true, 
+            "keep_files": false,
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
@@ -41,7 +38,7 @@
             "LAMMPS"
         ],
         "LAMMPS": {
-            "keep_files": true, 
+            "keep_files": false,
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
@@ -51,14 +48,14 @@
     },
     "convergence":{
 	"maxgen": 10
-    }
+    },
     "mutations": {
         "options": {
-            "move_atoms": 0.70,
-            "swap_positions": 0.05,
-            "swap_species": 0.10,
-            "rotate_atoms": 0.05,
-            "rotate_cluster": 0.10
+            "move_atoms": 0.0,
+            "swap_positions": 0.0,
+            "swap_species": 0.0,
+            "rotate_atoms": 0.0,
+            "rotate_cluster": 0.0
         },
         "kwargs": {}
     },
@@ -67,13 +64,13 @@
     },
 
     "crossovers": {
-        "options": {"rotate": 0.0}
+        "options": {"rotate": 1.0}
     },
     "predators": {
         "options": {"best": 1.0}
     },
     "selections": {
-        "options": {"random_selection": 1.0}
+        "options": {"rank": 1.0}
     },
 
     "fileio": {},

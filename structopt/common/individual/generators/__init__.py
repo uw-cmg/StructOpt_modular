@@ -51,7 +51,7 @@ def generate(individual, **kwargs):
     module = import_module(module)
     Generator = getattr(module, name.title())
 
-    # Get an atoms object form the generator and modify the individual
+    # Get an atoms object from the generator and modify the individual
     atomlist = structopt.parameters.generators.atomlist
     params = kwargs[name]
     generator = Generator(atomlist, **params)
