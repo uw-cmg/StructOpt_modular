@@ -5,6 +5,7 @@ from bisect import bisect
 
 import structopt
 from .random_selection import random_selection
+from .rank import rank
 from structopt.tools import root, single_core, parallel
 
 
@@ -33,7 +34,7 @@ class Selections(object):
         pairs = self.selected_selection(population=population,
                                         fits=fits,
                                         prob=self.parameters.crossover_probability)
-
+        print(fits)
         self.post_processing(pairs)
         return pairs
 
@@ -48,3 +49,7 @@ class Selections(object):
     def random_selection(population, fits, prob):
         return random_selection(population, fits, prob=prob)
 
+    @staticmethod
+    @functools.wraps(rank)
+    def rank(population, fits, prob):
+        return random_selection(population, fits, prob=prob)
