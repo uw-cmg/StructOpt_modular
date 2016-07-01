@@ -46,7 +46,7 @@ Architecture Details
 """"""""""""""""""""
 
 .. toctree::
-    :maxdepth: 0
+    :maxdepth: 1
 
     core_concepts
     parallelism/index
@@ -56,7 +56,7 @@ Contents
 --------
 
 .. toctree::
-    :maxdepth: 0
+    :maxdepth: 1
 
     setup
     parameters

@@ -78,7 +78,7 @@ Mutations
 Predators and Predator Selection Schemes
 ----------------------------------------
 
-`Roulette Wheel Selection` <https://en.wikipedia.org/wiki/Fitness_proportionate_selection>`_
+`Roulette Wheel Selection <https://en.wikipedia.org/wiki/Fitness_proportionate_selection>`_
 
 Fingerprinters
 --------------

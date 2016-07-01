@@ -3,7 +3,6 @@ import subprocess
 import math
 import time
 from collections import defaultdict
-from mpi4py import MPI
 
 import structopt
 from structopt.tools.parallel import root, single_core, parallel, parse_MPMD_cores_per_structure
@@ -16,6 +15,8 @@ def fitness(population):
     Args:
         population (Population): the population to evaluate
     """
+    from mpi4py import MPI
+
     to_fit = [individual for individual in population if not individual._fitted]
 
     if to_fit:

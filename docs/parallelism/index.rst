@@ -7,7 +7,7 @@ StructOpt has two parallelization mechanisms. The first is the simplest case whe
 
 The second parallelization method, called MPMD (via ``MPI_Comm_spawn_multiple``), is a type of advanced dynamic process management but remains relatively easy to use within StructOpt. It allows MPI code to be used within modules and for those modules to be processes on an arbitrary number of cores.
 
-For functions that are only run on the root core (e.g. crossovers and mutations), the `root decorator <https://github.com/uw-cmg/StructOpt_modular/blob/master/structopt/tools/parallel.py`_ is used on the main ``fitness`` or ``relaxation`` function to broadcast the return value of the function to all cores.
+For functions that are only run on the root core (e.g. crossovers and mutations), the `root decorator <https://github.com/uw-cmg/StructOpt_modular/blob/master/structopt/tools/parallel.py>`_ is used on the main ``fitness`` or ``relaxation`` function to broadcast the return value of the function to all cores.
 
 
 
@@ -36,8 +36,16 @@ Unfortunately, it is impossible to predict the number of structures that will be
 mpi4py: One structure per core
 ==============================
 
-# TODO: Change OpenMPI 1.10.2 to the correct version after the bugfixes have been made. In the meantime, use ``-mca btl tcp,sm,self`` to use TCP rather than infiniband.
-Note: mpi4py needs to be installed from source against OpenMPI 1.10.2. Follow the instructions here https://media.readthedocs.org/pdf/mpi4py/latest/mpi4py.pdf under "3.3: Using distutils". In short:
+Main idea:  One structure per core, or multiple structures per core that execute serially in a for-loop. The module must be written in python (or callable from python like LAMMPS through ASE) and implemented directly into StructOpt.
+
+`mpi4py <https://mpi4py.readthedocs.io/en/stable/>`_ allows MPI commands to be run within python. 
+
+Installation
+""""""""""""
+
+TODO: Change OpenMPI 1.10.2 to the correct version after the bugfixes have been made. In the meantime, use ``-mca btl tcp,sm,self`` to use TCP rather than infiniband.
+
+Note: mpi4py needs to be installed from source against OpenMPI 1.10.2. Follow the instructions `here <https://media.readthedocs.org/pdf/mpi4py/latest/mpi4py.pdf>`_ under "3.3: Using distutils". In short:
 
 ::
 
@@ -47,10 +55,6 @@ Note: mpi4py needs to be installed from source against OpenMPI 1.10.2. Follow th
     cd mpi4py-X.Y
     python setup.py build
     python setup.py install --user
-
-Main idea:  One structure per core, or multiple structures per core that execute serially in a for-loop. The module must be written in python (or callable from python like LAMMPS through ASE) and implemented directly into StructOpt.
-
-`mpi4py <https://mpi4py.readthedocs.io/en/stable/>`_ allows MPI commands to be run within python. 
 
 
 MPMD: Multiple cores per structure
