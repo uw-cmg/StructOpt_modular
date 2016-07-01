@@ -97,7 +97,7 @@ Architecture Details
 
     workflow
     core_concepts
-    parallelism
+    parallelism/index
 
 Classes and Functions
 =====================
