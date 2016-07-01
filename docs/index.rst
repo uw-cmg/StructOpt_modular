@@ -6,6 +6,10 @@
    See the following link for documentation syntax:
    https://pythonhosted.org/an_example_pypi_project/sphinx.html
 
+   TODO:  see this link for an example documentation layout:
+   http://topik.readthedocs.io/en/latest/api/topik.html
+
+
 StructOpt Documentation
 ########################
 

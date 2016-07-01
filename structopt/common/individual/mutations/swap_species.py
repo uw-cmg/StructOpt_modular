@@ -27,7 +27,7 @@ def swap_species(individual, max_natoms=0.20):
         random.shuffle(atom_indices)  # Using random.shuffle on the indices guarantees no duplicates
         atom_indices = atom_indices[:natoms_to_move]
         # Convert e.g. [1, 2, 3, 4, 5, 6, 7, 8] to [(1, 2), (3, 4), (5, 6), (7, 8)]
-        pairs = [(atom_indices[2*i], atom_indices[2*i+1]) for i in range(max_natoms//2)]
+        pairs = [(atom_indices[2*i], atom_indices[2*i+1]) for i in range(natoms_to_move//2)]
         for index1, index2 in pairs:
             atom1 = individual[index1]
             atom2 = individual[index2]

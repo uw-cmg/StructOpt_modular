@@ -27,7 +27,10 @@ class Relaxations(object):
         """
         for module in self.modules:
             module.relax(individual)
+        individual._relaxed = True
+        individual._fitted = False
         return None
+
 
     @single_core
     def post_processing(self):

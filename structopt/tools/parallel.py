@@ -76,6 +76,11 @@ def allgather(stuff, stuffs_per_core):
 
         Now for the code that precedes ``allgather()`` and then calls ``allgather()``::
 
+            # This for-loop modifies different parts of `values` on each core by
+            # converting some elements in `values` from an int to a str.
+            # We then want to collect the values that each core independently updated
+            # and allgather them so that every core has all of the updated values,
+            # even though each core only did part of the work.
             for i in stuffs_per_core[rank]:
                 values[i] = str(inds[i])
             x = allgather(values, stuffs_per_core)
@@ -83,12 +88,20 @@ def allgather(stuff, stuffs_per_core):
     """
     if structopt.parameters.globals.USE_MPI4PY:
         from mpi4py import MPI
-        stuffs_per_rank = MPI.COMM_WORLD.allgather(stuff)
-        correct_stuff = [None for _ in range(np.amax(list(stuffs_per_core.values()))+1)]
-        #correct_stuff = [None for _ in range(sum(len(l) for l in stuffs_per_rank))]
+        # The lists in stuffs_per_core all need to be of the same length 
+        amount_of_stuff = 0
+        max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
+        for rank, stuffs in stuffs_per_core.items():
+            amount_of_stuff += len(stuffs)
+            while len(stuffs) < max_stuffs_per_core:
+                stuffs.append(None)
+
+        all_stuffs_per_core = MPI.COMM_WORLD.allgather(stuff)
+        correct_stuff = [None for _ in range(amount_of_stuff)]
         for rank, indices in stuffs_per_core.items():
             for index in indices:
-                correct_stuff[index] = stuffs_per_rank[rank][index]
+                if index is not None:
+                    correct_stuff[index] = all_stuffs_per_core[rank][index]
 
         # If something didn't get sent, use the value on the core
         for i, thing in enumerate(correct_stuff):

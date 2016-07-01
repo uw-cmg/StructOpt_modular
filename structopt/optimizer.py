@@ -31,20 +31,27 @@ class Optimizer(object):
         self.converged = False
 
     def run(self):
+        if structopt.parameters.globals.rank == 0:
+            print("Starting main Opimizer loop!")
         while not self.converged:
             self.step()
         if structopt.parameters.globals.rank == 0:
             print("Finished!")
 
     def step(self):
+        if structopt.parameters.globals.USE_MPI4PY:
+            from mpi4py import MPI
+            MPI.COMM_WORLD.Barrier()
         if structopt.parameters.globals.rank == 0:
             print("Starting generation {}".format(self.generation))
         sys.stdout.flush()
         if self.generation > 0:
             fits = [individual._fitness for individual in self.population]
             pairs = self.population.select(fits)
-            self.population.crossover(pairs)
-            self.population.mutate()
+            crossed_population = self.population.crossover(pairs)
+            self.population.replace(crossed_population)
+            mutated_population = self.population.mutate()
+            self.population.replace(mutated_population)
         self.population.relax()
         fits = self.population.fitness()
         self.population.kill(fits)

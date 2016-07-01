@@ -17,6 +17,9 @@ def generate(individual, **kwargs):
                       or a different generator function
     """
 
+    if not kwargs:
+        return None
+
     # If we are reading from a file, load the atoms and return None
     if 'filenames' in kwargs or 'filename' in kwargs:
         if 'filenames' in kwargs:

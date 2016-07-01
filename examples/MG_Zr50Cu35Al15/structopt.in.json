@@ -1,8 +1,11 @@
 {
     "globals":
     {
-        "USE_MPI4PY": false,
-        "MPMD": 16
+        "USE_MPI4PY": true,
+        "MPMD": 4
+    },
+    "convergence": {
+        "maxgen": 10
     },
     "generators": {
         "structure_type": "cluster",

@@ -35,12 +35,15 @@ def fitness(population):
         print("Running LAMMPS fitness evaluation on individual {}".format(individual.index))
         energy = individual.fitnesses.LAMMPS.get_energy(individual)
         individual.LAMMPS = energy
-        logger.info('Individual {0} for LAMPPS evaluation had energy {1}'.format(i, energy))
+        logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.index, energy))
 
     fits = [individual.LAMMPS for individual in population]
-
     if structopt.parameters.globals.USE_MPI4PY:
         fits = allgather(fits, individuals_per_core)
 
-    return fits
+    # Save the fitness value for the module to each individual after they have been allgathered
+    for i, fit in enumerate(fits):
+        to_fit[i].LAMMPS = fit
+
+    return [individual.LAMMPS for individual in population]
 

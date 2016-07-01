@@ -1,6 +1,9 @@
 import logging
 import subprocess
 import math
+import time
+from collections import defaultdict
+from mpi4py import MPI
 
 import structopt
 from structopt.tools import root, single_core, parallel
@@ -26,21 +29,39 @@ def fitness(population):
 
         logger = logging.getLogger('output')
 
-        # Setup each individual and get the command for each individual
-        commands = []
+        # Setup each individual and get the inputs for each individual that need to be passed into the spawn
+        multiple_spawn_args = defaultdict(list)
         for individual in to_fit:
-            command = individual.fitnesses.FEMSIM.get_command(individual)
-            commands.append(command)
+            spawn_args = individual.fitnesses.FEMSIM.get_spawn_args(individual)
+            for arg_name, arg in spawn_args.items():
+                multiple_spawn_args[arg_name].append(arg)
 
-        # Run the parallelized `mpiexec` command
-        commands = ['-np {cores} {command}'.format(command=command, cores=cores_per_individual) for command in commands]
-        command = 'mpiexec {}'.format(' : '.join(commands))
-        logger.info("Running: {}".format(command))
-        print("Running: {}".format(command))
-        subprocess.call(command, shell=True, stdout=subprocess.DEVNULL)
+        # Make sure each key in `multiple_spawn_args` has the same number of elements and set `count` to that value
+        count = -1
+        for key, value in multiple_spawn_args.items():
+            if count != -1:
+                assert len(value) == count
+            count = len(value)
+
+        # Create MPI.Info objects from the kwargs dicts in multiple_spawn_args['info'] for each rank
+        infos = [MPI.Info.Create() for _ in multiple_spawn_args['info']]
+        for i, info in enumerate(infos):
+            for key, value in multiple_spawn_args['info'][i].items():
+                info.Set(key, value)
+
+        # Run the multiple spawn
+        print("Spawning {} femsim processes, each with {} cores".format(count, cores_per_individual))
+        MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'],
+                                     args=multiple_spawn_args['args'],
+                                     maxprocs=[cores_per_individual]*count,
+                                     info=infos
+                                     )
 
         # Collect the results for each chisq and return them
         for i, individual in enumerate(population):
+            while not individual.fitnesses.FEMSIM.has_finished():
+                time.sleep(0.1)
+            time.sleep(0.1)
             chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
             individual.FEMSIM = chisq
             logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))

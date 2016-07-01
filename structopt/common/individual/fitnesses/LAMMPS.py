@@ -7,6 +7,7 @@ class LAMMPS(object):
 
     @single_core
     def __init__(self):
+        # These variables never change
         self.parameters = structopt.parameters.fitnesses.LAMMPS
 
 

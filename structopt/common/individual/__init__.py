@@ -75,6 +75,21 @@ class Individual(ase.Atoms):
         self.__dict__.update(state)
 
 
+    def __str__(self):
+        return '<Individual {}>'.format(self.index)
+    __repr__ = __str__
+
+
+    def update(self, other):
+        """Meant to update self from an individual that has been sent from an MPI call.
+        The issue is that some parts of an individual cannot be passed through MPI calls,
+        but we don't want to fully lose them. Therefore when an Individual is passed
+        through an MPI call from core A to core B, the individual on core B will be
+        updated with the new data from core A but will retain the individual's information
+        on core B that could not be transfered."""
+        self.__dict__.update(other.__dict__)
+
+
     @parallel
     def mutate(self):
         """Mutate an individual.
@@ -95,8 +110,6 @@ class Individual(ase.Atoms):
             individual (Individual): the individual to relax
         """
         self.relaxations.relax(self)
-        self._relaxed = True
-        self._fitted = False
         self.relaxations.post_processing()
 
 

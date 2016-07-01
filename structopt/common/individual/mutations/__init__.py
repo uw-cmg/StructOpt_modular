@@ -19,6 +19,7 @@ class Mutations(object):
 
     @single_core
     def __init__(self):
+        # These variables never change
         self.parameters = structopt.parameters.mutations
         self.kwargs = defaultdict(dict)
         self.kwargs.update( {getattr(self, name): kwords for name, kwords in self.parameters.kwargs.items()} )
@@ -27,6 +28,7 @@ class Mutations(object):
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
 
+        # This parameter does not need to exist between generations
         self.selected_mutation = None
 
     @single_core

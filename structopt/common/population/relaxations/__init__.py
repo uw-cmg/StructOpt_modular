@@ -26,9 +26,11 @@ class Relaxations(object):
         """
         logger = logging.getLogger("default")
         to_relax = [individual for individual in population if not individual._relaxed]
-        logger.info("Relaxing individuals: {}".format(to_relax))
+        logger.info("Found {} individuals to relax on core {}: {}".format(len(to_relax), structopt.parameters.globals.rank, to_relax))
+        #print("Found {} individuals to relax on core {}: {}".format(len(to_relax), structopt.parameters.globals.rank, to_relax))
         for i, module in enumerate(self.modules):
-            print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
+            if structopt.parameters.globals.rank == 0:
+                print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
             module.relax(population)
 
         for individual in population:

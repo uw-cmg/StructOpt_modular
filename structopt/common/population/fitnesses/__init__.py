@@ -28,12 +28,9 @@ class Fitnesses(object):
         fitnesses = np.zeros((len(population),), dtype=np.float)
         # Run each fitness module on the population
         for i, module in enumerate(self.modules):
-            print("Running fitness {} on the entire population".format(module.__name__.split('.')[-1]))
+            if structopt.parameters.globals.rank == 0:
+                print("Running fitness {} on the entire population".format(module.__name__.split('.')[-1]))
             fits = module.fitness(population)
-
-            # Save the fitness value for the module to each individual
-            for j, individual in enumerate(population):
-                setattr(individual, self.parameters.modules[i], fits[j])
 
             # Calculate the full objective function with weights
             fits = np.multiply(fits, self.parameters.weights[i])
