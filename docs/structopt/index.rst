@@ -1,33 +1,23 @@
-structopt.Optimizer
-##########################
+StructOpt Package
+-----------------
 
-.. autoclass:: structopt.Optimizer
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
-
+Submodules
+===========
 
 .. toctree::
-    :maxdepth: 1
 
-    structopt/index
-    structopt/common/population/index
-    structopt/common/population/crossovers
-    structopt/common/population/fitnesses
-    structopt/common/population/relaxations
-    structopt/common/population/mutations
-    structopt/common/population/predators
-    structopt/common/population/selections
-    structopt/common/individual/index
-    structopt/common/individual/mutations
-    structopt/common/individual/fitnesses
-    structopt/common/individual/relaxations
-    structopt/common/individual/generators
-    structopt/common/individual/fingerprinters
-    structopt/io
-    structopt/postprocessing
-    structopt/tools
-   
+    io
+    tools
+    postprocessing
 
+
+The Optimizer
+=============
+
+.. toctree::
+    :maxdepth: 100
+
+    optimizer
+    common/individual/index
+    common/population/index
 

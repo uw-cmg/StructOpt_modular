@@ -5,7 +5,7 @@ StructOpt is written in Python 3 and as such requires a working Python 3 install
 
 
 Python Libraries
-================
+----------------
 
 ::
 
@@ -16,7 +16,7 @@ Python Libraries
     # Install mpi4py from source (below)
 
 mpi4py
-------
+======
 
 On Madison's ACI cluster:
 
@@ -25,7 +25,7 @@ On Madison's ACI cluster:
     module load compile/intel
     module load mpi/intel/openmpi-1.10.2
 
-Follow these instructions:  http://mpi4py.readthedocs.io/en/stable/install.html#using-distutils
+Follow `these <http://mpi4py.readthedocs.io/en/stable/install.html#using-distutils>`_ instructions:  
 
 ::
 
@@ -39,14 +39,14 @@ You can test your installation by following `these <http://mpi4py.readthedocs.io
 
 
 Installing StructOpt
-====================
+--------------------
 
-To get the code, fork and clone the StructOpt repository or download the zip at `https://github.com/uw-cmg/StructOpt_modular <https://github.com/uw-cmg/StructOpt_modular>`_. Add the location of the StructOpt folder (e.g. ``$HOME/repos/StructOpt``) to your ``PATH`` environment variable.
+To get the code, fork and clone the StructOpt repository or download the zip `here <https://github.com/uw-cmg/StructOpt_modular>`_. Add the location of the StructOpt folder (e.g. ``$HOME/repos/StructOpt``) to your ``PATH`` environment variable.
 
 Create an environment variable called ``STRUCTOPT_HOME`` with the same folder location as you added to your path.
 
 
 Additional Modules
-==================
+------------------
 
 Depending on the type of calculation you wish to run, you will need to install specific relaxation and fitness modules. VASP and LAMMPS are two examples that function as both a relaxation and fitness. They can both move atoms and relax the structure, and they output an energetic term that quantifies how "good" or fit the input structure is. These modules should be installed using their standard installation procedures unless specified otherwise in the `Modules <>`_ section.

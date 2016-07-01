@@ -16,7 +16,7 @@ Welcome to StructOpt's documentation!
 StructOpt is a reverse structure determination toolkit.
 
 What is reverse structure determination?
-----------------------------------------
+========================================
 
 Reverse structure determination is a type of structural refinement that iteratively modifies and optimizes a structural model. In atomistic simulations, the positions of the atoms are moved within the model at every step. After the atoms have moved, the structure is evaluated to see how "good" it is. If the structure is "better" than the previous step, the moved atoms are more likely to persist into the next generation. This process is repeated many times until acceptable structure(s) have been generated.
 
@@ -26,10 +26,10 @@ The specific algorithms that can be used in reverse structure determination are 
 
 
 Overview of StructOpt
-=====================
+---------------------
 
 User Documentation
-------------------
+==================
 
 StructOpt is a structure optimization framework that incorportates multiple forward simulation techniques into its optimization scheme with the goal of identifying stable and realistic atomic structures. It is designed with modularity in mind, and encourages simplicity in both its codebase and usage without sacrificing powerful functionality. Nearly any forward simulation technique that takes an atomic model as input and outputs a fitness value can be integrated into this framework.
 
@@ -40,23 +40,23 @@ StructOpt serves the purpose of structure refinment for multiple different mater
 The :ref:`examples` section provides multiple examples of basic StructOpt configurations. Details on the inputs and outputs can be found in the :ref:`parameters` and :ref:`results` sections, respectively. Details on the many options currently available for StructOpt are provided in the :ref:`parameters` section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled :ref:`troubleshooting`.
 
 Developer Documentation
------------------------
+=======================
 
 Architecture Details
 """"""""""""""""""""
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 0
 
     core_concepts
     parallelism/index
 
 
 Contents
-========
+--------
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 0
 
     setup
     parameters
@@ -68,7 +68,7 @@ Contents
     API Reference <structopt/index>
 
 Contributing
-============
+------------
 
 Bug fixes and error reports are always welcome. We accept PRs and will try to fix issues that have detailed descriptions and are reproducable in a timely fashion.
 
@@ -76,7 +76,7 @@ If you have a forward simulation module that you wish to contribute, please make
 
 
 License Agreement
-=================
+-----------------
 
 StructOpt is distributed under the `MIT license <https://opensource.org/licenses/MIT>`_, reproduced below:
 
@@ -90,7 +90,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 
 Index and Search
-================
+----------------
 
 * :ref:`genindex`
 * :ref:`modindex`

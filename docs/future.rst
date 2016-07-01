@@ -1,8 +1,8 @@
 Future Work
 ###########
 
-* Additional types of optimzers (such as particle swarm)
+* Add additional optimzers (such as particle swarm)
 
-* Uncertainty quantification
+* Implement uncertainty quantification
 
-* Baysian statistics to estimate and automate setting correct values of the weights between modules in the cost function
+* Implement Baysian statistics to estimate and automate setting correct values of the weights between modules in the cost function
