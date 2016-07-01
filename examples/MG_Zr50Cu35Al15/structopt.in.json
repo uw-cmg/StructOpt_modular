@@ -1,9 +1,6 @@
 {
     "globals":
-    {
-        "USE_MPI4PY": true,
-        "MPMD": 4
-    },
+    { },
     "convergence": {
         "maxgen": 10
     },
@@ -34,6 +31,8 @@
             1.0
         ],
         "LAMMPS": {
+            "USE_MPI4PY": true,
+            "MPMD_cores_per_structure": 0,
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -42,6 +41,8 @@
             "thermo_steps": 1000
         },
         "FEMSIM": {
+            "USE_MPI4PY": false,
+            "MPMD_cores_per_structure": "2-3",
             "parameter_filename": "$HOME/femsim-hrmc/parameters/femsim.in",
             "vk_data_filename": "$HOME/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
             "xsize": 28.2842712474619,
@@ -61,12 +62,18 @@
             "LAMMPS"
         ],
         "LAMMPS": {
+            "USE_MPI4PY": true,
+            "MPMD_cores_per_structure": 0,
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam/alloy", 
             "potential_file": "$STRUCTOPT_HOME/potentials/ZrCuAl2011.eam.alloy", 
             "thermo_steps": 1000
+        },
+        "hard_sphere_cutoff": {
+            "USE_MPI4PY": true,
+            "MPMD_cores_per_structure": 0
         }
     },
     "mutations": {

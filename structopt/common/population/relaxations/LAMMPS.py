@@ -13,7 +13,7 @@ def relax(population):
     """
 
     to_relax = [individual for individual in population if not individual._relaxed]
-    if structopt.parameters.globals.USE_MPI4PY:
+    if structopt.parameters.relaxations.LAMMPS.USE_MPI4PY:
         ncores = structopt.parameters.globals.ncores
     else:
         ncores = 1
@@ -28,6 +28,6 @@ def relax(population):
         assert individual.index == index
         individual.relaxations.LAMMPS.relax(individual)
 
-    if structopt.parameters.globals.USE_MPI4PY:
+    if structopt.parameters.relaxations.LAMMPS.USE_MPI4PY:
         population.allgather(individuals_per_core)
 

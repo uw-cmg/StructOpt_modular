@@ -111,3 +111,24 @@ def allgather(stuff, stuffs_per_core):
         correct_stuff = stuff
     return correct_stuff
 
+
+def parse_MPMD_cores_per_structure(value):
+    """Converts an input ``value`` from a value in the parameter file into a ``{'min': ..., 'max': ...}`` dictionary."""
+    if isinstance(value, int):
+        if int == 0:
+            return None
+        else:
+            return {'min': value, 'max': value}
+    elif isinstance(value, str):
+        if value == 'any':
+            from mpi4py import MPI
+            return {'min': 1, 'max': MPI.COMM_WORLD.Get_size()}
+        elif '-' not in value:
+            value = int(value)
+            return {'min': value, 'max': value}
+        else:
+            min_, max_ = value.split('-')
+            return {'min': int(min_), 'max': int(max_)}
+    else:
+        raise TyeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
+

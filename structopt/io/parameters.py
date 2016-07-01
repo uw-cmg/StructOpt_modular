@@ -17,12 +17,26 @@ def read(input):
 
     parameters.globals.setdefault('output_filename', 'Output')
 
-    parameters.globals.setdefault('USE_MPI4PY', True)
+    # Set the global USE_MPI4PY to false unless one of the modules uses it
+    parameters.globals.setdefault('USE_MPI4PY', False)
+    for module in parameters.relaxations.modules:
+        parameters.relaxations[module].setdefault('USE_MPI4PY', False)
+        parameters.relaxations[module].setdefault('MPMD_cores_per_structure', 0)
+        if parameters.relaxations[module].USE_MPI4PY:
+            parameters.globals.USE_MPI4PY = True
+    for module in parameters.fitnesses.modules:
+        parameters.fitnesses[module].setdefault('USE_MPI4PY', False)
+        parameters.fitnesses[module].setdefault('MPMD_cores_per_structure', 0)
+        if parameters.fitnesses[module].USE_MPI4PY:
+            parameters.globals.USE_MPI4PY = True
+
     if parameters.globals.USE_MPI4PY:
         try:
             from mpi4py import MPI
         except ImportError:
             raise ImportError("mpi4py must be installed to use StructOpt.")
+        if 'Open MPI' not in MPI.get_vendor():
+            raise ImportError("mpi4py must have been installed against Open MPI in order for StructOpt to function correctly.")
         parameters.globals.rank = MPI.COMM_WORLD.Get_rank()
         parameters.globals.ncores = MPI.COMM_WORLD.Get_size()
     else:

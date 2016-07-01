@@ -6,7 +6,7 @@ from collections import defaultdict
 from mpi4py import MPI
 
 import structopt
-from structopt.tools import root, single_core, parallel
+from structopt.tools.parallel import root, single_core, parallel, parse_MPMD_cores_per_structure
 
 
 @root
@@ -19,13 +19,19 @@ def fitness(population):
     to_fit = [individual for individual in population if not individual._fitted]
 
     if to_fit:
-        cores_per_individual = structopt.parameters.globals.ncores // len(to_fit)
+        ncores = structopt.parameters.globals.ncores
+        cores_per_individual = ncores // len(to_fit)
         # Round cores_per_individual down to nearest power of 2
         if cores_per_individual == 0:
             # We have more individuals than cores, so each fitness scheme needs to be run multiple times
             cores_per_individual = 1
 
         pow(2.0, math.floor(math.log2(cores_per_individual)))
+        minmax = parse_MPMD_cores_per_structure(structopt.parameters.fitnesses.FEMSIM.MPMD_cores_per_structure)
+        if cores_per_individual < minmax['min']:
+            cores_per_individual = minmax['min']
+        elif cores_per_individual > minmax['max']:
+            cores_per_individual = minmax['max']
 
         logger = logging.getLogger('output')
 
@@ -50,21 +56,26 @@ def fitness(population):
                 info.Set(key, value)
 
         # Run the multiple spawn
-        print("Spawning {} femsim processes, each with {} cores".format(count, cores_per_individual))
-        MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'],
-                                     args=multiple_spawn_args['args'],
-                                     maxprocs=[cores_per_individual]*count,
-                                     info=infos
-                                     )
+        individuals_per_iteration = ncores // cores_per_individual
+        individuals_per_iteration = min(individuals_per_iteration, len(to_fit))
+        num_iterations = math.ceil(len(to_fit) / individuals_per_iteration)
+        for i in range(num_iterations):
+            j = i * individuals_per_iteration
+            print("Spawning {} femsim processes, each with {} cores".format(individuals_per_iteration, cores_per_individual))
+            MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_per_iteration],
+                                         args=multiple_spawn_args['args'][j:j+individuals_per_iteration],
+                                         maxprocs=[cores_per_individual]*individuals_per_iteration,
+                                         info=infos[j:j+individuals_per_iteration]
+                                         )
 
-        # Collect the results for each chisq and return them
-        for i, individual in enumerate(population):
-            while not individual.fitnesses.FEMSIM.has_finished():
+            # Collect the results for each chisq and return them
+            for i, individual in enumerate(to_fit[j:j+individuals_per_iteration]):
+                while not individual.fitnesses.FEMSIM.has_finished():
+                    time.sleep(0.1)
                 time.sleep(0.1)
-            time.sleep(0.1)
-            chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
-            individual.FEMSIM = chisq
-            logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
+                chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
+                individual.FEMSIM = chisq
+                logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
 
     return [individual.FEMSIM for individual in population]
 

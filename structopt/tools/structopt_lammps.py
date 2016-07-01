@@ -127,7 +127,7 @@ def setup_lammps(parameters, relax):
 
         # Update kwargs
         kwargs['keep_tmp_files'] = True
-        if structopt.parameters.globals.USE_MPI4PY:
+        if structopt.parameters.relaxations.LAMMPS.USE_MPI4PY:
             tmp_dir = os.path.join(os.path.join(path, 'LAMMPSFiles'), 'rank-{0}'.format(rank))
         else:
             tmp_dir = os.path.join(path, 'LAMMPSFiles')
