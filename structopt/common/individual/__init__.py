@@ -56,6 +56,70 @@ class Individual(ase.Atoms):
         generators.generate(self, **kwargs)
 
 
+    def __eq__(self, other):
+        try:
+            return self._fitness == other._fitness
+        except AttributeError:
+            if self._fitness is None and other._fitness is None:
+                return True
+            else:
+                return False
+
+
+    def __ne__(self, other):
+        try:
+            return self._fitness != other._fitness
+        except AttributeError:
+            if self._fitness is None and other._fitness is None:
+                return False
+            else:
+                return True
+
+
+    def __lt__(self, other):
+        try:
+            return self._fitness < other._fitness
+        except AttributeError:
+            if self._fitness is None:
+                return False
+            elif other._fitness is None:
+                return True
+
+
+    def __le__(self, other):
+        try:
+            return self._fitness <= other._fitness
+        except AttributeError:
+            if self._fitness is None and other._fitness is None:
+                return True
+            elif self._fitness is None:
+                return False
+            elif other._fitness is None:
+                return True
+
+
+    def __gt__(self, other):
+        try:
+            return self._fitness > other._fitness
+        except AttributeError:
+            if self._fitness is None:
+                return True
+            elif other._fitness is None:
+                return False
+
+
+    def __ge__(self, other):
+        try:
+            return self._fitness >= other._fitness
+        except AttributeError:
+            if self._fitness is None and other._fitness is None:
+                return True
+            elif self._fitness is None:
+                return True
+            elif other._fitness is None:
+                return False
+
+
     def __getstate__(self):
         # Copy the object's state from self.__dict__ which contains
         # all our instance attributes. Always use the dict.copy()
