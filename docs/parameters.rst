@@ -1,5 +1,5 @@
-Parameters
-##########
+Input Parameters
+################
 
 
 Global Parameters
