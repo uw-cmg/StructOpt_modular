@@ -16,15 +16,26 @@ StructOpt Documentation
 Overview
 ========
 
+User Documentation
+------------------
+
 .. toctree::
     :maxdepth: 2
 
     users
+
+
+Developer Documentation
+-----------------------
+
+.. toctree::
+    :maxdepth: 2
+
     developers
 
 
-Setup
-=====
+Installation and Setup
+======================
 
 .. toctree::
     :maxdepth: 2
@@ -32,13 +43,22 @@ Setup
     setup
 
 
-Calculators
-===========
+Input Parameters
+================
 
 .. toctree::
     :maxdepth: 2
 
-    calculators
+    parameters
+
+
+Results
+=======
+
+.. toctree::
+    :maxdepth: 2
+
+    results
 
 Examples
 ========
@@ -48,6 +68,23 @@ Examples
 
     examples
 
+
+Relaxation and Fitness Modules
+==============================
+
+.. toctree::
+    :maxdepth: 2
+
+    calculators
+
+
+Future Work
+===========
+
+.. toctree::
+   :maxdepth: 2
+
+   future
 
 For Developers
 ##############
@@ -86,6 +123,13 @@ Classes and Functions
     structopt/postprocessing
     structopt/tools
    
+
+Contributing
+============
+
+Bug fixes and error reports are always welcome. We accept PRs and will try to fix issues that have detailed descriptions and are reproducable in a timely fashion.
+
+If you have a forward simulation module that you wish to contribute, please make an issue and the correct people will get email notifications so we can respond.
 
 Index and Search
 ################

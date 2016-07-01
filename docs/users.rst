@@ -1,5 +1,5 @@
-StructOpt User Documentation
-############################
+User Documentation
+##################
 
 StructOpt is a structure optimization framework that incorportates multiple forward simulation techniques into its minimization scheme. It is designed with modularity in mind, and forward simulation techniques that accept an atomic model as input and output a fitness value can be integrated into this framework. [We need much more introduction about reverse structure optimization in general here.]
 
@@ -7,7 +7,7 @@ This documentation serves as both a user and developer guide for StructOpt. Stru
 
 While there are many optional parameters to allow the user great customizability, there are also many default settings that allow for faster more simple runs.
 
-The `Examples <>`_ section provides multiple examples of basic StructOpt configurations. Details on input and output structures can be found in the `Input and Output Syntax <>`_ section. Details on the many options currently available for StructOpt are provided in the `Functionalities <>`_ section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled `Troubleshooting <>`_.
+The `Examples <>`_ section provides multiple examples of basic StructOpt configurations. Details on the inputs and outputs can be found in the `Parameters <>`_ and `Results <>`_ sections, respectively. Details on the many options currently available for StructOpt are provided in the `Functionalities <>`_ section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled `Troubleshooting <>`_.
 
 
 Structure Types

@@ -21,7 +21,7 @@ In terms of MPMD parallelization, StructOpt does two primary things:
 
 3. Step (1) and (2) are repeated until the convergence criteria are satisfied.
 
-Cores/Structure Use Cases
+Cores per Structure Use Cases
 -------------------------
 
 * ``ncores == len(population)``: One core per structure

@@ -1,6 +1,9 @@
 Core Concepts
 #############
 
+Cost Function
+=============
+
 Individual
 ==========
 
@@ -10,15 +13,21 @@ Population
 Crossovers
 ==========
 
+Selection Schemes
+=================
+
 Mutations
 =========
 
 Predators
 =========
 
-Selection Schemes
-=================
+Fingerprinters
+==============
 
 Relaxations
 ===========
+
+Fitnesses
+=========
 

@@ -1,7 +1,7 @@
 Installation and Setup
 ######################
 
-StructOpt is written in Python 3 and as such requires a working Python 3 installation. We recommend setting up an Anaconda virtual environment specifically for StructOpt.
+StructOpt is written in Python 3 and as such requires a working Python 3 installation. We recommend setting up an Anaconda virtual environment exclusively for StructOpt.
 
 
 Python Libraries

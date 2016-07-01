@@ -1,5 +1,5 @@
-StructOpt Developer Documentation
-=================================
+Developer Documentation
+#######################
 
 .. toctree::
     :maxdepth: 1
