@@ -41,7 +41,9 @@ You can test your installation by following `these <http://mpi4py.readthedocs.io
 Installing StructOpt
 ====================
 
-To get the code, fork and clone the StructOpt repository or download the zip at ``https://github.com/uw-cmg/StructOpt_modular``. Add the location of the StructOpt folder (e.g. ``$HOME/repos/StructOpt``) to your ``PATH`` environment variable.
+To get the code, fork and clone the StructOpt repository or download the zip at `https://github.com/uw-cmg/StructOpt_modular <https://github.com/uw-cmg/StructOpt_modular>`_. Add the location of the StructOpt folder (e.g. ``$HOME/repos/StructOpt``) to your ``PATH`` environment variable.
+
+Create an environment variable called ``STRUCTOPT_HOME`` with the same folder location as you added to your path.
 
 
 Additional Modules

@@ -38,7 +38,7 @@
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam/alloy", 
-            "potential_file": "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/ZrCuAl2011.eam.alloy", 
+            "potential_file": "$STRUCTOPT_HOME/potentials/ZrCuAl2011.eam.alloy", 
             "thermo_steps": 1000
         },
         "FEMSIM": {
@@ -65,7 +65,7 @@
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam/alloy", 
-            "potential_file": "$STRUCTOPT_HOME/examples/MG_Zr50Cu35Al15/ZrCuAl2011.eam.alloy", 
+            "potential_file": "$STRUCTOPT_HOME/potentials/ZrCuAl2011.eam.alloy", 
             "thermo_steps": 1000
         }
     },

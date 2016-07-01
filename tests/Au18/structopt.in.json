@@ -28,7 +28,7 @@
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
-            "potential_file": "/home/zxu/research/PtMo-nanoparticles/Au_u3.eam",
+            "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
             "thermo_steps": 1000
         }
     },
@@ -42,7 +42,7 @@
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
             "pair_style": "eam", 
-            "potential_file": "/home/zxu/research/PtMo-nanoparticles/Au_u3.eam",
+            "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
             "thermo_steps": 1000
         }
     },
