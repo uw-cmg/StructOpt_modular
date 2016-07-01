@@ -1,5 +1,5 @@
-Calculators
-===========
+Relaxation and Fitness Modules
+==============================
 
 .. toctree::
     :maxdepth: 1
