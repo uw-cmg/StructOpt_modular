@@ -1,8 +1,6 @@
 {
     "globals":
-    {
-        "USE_MPI4PY": true
-    },
+    { },
     "generators": {
         "structure_type": "cluster",
         "initializers": [
@@ -30,6 +28,7 @@
             1.0
         ],
         "LAMMPS": {
+            "use_mpi4py": true,
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -46,6 +45,7 @@
             "hard_sphere_cutoff"
         ],
         "LAMMPS": {
+            "use_mpi4py": true,
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -53,6 +53,9 @@
             "parallel": true, 
             "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
+        },
+        "hard_sphere_cutoff": {
+            "use_mpi4py": true
         }
     },
     "mutations": {

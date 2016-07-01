@@ -13,13 +13,13 @@ def fitness(population):
     Args:
         population (Population): the population to evaluate
     """
-    if structopt.parameters.fitnesses.LAMMPS.USE_MPI4PY:
+    if structopt.parameters.fitnesses.LAMMPS.use_mpi4py:
         logger = logging.getLogger('by-rank')
     else:
         logger = logging.getLogger('output')
 
     to_fit = [individual for individual in population if not individual._fitted]
-    if structopt.parameters.fitnesses.LAMMPS.USE_MPI4PY:
+    if structopt.parameters.fitnesses.LAMMPS.use_mpi4py:
         ncores = structopt.parameters.globals.ncores
     else:
         ncores = 1
@@ -38,7 +38,7 @@ def fitness(population):
         logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.index, energy))
 
     fits = [individual.LAMMPS for individual in population]
-    if structopt.parameters.fitnesses.LAMMPS.USE_MPI4PY:
+    if structopt.parameters.fitnesses.LAMMPS.use_mpi4py:
         fits = allgather(fits, individuals_per_core)
 
     # Save the fitness value for the module to each individual after they have been allgathered

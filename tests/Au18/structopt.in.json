@@ -1,9 +1,6 @@
 {
     "globals":
-    {
-        "USE_MPI4PY": false,
-        "MPMD": 16
-    },
+    { },
     "generators": {
         "structure_type": "cluster",
 	"atomlist": [["Au", 50, 0, 0]],
@@ -24,6 +21,8 @@
             1.0
         ],
         "LAMMPS": {
+            "use_mpi4py": true,
+            "MPMD": 0,
             "keep_files": false,
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -38,6 +37,8 @@
             "LAMMPS"
         ],
         "LAMMPS": {
+            "use_mpi4py": true,
+            "MPMD": 0,
             "keep_files": false,
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -46,8 +47,8 @@
             "thermo_steps": 1000
         }
     },
-    "convergence":{
-	"maxgen": 10
+    "convergence": {
+	    "maxgen": 10
     },
     "mutations": {
         "options": {

@@ -12,7 +12,7 @@ def relax(population):
         population (Population): the population to relax
     """
     to_relax = [individual for individual in population if not individual._relaxed]
-    if structopt.parameters.relaxations.hard_sphere_cutoff.USE_MPI4PY:
+    if structopt.parameters.relaxations.hard_sphere_cutoff.use_mpi4py:
         ncores = structopt.parameters.globals.ncores
     else:
         ncores = 1
@@ -28,6 +28,6 @@ def relax(population):
         #individual.relaxations.HardSphereCutoff.relax(individual)
         individual.relaxations.hard_sphere_cutoff.relax(individual)
 
-    if structopt.parameters.relaxations.hard_sphere_cutoff.USE_MPI4PY:
+    if structopt.parameters.relaxations.hard_sphere_cutoff.use_mpi4py:
         population.allgather(individuals_per_core)
 

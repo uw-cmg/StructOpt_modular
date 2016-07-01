@@ -67,7 +67,7 @@ class Population(list):
         See stuctopt.tools.parallel.allgather for a similar function.
         """
         # TODO Make this call tool/parallel.allgather rather than reimplement it
-        if structopt.parameters.globals.USE_MPI4PY:
+        if structopt.parameters.globals.use_mpi4py:
             from mpi4py import MPI
             # The lists in individuals_per_core all need to be of the same length 
             max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())

@@ -20,7 +20,7 @@ def root(method=None, broadcast=True):
             data = method(*args, **kwargs)
         else:
             data = None
-        if structopt.parameters.globals.USE_MPI4PY:  # This if statement exists because the code shouldn't break when not using mpi4py
+        if structopt.parameters.globals.use_mpi4py:  # This if statement exists because the code shouldn't break when not using mpi4py
             from mpi4py import MPI
             data = MPI.COMM_WORLD.bcast(data, root=0)
         return data
@@ -86,7 +86,7 @@ def allgather(stuff, stuffs_per_core):
             x = allgather(values, stuffs_per_core)
             print(x)  # returns:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     """
-    if structopt.parameters.globals.USE_MPI4PY:
+    if structopt.parameters.globals.use_mpi4py:
         from mpi4py import MPI
         # The lists in stuffs_per_core all need to be of the same length 
         amount_of_stuff = 0

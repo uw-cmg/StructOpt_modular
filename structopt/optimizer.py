@@ -39,7 +39,7 @@ class Optimizer(object):
             print("Finished!")
 
     def step(self):
-        if structopt.parameters.globals.USE_MPI4PY:
+        if structopt.parameters.globals.use_mpi4py:
             from mpi4py import MPI
             MPI.COMM_WORLD.Barrier()
         if structopt.parameters.globals.rank == 0:

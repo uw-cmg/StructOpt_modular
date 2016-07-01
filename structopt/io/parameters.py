@@ -17,20 +17,20 @@ def read(input):
 
     parameters.globals.setdefault('output_filename', 'Output')
 
-    # Set the global USE_MPI4PY to false unless one of the modules uses it
-    parameters.globals.setdefault('USE_MPI4PY', False)
+    # Set the global use_mpi4py to false unless one of the modules uses it
+    parameters.globals.setdefault('use_mpi4py', False)
     for module in parameters.relaxations.modules:
-        parameters.relaxations[module].setdefault('USE_MPI4PY', False)
+        parameters.relaxations[module].setdefault('use_mpi4py', False)
         parameters.relaxations[module].setdefault('MPMD_cores_per_structure', 0)
-        if parameters.relaxations[module].USE_MPI4PY:
-            parameters.globals.USE_MPI4PY = True
+        if parameters.relaxations[module].use_mpi4py:
+            parameters.globals.use_mpi4py = True
     for module in parameters.fitnesses.modules:
-        parameters.fitnesses[module].setdefault('USE_MPI4PY', False)
+        parameters.fitnesses[module].setdefault('use_mpi4py', False)
         parameters.fitnesses[module].setdefault('MPMD_cores_per_structure', 0)
-        if parameters.fitnesses[module].USE_MPI4PY:
-            parameters.globals.USE_MPI4PY = True
+        if parameters.fitnesses[module].use_mpi4py:
+            parameters.globals.use_mpi4py = True
 
-    if parameters.globals.USE_MPI4PY:
+    if parameters.globals.use_mpi4py:
         try:
             from mpi4py import MPI
         except ImportError:
