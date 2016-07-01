@@ -37,7 +37,7 @@ This documentation serves as both a user and developer guide for StructOpt.
 
 StructOpt serves the purpose of structure refinment for multiple different materials including nanoparticles, defects, and metallic glasses. As such, it is highly customizable and extendable. There are many different types of simulations that can be set up, which requires getting to know the relevent parameters. Multiple examples are included in this documentation and comments (via issues on our `github page <https://github.com/uw-cmg/StructOpt_modular>`_) are welcome.
 
-The :Examples:`eamples` section provides multiple examples of basic StructOpt configurations. Details on the inputs and outputs can be found in the `Parameters <>`_ and `Results <>`_ sections, respectively. Details on the many options currently available for StructOpt are provided in the `Functionalities <>`_ section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled `Troubleshooting <>`_.
+The :ref:`examples` section provides multiple examples of basic StructOpt configurations. Details on the inputs and outputs can be found in the :ref:`parameters` and :ref:`results` sections, respectively. Details on the many options currently available for StructOpt are provided in the :ref:`parameters` section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled :ref:`troubleshooting`.
 
 Developer Documentation
 -----------------------
@@ -48,7 +48,6 @@ Architecture Details
 .. toctree::
     :maxdepth: 1
 
-    workflow
     core_concepts
     parallelism/index
 
@@ -65,6 +64,7 @@ Contents
     examples
     calculators/index
     future
+    troubleshooting
     API Reference <structopt/index>
 
 Contributing
@@ -78,7 +78,7 @@ If you have a forward simulation module that you wish to contribute, please make
 License Agreement
 =================
 
-StructOpt is distributed under the `MIT license <https://opensource.org/licenses/MIT>_`, reproduced below:
+StructOpt is distributed under the `MIT license <https://opensource.org/licenses/MIT>`_, reproduced below:
 
 Copyright (c) 2016 University of Wisconsin-Madison Computational Materials Group
 
