@@ -1,7 +1,10 @@
+"""Contains functionality for creating and using loggers."""
+
 import logging
 
 
 def initialize_logger(filename="default.log", name="default", level=logging.INFO, disable_output=False):
+    """Initalizes a logger"""
     logger = logging.getLogger(name)
     handler = logging.FileHandler(filename)
     formatter = logging.Formatter("%(asctime)s : %(levelname)s : %(message)s")

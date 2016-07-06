@@ -1,3 +1,5 @@
+"""Contains functionality for reading, writing, and parsing StrcutOpt parameters."""
+
 import json
 import logging
 import os

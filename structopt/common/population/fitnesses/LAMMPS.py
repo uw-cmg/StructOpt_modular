@@ -43,7 +43,7 @@ def fitness(population):
 
     # Save the fitness value for the module to each individual after they have been allgathered
     for i, fit in enumerate(fits):
-        to_fit[i].LAMMPS = fit
+        population[i].LAMMPS = fit
 
     return [individual.LAMMPS for individual in population]
 

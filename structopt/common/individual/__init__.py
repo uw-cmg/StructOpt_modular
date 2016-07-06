@@ -52,8 +52,10 @@ class Individual(ase.Atoms):
 
         # Initialize the ase.Atoms structure
         super().__init__()
-        generators = import_module('structopt.{}.individual.generators'.format(cls_name))
-        generators.generate(self, **kwargs)
+        generate = kwargs.pop('generate', True)
+        if generate:
+            generators = import_module('structopt.{}.individual.generators'.format(cls_name))
+            generators.generate(self, **kwargs)
 
 
     def __eq__(self, other):
@@ -130,7 +132,6 @@ class Individual(ase.Atoms):
         del state['relaxations']
         del state['mutations']
         del state['_calc']
-        del state['_kwargs']
         return state
 
 
@@ -208,7 +209,7 @@ class Individual(ase.Atoms):
         kwargs = self._kwargs.copy()
         kwargs.pop('filenames', None)
         kwargs.pop('filename', None)
-        new = self.__class__(**kwargs, index=self.index)
+        new = self.__class__(**kwargs, generate=True, index=self.index)
         if include_atoms:
             new.arrays = self.arrays.copy()
         else:

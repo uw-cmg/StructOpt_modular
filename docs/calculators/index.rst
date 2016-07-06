@@ -52,5 +52,5 @@ References:  http://pubs.acs.org/doi/abs/10.1021/acsnano.5b05722
 Creating Your Own Module
 ------------------------
 
-Any forward simulation that takes an atomic model as input and outputs a "fitness" value that can be interpreted as a measure of "goodness" of the structure can be integrated into StructOpt.
+Any forward simulation that takes an atomic model as input and outputs a "fitness" value that can be interpreted as a measure of "goodness" of the structure can be integrated into StructOpt. Contact the developers by making an issue on github to get in touch with us.
 

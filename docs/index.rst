@@ -26,10 +26,10 @@ The specific algorithms that can be used in reverse structure determination are 
 
 
 Overview of StructOpt
----------------------
+=====================
 
 User Documentation
-==================
+------------------
 
 StructOpt is a structure optimization framework that incorportates multiple forward simulation techniques into its optimization scheme with the goal of identifying stable and realistic atomic structures. It is designed with modularity in mind, and encourages simplicity in both its codebase and usage without sacrificing powerful functionality. Nearly any forward simulation technique that takes an atomic model as input and outputs a fitness value can be integrated into this framework.
 
@@ -37,10 +37,10 @@ This documentation serves as both a user and developer guide for StructOpt.
 
 StructOpt serves the purpose of structure refinment for multiple different materials including nanoparticles, defects, and metallic glasses. As such, it is highly customizable and extendable. There are many different types of simulations that can be set up, which requires getting to know the relevent parameters. Multiple examples are included in this documentation and comments (via issues on our `github page <https://github.com/uw-cmg/StructOpt_modular>`_) are welcome.
 
-The :ref:`examples` section provides multiple examples of basic StructOpt configurations. Details on the inputs and outputs can be found in the :ref:`parameters` and :ref:`results` sections, respectively. Details on the many options currently available for StructOpt are provided in the :ref:`parameters` section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled :ref:`troubleshooting`.
+The :ref:`examples` section provides multiple examples of basic StructOpt configurations. Details on the inputs and outputs can be found in the :ref:`parameters` and :ref:`outputs` sections, respectively. Details on the many options currently available for StructOpt are provided in the :ref:`parameters` section of this document.  An explanation of commonly generated errors and troubleshooting advice is provided in the section entitled :ref:`troubleshooting`.
 
 Developer Documentation
-=======================
+-----------------------
 
 Architecture Details
 """"""""""""""""""""
@@ -53,14 +53,14 @@ Architecture Details
 
 
 Contents
---------
+========
 
 .. toctree::
     :maxdepth: 1
 
     setup
     parameters
-    results
+    outputs
     examples
     calculators/index
     future
@@ -68,7 +68,7 @@ Contents
     API Reference <structopt/index>
 
 Contributing
-------------
+============
 
 Bug fixes and error reports are always welcome. We accept PRs and will try to fix issues that have detailed descriptions and are reproducable in a timely fashion.
 
@@ -76,7 +76,7 @@ If you have a forward simulation module that you wish to contribute, please make
 
 
 License Agreement
------------------
+=================
 
 StructOpt is distributed under the `MIT license <https://opensource.org/licenses/MIT>`_, reproduced below:
 
@@ -90,7 +90,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 
 Index and Search
-----------------
+================
 
 * :ref:`genindex`
 * :ref:`modindex`

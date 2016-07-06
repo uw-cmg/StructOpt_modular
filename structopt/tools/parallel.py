@@ -41,7 +41,7 @@ def parallel(method):
 
 
 def single_core(method):
-    """A place holder decorator that does nothing. It is purely for documentation."""
+    """A place holder decorator that does nothing except document that the function is designed to be run on a single core."""
     @functools.wraps(method)
     def wrapper(*args, **kwargs):
         return method(*args, **kwargs)
@@ -97,7 +97,7 @@ def allgather(stuff, stuffs_per_core):
                 stuffs.append(None)
 
         all_stuffs_per_core = MPI.COMM_WORLD.allgather(stuff)
-        correct_stuff = [None for _ in range(amount_of_stuff)]
+        correct_stuff = [None for _ in range(structopt.parameters.globals.ncores)]
         for rank, indices in stuffs_per_core.items():
             for index in indices:
                 if index is not None:
