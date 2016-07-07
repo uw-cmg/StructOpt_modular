@@ -13,20 +13,19 @@ from structopt.tools import root, single_core, parallel
 
 
 class Population(list):
-    """A list-like class that contains the Individuals 
-    and the operations to be run on them."""
+    """A list-like class that contains the Individuals and the operations to be run on them."""
 
     @single_core
-    def __init__(self, parameters=None):
-        self.parameters = parameters or structopt.parameters
+    def __init__(self, parameters):
+        self.parameters = parameters
         self.structure_type = self.parameters.generators.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
-        self.crossovers = Crossovers()
-        self.predators = Predators()
-        self.selections = Selections()
-        self.fitnesses = Fitnesses()
-        self.relaxations = Relaxations()
-        self.mutations = Mutations()
+        self.crossovers = Crossovers(self.parameters.crossovers)
+        self.predators = Predators(self.parameters.predators)
+        self.selections = Selections(self.parameters.selections)
+        self.fitnesses = Fitnesses(self.parameters.fitnesses)
+        self.relaxations = Relaxations(self.parameters.relaxations)
+        self.mutations = Mutations(self.parameters.mutations)
 
         # Import the structure type class: e.g from structopt.crystal import Crystal
         # Unfortunately `from` doesn't seem to work implicitly
@@ -37,7 +36,11 @@ class Population(list):
         # Generate/load initial structures
         for structure_information in self.parameters.generators.initializers:
             for i in range(structure_information.number_of_individuals):
-                structure = Structure(index=i, **structure_information.data)
+                structure = Structure(index=i,
+                                      relaxation_parameters=self.parameters.relaxations,
+                                      fitness_parameters=self.parameters.fitnesses,
+                                      mutation_parameters=self.parameters.mutations,
+                                      generator_args=structure_information.data)
                 self.append(structure)
 
         self.total_number_of_individuals = len(self)
@@ -69,40 +72,40 @@ class Population(list):
         See stuctopt.tools.parallel.allgather for a similar function.
         """
         # TODO Make this call tool/parallel.allgather rather than reimplement it
-        if self.parameters.globals.use_mpi4py:
-            from mpi4py import MPI
-            # The lists in individuals_per_core all need to be of the same length 
-            max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())
-            for rank, individuals in individuals_per_core.items():
-                while len(individuals) < max_individuals_per_core:
-                    individuals.append(None)
-     
-            populations_per_rank = MPI.COMM_WORLD.allgather(self)
-            #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
-            #correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
-            #correct_population = [None for _ in range(max_individuals_per_core+1)]
-            correct_population = [None for _ in self]
-            for rank, indices in individuals_per_core.items():
-                for index in indices:
-                    if index is not None:
-                        assert populations_per_rank[rank][index].index == index
-                        correct_population[index] = populations_per_rank[rank][index]
+        from mpi4py import MPI
+        # The lists in individuals_per_core all need to be of the same length 
+        max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())
+        for rank, individuals in individuals_per_core.items():
+            while len(individuals) < max_individuals_per_core:
+                individuals.append(None)
+ 
+        populations_per_rank = MPI.COMM_WORLD.allgather(self)
+        #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
+        #correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
+        #correct_population = [None for _ in range(max_individuals_per_core+1)]
+        correct_population = [None for _ in self]
+        for rank, indices in individuals_per_core.items():
+            for index in indices:
+                if index is not None:
+                    assert populations_per_rank[rank][index].index == index
+                    correct_population[index] = populations_per_rank[rank][index]
 
-            # If something didn't get sent, use the value on the core
-            for i, individual in enumerate(correct_population):
-                if individual is None:
-                    correct_population[i] = self[i]
+        # If something didn't get sent, use the value on the core
+        for i, individual in enumerate(correct_population):
+            if individual is None:
+                correct_population[i] = self[i]
 
-            for i, individual in enumerate(correct_population):
-                # See Individual.__getstate__; the below attributes don't get passed via MPI
-                # so we need to reset them
-                individual.fitnesses = self[i].fitnesses
-                individual.relaxations = self[i].relaxations
-                individual.mutations = self[i].mutations
-                individual._calc = self[i]._calc
-                individual._kwargs = self[i]._kwargs
+        for i, individual in enumerate(correct_population):
+            # See Individual.__getstate__; the below attributes don't get passed via MPI
+            # so we need to reset them
+            # TODO How can I make this dynamic? Can I call __getstate__???
+            individual.fitnesses = self[i].fitnesses
+            individual.relaxations = self[i].relaxations
+            individual.mutations = self[i].mutations
+            individual._calc = self[i]._calc
+            individual._generator_args = self[i]._generator_args
 
-            self.replace(correct_population)
+        self.replace(correct_population)
 
 
     @single_core

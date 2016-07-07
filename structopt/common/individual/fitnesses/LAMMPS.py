@@ -6,9 +6,9 @@ class LAMMPS(object):
     """ """
 
     @single_core
-    def __init__(self, parameters=None):
+    def __init__(self, parameters):
         # These variables never change
-        self.parameters = parameters or structopt.parameters.fitnesses.LAMMPS
+        self.parameters = parameters
 
 
     @single_core
@@ -25,5 +25,5 @@ class LAMMPS(object):
             return individual.LAMMPS
         else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
-            return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False)
+            return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False, use_mpi4py=self.parameters.use_mpi4py)
 

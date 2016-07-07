@@ -48,24 +48,5 @@ def generate(individual, **kwargs):
     # Remove this once multiple generators are supported
     assert len(kwargs) == 1
 
-    # Get the generator object
-    name = list(kwargs.keys())[0]
-    module = 'structopt.common.individual.generators.{}'.format(name.lower())
-    module = import_module(module)
-    Generator = getattr(module, name.title())
-
-    # Get an atoms object from the generator and modify the individual
-    atomlist = structopt.parameters.generators.atomlist
-    params = kwargs[name]
-    generator = Generator(atomlist, **params)
-    atoms = generator.generate()
-    individual.extend(atoms)
-
-    # Most of the time the generated atoms are centerd at the origin
-    # Center them in the middle of the cell. LAMMPS doesn't wrap around
-    individual.set_cell(structopt.parameters.generators.cell)
-    center = np.sum(atoms.get_cell(), axis=0) * 0.5
-    individual.translate(center)
-
     return None
 

@@ -12,10 +12,10 @@ class FEMSIM(object):
     """Contains parameters and functions for running FEMSIM through Python."""
 
     @single_core
-    def __init__(self, parameters=None):
+    def __init__(self, parameters):
         # These variables never change
         self.k = None
-        self.parameters = self.read_inputs(parameters or structopt.parameters.fitnesses.FEMSIM)
+        self.parameters = self.read_inputs(parameters)
         self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)  # Multiply the experimental data by the thickness scaling factor
 
         # These parameteres do not need to exist between generations

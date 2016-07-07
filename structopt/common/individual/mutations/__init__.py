@@ -18,9 +18,9 @@ class Mutations(object):
     """ """
 
     @single_core
-    def __init__(self, parameters=None):
+    def __init__(self, parameters):
         # These variables never change
-        self.parameters = parameters or structopt.parameters.mutations
+        self.parameters = parameters
         self.kwargs = defaultdict(dict)
         self.kwargs.update( {getattr(self, name): kwords for name, kwords in self.parameters.kwargs.items()} )
 

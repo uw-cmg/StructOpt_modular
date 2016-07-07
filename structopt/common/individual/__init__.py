@@ -13,10 +13,13 @@ class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
     @single_core
-    def __init__(self, index=None, **kwargs):
+    def __init__(self, index=None,
+                 load_modules=True,
+                 relaxation_parameters=None, fitness_parameters=None, mutation_parameters=None,
+                 generate=True, generator_args=None):
         """Additional class parameters that extend ASE.Atoms:
             index
-            _kwargs
+            _generator_args
             _relaxed
             _fitted
 
@@ -32,30 +35,28 @@ class Individual(ase.Atoms):
             get_nearest_atom_indices
             get_atom_indices_within_distance_of_atom
         """
-        self._kwargs = kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self
+        self._generator_args = generator_args.copy()  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
         self._fitted = False
         self._relaxed = False
         self._fitness = None
 
         cls_name = self.__class__.__name__.lower()
-        load_modules = kwargs.pop('load_modules', True)
         if load_modules:
             # Load in the appropriate functionality
             fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
             mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
             relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
 
-            self.fitnesses = fitnesses.Fitnesses()
-            self.mutations = mutations.Mutations()
-            self.relaxations = relaxations.Relaxations()
+            self.fitnesses = fitnesses.Fitnesses(parameters=fitness_parameters)
+            self.mutations = mutations.Mutations(parameters=mutation_parameters)
+            self.relaxations = relaxations.Relaxations(parameters=relaxation_parameters)
 
         # Initialize the ase.Atoms structure
         super().__init__()
-        generate = kwargs.pop('generate', True)
         if generate:
             generators = import_module('structopt.{}.individual.generators'.format(cls_name))
-            generators.generate(self, **kwargs)
+            generators.generate(self, **generator_args)
 
 
     def __eq__(self, other):
@@ -206,10 +207,13 @@ class Individual(ase.Atoms):
     @single_core
     def copy(self, include_atoms=True):
         """Return a copy."""
-        kwargs = self._kwargs.copy()
-        kwargs.pop('filenames', None)
-        kwargs.pop('filename', None)
-        new = self.__class__(**kwargs, generate=True, index=self.index)
+        generator_args = self._generator_args.copy()
+        generator_args.pop('filenames', None)
+        generator_args.pop('filename', None)
+        new = self.__class__(index=self.index,
+                             load_modules=True,
+                             relaxation_parameters=self.relaxations.parameters, fitness_parameters=self.fitnesses.parameters, mutation_parameters=self.mutations.parameters,
+                             generate=True, generator_args=generator_args)
         if include_atoms:
             new.arrays = self.arrays.copy()
         else:

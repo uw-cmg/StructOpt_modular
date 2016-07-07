@@ -1,3 +1,4 @@
+import logging
 import subprocess
 
 import structopt
@@ -5,7 +6,7 @@ from structopt.tools import root, single_core, parallel
 
 
 @parallel
-def relax(population):
+def relax(population, parameters):
     """Relax the entire population using LAMMPS.
 
     Args:
@@ -13,11 +14,8 @@ def relax(population):
     """
 
     to_relax = [individual for individual in population if not individual._relaxed]
-    if structopt.parameters.relaxations.LAMMPS.use_mpi4py:
-        ncores = structopt.parameters.globals.ncores
-    else:
-        ncores = 1
-    rank = structopt.parameters.globals.rank
+    ncores = logging.parameters.ncores
+    rank = logging.parameters.rank
 
     individuals_per_core = {r: [] for r in range(ncores)}
     for i, individual in enumerate(to_relax):
@@ -28,6 +26,6 @@ def relax(population):
         assert individual.index == index
         individual.relaxations.LAMMPS.relax(individual)
 
-    if structopt.parameters.relaxations.LAMMPS.use_mpi4py:
+    if parameters.use_mpi4py:
         population.allgather(individuals_per_core)
 

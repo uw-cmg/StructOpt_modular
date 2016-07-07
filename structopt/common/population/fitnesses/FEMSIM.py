@@ -9,7 +9,7 @@ from structopt.tools.parallel import root, single_core, parallel, parse_MPMD_cor
 
 
 @root
-def fitness(population):
+def fitness(population, parameters):
     """Perform the FEMSIM fitness calculation on an entire population.
 
     Args:
@@ -20,7 +20,7 @@ def fitness(population):
     to_fit = [individual for individual in population if not individual._fitted]
 
     if to_fit:
-        ncores = structopt.parameters.globals.ncores
+        ncores = logging.parameters.ncores
         cores_per_individual = ncores // len(to_fit)
         # Round cores_per_individual down to nearest power of 2
         if cores_per_individual == 0:
@@ -28,7 +28,7 @@ def fitness(population):
             cores_per_individual = 1
 
         pow(2.0, math.floor(math.log2(cores_per_individual)))
-        minmax = parse_MPMD_cores_per_structure(structopt.parameters.fitnesses.FEMSIM.MPMD_cores_per_structure)
+        minmax = parse_MPMD_cores_per_structure(parameters.MPMD_cores_per_structure)
         if cores_per_individual < minmax['min']:
             cores_per_individual = minmax['min']
         elif cores_per_individual > minmax['max']:

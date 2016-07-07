@@ -468,8 +468,6 @@ class LAMMPS:
         """Method which reads a LAMMPS dump file."""
         if (lammps_trj == None):
             lammps_trj = self.label + '.lammpstrj'
-        #import structopt
-        #print("LAMMPS_TRJ", lammps_trj, structopt.parameters.globals.rank)  #TODO DELTE this and above import line
 
         f = paropen(lammps_trj, 'r')
         nlines = 0

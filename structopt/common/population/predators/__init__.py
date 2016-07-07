@@ -13,8 +13,8 @@ class Predators(object):
     """ """
 
     @single_core
-    def __init__(self, parameters=None):
-        self.parameters = parameters or structopt.parameters.predators
+    def __init__(self, parameters):
+        self.parameters = parameters
         self.predators = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
         total_probability = sum(self.predators.values())
         self.predators[None] = 1.0 - total_probability

@@ -1,7 +1,24 @@
+import sys
 import functools
 import numpy as np
 
 import structopt
+
+
+def get_rank():
+    if 'mpi4py' in sys.modules:
+        from mpi4py import MPI
+        return MPI.COMM_WORLD.Get_rank()
+    else:
+        return 0
+
+
+def get_size():
+    if 'mpi4py' in sys.modules:
+        from mpi4py import MPI
+        return MPI.COMM_WORLD.Get_size()
+    else:
+        return 0
 
 
 def root(method=None, broadcast=True):
@@ -16,13 +33,15 @@ def root(method=None, broadcast=True):
 
     @functools.wraps(method)
     def wrapper(*args, **kwargs):
-        if structopt.parameters.globals.rank == 0:
-            data = method(*args, **kwargs)
-        else:
-            data = None
-        if structopt.parameters.globals.use_mpi4py:  # This if statement exists because the code shouldn't break when not using mpi4py
+        if broadcast and 'mpi4py' in sys.modules:
             from mpi4py import MPI
+            if MPI.COMM_WORLD.Get_rank() == 0:
+                data = method(*args, **kwargs)
+            else:
+                data = None
             data = MPI.COMM_WORLD.bcast(data, root=0)
+        else:
+            data = method(*args, **kwargs)
         return data
     wrapper.__doc__ += "\n\n(@root) Designed to run on the root node only.\n"
     return wrapper
@@ -86,29 +105,27 @@ def allgather(stuff, stuffs_per_core):
             x = allgather(values, stuffs_per_core)
             print(x)  # returns:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     """
-    if structopt.parameters.globals.use_mpi4py:
-        from mpi4py import MPI
-        # The lists in stuffs_per_core all need to be of the same length 
-        amount_of_stuff = 0
-        max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
-        for rank, stuffs in stuffs_per_core.items():
-            amount_of_stuff += len(stuffs)
-            while len(stuffs) < max_stuffs_per_core:
-                stuffs.append(None)
+    from mpi4py import MPI
+    # The lists in stuffs_per_core all need to be of the same length 
+    amount_of_stuff = 0
+    max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
+    for rank, stuffs in stuffs_per_core.items():
+        amount_of_stuff += len(stuffs)
+        while len(stuffs) < max_stuffs_per_core:
+            stuffs.append(None)
 
-        all_stuffs_per_core = MPI.COMM_WORLD.allgather(stuff)
-        correct_stuff = [None for _ in range(structopt.parameters.globals.ncores)]
-        for rank, indices in stuffs_per_core.items():
-            for index in indices:
-                if index is not None:
-                    correct_stuff[index] = all_stuffs_per_core[rank][index]
+    all_stuffs_per_core = MPI.COMM_WORLD.allgather(stuff)
+    correct_stuff = [None for _ in range(MPI.COMM_WORLD.Get_size())]
+    for rank, indices in stuffs_per_core.items():
+        for index in indices:
+            if index is not None:
+                correct_stuff[index] = all_stuffs_per_core[rank][index]
 
-        # If something didn't get sent, use the value on the core
-        for i, thing in enumerate(correct_stuff):
-            if thing is None:
-                correct_stuff[i] = stuff[i]
-    else:
-        correct_stuff = stuff
+    # If something didn't get sent, use the value on the core
+    for i, thing in enumerate(correct_stuff):
+        if thing is None:
+            correct_stuff[i] = stuff[i]
+
     return correct_stuff
 
 

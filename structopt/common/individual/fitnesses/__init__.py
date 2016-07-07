@@ -8,12 +8,14 @@ class Fitnesses(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.fitnesses
+    def __init__(self, parameters):
+        self.parameters = parameters
         self.modules = []
 
         for module in self.parameters.modules:
-            setattr(self, module, globals()[module]())  # Initialize the class that was imported at the top of the file
+            # Initialize the class that was imported at the top of the file and append it to the modules list
+            parameters = getattr(self.parameters, module)
+            setattr(self, module, globals()[module](parameters=parameters))
             self.modules.append(getattr(self, module))
 
 
