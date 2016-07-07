@@ -21,7 +21,7 @@ class LAMMPS(object):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation
-        if individual._relaxed and hasattr(individual, 'LAMMPS'):
+        if individual._relaxed and hasattr(individual, 'LAMMPS') and individual.LAMMPS is not None:
             return individual.LAMMPS
         else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
