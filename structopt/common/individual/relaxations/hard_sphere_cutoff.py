@@ -11,9 +11,10 @@ class hard_sphere_cutoff(object):
     """
 
     @single_core
-    def __init__(self, cutoff=0.7):
+    def __init__(self, parameters=None, cutoff=0.7):
         # These variables never change
         self.cutoff = cutoff
+        self.parameters = parameters or structopt.parameters.relaxations.hard_sphere_cutoff
 
 
     @single_core
@@ -22,7 +23,11 @@ class hard_sphere_cutoff(object):
         Args:
             individual (Individual):  the individual to relax
         """
-        print("Relaxing individual {} on rank {} with hard-sphere cutoff method".format(individual.index, structopt.parameters.globals.rank))
+        try:
+            rank = structopt.parameters.globals.rank
+        except:
+            rank = 0
+        print("Relaxing individual {} on rank {} with hard-sphere cutoff method".format(individual.index, rank))
         radii = [2.0 for atom in individual]
         nl = NeighborList(radii, bothways=True, self_interaction=False)
         nl.update(individual)

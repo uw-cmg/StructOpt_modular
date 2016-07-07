@@ -9,8 +9,8 @@ class Mutations(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.mutations
+    def __init__(self, parameters=None):
+        self.parameters = parameters or structopt.parameters.mutations
 
 
     @single_core

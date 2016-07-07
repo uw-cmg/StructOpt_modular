@@ -12,8 +12,8 @@ class Relaxations(object):
     """Holds the parameters for each relaxation module and defines a utility function to run the relaxations for each relaxation module."""
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.relaxations
+    def __init__(self, parameters=None):
+        self.parameters = parameters or structopt.parameters.relaxations
         self.modules = [globals()[module] for module in self.parameters.modules]
 
 

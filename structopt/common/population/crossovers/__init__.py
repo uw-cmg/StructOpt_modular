@@ -12,8 +12,8 @@ class Crossovers(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.crossovers
+    def __init__(self, parameters=None):
+        self.parameters = parameters or structopt.parameters.crossovers
         self.crossovers = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
         total_probability = sum(self.crossovers.values())
         self.crossovers[None] = 1.0 - total_probability

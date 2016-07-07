@@ -13,8 +13,8 @@ class Selections(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.selections
+    def __init__(self, parameters=None):
+        self.parameters = parameters or structopt.parameters.selections
         self.selections = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
         assert sum(self.selections.values()) == 1.0
         self.selected_selection = None

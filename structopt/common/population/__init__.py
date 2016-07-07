@@ -17,8 +17,9 @@ class Population(list):
     and the operations to be run on them."""
 
     @single_core
-    def __init__(self):
-        self.structure_type = structopt.parameters.generators.structure_type.lower()
+    def __init__(self, parameters=None):
+        self.parameters = parameters or structopt.parameters
+        self.structure_type = self.parameters.generators.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
         self.crossovers = Crossovers()
         self.predators = Predators()
@@ -34,7 +35,7 @@ class Population(list):
         Structure = getattr(module, self.structure_type.title())
 
         # Generate/load initial structures
-        for structure_information in structopt.parameters.generators.initializers:
+        for structure_information in self.parameters.generators.initializers:
             for i in range(structure_information.number_of_individuals):
                 structure = Structure(index=i, **structure_information.data)
                 self.append(structure)
@@ -48,6 +49,7 @@ class Population(list):
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
         # Remove the unpicklable entries.
+        del state['parameters']
         del state['structure_type']
         del state['crossovers']
         del state['predators']
@@ -67,7 +69,7 @@ class Population(list):
         See stuctopt.tools.parallel.allgather for a similar function.
         """
         # TODO Make this call tool/parallel.allgather rather than reimplement it
-        if structopt.parameters.globals.use_mpi4py:
+        if self.parameters.globals.use_mpi4py:
             from mpi4py import MPI
             # The lists in individuals_per_core all need to be of the same length 
             max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())

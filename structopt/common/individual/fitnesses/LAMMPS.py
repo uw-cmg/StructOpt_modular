@@ -6,9 +6,9 @@ class LAMMPS(object):
     """ """
 
     @single_core
-    def __init__(self):
+    def __init__(self, parameters=None):
         # These variables never change
-        self.parameters = structopt.parameters.fitnesses.LAMMPS
+        self.parameters = parameters or structopt.parameters.fitnesses.LAMMPS
 
 
     @single_core
@@ -21,9 +21,9 @@ class LAMMPS(object):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation
-        if not individual._relaxed or 'LAMMPS' not in structopt.parameters.relaxations.modules:
+        if individual._relaxed and hasattr(individual, 'LAMMPS'):
+            return individual.LAMMPS
+        else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
             return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False)
-        else:
-            return individual.LAMMPS
 

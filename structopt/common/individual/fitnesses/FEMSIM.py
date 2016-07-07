@@ -9,13 +9,13 @@ from structopt.tools import root, single_core, parallel
 
 
 class FEMSIM(object):
-    """ """
+    """Contains parameters and functions for running FEMSIM through Python."""
 
     @single_core
-    def __init__(self):
+    def __init__(self, parameters=None):
         # These variables never change
         self.k = None
-        self.parameters = self.read_inputs()
+        self.parameters = self.read_inputs(parameters or structopt.parameters.fitnesses.FEMSIM)
         self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)  # Multiply the experimental data by the thickness scaling factor
 
         # These parameteres do not need to exist between generations
@@ -26,8 +26,7 @@ class FEMSIM(object):
 
 
     @single_core
-    def read_inputs(self):
-        parameters = structopt.parameters.fitnesses.FEMSIM
+    def read_inputs(self, parameters):
         data = open(parameters.vk_data_filename).readlines()
         data.pop(0)  # Comment line
         data = [line.strip().split()[:2] for line in data]
@@ -72,7 +71,7 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.index))
 
         # Make individual folder and copy files there
-        self.folder = os.path.abspath('{filename}-rank0/FEMSIMFiles/Individual{i}'.format(filename=structopt.parameters.globals.output_filename, i=individual.index))
+        self.folder = os.path.abspath('Output-rank0/FEMSIMFiles/Individual{i}'.format(i=individual.index))
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):

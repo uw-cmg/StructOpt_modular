@@ -7,9 +7,9 @@ class LAMMPS(object):
     """ """
 
     @single_core
-    def __init__(self):
+    def __init__(self, parameters=None):
         # These variables never change
-        self.parameters = structopt.parameters.relaxations.LAMMPS
+        self.parameters = parameters or structopt.parameters.relaxations.LAMMPS
 
 
     @single_core
@@ -24,8 +24,12 @@ class LAMMPS(object):
         Args:
             individual (Individual): the individual to relax
         """
-        print("Relaxing individual {} on rank {} with LAMMPS".format(individual.index, structopt.parameters.globals.rank))
+        try:
+            rank = structopt.parameters.globals.rank
+        except:
+            rank = 0
+        print("Relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
         ret = structopt.tools.structopt_lammps.run(self.parameters, individual, relax=True)
-        print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.index, structopt.parameters.globals.rank))
+        print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
         return ret
 

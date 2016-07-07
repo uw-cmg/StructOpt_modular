@@ -9,8 +9,8 @@ class Relaxations(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.relaxations
+    def __init__(self, parameters=None):
+        self.parameters = parameters or structopt.parameters.relaxations
         self.modules = []
 
         for module in self.parameters.modules:
