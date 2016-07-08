@@ -3,7 +3,7 @@ import logging
 import os
 
 from . import io as structopt_io
-from .optimizer import GeneticAlgorithm
+from .genetic import GeneticAlgorithm
 from . import common
 from .tools import get_size, get_rank
 
