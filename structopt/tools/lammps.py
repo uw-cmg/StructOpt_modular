@@ -260,7 +260,6 @@ class LAMMPS:
 
         # Wait for log output to be read (i.e., for LAMMPS to finish)
         # and close the log file if there is one
-        print(self.keep_tmp_files)
         thr_read_log.join()
         if self.keep_tmp_files:
             lammps_log_fd.close()
