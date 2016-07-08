@@ -6,7 +6,7 @@ import structopt
 import structopt.tools.lammps
 
 
-def run(parameters, individual, relax):
+def run(parameters, individual, relax, use_mpi4py):
     logger = logging.getLogger('by-rank')
     structure = individual #structure = compose_structure(individual)  # TODO
     # Currently turning keep_tmp_files on breaks lammps. Until then,
@@ -14,9 +14,8 @@ def run(parameters, individual, relax):
     keep_files = parameters.setdefault('keep_files', True)
     temp_parameters = parameters.copy()
     temp_parameters['keep_files'] = True
-    
-    
-    calculator = setup_lammps(temp_parameters, relax=True)
+
+    calculator = setup_lammps(parameters=temp_parameters, relax=True, use_mpi4py=use_mpi4py)
     structure.set_calculator(calculator)
     structure.set_pbc(True)
 
@@ -31,7 +30,7 @@ def run(parameters, individual, relax):
         energy = result['thermo'][-1]['pe']
         pressure = 0  # should be modified if enthalpy_fit  TODO I don't know what this means (bc of divide by zero error maybe?)
         volume = new_structure.get_volume()
-        logger.info('Finished relaxation of individual{0} @ rank {1}: energy = {2}'.format(individual.index, structopt.parameters.globals.rank, energy))
+        logger.info('Finished relaxation of individual{0} @ rank {1}: energy = {2}'.format(individual.index, logging.parameters.rank, energy))
     except Exception as error:
         logger.critical('Error in energy evaluation: {0}'.format(error), exc_info=True)
         # Copy files to TroubledLammps directory
@@ -72,7 +71,7 @@ def run(parameters, individual, relax):
         return energy
 
 
-def setup_lammps(parameters, relax):
+def setup_lammps(parameters, relax, use_mpi4py):
     logger = logging.getLogger('by-rank')
 
     # We need to get the ordered list of symbols from the potential file
@@ -119,15 +118,15 @@ def setup_lammps(parameters, relax):
 
     if parameters["keep_files"]:
         # Set up directory for saving files
-        #path = os.path.join(os.getcwd(), '{0}-rank0'.format(structopt.parameters.globals.output_filename))
-        path = os.path.join(os.getcwd(), structopt.parameters.globals.output_filename)
-        rank = structopt.parameters.globals.rank
+        #path = os.path.join(os.getcwd(), '{0}-rank0'.format(logging.parameters.output_filename))
+        path = os.path.join(os.getcwd(), logging.parameters.output_filename)
+        rank = logging.parameters.rank
         logger.debug('Setting up directory for keeping LAMMPS files')
         os.makedirs(os.path.join(path, 'LAMMPSFiles'), exist_ok=True)
 
         # Update kwargs
         kwargs['keep_tmp_files'] = True
-        if structopt.parameters.globals.USE_MPI4PY:
+        if use_mpi4py:
             tmp_dir = os.path.join(os.path.join(path, 'LAMMPSFiles'), 'rank-{0}'.format(rank))
         else:
             tmp_dir = os.path.join(path, 'LAMMPSFiles')

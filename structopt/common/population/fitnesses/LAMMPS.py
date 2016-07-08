@@ -7,23 +7,23 @@ from structopt.tools.parallel import allgather
 
 
 @parallel
-def fitness(population):
+def fitness(population, parameters):
     """Perform the LAMMPS fitness calculation on an entire population.
 
     Args:
         population (Population): the population to evaluate
     """
-    if structopt.parameters.globals.USE_MPI4PY:
+    if parameters.use_mpi4py:
         logger = logging.getLogger('by-rank')
     else:
         logger = logging.getLogger('output')
 
     to_fit = [individual for individual in population if not individual._fitted]
-    if structopt.parameters.globals.USE_MPI4PY:
-        ncores = structopt.parameters.globals.ncores
+    if parameters.use_mpi4py:
+        ncores = logging.parameters.ncores
     else:
         ncores = 1
-    rank = structopt.parameters.globals.rank
+    rank = logging.parameters.rank
 
     individuals_per_core = {r: [] for r in range(ncores)}
     for i, individual in enumerate(to_fit):
@@ -35,12 +35,15 @@ def fitness(population):
         print("Running LAMMPS fitness evaluation on individual {}".format(individual.index))
         energy = individual.fitnesses.LAMMPS.get_energy(individual)
         individual.LAMMPS = energy
-        logger.info('Individual {0} for LAMPPS evaluation had energy {1}'.format(i, energy))
+        logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.index, energy))
 
     fits = [individual.LAMMPS for individual in population]
-
-    if structopt.parameters.globals.USE_MPI4PY:
+    if parameters.use_mpi4py:
         fits = allgather(fits, individuals_per_core)
 
-    return fits
+    # Save the fitness value for the module to each individual after they have been allgathered
+    for i, fit in enumerate(fits):
+        population[i].LAMMPS = fit
+
+    return [individual.LAMMPS for individual in population]
 

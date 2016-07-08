@@ -9,12 +9,14 @@ class Relaxations(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.relaxations
+    def __init__(self, parameters):
+        self.parameters = parameters
         self.modules = []
 
         for module in self.parameters.modules:
-            setattr(self, module, globals()[module]())  # Initialized the class that was imported at the top of the file
+            # Initialize the class that was imported at the top of the file and append it to the modules list
+            parameters = getattr(self.parameters, module)
+            setattr(self, module, globals()[module](parameters=parameters))
             self.modules.append(getattr(self, module))
 
 
@@ -27,7 +29,10 @@ class Relaxations(object):
         """
         for module in self.modules:
             module.relax(individual)
+        individual._relaxed = True
+        individual._fitted = False
         return None
+
 
     @single_core
     def post_processing(self):

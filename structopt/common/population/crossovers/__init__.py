@@ -12,8 +12,8 @@ class Crossovers(object):
     """ """
 
     @single_core
-    def __init__(self):
-        self.parameters = structopt.parameters.crossovers
+    def __init__(self, parameters):
+        self.parameters = parameters
         self.crossovers = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
         total_probability = sum(self.crossovers.values())
         self.crossovers[None] = 1.0 - total_probability
@@ -33,8 +33,9 @@ class Crossovers(object):
     def crossover(self, pairs):
         children = []
         for individual1, individual2 in pairs:
-            self.select_crossover()
+            self.select_crossover()  # Choose a new crossover to perform for every pair
             if self.selected_crossover is not None:
+                print("Performing crossover {} on individuals {} and {}".format(self.selected_crossover, individual1, individual1))
                 child1, child2 = self.selected_crossover(individual1, individual2)
                 if child1 is not None:
                     children.append(child1)

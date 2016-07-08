@@ -1,8 +1,6 @@
 {
     "globals":
-    {
-        "USE_MPI4PY": false
-    },
+    { },
     "generators": {
         "structure_type": "cluster",
         "initializers": [
@@ -31,6 +29,7 @@
             1.0
         ],
         "LAMMPS": {
+            "use_mpi4py": true,
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -40,6 +39,8 @@
             "thermo_steps": 1000
         },
         "FEMSIM": {
+            "use_mpi4py": false,
+            "MPMD_cores_per_structure": "any",
             "parameter_filename": "$HOME/femsim-hrmc/parameters/femsim.in",
             "vk_data_filename": "$HOME/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
             "xsize": 28.2842712474619,
@@ -59,6 +60,7 @@
             "hard_sphere_cutoff"
         ],
         "LAMMPS": {
+            "use_mpi4py": true,
             "keep_files": true, 
             "min_style": "cg\nmin_modify line quadratic", 
             "minimize": "1e-8 1e-8 5000 10000", 
@@ -66,6 +68,9 @@
             "parallel": true, 
             "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
             "thermo_steps": 1000
+        },
+        "hard_sphere_cutoff": {
+            "use_mpi4py": true
         }
     },
     "mutations": {

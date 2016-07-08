@@ -1,9 +1,23 @@
-structopt.Optimizer
-##########################
+StructOpt Package
+-----------------
 
-.. autoclass:: structopt.Optimizer
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
+Submodules
+===========
+
+.. toctree::
+
+    io
+    tools
+    postprocessing
+
+
+The Optimizer
+=============
+
+.. toctree::
+    :maxdepth: 100
+
+    optimizer
+    common/individual/index
+    common/population/index
 

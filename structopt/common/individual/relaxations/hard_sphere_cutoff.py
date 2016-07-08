@@ -1,5 +1,7 @@
+import logging
 from ase.calculators.neighborlist import NeighborList
 
+import structopt
 from structopt.tools import root, single_core, parallel
 
 
@@ -10,8 +12,10 @@ class hard_sphere_cutoff(object):
     """
 
     @single_core
-    def __init__(self, cutoff=0.7):
+    def __init__(self, parameters, cutoff=0.7):
+        # These variables never change
         self.cutoff = cutoff
+        self.parameters = parameters
 
 
     @single_core
@@ -20,7 +24,8 @@ class hard_sphere_cutoff(object):
         Args:
             individual (Individual):  the individual to relax
         """
-        print("Relaxing individual {} with hard-sphere cutoff method".format(individual.index))
+        rank = logging.parameters.rank
+        print("Relaxing individual {} on rank {} with hard-sphere cutoff method".format(individual.index, rank))
         radii = [2.0 for atom in individual]
         nl = NeighborList(radii, bothways=True, self_interaction=False)
         nl.update(individual)

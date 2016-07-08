@@ -1,7 +1,24 @@
+import sys
 import functools
 import numpy as np
 
 import structopt
+
+
+def get_rank():
+    if 'mpi4py' in sys.modules:
+        from mpi4py import MPI
+        return MPI.COMM_WORLD.Get_rank()
+    else:
+        return 0
+
+
+def get_size():
+    if 'mpi4py' in sys.modules:
+        from mpi4py import MPI
+        return MPI.COMM_WORLD.Get_size()
+    else:
+        return 0
 
 
 def root(method=None, broadcast=True):
@@ -16,13 +33,15 @@ def root(method=None, broadcast=True):
 
     @functools.wraps(method)
     def wrapper(*args, **kwargs):
-        if structopt.parameters.globals.rank == 0:
-            data = method(*args, **kwargs)
-        else:
-            data = None
-        if structopt.parameters.globals.USE_MPI4PY:  # This if statement exists because the code shouldn't break when not using mpi4py
+        if broadcast and 'mpi4py' in sys.modules:
             from mpi4py import MPI
+            if MPI.COMM_WORLD.Get_rank() == 0:
+                data = method(*args, **kwargs)
+            else:
+                data = None
             data = MPI.COMM_WORLD.bcast(data, root=0)
+        else:
+            data = method(*args, **kwargs)
         return data
     wrapper.__doc__ += "\n\n(@root) Designed to run on the root node only.\n"
     return wrapper
@@ -41,7 +60,7 @@ def parallel(method):
 
 
 def single_core(method):
-    """A place holder decorator that does nothing. It is purely for documentation."""
+    """A place holder decorator that does nothing except document that the function is designed to be run on a single core."""
     @functools.wraps(method)
     def wrapper(*args, **kwargs):
         return method(*args, **kwargs)
@@ -76,25 +95,57 @@ def allgather(stuff, stuffs_per_core):
 
         Now for the code that precedes ``allgather()`` and then calls ``allgather()``::
 
+            # This for-loop modifies different parts of `values` on each core by
+            # converting some elements in `values` from an int to a str.
+            # We then want to collect the values that each core independently updated
+            # and allgather them so that every core has all of the updated values,
+            # even though each core only did part of the work.
             for i in stuffs_per_core[rank]:
                 values[i] = str(inds[i])
             x = allgather(values, stuffs_per_core)
             print(x)  # returns:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     """
-    if structopt.parameters.globals.USE_MPI4PY:
-        from mpi4py import MPI
-        stuffs_per_rank = MPI.COMM_WORLD.allgather(stuff)
-        correct_stuff = [None for _ in range(np.amax(list(stuffs_per_core.values()))+1)]
-        #correct_stuff = [None for _ in range(sum(len(l) for l in stuffs_per_rank))]
-        for rank, indices in stuffs_per_core.items():
-            for index in indices:
-                correct_stuff[index] = stuffs_per_rank[rank][index]
+    from mpi4py import MPI
+    # The lists in stuffs_per_core all need to be of the same length 
+    amount_of_stuff = 0
+    max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
+    for rank, stuffs in stuffs_per_core.items():
+        amount_of_stuff += len(stuffs)
+        while len(stuffs) < max_stuffs_per_core:
+            stuffs.append(None)
 
-        # If something didn't get sent, use the value on the core
-        for i, thing in enumerate(correct_stuff):
-            if thing is None:
-                correct_stuff[i] = stuff[i]
-    else:
-        correct_stuff = stuff
+    all_stuffs_per_core = MPI.COMM_WORLD.allgather(stuff)
+    correct_stuff = [None for _ in range(MPI.COMM_WORLD.Get_size())]
+    for rank, indices in stuffs_per_core.items():
+        for index in indices:
+            if index is not None:
+                correct_stuff[index] = all_stuffs_per_core[rank][index]
+
+    # If something didn't get sent, use the value on the core
+    for i, thing in enumerate(correct_stuff):
+        if thing is None:
+            correct_stuff[i] = stuff[i]
+
     return correct_stuff
+
+
+def parse_MPMD_cores_per_structure(value):
+    """Converts an input ``value`` from a value in the parameter file into a ``{'min': ..., 'max': ...}`` dictionary."""
+    if isinstance(value, int):
+        if int == 0:
+            return None
+        else:
+            return {'min': value, 'max': value}
+    elif isinstance(value, str):
+        if value == 'any':
+            from mpi4py import MPI
+            return {'min': 1, 'max': MPI.COMM_WORLD.Get_size()}
+        elif '-' not in value:
+            value = int(value)
+            return {'min': value, 'max': value}
+        else:
+            min_, max_ = value.split('-')
+            return {'min': int(min_), 'max': int(max_)}
+    else:
+        raise TyeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
 
