@@ -16,7 +16,7 @@ class Population(list):
     """A list-like class that contains the Individuals and the operations to be run on them."""
 
     @single_core
-    def __init__(self, parameters):
+    def __init__(self, parameters, individuals=None):
         self.parameters = parameters
         self.structure_type = self.parameters.generators.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
@@ -27,23 +27,26 @@ class Population(list):
         self.relaxations = Relaxations(self.parameters.relaxations)
         self.mutations = Mutations(self.parameters.mutations)
 
-        # Import the structure type class: e.g from structopt.crystal import Crystal
-        # Unfortunately `from` doesn't seem to work implicitly
-        # so a getattr on the module is needed
-        module = importlib.import_module('structopt.{}'.format(self.structure_type))
-        Structure = getattr(module, self.structure_type.title())
+        if individuals is None:
+            # Import the structure type class: e.g from structopt.crystal import Crystal
+            # Unfortunately `from` doesn't seem to work implicitly
+            # so a getattr on the module is needed
+            module = importlib.import_module('structopt.{}'.format(self.structure_type))
+            Structure = getattr(module, self.structure_type.title())
 
-        # Generate/load initial structures
-        for structure_information in self.parameters.generators.initializers:
-            for i in range(structure_information.number_of_individuals):
-                structure = Structure(index=i,
-                                      relaxation_parameters=self.parameters.relaxations,
-                                      fitness_parameters=self.parameters.fitnesses,
-                                      mutation_parameters=self.parameters.mutations,
-                                      generator_args=structure_information.data)
-                self.append(structure)
+            # Generate/load initial structures
+            for structure_information in self.parameters.generators.initializers:
+                for i in range(structure_information.number_of_individuals):
+                    structure = Structure(index=i,
+                                          relaxation_parameters=self.parameters.relaxations,
+                                          fitness_parameters=self.parameters.fitnesses,
+                                          mutation_parameters=self.parameters.mutations,
+                                          generator_args=structure_information.data)
+                    self.append(structure)
+        else:
+            self.extend(individuals)
 
-        self.total_number_of_individuals = len(self)
+        self.initial_number_of_individuals = len(self)
 
 
     def __getstate__(self):
@@ -184,7 +187,7 @@ class Population(list):
             fits (list<float>): the fitnesses of each individual in the population
         """
         self.predators.select_predator()
-        self.predators.kill(self, fits, nkeep=self.total_number_of_individuals)
+        self.predators.kill(self, fits, nkeep=self.initial_number_of_individuals)
         return self
 
 

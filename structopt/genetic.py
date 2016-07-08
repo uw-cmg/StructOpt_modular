@@ -6,22 +6,16 @@ import structopt
 from structopt.common.population import Population
 
 
-class Optimizer(object):
-    __version__  = 'StructOpt_v3.0'
+class GeneticAlgorithm(object):
+    """Defines methods to run a genetic algorithm optimization using the functions in the rest of the library."""
 
-    def __init__(self, parameters):
+    def __init__(self, population, convergence):
         self.logger = logging.getLogger('default')
 
-        # Get parameters from StructOpt space
-        self.parameters = parameters
-
-        # Initialize random number seed
-        random.seed(self.parameters.seed)
+        self.population = population
+        self.convergence = convergence
 
         self.generation = 0
-
-        # Create the population (not ready yet)
-        self.population = Population(parameters=self.parameters)
 
         # Prep output monitoring
 
@@ -57,7 +51,7 @@ class Optimizer(object):
 
 
     def check_convergence(self):
-        if self.generation >= self.parameters.convergence.maxgen:
+        if self.generation >= self.convergence.maxgen:
             self.converged = True
         else:
             self.converged = False
@@ -76,6 +70,12 @@ if __name__ == "__main__":
 
     parameters = structopt.setup(sys.argv[1])
 
-    with structopt.Optimizer(parameters) as optimizer:
+    random.seed(parameters.seed)
+
+    population = Population(parameters=parameters)
+
+    with structopt.GeneticAlgorithm(population=population,
+                                    convergence=parameters.convergence
+                                    ) as optimizer:
         optimizer.run()
 
