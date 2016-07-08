@@ -3,7 +3,7 @@ import logging
 import os
 
 from . import io as structopt_io
-from .optimizer import Optimizer
+from .genetic import GeneticAlgorithm
 from . import common
 from .tools import get_size, get_rank
 
@@ -41,4 +41,4 @@ def setup(parameter_file):
 
     return parameters
 
-__all__ = ['parameters', 'Optimizer', 'cluster', 'crystal', 'defect', 'surface']
+__all__ = ['parameters', 'GeneticAlgorithm', 'cluster', 'crystal', 'defect', 'surface']

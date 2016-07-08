@@ -1,5 +1,5 @@
 {
-    "globals":
+    "logging":
     { },
     "convergence": {
         "maxgen": 10
