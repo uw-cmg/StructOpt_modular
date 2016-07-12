@@ -35,14 +35,25 @@ class Population(list):
             Structure = getattr(module, self.structure_type.title())
 
             # Generate/load initial structures
-            for structure_information in self.parameters.generators.initializers:
-                for i in range(structure_information.number_of_individuals):
-                    structure = Structure(index=i,
+            starting_index = 0
+            for generator in self.parameters.generators.initializers:
+                n = self.parameters.generators.initializers[generator].number_of_individuals
+                for j in range(n):
+                    kwargs = self.parameters.generators.initializers[generator].kwargs
+
+                    # For the read_xyz, the input is a list of filenames. These need to be
+                    # passed as arguments one by one instead of all at once
+                    if generator == 'read_xyz':
+                        kwargs = {'filename': kwargs[j]}
+
+                    structure = Structure(index=starting_index + j,
                                           relaxation_parameters=self.parameters.relaxations,
                                           fitness_parameters=self.parameters.fitnesses,
                                           mutation_parameters=self.parameters.mutations,
-                                          generator_args=structure_information.data)
+                                          generator=generator,
+                                          generator_kwargs=kwargs)
                     self.append(structure)
+                starting_index += n
         else:
             self.extend(individuals)
 

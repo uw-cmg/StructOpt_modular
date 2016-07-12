@@ -7,6 +7,7 @@ import numpy as np
 import structopt
 from . import relaxations, fitnesses, mutations, fingerprinters, mutations
 from structopt.tools import root, single_core, parallel
+from structopt.io.read_xyz import read_xyz
 
 
 class Individual(ase.Atoms):
@@ -16,7 +17,7 @@ class Individual(ase.Atoms):
     def __init__(self, index=None,
                  load_modules=True,
                  relaxation_parameters=None, fitness_parameters=None, mutation_parameters=None,
-                 generate=True, generator_args=None):
+                 generator=None, generator_kwargs=None):
         """Additional class parameters that extend ASE.Atoms:
             index
             _generator_args
@@ -35,7 +36,7 @@ class Individual(ase.Atoms):
             get_nearest_atom_indices
             get_atom_indices_within_distance_of_atom
         """
-        self._generator_args = generator_args.copy()  # Store the parameters necessary for initializing for making a copy of self
+        self._generator_kwargs = generator_kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
         self._fitted = False
         self._relaxed = False
@@ -54,11 +55,39 @@ class Individual(ase.Atoms):
 
         # Initialize the ase.Atoms structure
         super().__init__()
-        if generate:
-            generators = import_module('structopt.{}.individual.generators'.format(cls_name))
-            generators.generate(self, **generator_args)
 
+        # Due to the complexity to most of the generator functions, most of the
+        # generators will be classes, not functions.  Making them classes
+        # will also allow for class inheritance to eliminate potential duplicate
+        # code when using similar functions for generating clusters, bulk, surfaces, etc.
+        # However, read_xyz is a function and must be called uniquely.
 
+        if generator == 'read_xyz':
+            filename = generator_kwargs['filename']
+            atoms = read_xyz(filename)
+            self.extend(atoms)
+            self.set_pbc(True)
+
+            with open(filename) as of:
+                of.readline()  # number of atoms
+                sizes = of.readline()  # comment == box size
+                sizes = sizes.split()[:3]
+                sizes = [float(x) for x in sizes]
+                cell = np.identity(3)
+                np.fill_diagonal(cell, sizes)
+                self.set_cell(cell)
+
+        elif generator:
+            generator_module = import_module('structopt.common.individual.generators.{}'.format(generator))
+            generator_object = getattr(generator_module, generator.title())(**generator_kwargs)
+            atoms = generator_object.generate()
+            self.extend(atoms)
+            self.set_cell(atoms.get_cell())
+            self.set_pbc(atoms.get_pbc)
+
+        else:
+            return None
+            
     def __eq__(self, other):
         try:
             return self._fitness == other._fitness
