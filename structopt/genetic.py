@@ -67,10 +67,12 @@ class GeneticAlgorithm(object):
 if __name__ == "__main__":
     import sys
     import structopt
+    import numpy as np
 
     parameters = structopt.setup(sys.argv[1])
 
     random.seed(parameters.seed)
+    np.random.seed(parameters.seed)
 
     population = Population(parameters=parameters)
 
