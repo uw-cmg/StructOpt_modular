@@ -1,9 +1,0 @@
-{
-    "logging":
-    { },
-    "convergence": {
-	"maxgen": 10
-    },
-    "generators": {
-	"structure_type": "cluster",
-	"
