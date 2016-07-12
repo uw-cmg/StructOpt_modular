@@ -2,6 +2,7 @@
 *by-rank.out
 Output*
 log.lammps
+tests/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
