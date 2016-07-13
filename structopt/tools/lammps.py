@@ -15,9 +15,13 @@ CALCULATION_END_MARK = '__end_of_ase_invoked_calculation__'
 
 class LAMMPS(object):
     """Simplied calculator object for performing LAMMPS calculations
-    through ase and StructOpt"""
+    through ase and StructOpt. Only returns the relaxed structure
+    and the total energy. The primary difference between this and the
+    ase version is that input files are written and then executed, while
+    in the ase version the input is passed directly through the Popen
+    constructor as stdin"""
 
-    def __init__(self, parameters):
+    def __init__(self, parameters, calcdir=None):
         self.parameters = parameters
         self.cwd = os.getcwd()
 
@@ -47,10 +51,12 @@ class LAMMPS(object):
         self.pea = []
 
         # Initialize and set some default parameters here
-        if 'calcdir' not in self.parameters:
-            self.calcdir = cwd
+        if calcdir:
+            self.calcdir = calcdir
+        elif 'calcdir' in self.parameters:
+            self.calcdir = self.parameters['calcdir']
         else:
-            self.calcdir = self.parameters['calcdir']            
+            self.calcdir = os.getcwd()
 
         self.parameters.setdefault('thermosteps', 0)
 
@@ -61,33 +67,20 @@ class LAMMPS(object):
 
         # Set periodic boundary conditions and get a prism-like
         # cell for running calculations
-        pbc = self.atoms.get_pbc()
-        if all(pbc):
-            cell = self.atoms.get_cell()
-        elif not any(pbc):
-            # large enough cell for non-periodic calculation -
-            # LAMMPS shrink-wraps automatically via input command
-            #       "periodic s s s"
-            # below
-            cell = 2 * np.max(np.abs(self.atoms.get_positions())) * np.eye(3)
-        else:
-            print("WARNING: semi-periodic ASE cell detected -")
-            print("         translation to proper LAMMPS input cell might fail")
-            cell = self.atoms.get_cell()
+        cell = self.atoms.get_cell()
         self.prism = prism(cell)
 
         # Initialize and run the calculation
         self.setup_dir()
         os.chdir(self.tmp_dir)
-        print(self.tmp_dir)
         self.write_data()
         self.initialize()
         self.write_input()
         errors = self.run()
 
         if errors:
-            pass            
-        
+            self.process_error()
+
         # Read the thermodynamic and atom data
         self.read_log_file()
         self.read_trj_file()
@@ -100,6 +93,10 @@ class LAMMPS(object):
             for f in os.listdir(self.tmp_dir):
                 f = os.path.join(self.tmp_dir, f)
                 shutil.copy(f, self.calcdir)
+
+        shutil.rmtree(self.tmp_dir)
+
+        return
 
     def setup_dir(self):
         """This function sets up the temporary directory and copies
@@ -185,6 +182,7 @@ class LAMMPS(object):
 
         # Relax the system
         f.write('\n### Relaxation \n')
+        f.write('fix fix_nve all nve\n')
         for param in ['min_style', 'min_modify', 'minimize']:
             if param in parameters:
                 f.write('{} {}\n'.format(param, parameters[param]))
@@ -193,7 +191,7 @@ class LAMMPS(object):
         # Generate the thermodynamic and structural information
         dump_line = 'dump dump_all all custom 2 {} id type x y z c_pea\n'
         f.write(dump_line.format(self.trj_file))
-        f.write('run 0\n')
+        f.write('run 1\n')
         f.write('print {}'.format(CALCULATION_END_MARK))
         
         return
@@ -201,12 +199,11 @@ class LAMMPS(object):
     def initialize(self):
         """The purpose of this function is to initialize the variables for 
         them being written to the lammps. This set of initializations
-        depends on the atoms object"""
+        depends on the atoms object, and hence cannot be done in __init__.py."""
 
         atoms = self.atoms
 
-        # Initialize the thermodynamic parameters. These often depend on
-        # both the pair_style and the atoms object
+        # Initialize the potential parameters
         if 'pair_style' not in self.parameters:
             self.parameters['pair_style'] = 'lj/cut 2.5'
             self.parameters['pair_coeff'] = '* * 1 1'
@@ -362,6 +359,24 @@ class LAMMPS(object):
     def update(self, atoms):
         if not hasattr(self, 'atoms') or self.atoms != atoms:
             self.calculate(atoms)
+
+    def process_error(self):
+        """This function is run immediately after detecting an error.
+        We're in the temporary directory, so we have to copy the files
+        back to the calculation directory, write and empty error file
+        and raise an exception"""
+
+        if not os.path.isdir(self.calcdir):
+            os.makedirs(self.calcdir)
+        for f in os.listdir(self.tmp_dir):
+            f = os.path.join(self.tmp_dir, f)
+            shutil.copy(f, self.calcdir)
+
+        error_file = os.path.join(self.calcdir, 'error')
+        open(error_file, 'a').close()
+        os.chdir(self.cwd)
+
+        raise RuntimeError('Error in LAMMPS calculation in {}'.format(self.calcdir))
 
 class prism:
     def __init__(self, cell, pbc=(True,True,True), digits=10):
