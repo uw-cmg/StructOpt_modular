@@ -26,6 +26,7 @@ class Population(list):
         self.fitnesses = Fitnesses(self.parameters.fitnesses)
         self.relaxations = Relaxations(self.parameters.relaxations)
         self.mutations = Mutations(self.parameters.mutations)
+        self.generation = 0
 
         if individuals is None:
             # Import the structure type class: e.g from structopt.crystal import Crystal
@@ -117,7 +118,7 @@ class Population(list):
             individual.relaxations = self[i].relaxations
             individual.mutations = self[i].mutations
             individual._calc = self[i]._calc
-            individual._generator_args = self[i]._generator_args
+            individual._generator_kwargs = self[i]._generator_kwargs
 
         self.replace(correct_population)
 
@@ -185,7 +186,7 @@ class Population(list):
 
     @parallel
     def relax(self):
-        """Relax the entire population. """
+        """Relax the entire population."""
         self.relaxations.relax(self)
 
 

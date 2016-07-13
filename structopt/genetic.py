@@ -47,6 +47,7 @@ class GeneticAlgorithm(object):
         fits = self.population.fitness()
         self.population.kill(fits)
         self.check_convergence()
+        self.population.generation += 1
         self.generation += 1
 
 

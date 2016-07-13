@@ -36,6 +36,7 @@ class Relaxations(object):
 
         for individual in population:
             individual._relaxed = True
+
         return None
 
 
