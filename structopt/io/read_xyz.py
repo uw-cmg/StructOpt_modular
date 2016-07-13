@@ -13,7 +13,7 @@ def read_xyz(filename, index=None, format=None, **kwargs):
         atoms.set_cell([[x, 0, 0], [0, y, 0], [0, 0, z]])
     except Exception as error:
         print(error)
-    atoms.pbc = [True, True, True]
+    atoms.set_pbc(True)
     atoms.wrap()
     atoms.center()
     return atoms
