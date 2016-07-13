@@ -2,7 +2,7 @@
     "logging":
     { },
     "convergence": {
-        "maxgen": 10
+        "maxgen": 1
     },
     "generators": {
         "structure_type": "cluster",
