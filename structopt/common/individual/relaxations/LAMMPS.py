@@ -5,7 +5,7 @@ import structopt
 
 import sys
 sys.path.append('/Users/zxu/research/lammps')
-from lammps import LAMMPS as lammps
+from structopt.tools.lammps import LAMMPS as lammps
 
 from structopt.tools import root, single_core, parallel
 
