@@ -27,7 +27,7 @@
 	    1.0
 	],
 	"LAMMPS": {
-	    "use_mpi4py": true,
+	    "use_mpi4py": false,
 	    "MPMD": 0,
 	    "keep_files": true,
 	    "min_style": "cg",
@@ -44,7 +44,7 @@
 	    "LAMMPS"
 	],
 	"LAMMPS": {
-	    "use_mpi4py": true,
+	    "use_mpi4py": false,
 	    "MPMD": 0,
 	    "keep_files": false,
 	    "min_style": "cg",
