@@ -17,7 +17,7 @@ class LAMMPS(object):
 
 
     @single_core
-    def get_energy(self, individual):
+    def get_energy(self, individual, generation=None):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation
@@ -25,5 +25,21 @@ class LAMMPS(object):
             return individual.LAMMPS
         else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
-            return structopt.tools.structopt_lammps.run(self.parameters, individual, relax=False, use_mpi4py=self.parameters.use_mpi4py)
+            if generation is not None:
+                calcdir = os.path.join(os.getcwd(), 'fitness-files/LAMMPS/generation-{}/individual-{}')
+                calcdir = calcdir.format(generation, individual.index)
+            else:
+                calcdir = None
+
+            calc = lammps(self.parameters, calcdir=calcdir)
+            individual.set_calculator(calc)
+            try:
+                E = individual.get_potential_energy()
+                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, rank))
+            except RuntimeError:
+                E = 0
+                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, rank))
+
+            return E
+
 
