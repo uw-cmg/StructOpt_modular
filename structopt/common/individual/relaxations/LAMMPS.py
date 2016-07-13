@@ -1,6 +1,12 @@
+import os
 import logging
 import structopt
-import structopt.tools.structopt_lammps
+#import structopt.tools.structopt_lammps
+
+import sys
+sys.path.append('/Users/zxu/research/lammps')
+from lammps import LAMMPS as lammps
+
 from structopt.tools import root, single_core, parallel
 
 
@@ -19,7 +25,7 @@ class LAMMPS(object):
 
 
     @parallel
-    def relax(self, individual):
+    def relax(self, individual, generation=None):
         """Relax an individual.
 
         Args:
@@ -27,7 +33,23 @@ class LAMMPS(object):
         """
         rank = logging.parameters.rank
         print("Relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
-        ret = structopt.tools.structopt_lammps.run(self.parameters, individual, relax=True, use_mpi4py=self.parameters.use_mpi4py)
-        print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
-        return ret
+
+        if generation is not None:
+            calcdir = os.path.join(os.getcwd(), 'relaxation-files/LAMMPS/generation-{}/individual-{}')
+            calcdir = calcdir.format(generation, individual.index)
+        else:
+            calcdir = None
+
+        calc = lammps(self.parameters, calcdir=calcdir)
+        individual.set_calculator(calc)
+        try:
+            E = individual.get_potential_energy()
+            print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
+        except RuntimeError:
+            E = 0
+            print("Error relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
+
+        individual.LAMMPS = E
+
+        return
 

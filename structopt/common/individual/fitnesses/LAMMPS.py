@@ -1,4 +1,4 @@
-import structopt.tools.structopt_lammps
+#import structopt.tools.structopt_lammps
 from structopt.tools import root, single_core, parallel
 
 

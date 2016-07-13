@@ -83,7 +83,7 @@ class Individual(ase.Atoms):
             atoms = generator_object.generate()
             self.extend(atoms)
             self.set_cell(atoms.get_cell())
-            self.set_pbc(atoms.get_pbc)
+            self.set_pbc(atoms.get_pbc())
 
         else:
             return None

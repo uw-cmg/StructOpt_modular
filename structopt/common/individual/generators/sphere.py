@@ -96,6 +96,9 @@ class Sphere(object):
         tries_b4_expand = self.tries_b4_expand
 
         indiv = Atoms()
+        if hasattr(self, 'cell'):
+            indiv.set_cell(self.cell)
+            indiv.set_pbc(True)
 
         if radius is None:
             radius = self.get_particle_radius()
