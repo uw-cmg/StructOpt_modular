@@ -236,7 +236,7 @@ class LAMMPS(object):
 
         input_file = open(self.input_file)
 
-        p = Popen(['lammps'], stdin=input_file, stdout=PIPE, stderr=PIPE)
+        p = Popen([lammps_cmd_line], stdin=input_file, stdout=PIPE, stderr=PIPE)
         output, error = p.communicate()
         self.output = output.decode('utf-8').split('\n')[:-1]
 
