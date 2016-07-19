@@ -222,7 +222,7 @@ class LAMMPS(object):
             self.parameters['pair_coeff'] = pair_coeff
         else:
             s = self.parameters['pair_style']
-            raise KeyError('{} pair_style not yet implemented'.format(s))
+            raise ValueError('{} pair_style not yet implemented'.format(s))
 
         return
 
@@ -242,7 +242,7 @@ class LAMMPS(object):
 
         # Check if the calculation completed without errors. If it does,
         # we need to copy the files.
-        if self.output[-1].startswith('ERROR'):
+        if 'ERROR' in self.output[-1]:
             return True
 
         return False
