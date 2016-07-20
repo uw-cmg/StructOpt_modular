@@ -78,11 +78,5 @@ def rank(population, fits, prob, p_min=None, repeat_pairs=False):
 
     # Construct the parents from the indices
     pairs = [[population[i], population[j]] for i, j in pairs_ind]
+
     return pairs
-    
-    # Delete these lines when the thing is done
-    pairs = []
-    for pair in combinations(population, 2):
-        if random.random() < prob:
-            pairs.append(pair)
-    return pairs    
