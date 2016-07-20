@@ -156,8 +156,7 @@ class Population(list):
     def crossover(self, pairs):
         """Perform crossovers on the population."""
         children = self.crossovers.crossover(pairs)
-        self.extend(children)
-        return self
+        return children
 
 
     @root

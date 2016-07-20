@@ -36,8 +36,11 @@ class Individual(ase.Atoms):
             get_nearest_atom_indices
             get_atom_indices_within_distance_of_atom
         """
-        self._generator_kwargs = generator_kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
+        self.relaxation_parameters = relaxation_parameters
+        self.fitness_parameters = fitness_parameters
+        self.mutation_parameters = mutation_parameters
+        self._generator_kwargs = generator_kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self        
         self._fitted = False
         self._relaxed = False
         self._fitness = None
@@ -239,7 +242,9 @@ class Individual(ase.Atoms):
         generator_kwargs = self._generator_kwargs.copy()
         new = self.__class__(index=self.index,
                              load_modules=True,
-                             relaxation_parameters=self.relaxations.parameters, fitness_parameters=self.fitnesses.parameters, mutation_parameters=self.mutations.parameters,
+                             relaxation_parameters=self.relaxation_parameters,
+                             fitness_parameters=self.fitness_parameters,
+                             mutation_parameters=self.mutation_parameters,
                              generator=None, generator_kwargs=generator_kwargs)
         if include_atoms:
             new.arrays = self.arrays.copy()
