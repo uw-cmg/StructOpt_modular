@@ -1,0 +1,81 @@
+{
+    "seed": 0,
+    "logging":
+    { },
+    "generators": {
+        "structure_type": "cluster", 
+        "initializers": {
+            "sphere": {"number_of_individuals": 4,
+	               "kwargs": {"atomlist": [["Au", 5]],
+			          "cell": [10, 10, 10],
+			          "fill_factor": 0.4}}
+        }
+    },
+    "fitnesses":
+    {
+        "modules": [
+	    "LAMMPS"
+        ],
+        "weights": [
+	    1.0
+        ],
+        "LAMMPS": {
+	    "use_mpi4py": true,
+	    "MPMD": 0,
+	    "keep_files": true,
+	    "min_style": "cg",
+            "min_modify": "line quadratic",
+	    "minimize": "1e-8 1e-8 5000 10000",
+	    "pair_style": "eam",
+	    "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	    "thermo_steps": 0
+        }
+    },
+    "relaxations":
+    {
+        "modules": [
+	    "LAMMPS"
+        ],
+        "LAMMPS": {
+	    "use_mpi4py": true,
+	    "MPMD": 0,
+	    "keep_files": true,
+	    "min_style": "cg",
+            "min_modify": "line quadratic",
+	    "minimize": "1e-8 1e-8 5000 10000",
+	    "pair_style": "eam",
+	    "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	    "thermo_steps": 0
+        }
+    },
+    "convergence": {
+        "maxgen": 10
+    },
+    "mutations": {
+        "options": {
+	    "move_atoms": 0.0,
+	    "swap_positions": 0.0,
+	    "swap_species": 0.0,
+	    "rotate_atoms": 0.0,
+	    "rotate_cluster": 0.0
+        },
+        "kwargs": {}
+    },
+    "fingerprinters": {
+        "options": []
+    },
+
+    "crossovers": {
+        "options": {"rotate": 1.0}
+    },
+    "predators": {
+        "options": {"best": 1.0}
+    },
+    "selections": {
+        "options": {"rank": 1.0}
+    },
+
+    "fileio": {},
+    "postprocessing": {},
+    "tools": {}
+}
