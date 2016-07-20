@@ -11,7 +11,7 @@
 				    "structure3.xyz",
 				    "structure4.xyz",
 				    "structure5.xyz"]},
-	    "sphere": {"number_of_individuals": 4,
+	    "sphere": {"number_of_individuals": 12,
 		       "kwargs": {"atomlist": [["Au", 5]],
 				  "cell": [10, 10, 10],
 				  "fill_factor": 0.4}}
