@@ -66,9 +66,9 @@
                  "kwargs": {}}
     },
     "selections": {
-        "options": {"rank": 1.0}
+        "rank": {"probability": 1.0,
+                 "kwargs": {}}
     },
-
     "fileio": {},
     "postprocessing": {},
     "tools": {}

@@ -16,8 +16,8 @@ class Crossovers(object):
         self.parameters = parameters
         self.crossovers = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
         self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
-        total_probability = sum(self.crossovers.values())
-        self.crossovers[None] = 1.0 - total_probability
+        self.total_probability = sum(self.crossovers.values())
+        self.crossovers[None] = 1.0 - self.total_probability
         self.selected_crossover = None
 
 

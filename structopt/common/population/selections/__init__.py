@@ -13,11 +13,13 @@ class Selections(object):
     """ """
 
     @single_core
-    def __init__(self, parameters):
+    def __init__(self, parameters, crossover_probability):
         self.parameters = parameters
-        self.selections = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
+        self.selections = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
+        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
         assert sum(self.selections.values()) == 1.0
         self.selected_selection = None
+        self.crossover_probability = crossover_probability
 
 
     @single_core
@@ -31,9 +33,11 @@ class Selections(object):
 
     @single_core
     def select(self, population, fits):
+        kwargs = self.kwargs[self.selected_selection.__name__.split('.')[-1]]
         pairs = self.selected_selection(population=population,
                                         fits=fits,
-                                        prob=self.parameters.crossover_probability)
+                                        prob=self.crossover_probability,
+                                        **kwargs)
         self.post_processing(pairs)
         return pairs
 
