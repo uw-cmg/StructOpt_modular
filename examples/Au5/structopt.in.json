@@ -42,14 +42,16 @@
         "maxgen": 5
     },
     "mutations": {
-        "options": {
-	    "move_atoms": 0.0,
-	    "swap_positions": 0.0,
-	    "swap_species": 0.0,
-	    "rotate_atoms": 0.0,
-	    "rotate_cluster": 0.0
-        },
-        "kwargs": {}
+	"move_atoms": {"probability": 0.5,
+                       "kwargs": {}},
+	"swap_positions": {"probability": 0.0,
+                           "kwargs": {}},
+	"swap_species": {"probability": 0.0,
+                         "kwargs": {}},
+	"rotate_atoms": {"probability": 0.3,
+                         "kwargs": {}},
+	"rotate_cluster": {"probability": 0.0,
+                           "kwargs": {}}                
     },
     "fingerprinters": {
         "options": []
