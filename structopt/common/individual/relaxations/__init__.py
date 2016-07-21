@@ -13,9 +13,9 @@ class Relaxations(object):
         self.parameters = parameters
         self.modules = []
 
-        for module in self.parameters.modules:
+        for module in self.parameters:
             # Initialize the class that was imported at the top of the file and append it to the modules list
-            parameters = getattr(self.parameters, module)
+            parameters = getattr(self.parameters[module], 'kwargs')
             setattr(self, module, globals()[module](parameters=parameters))
             self.modules.append(getattr(self, module))
 

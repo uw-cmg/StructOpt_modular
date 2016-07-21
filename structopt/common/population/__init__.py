@@ -37,10 +37,10 @@ class Population(list):
 
             # Generate/load initial structures
             starting_index = 0
-            for generator in self.parameters.generators.initializers:
-                n = self.parameters.generators.initializers[generator].number_of_individuals
+            for generator in self.parameters.generators:
+                n = self.parameters.generators[generator].number_of_individuals
                 for j in range(n):
-                    kwargs = self.parameters.generators.initializers[generator].kwargs
+                    kwargs = self.parameters.generators[generator].kwargs
 
                     # For the read_xyz, the input is a list of filenames. These need to be
                     # passed as arguments one by one instead of all at once

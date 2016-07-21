@@ -13,9 +13,14 @@ class Relaxations(object):
 
     @single_core
     def __init__(self, parameters):
-        self.parameters = parameters
-        self.modules = [globals()[module] for module in self.parameters.modules]
 
+        # Store the relaxation modules in a list based on their specified order
+        self.parameters = parameters
+        modules = [globals()[module] for module in self.parameters]
+        orders = [self.parameters[module]['order'] for module in self.parameters]
+        modules_orders = list(zip(modules, orders))
+        modules_orders = sorted(modules_orders, key=lambda modules_orders: modules_orders[1])
+        self.modules = list(zip(*modules_orders))[0]
 
     @parallel
     def relax(self, population):
@@ -31,7 +36,7 @@ class Relaxations(object):
         for i, module in enumerate(self.modules):
             if logging.parameters.rank == 0:
                 print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
-            parameters = getattr(self.parameters, module.__name__.split('.')[-1])
+            parameters = getattr(self.parameters[module.__name__.split('.')[-1]], 'kwargs')
             module.relax(population, parameters=parameters)
 
         for individual in population:

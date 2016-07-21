@@ -14,7 +14,7 @@ class Fitnesses(object):
     @single_core
     def __init__(self, parameters):
         self.parameters = parameters
-        self.modules = [globals()[module] for module in self.parameters.modules]
+        self.modules = [globals()[module] for module in self.parameters]
 
 
     @parallel
@@ -29,11 +29,12 @@ class Fitnesses(object):
         for i, module in enumerate(self.modules):
             if logging.parameters.rank == 0:
                 print("Running fitness {} on the entire population".format(module.__name__.split('.')[-1]))
-            parameters = getattr(self.parameters, module.__name__.split('.')[-1])
+            parameters = getattr(self.parameters[module.__name__.split('.')[-1]], 'kwargs')
             fits = module.fitness(population, parameters=parameters)
 
             # Calculate the full objective function with weights
-            fits = np.multiply(fits, self.parameters.weights[i])
+            weight = getattr(self.parameters[module.__name__.split('.')[-1]], 'weight')
+            fits = np.multiply(fits, weight)
             fitnesses = np.add(fitnesses, fits)
 
         self.post_processing(fitnesses)
