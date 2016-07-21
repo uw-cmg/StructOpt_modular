@@ -29,7 +29,7 @@
 	"LAMMPS": {
 	    "use_mpi4py": true,
 	    "MPMD": 0,
-	    "keep_files": true,
+	    "keep_files": false,
 	    "min_style": "cg",
             "min_modify": "line quadratic",
 	    "minimize": "1e-8 1e-8 5000 10000",
@@ -46,7 +46,7 @@
 	"LAMMPS": {
 	    "use_mpi4py": true,
 	    "MPMD": 0,
-	    "keep_files": true,
+	    "keep_files": false,
 	    "min_style": "cg",
             "min_modify": "line quadratic",
 	    "minimize": "1e-8 1e-8 5000 10000",
