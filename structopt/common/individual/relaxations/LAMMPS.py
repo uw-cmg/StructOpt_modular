@@ -41,9 +41,10 @@ class LAMMPS(object):
             E = individual.get_potential_energy()
             print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
         except RuntimeError:
-            E = 0
+            E = np.nan
             print("Error relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
 
+        individual.set_calculator()
         individual.LAMMPS = E
 
         return

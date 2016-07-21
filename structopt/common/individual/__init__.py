@@ -47,14 +47,10 @@ class Individual(ase.Atoms):
 
         cls_name = self.__class__.__name__.lower()
         if load_modules:
-            # Load in the appropriate functionality
-            fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
-            mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
-            relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
-
-            self.fitnesses = fitnesses.Fitnesses(parameters=fitness_parameters)
-            self.mutations = mutations.Mutations(parameters=mutation_parameters)
-            self.relaxations = relaxations.Relaxations(parameters=relaxation_parameters)
+            self.load_modules()
+            self.has_modules = True
+        else:
+            self.has_modules = False
 
         # Initialize the ase.Atoms structure
         super().__init__()
@@ -164,13 +160,15 @@ class Individual(ase.Atoms):
         del state['fitnesses']
         del state['relaxations']
         del state['mutations']
-        del state['_calc']
+        #del state['_calc']
         return state
 
 
     def __setstate__(self, state):
         # Restore instance attributes
         self.__dict__.update(state)
+        if self.has_modules:
+            self.load_modules()
 
 
     def __str__(self):
@@ -186,6 +184,20 @@ class Individual(ase.Atoms):
         updated with the new data from core A but will retain the individual's information
         on core B that could not be transfered."""
         self.__dict__.update(other.__dict__)
+
+    @parallel
+    def load_modules(self):
+        """Loads the fitness, relaxations, and mutation modules"""
+        cls_name = self.__class__.__name__.lower()
+
+        # Load in the appropriate functionality
+        fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
+        mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
+        relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
+
+        self.fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
+        self.mutations = mutations.Mutations(parameters=self.mutation_parameters)
+        self.relaxations = relaxations.Relaxations(parameters=self.relaxation_parameters)
 
 
     @parallel
