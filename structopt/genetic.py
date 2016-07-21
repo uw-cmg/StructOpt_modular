@@ -38,9 +38,9 @@ class GeneticAlgorithm(object):
         sys.stdout.flush()
         if self.generation > 0:
             fits = [individual._fitness for individual in self.population]
-            parents = self.population.select(fits)
-            children = self.population.crossover(parents)
-            self.population.extend(children)
+            pairs = self.population.select(fits)
+            crossed_population = self.population.crossover(pairs)
+            self.population.replace(crossed_population)
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
         self.population.relax()
