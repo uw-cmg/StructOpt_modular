@@ -22,8 +22,8 @@ class Mutations(object):
         # These variables never change
         self.parameters = parameters
 
-        self.mutations = {getattr(self, mut): self.parameters[mut]['probability'] for mut in self.parameters}
-        self.kwargs = {mut: self.parameters[mut]['kwargs'] for mut in self.parameters}
+        self.mutations = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
+        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
 
