@@ -1,9 +1,8 @@
 {
     "seed": 0,
-    "logging":
-    { },
+    "logging": { },
+    "structure_type": "cluster",
     "generators": {
-        "structure_type": "cluster", 
         "initializers": {
             "read_xyz": {"number_of_individuals": 4,
 			 "kwargs": ["structure1.xyz",

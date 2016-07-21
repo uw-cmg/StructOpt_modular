@@ -18,7 +18,7 @@ class Population(list):
     @single_core
     def __init__(self, parameters, individuals=None):
         self.parameters = parameters
-        self.structure_type = self.parameters.generators.structure_type.lower()
+        self.structure_type = self.parameters.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
         self.crossovers = Crossovers(self.parameters.crossovers)
         self.predators = Predators(self.parameters.predators)
