@@ -58,10 +58,12 @@
     },
 
     "crossovers": {
-        "options": {"rotate": 1.0}
+        "rotate": {"probability": 0.8,
+                   "kwargs": {}}
     },
     "predators": {
-        "options": {"best": 1.0}
+        "best": {"probability": 1.0,
+                 "kwargs": {}}
     },
     "selections": {
         "options": {"rank": 1.0}

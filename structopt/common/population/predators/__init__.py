@@ -15,7 +15,8 @@ class Predators(object):
     @single_core
     def __init__(self, parameters):
         self.parameters = parameters
-        self.predators = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
+        self.predators = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
+        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
         total_probability = sum(self.predators.values())
         self.predators[None] = 1.0 - total_probability
         self.selected_predator = None
@@ -32,7 +33,8 @@ class Predators(object):
 
     @single_core
     def kill(self, population, fits, nkeep):
-        self.selected_predator(population=population, fits=fits, nkeep=nkeep)
+        kwargs = self.kwargs[self.selected_predator.__name__.split('.')[-1]]
+        self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
 
 
     @single_core

@@ -14,7 +14,8 @@ class Crossovers(object):
     @single_core
     def __init__(self, parameters):
         self.parameters = parameters
-        self.crossovers = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
+        self.crossovers = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
+        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
         total_probability = sum(self.crossovers.values())
         self.crossovers[None] = 1.0 - total_probability
         self.selected_crossover = None
@@ -36,7 +37,8 @@ class Crossovers(object):
             self.select_crossover()  # Choose a new crossover to perform for every pair
             if self.selected_crossover is not None:
                 print("Performing crossover {} on individuals {} and {}".format(self.selected_crossover, individual1, individual2))
-                child1, child2 = self.selected_crossover(individual1, individual2)
+                kwargs = self.kwargs[self.selected_crossover.__name__.split('.')[-1]]
+                child1, child2 = self.selected_crossover(individual1, individual2, **kwargs)
                 if child1 is not None:
                     children.append(child1)
                 if child2 is not None:

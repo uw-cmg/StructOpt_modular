@@ -70,8 +70,8 @@ def set_default(parameters):
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
     #parameters.setdefault('weights', [1.0 for _ in parameters.fitnesses.weights])
-
-    parameters.selections.crossover_probability = sum(parameters.crossovers.options.values())
+    
+    parameters.selections.crossover_probability = sum([parameters.crossovers[name]['probability'] for name in parameters.crossovers])
 
     parameters.convergence.setdefault('maxgen', 10)
 
