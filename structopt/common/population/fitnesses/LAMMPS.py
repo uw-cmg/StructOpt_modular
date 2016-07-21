@@ -33,8 +33,7 @@ def fitness(population, parameters):
         individual = population[index]
         assert individual.index == index
         print("Running LAMMPS fitness evaluation on individual {}".format(individual.index))
-        #energy = individual.fitnesses.LAMMPS.get_energy(individual, population.generation)
-        energy = individual.fitness(generation=population.generation)
+        energy = individual.fitnesses.LAMMPS.get_energy(individual, population.generation)
         individual.LAMMPS = energy
         logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.index, energy))
 

@@ -24,7 +24,7 @@ def relax(population, parameters):
     for index in individuals_per_core[rank]:
         individual = population[index]
         assert individual.index == index
-        individual.relax(generation=population.generation)
+        individual.relaxations.LAMMPS.relax(individual, population.generation)
 
     if parameters.use_mpi4py:
         population.allgather(individuals_per_core)

@@ -20,7 +20,7 @@ class LAMMPS(object):
 
 
     @parallel
-    def relax(self, individual, **kwargs):
+    def relax(self, individual, generation=None):
         """Relax an individual.
 
         Args:
@@ -29,9 +29,9 @@ class LAMMPS(object):
         rank = logging.parameters.rank
         print("Relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
 
-        if 'generation' in kwargs:
+        if generation is not None:
             calcdir = os.path.join(os.getcwd(), 'relaxation-files/LAMMPS/generation-{}/individual-{}')
-            calcdir = calcdir.format(kwargs['generation'], individual.index)
+            calcdir = calcdir.format(generation, individual.index)
         else:
             calcdir = None
 
@@ -41,10 +41,9 @@ class LAMMPS(object):
             E = individual.get_potential_energy()
             print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
         except RuntimeError:
-            E = np.nan
+            E = 0
             print("Error relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
 
-        individual.set_calculator()
         individual.LAMMPS = E
 
         return

@@ -114,9 +114,9 @@ class Population(list):
             # See Individual.__getstate__; the below attributes don't get passed via MPI
             # so we need to reset them
             # TODO How can I make this dynamic? Can I call __getstate__???
-            individual.fitness_parameters = self[i].fitness_parameters
-            individual.relaxation_parameters = self[i].relaxation_parameters
-            individual.mutation_parameters = self[i].mutation_parameters
+            individual.fitnesses = self[i].fitnesses
+            individual.relaxations = self[i].relaxations
+            individual.mutations = self[i].mutations
             individual._calc = self[i]._calc
             individual._generator_kwargs = self[i]._generator_kwargs
 

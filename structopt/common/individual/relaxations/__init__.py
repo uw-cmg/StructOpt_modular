@@ -21,14 +21,14 @@ class Relaxations(object):
 
 
     @parallel
-    def relax(self, individual, **kwargs):
+    def relax(self, individual, generation=None):
         """Relax an individual.
 
         Args:
             individual (Individual): the individual to relax
         """
         for module in self.modules:
-            module.relax(individual, **kwargs)
+            module.relax(individual, generation)
         individual._relaxed = True
         individual._fitted = False
         return None
