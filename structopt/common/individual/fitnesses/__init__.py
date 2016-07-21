@@ -20,7 +20,7 @@ class Fitnesses(object):
 
 
     @parallel
-    def fitness(self, individual):
+    def fitness(self, individual, **kwargs):
         """Perform the fitness calculations on an individual.
 
         Args:
@@ -28,7 +28,7 @@ class Fitnesses(object):
         """
         fit = 0.0
         for i, module in enumerate(self.modules):
-            fit += module.fitness(individual) * self.parameters.weights[i]
+            fit += module.fitness(individual, **kwargs) * self.parameters.weights[i]
         return fit
 
 

@@ -45,16 +45,17 @@ class Individual(ase.Atoms):
         self._relaxed = False
         self._fitness = None
 
-        cls_name = self.__class__.__name__.lower()
+        self.cls_name = self.__class__.__name__.lower()
         if load_modules:
             # Load in the appropriate functionality
-            fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
-            mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
-            relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
+            #fitnesses = import_module('structopt.{}.individual.fitnesses'.format(self.cls_name))
+            #mutations = import_module('structopt.{}.individual.mutations'.format(self.cls_name))
+            #relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
 
-            self.fitnesses = fitnesses.Fitnesses(parameters=fitness_parameters)
-            self.mutations = mutations.Mutations(parameters=mutation_parameters)
-            self.relaxations = relaxations.Relaxations(parameters=relaxation_parameters)
+            #self.fitnesses = fitnesses.Fitnesses(parameters=fitness_parameters)
+            #self.mutations = mutations.Mutations(parameters=mutation_parameters)
+            #self.relaxations = relaxations.Relaxations(parameters=relaxation_parameters)
+            pass
 
         # Initialize the ase.Atoms structure
         super().__init__()
@@ -161,10 +162,10 @@ class Individual(ase.Atoms):
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
         # Remove the unpicklable entries. The unpickled object WILL NOT have these attributes at all!
-        del state['fitnesses']
-        del state['relaxations']
-        del state['mutations']
-        del state['_calc']
+        #del state['fitnesses']
+        #del state['relaxations']
+        #del state['mutations']
+        #del state['_calc']
         return state
 
 
@@ -195,32 +196,39 @@ class Individual(ase.Atoms):
         Args:
             individual (Individual): the individual to mutate
         """
-        self.mutations.select_mutation()
-        self.mutations.mutate(self)
-        self.mutations.post_processing()
+
+        mutations = import_module('structopt.{}.individual.mutations'.format(self.cls_name))
+        mutations = mutations.Mutations(parameters=self.mutation_parameters)
+        mutations.select_mutation()
+        mutations.mutate(self)
+        mutations.post_processing()
 
 
     @parallel
-    def relax(self):
+    def relax(self, **kwargs):
         """Relax an individual.
 
         Args:
             individual (Individual): the individual to relax
         """
-        self.relaxations.relax(self)
-        self.relaxations.post_processing()
-
+        relaxations = import_module('structopt.{}.individual.relaxations'.format(self.cls_name))
+        relaxations = relaxations.Relaxations(parameters=self.relaxation_parameters)
+        relaxations.relax(self, **kwargs)
+        relaxations.post_processing()
 
     @parallel
-    def fitness(self):
+    def fitness(self, **kwargs):
         """Perform the fitness calculations on an individual.
 
         Args:
             individual (Individual): the individual to evaluate
         """
-        fits = self.fitnesses.fitness(self)
+
+        fitnesses = import_module('structopt.{}.individual.fitnesses'.format(self.cls_name))
+        fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
+        fits = fitnesses.fitness(self, **kwargs)
         self._fitted = True
-        self.fitnesses.post_processing()
+        fitnesses.post_processing()
         return fits
 
 
