@@ -40,7 +40,7 @@ class Individual(ase.Atoms):
         self.relaxation_parameters = relaxation_parameters
         self.fitness_parameters = fitness_parameters
         self.mutation_parameters = mutation_parameters
-        self._generator_kwargs = generator_kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self        
+        self.generator_parameters = generator_parameters
         self._fitted = False
         self._relaxed = False
         self._fitness = None
@@ -60,6 +60,9 @@ class Individual(ase.Atoms):
         # will also allow for class inheritance to eliminate potential duplicate
         # code when using similar functions for generating clusters, bulk, surfaces, etc.
         # However, read_xyz is a function and must be called uniquely.
+
+        if self.generator_kwargs is not None:
+            self.generate()
 
         if generator == 'read_xyz':
             filename = generator_kwargs['filename']
@@ -235,6 +238,23 @@ class Individual(ase.Atoms):
         self.fitnesses.post_processing()
         return fits
 
+    @single_core
+    def generate(self):
+        """Generate an individual using generator_kwargs parameter. By defualt
+        it extends the current atoms object"""
+
+        assert len(self.generator_parameters == 1)
+        generator_name = list(self.generator_parameters.keys())[0]
+        generator_module = import_module('structopt.common.individual.generators.{}'.format(generator))
+        generator = getattr(generator_module, generator.title())
+        kwargs = self.generator_parameters['kwargs']
+        atoms = generator(**kwargs)
+
+        self.extend(atoms)
+        self.set_cell(atoms.get_cell())
+        self.set_pbc(atoms.get_pbc())
+
+        return
 
     @single_core
     def get_atom_indices_within_distance_of_atom(self, atom_index, distance):
