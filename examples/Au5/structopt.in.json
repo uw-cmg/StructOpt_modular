@@ -42,28 +42,21 @@
         "maxgen": 5
     },
     "mutations": {
-	"move_atoms": {"probability": 0.5,
-                       "kwargs": {}},
-	"swap_positions": {"probability": 0.0,
-                           "kwargs": {}},
-	"swap_species": {"probability": 0.0,
-                         "kwargs": {}},
-	"rotate_atoms": {"probability": 0.3,
-                         "kwargs": {}},
-	"rotate_cluster": {"probability": 0.0,
-                           "kwargs": {}}                
+	"move_atoms": {"probability": 0.5},
+	"swap_positions": {"probability": 0.0},
+	"swap_species": {"probability": 0.0},
+	"rotate_atoms": {"probability": 0.3},
+	"rotate_cluster": {"probability": 0.0}
     },
     "fingerprinters": {
         "options": []
     },
 
     "crossovers": {
-        "rotate": {"probability": 1.0,
-                   "kwargs": {}}
+        "rotate": {"probability": 1.0}
     },
     "predators": {
-        "best": {"probability": 1.0,
-                 "kwargs": {}}
+        "best": {"probability": 1.0}
     },
     "selections": {
         "rank": {"probability": 1.0,

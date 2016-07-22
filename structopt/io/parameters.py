@@ -71,5 +71,11 @@ def set_default(parameters):
 
     parameters.convergence.setdefault('maxgen', 10)
 
+    # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
+    for operation in ['generators', 'fitnesses', 'relaxations', 'mutations',
+                      'crossovers', 'selections', 'predators']:
+        for operator in parameters[operation]:
+            parameters[operation][operator].setdefault('kwargs', {})
+
     return parameters
 
