@@ -9,7 +9,7 @@
 				"structure3.xyz",
 				"structure4.xyz",
 				"structure5.xyz"]},
-	"sphere": {"number_of_individuals": 4,
+	"sphere": {"number_of_individuals": 8,
 		   "kwargs": {"atomlist": [["Au", 5]],
 			      "cell": [10, 10, 10],
 			      "fill_factor": 0.4}}
@@ -58,7 +58,7 @@
     },
 
     "crossovers": {
-        "rotate": {"probability": 0.8,
+        "rotate": {"probability": 1.0,
                    "kwargs": {}}
     },
     "predators": {
@@ -67,7 +67,8 @@
     },
     "selections": {
         "rank": {"probability": 1.0,
-                 "kwargs": {}}
+                 "kwargs": {"unique_pairs": false,
+                            "unique_parents": false}}
     },
     "fileio": {},
     "postprocessing": {},
