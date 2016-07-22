@@ -60,7 +60,6 @@ class Population(list):
 
         self.initial_number_of_individuals = len(self)
 
-
     def __getstate__(self):
         # Copy the object's state from self.__dict__ which contains
         # all our instance attributes. Always use the dict.copy()

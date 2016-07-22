@@ -17,7 +17,13 @@ class GeneticAlgorithm(object):
 
         self.generation = 0
 
-        # Prep output monitoring
+        # Even if seed is not specified, cores need to be on the same seed.
+        # 
+        if parameters.seed:
+            random.seed(parameters.seed)
+            np.random.seed(parameters.seed)
+        elif 'mpi4py' in sys.modules:
+            
 
         # Set starting convergence
         self.converged = False
@@ -70,10 +76,7 @@ if __name__ == "__main__":
     import structopt
     import numpy as np
 
-    parameters = structopt.setup(sys.argv[1])
-
-    random.seed(parameters.seed)
-    np.random.seed(parameters.seed)
+    parameters = structopt.setup(sys.argv[1])        
 
     population = Population(parameters=parameters)
 
