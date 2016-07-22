@@ -21,8 +21,7 @@ class Population(list):
         self.structure_type = self.parameters.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
         self.crossovers = Crossovers(self.parameters.crossovers)
-        crossover_probability = self.crossovers.total_probability
-        self.selections = Selections(self.parameters.selections, crossover_probability)
+        self.selections = Selections(self.parameters.selections)
         self.predators = Predators(self.parameters.predators)
         self.fitnesses = Fitnesses(self.parameters.fitnesses)
         self.relaxations = Relaxations(self.parameters.relaxations)
