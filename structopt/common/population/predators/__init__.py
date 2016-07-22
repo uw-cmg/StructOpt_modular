@@ -43,11 +43,11 @@ class Predators(object):
 
     @staticmethod
     @functools.wraps(best)
-    def best(population, fits, nkeep):
-        return best(population, fits, nkeep)
+    def best(population, fits, nkeep, **kwargs):
+        return best(population, fits, nkeep, **kwargs)
 
     @staticmethod
     @functools.wraps(roulette)
-    def roulette(population, fits, nkeep):
-        return roulette(population, fits, nkeep)
+    def roulette(population, fits, nkeep, **kwargs):
+        return roulette(population, fits, nkeep, **kwargs)
 

@@ -51,7 +51,7 @@ class Crossovers(object):
         pass
 
     @staticmethod
-    @functools.wraps(rotate)
-    def rotate(individual1, individual2):
-        return rotate(individual1, individual2)
+    @functools.wraps(rotate, **kwargs)
+    def rotate(individual1, individual2, **kwargs):
+        return rotate(individual1, individual2, **kwargs)
 
