@@ -17,13 +17,8 @@ class GeneticAlgorithm(object):
 
         self.generation = 0
 
-        # Even if seed is not specified, cores need to be on the same seed.
-        # 
-        if parameters.seed:
-            random.seed(parameters.seed)
-            np.random.seed(parameters.seed)
-        elif 'mpi4py' in sys.modules:
-            
+        random.seed(parameters.seed)
+        np.random.seed(parameters.seed)
 
         # Set starting convergence
         self.converged = False
