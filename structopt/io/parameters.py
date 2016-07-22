@@ -4,7 +4,7 @@ import json
 import logging
 import os
 from structopt.tools.dictionaryobject import DictionaryObject
-import random
+import time
 
 def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""
@@ -61,7 +61,8 @@ def set_default(parameters):
 
     # If parallel and no seed, all nodes need the same seed
     if parameters.logging.ncores > 1:
-        seed = MPI.COMM_WORLD.bcast(random.random(), root=0)
+        from mpi4py import MPI
+        seed = MPI.COMM_WORLD.bcast(int(time.time()), root=0)
     else:
         seed = None
 

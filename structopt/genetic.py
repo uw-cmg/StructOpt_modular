@@ -1,5 +1,4 @@
 import sys
-import random
 import logging
 
 import structopt
@@ -16,9 +15,6 @@ class GeneticAlgorithm(object):
         self.convergence = convergence
 
         self.generation = 0
-
-        random.seed(parameters.seed)
-        np.random.seed(parameters.seed)
 
         # Set starting convergence
         self.converged = False
@@ -69,10 +65,13 @@ class GeneticAlgorithm(object):
 if __name__ == "__main__":
     import sys
     import structopt
+    import random
     import numpy as np
 
-    parameters = structopt.setup(sys.argv[1])        
-
+    parameters = structopt.setup(sys.argv[1])
+    random.seed(parameters.seed)
+    np.random.seed(parameters.seed)
+    
     population = Population(parameters=parameters)
 
     with structopt.GeneticAlgorithm(population=population,
