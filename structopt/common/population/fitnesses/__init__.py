@@ -27,13 +27,17 @@ class Fitnesses(object):
         fitnesses = np.zeros((len(population),), dtype=np.float)
         # Run each fitness module on the population
         for i, module in enumerate(self.modules):
+            module_name = module.__name__.split('.')[-1]
+            module_parameters = self.parameters[module_name]
+
             if logging.parameters.rank == 0:
-                print("Running fitness {} on the entire population".format(module.__name__.split('.')[-1]))
-            parameters = getattr(self.parameters[module.__name__.split('.')[-1]], 'kwargs')
+                print("Running fitness {} on the entire population".format(module_name))
+
+            parameters = getattr(module_parameters, 'kwargs')
             fits = module.fitness(population, parameters=parameters)
 
             # Calculate the full objective function with weights
-            weight = getattr(self.parameters[module.__name__.split('.')[-1]], 'weight')
+            weight = getattr(module_parameters, 'weight')
             fits = np.multiply(fits, weight)
             fitnesses = np.add(fitnesses, fits)
 
@@ -44,3 +48,4 @@ class Fitnesses(object):
     def post_processing(self, fitnesses):
         logger = logging.getLogger("output")
         logger.info("Total fitnesses for the population: {} (rank {})".format(fitnesses, logging.parameters.rank))
+

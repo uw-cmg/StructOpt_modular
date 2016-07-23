@@ -69,7 +69,7 @@ def set_default(parameters):
     if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
-    parameters.convergence.setdefault('maxgen', 10)
+    parameters.convergence.setdefault('max_generations', 10)
 
     # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
     for operation in ['generators', 'fitnesses', 'relaxations', 'mutations',

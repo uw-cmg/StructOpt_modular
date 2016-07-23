@@ -14,8 +14,13 @@ class Crossovers(object):
     @single_core
     def __init__(self, parameters):
         self.parameters = parameters
+
+        # self.crossovers is a dictionary containing {function: probability} pairs
         self.crossovers = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
-        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
+
+        #self.kwargs is a dictionary containing {function: kwargs} pairs
+        self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
+
         self.total_probability = sum(self.crossovers.values())
         self.crossovers[None] = 1.0 - self.total_probability
         self.selected_crossover = None
@@ -37,7 +42,7 @@ class Crossovers(object):
             self.select_crossover()  # Choose a new crossover to perform for every pair
             if self.selected_crossover is not None:
                 print("Performing crossover {} on individuals {} and {}".format(self.selected_crossover, individual1, individual2))
-                kwargs = self.kwargs[self.selected_crossover.__name__.split('.')[-1]]
+                kwargs = self.kwargs[self.selected_crossover]
                 child1, child2 = self.selected_crossover(individual1, individual2, **kwargs)
                 if child1 is not None:
                     children.append(child1)
@@ -52,6 +57,6 @@ class Crossovers(object):
 
     @staticmethod
     @functools.wraps(rotate)
-    def rotate(individual1, individual2, **kwargs):
-        return rotate(individual1, individual2, **kwargs)
+    def rotate(individual1, individual2, conserve_composition=True):
+        return rotate(individual1, individual2, conserve_composition)
 

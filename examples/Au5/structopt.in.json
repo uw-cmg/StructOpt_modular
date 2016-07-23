@@ -39,7 +39,7 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "maxgen": 5
+        "max_generations": 5
     },
     "mutations": {
 	"move_atoms": {"probability": 0.5},

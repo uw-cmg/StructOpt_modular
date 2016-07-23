@@ -16,7 +16,7 @@ class Predators(object):
     def __init__(self, parameters):
         self.parameters = parameters
         self.predators = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
-        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
+        self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
         total_probability = sum(self.predators.values())
         self.predators[None] = 1.0 - total_probability
         self.selected_predator = None
@@ -33,7 +33,7 @@ class Predators(object):
 
     @single_core
     def kill(self, population, fits, nkeep):
-        kwargs = self.kwargs[self.selected_predator.__name__.split('.')[-1]]
+        kwargs = self.kwargs[self.selected_predator]
         self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
 
 
@@ -43,11 +43,11 @@ class Predators(object):
 
     @staticmethod
     @functools.wraps(best)
-    def best(population, fits, nkeep, **kwargs):
-        return best(population, fits, nkeep, **kwargs)
+    def best(population, fits, nkeep):
+        return best(population, fits, nkeep)
 
     @staticmethod
     @functools.wraps(roulette)
-    def roulette(population, fits, nkeep, **kwargs):
-        return roulette(population, fits, nkeep, **kwargs)
+    def roulette(population, fits, nkeep):
+        return roulette(population, fits, nkeep)
 

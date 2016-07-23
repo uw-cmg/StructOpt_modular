@@ -22,8 +22,12 @@ class Mutations(object):
         # These variables never change
         self.parameters = parameters
 
+        # self.mutations is a dictionary containing {function: probability} pairs
         self.mutations = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
-        self.kwargs = {name: self.parameters[name]['kwargs'] for name in self.parameters}
+
+        #self.kwargs is a dictionary containing {function: kwargs} pairs
+        self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
+
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
 
@@ -48,7 +52,7 @@ class Mutations(object):
         else:
             individual._relaxed = False
             individual._fitted = False
-            kwargs = self.kwargs[self.selected_mutation.__name__.split('.')[-1]]
+            kwargs = self.kwargs[self.selected_mutation]
             return self.selected_mutation(individual, **kwargs)
 
     @single_core
