@@ -115,7 +115,7 @@ def allgather(stuff, stuffs_per_core):
             stuffs.append(None)
 
     all_stuffs_per_core = MPI.COMM_WORLD.allgather(stuff)
-    correct_stuff = [None for _ in range(MPI.COMM_WORLD.Get_size())]
+    correct_stuff = [None for _ in range(len(stuff))]
     for rank, indices in stuffs_per_core.items():
         for index in indices:
             if index is not None:

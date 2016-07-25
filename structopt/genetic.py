@@ -38,9 +38,9 @@ class GeneticAlgorithm(object):
         sys.stdout.flush()
         if self.generation > 0:
             fits = [individual._fitness for individual in self.population]
-            pairs = self.population.select(fits)
-            crossed_population = self.population.crossover(pairs)
-            self.population.replace(crossed_population)
+            parents = self.population.select(fits)
+            children = self.population.crossover(parents)
+            self.population.extend(children)
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
         self.population.relax()
@@ -52,7 +52,7 @@ class GeneticAlgorithm(object):
 
 
     def check_convergence(self):
-        if self.generation >= self.convergence.maxgen:
+        if self.generation >= self.convergence.max_generations:
             self.converged = True
         else:
             self.converged = False

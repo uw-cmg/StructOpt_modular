@@ -133,7 +133,7 @@ class LAMMPS(object):
 
         pbc = self.atoms.get_pbc()
         xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
-        for axis, index in zip(['x','y','z'], range(3)):
+        for index, axis in enumerate(['x','y','z']):
             if pbc[index]:    
                 f.write('0.0 {}  {}lo {}hi\n'.format(xhi, axis, axis))
             else:
@@ -247,8 +247,8 @@ class LAMMPS(object):
         self.output = output.decode('utf-8').split('\n')[:-1]
 
         # Check if the calculation completed without errors. If it does,
-        # we need to copy the files.
-        if 'ERROR' in self.output[-1]:
+        # we need to save the files self.calcdir.
+        if CALCULATION_END_MARK not in self.output[-1]:
             return True
 
         return False

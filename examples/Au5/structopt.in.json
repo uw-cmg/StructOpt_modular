@@ -1,7 +1,7 @@
 {
     "seed": 0,
-    "logging":
-    { },
+    "logging": { },
+    "structure_type": "cluster",
     "generators": {
         "structure_type": "cluster", 
         "initializers": {
@@ -65,15 +65,17 @@
     },
 
     "crossovers": {
-        "options": {"rotate": 1.0}
+        "rotate": {"probability": 1.0}
     },
     "predators": {
-        "options": {"best": 1.0}
+        "best": {"probability": 1.0}
     },
     "selections": {
-        "options": {"rank": 1.0}
+        "rank": {"probability": 0.0,
+                 "kwargs": {"unique_pairs": false,
+                            "unique_parents": false}},
+        "random_selection": {"probability": 1.0}
     },
-
     "fileio": {},
     "postprocessing": {},
     "tools": {}

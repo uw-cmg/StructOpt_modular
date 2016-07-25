@@ -5,9 +5,10 @@ from importlib import import_module
 import numpy as np
 
 import structopt
-from . import relaxations, fitnesses, mutations, fingerprinters, mutations
+from . import relaxations, fitnesses, mutations, fingerprinters
 from structopt.tools import root, single_core, parallel
 from structopt.io.read_xyz import read_xyz
+from .generate_velocities.random_velocities import random_velocities
 
 
 class Individual(ase.Atoms):
@@ -36,22 +37,21 @@ class Individual(ase.Atoms):
             get_nearest_atom_indices
             get_atom_indices_within_distance_of_atom
         """
-        self._generator_kwargs = generator_kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self
         self.index = index
+        self.relaxation_parameters = relaxation_parameters
+        self.fitness_parameters = fitness_parameters
+        self.mutation_parameters = mutation_parameters
+        self._generator_kwargs = generator_kwargs.copy()  # Store the parameters necessary for initializing for making a copy of self        
         self._fitted = False
         self._relaxed = False
         self._fitness = None
 
         cls_name = self.__class__.__name__.lower()
         if load_modules:
-            # Load in the appropriate functionality
-            fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
-            mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
-            relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
-
-            self.fitnesses = fitnesses.Fitnesses(parameters=fitness_parameters)
-            self.mutations = mutations.Mutations(parameters=mutation_parameters)
-            self.relaxations = relaxations.Relaxations(parameters=relaxation_parameters)
+            self.load_modules()
+            self.has_modules = True
+        else:
+            self.has_modules = False
 
         # Initialize the ase.Atoms structure
         super().__init__()
@@ -87,6 +87,8 @@ class Individual(ase.Atoms):
 
         else:
             return None
+        random_velocities(self)
+
             
     def __eq__(self, other):
         try:
@@ -161,13 +163,15 @@ class Individual(ase.Atoms):
         del state['fitnesses']
         del state['relaxations']
         del state['mutations']
-        del state['_calc']
+        #del state['_calc']
         return state
 
 
     def __setstate__(self, state):
         # Restore instance attributes
         self.__dict__.update(state)
+        if self.has_modules:
+            self.load_modules()
 
 
     def __str__(self):
@@ -183,6 +187,20 @@ class Individual(ase.Atoms):
         updated with the new data from core A but will retain the individual's information
         on core B that could not be transfered."""
         self.__dict__.update(other.__dict__)
+
+    @parallel
+    def load_modules(self):
+        """Loads the fitness, relaxations, and mutation modules"""
+        cls_name = self.__class__.__name__.lower()
+
+        # Load in the appropriate functionality
+        fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
+        mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
+        relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
+
+        self.fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
+        self.mutations = mutations.Mutations(parameters=self.mutation_parameters)
+        self.relaxations = relaxations.Relaxations(parameters=self.relaxation_parameters)
 
 
     @parallel
@@ -239,7 +257,9 @@ class Individual(ase.Atoms):
         generator_kwargs = self._generator_kwargs.copy()
         new = self.__class__(index=self.index,
                              load_modules=True,
-                             relaxation_parameters=self.relaxations.parameters, fitness_parameters=self.fitnesses.parameters, mutation_parameters=self.mutations.parameters,
+                             relaxation_parameters=self.relaxation_parameters,
+                             fitness_parameters=self.fitness_parameters,
+                             mutation_parameters=self.mutation_parameters,
                              generator=None, generator_kwargs=generator_kwargs)
         if include_atoms:
             new.arrays = self.arrays.copy()
