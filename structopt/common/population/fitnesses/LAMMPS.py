@@ -4,6 +4,7 @@ import subprocess
 import structopt
 from structopt.tools import root, single_core, parallel
 from structopt.tools.parallel import allgather
+import numpy as np
 
 
 @parallel

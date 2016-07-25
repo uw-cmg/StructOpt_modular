@@ -77,12 +77,18 @@ def set_default(parameters):
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
     parameters.convergence.setdefault('max_generations', 10)
+    parameters.setdefault('relaxations', None)
+    parameters.setdefault('fitnesses', None)
+    parameters.setdefault('mutations', None)
+    parameters.setdefault('generators', None)
+    parameters.setdefault('crossovers', None)
 
     # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
     for operation in ['generators', 'fitnesses', 'relaxations', 'mutations',
                       'crossovers', 'selections', 'predators']:
+        if parameters[operation] is None:
+            continue
         for operator in parameters[operation]:
             parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
-
