@@ -11,12 +11,14 @@ class Fitnesses(object):
     def __init__(self, parameters):
         self.parameters = parameters
         self.modules = []
+        self.module_names = []
 
         for module in self.parameters:
             # Initialize the class that was imported at the top of the file and append it to the modules list
             parameters = getattr(self.parameters[module], 'kwargs')
             setattr(self, module, globals()[module](parameters=parameters))
             self.modules.append(getattr(self, module))
+            self.module_names.append(module)
 
 
     @parallel

@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import logging
 
 import structopt
@@ -44,6 +44,8 @@ class GeneticAlgorithm(object):
         fits = self.population.fitness()
         self.population.kill(fits)
         self.check_convergence()
+        if logging.parameters.rank == 0:
+            self.post_processing_step()
         self.population.generation += 1
         self.generation += 1
 
@@ -53,6 +55,23 @@ class GeneticAlgorithm(object):
             self.converged = True
         else:
             self.converged = False
+
+
+    def post_processing_step(self):
+        # Save the fitnesses for each individual
+        fitness_logger = logging.getLogger('fitness')
+        for individual in self.population:
+            fitness_logger.info('Generation {}: {}'.format(self.generation, ', '.join([str(x) for x in individual.fits])))
+
+        # Save the XYZ file for each individual
+        for individual in self.population:
+            path = 'XYZs'
+            if not os.path.exists(path):
+                os.makedirs(path)
+            path = os.path.join(path, 'generation{}'.format(self.generation))
+            if not os.path.exists(path):
+                os.makedirs(path)
+            individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.index)))
 
 
     def __enter__(self):
