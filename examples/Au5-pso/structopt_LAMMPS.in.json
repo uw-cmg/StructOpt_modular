@@ -1,0 +1,89 @@
+{
+    "globals":
+    { },
+    "generators": {
+        "structure_type": "cluster",
+        "initializers": [
+            {
+                "number_of_individuals": 5,
+                "data": {
+                    "filenames": [
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure1.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure2.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure3.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure4.xyz",
+                        "$HOME/repos/StructOpt_modular/examples/Au18/structure5.xyz"
+                    ]
+                }
+            }
+        ]
+    },
+    "fitnesses":
+    {
+        "modules": [
+            "LAMMPS"
+        ],
+        "weights": [
+            1.0,
+            1.0
+        ],
+        "LAMMPS": {
+            "use_mpi4py": true,
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        }
+    },
+    "relaxations":
+    {
+        "modules": [
+            "LAMMPS",
+            "hard_sphere_cutoff"
+        ],
+        "LAMMPS": {
+            "use_mpi4py": true,
+            "keep_files": true, 
+            "min_style": "cg\nmin_modify line quadratic", 
+            "minimize": "1e-8 1e-8 5000 10000", 
+            "pair_style": "eam", 
+            "parallel": true, 
+            "potential_file": "$HOME/repos/StructOpt_modular/examples/Au18/Au_u3.eam", 
+            "thermo_steps": 1000
+        },
+        "hard_sphere_cutoff": {
+            "use_mpi4py": true
+        }
+    },
+    "mutations": {
+        "options": {
+            "move_atoms": 0.70,
+            "swap_positions": 0.05,
+            "swap_species": 0.10,
+            "rotate_atoms": 0.05,
+            "rotate_cluster": 0.10
+        },
+        "kwargs": {}
+    },
+    "fingerprinters": {
+        "options": []
+    },
+
+    "crossovers": {
+        "options": {"rotate": 0.0}
+    },
+    "predators": {
+        "options": {"best": 1.0}
+    },
+    "selections": {
+        "options": {"random_selection": 1.0}
+    },
+
+    "fileio": {},
+    "postprocessing": {},
+    "tools": {}
+}
+
