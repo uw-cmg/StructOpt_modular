@@ -11,6 +11,7 @@ from .relaxations import Relaxations
 from .mutations import Mutations
 from structopt.tools import root, single_core, parallel
 
+POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations']
 
 class Population(list):
     """A list-like class that contains the Individuals and the operations to be run on them."""
@@ -20,12 +21,11 @@ class Population(list):
         self.parameters = parameters
         self.structure_type = self.parameters.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
-        self.crossovers = Crossovers(self.parameters.crossovers)
-        self.selections = Selections(self.parameters.selections)
-        self.predators = Predators(self.parameters.predators)
-        self.fitnesses = Fitnesses(self.parameters.fitnesses)
-        self.relaxations = Relaxations(self.parameters.relaxations)
-        self.mutations = Mutations(self.parameters.mutations)
+        for module in self.parameters:
+            if module not in POPULATION_MODULES:
+                continue
+            Module = globals()[module.title()](getattr(self.parameters, module))
+            setattr(self, module, Module)
         self.generation = 0
 
         if individuals is None:
