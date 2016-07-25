@@ -5,7 +5,6 @@ from importlib import import_module
 import numpy as np
 
 import structopt
-from . import relaxations, fitnesses, mutations, fingerprinters, pso_moves
 from structopt.tools import root, single_core, parallel
 from structopt.io.read_xyz import read_xyz
 from .generate_velocities.random_velocities import random_velocities
@@ -18,7 +17,7 @@ class Individual(ase.Atoms):
                  load_modules=True,
                  relaxation_parameters=None, fitness_parameters=None,
                  mutation_parameters=None,
-                 pso_moves_prameters=None,
+                 pso_moves_parameters=None,
                  generator_parameters=None):
 
         self.index = index
@@ -249,7 +248,7 @@ class Individual(ase.Atoms):
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,
                              mutation_parameters=self.mutation_parameters,
-                             pso_moves_parameters-self.pso_moves_parameters,
+                             pso_moves_parameters=self.pso_moves_parameters,
                              generator_parameters=self.generator_parameters)
         if include_atoms:
             new.arrays = self.arrays.copy()
