@@ -3,8 +3,6 @@ import logging
 import os
 
 from . import io as structopt_io
-from .genetic import GeneticAlgorithm
-from .pso import ParticleSwarmOptimization
 from . import common
 from .tools import get_size, get_rank
 
@@ -42,4 +40,4 @@ def setup(parameter_file):
 
     return parameters
 
-__all__ = ['parameters', 'GeneticAlgorithm', 'cluster', 'crystal', 'defect', 'surface']
+__all__ = ['parameters', 'cluster', 'crystal', 'defect', 'surface']

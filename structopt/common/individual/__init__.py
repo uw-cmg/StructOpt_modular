@@ -5,7 +5,7 @@ from importlib import import_module
 import numpy as np
 
 import structopt
-from . import relaxations, fitnesses, mutations, fingerprinters
+from . import relaxations, fitnesses, mutations, fingerprinters, pso_moves
 from structopt.tools import root, single_core, parallel
 from structopt.io.read_xyz import read_xyz
 from .generate_velocities.random_velocities import random_velocities
@@ -16,31 +16,17 @@ class Individual(ase.Atoms):
     @single_core
     def __init__(self, index=None,
                  load_modules=True,
-                 relaxation_parameters=None, fitness_parameters=None, mutation_parameters=None,
+                 relaxation_parameters=None, fitness_parameters=None,
+                 mutation_parameters=None,
+                 pso_moves_prameters=None,
                  generator_parameters=None):
-        """Additional class parameters that extend ASE.Atoms:
-            index
-            _generator_args
-            _relaxed
-            _fitted
 
-            fitnesses
-            relaxations
-            mutations
-
-        Methods:
-            fitness
-            relax
-            mutate
-            copy
-            get_nearest_atom_indices
-            get_atom_indices_within_distance_of_atom
-        """
         self.index = index
         self.relaxation_parameters = relaxation_parameters
         self.fitness_parameters = fitness_parameters
         self.mutation_parameters = mutation_parameters
         self.generator_parameters = generator_parameters
+        self.pso_moves_parameters = pso_moves_parameters
         self._fitted = False
         self._relaxed = False
         self._fitness = None
@@ -68,7 +54,7 @@ class Individual(ase.Atoms):
             return None
         random_velocities(self)
 
-            
+
     def __eq__(self, other):
         try:
             return self._fitness == other._fitness
@@ -139,10 +125,9 @@ class Individual(ase.Atoms):
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
         # Remove the unpicklable entries. The unpickled object WILL NOT have these attributes at all!
-        del state['fitnesses']
-        del state['relaxations']
-        del state['mutations']
-        #del state['_calc']
+        for name in ['fitnesses', 'relaxations', 'mutations', 'pso_moves']:
+            if name in state:
+                del state[name]
         return state
 
 
@@ -169,17 +154,25 @@ class Individual(ase.Atoms):
 
     @parallel
     def load_modules(self):
-        """Loads the fitness, relaxations, and mutation modules"""
+        """Loads the relevant modules."""
         cls_name = self.__class__.__name__.lower()
 
         # Load in the appropriate functionality
-        fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
-        mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
-        relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
+        if self.fitness_parameters is not None:
+            fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
+            self.fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
 
-        self.fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
-        self.mutations = mutations.Mutations(parameters=self.mutation_parameters)
-        self.relaxations = relaxations.Relaxations(parameters=self.relaxation_parameters)
+        if self.mutation_parameters is not None:
+            mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
+            self.mutations = mutations.Mutations(parameters=self.mutation_parameters)
+
+        if self.relaxation_parameters is not None:
+            relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
+            self.relaxations = relaxations.Relaxations(parameters=self.relaxation_parameters)
+
+        if self.pso_moves_parameters is not None:
+            pso_moves = import_module('structopt.{}.individual.pso_moves'.format(cls_name))
+            self.pso_moves = pso_moves.Pso_moves(parameters=self.pso_moves_parameters)
 
 
     @parallel
@@ -235,6 +228,7 @@ class Individual(ase.Atoms):
 
         return
 
+
     @single_core
     def get_atom_indices_within_distance_of_atom(self, atom_index, distance):
         dists = self.get_distances(atom_index, slice(None, None, None))
@@ -255,6 +249,7 @@ class Individual(ase.Atoms):
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,
                              mutation_parameters=self.mutation_parameters,
+                             pso_moves_parameters-self.pso_moves_parameters,
                              generator_parameters=self.generator_parameters)
         if include_atoms:
             new.arrays = self.arrays.copy()

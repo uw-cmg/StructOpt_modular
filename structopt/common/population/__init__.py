@@ -9,6 +9,7 @@ from .selections import Selections
 from .fitnesses import Fitnesses
 from .relaxations import Relaxations
 from .mutations import Mutations
+from .pso_moves import Pso_moves
 from structopt.tools import root, single_core, parallel
 
 POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
@@ -20,11 +21,7 @@ class Population(list):
     def __init__(self, parameters, individuals=None):
         self.parameters = parameters
         self.structure_type = self.parameters.structure_type.lower()
-        importlib.import_module('structopt.{}'.format(self.structure_type))
-        for module in self.parameters:
-            if module in POPULATION_MODULES and self.parameters[module] is not None:
-                Module = globals()[module.title()](getattr(self.parameters, module))
-                setattr(self, module, Module)
+        self.load_modules()
         self.generation = 0
 
         if individuals is None:
@@ -52,6 +49,7 @@ class Population(list):
                                           relaxation_parameters=self.parameters.relaxations,
                                           fitness_parameters=self.parameters.fitnesses,
                                           mutation_parameters=self.parameters.mutations,
+                                          pso_moves_parameters=self.parameters.pso_moves,
                                           generator_parameters=generator_parameters)
                     self.append(structure)
                 starting_index += n
@@ -60,27 +58,37 @@ class Population(list):
 
         self.initial_number_of_individuals = len(self)
 
+
     def __getstate__(self):
         # Copy the object's state from self.__dict__ which contains
         # all our instance attributes. Always use the dict.copy()
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
         # Remove the unpicklable entries.
-        del state['parameters']
-        del state['structure_type']
-        del state['crossovers']
-        del state['predators']
-        del state['selections']
-        del state['fitnesses']
-        del state['relaxations']
-        del state['mutations']
-        return state
+        for name in ['crossovers', 'predators', 'selections', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']:
+             if name in state:
+                del state[name]
+       return state
+
+
+    def __setstate__(self, other):
+        self.__dict__.update(other)
+        if self.has_modules:
+            self.load_modules()
+
+
+    def load_modules(self):
+        importlib.import_module('structopt.{}'.format(self.structure_type))
+        for module in self.parameters:
+            if module in POPULATION_MODULES and self.parameters[module] is not None:
+                Module = globals()[module.title()](getattr(self.parameters, module))
+                setattr(self, module, Module)
 
 
     @parallel
     def allgather(self, individuals_per_core):
         """Performs an MPI.allgather on self (the population) and updates the
-        correct individuals that have been modified based on the inputs from 
+        correct individuals that have been modified based on the inputs from
         individuals_per_core.
 
         See stuctopt.tools.parallel.allgather for a similar function.
@@ -92,7 +100,7 @@ class Population(list):
         for rank, individuals in individuals_per_core.items():
             while len(individuals) < max_individuals_per_core:
                 individuals.append(None)
- 
+
         populations_per_rank = MPI.COMM_WORLD.allgather(self)
         #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
         #correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
@@ -108,15 +116,6 @@ class Population(list):
         for i, individual in enumerate(correct_population):
             if individual is None:
                 correct_population[i] = self[i]
-
-        for i, individual in enumerate(correct_population):
-            # See Individual.__getstate__; the below attributes don't get passed via MPI
-            # so we need to reset them
-            # TODO How can I make this dynamic? Can I call __getstate__???
-            individual.fitnesses = self[i].fitnesses
-            individual.relaxations = self[i].relaxations
-            individual.mutations = self[i].mutations
-            individual._calc = self[i]._calc
 
         self.replace(correct_population)
 
@@ -149,6 +148,7 @@ class Population(list):
         super().extend(other)
         for i, individual in enumerate(self):
             individual.index = i
+
 
     @root
     def crossover(self, pairs):

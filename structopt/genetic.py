@@ -53,7 +53,7 @@ class GeneticAlgorithm(object):
             self.converged = True
         else:
             self.converged = False
-    
+
 
     def __enter__(self):
         return self
