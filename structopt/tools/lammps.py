@@ -241,8 +241,8 @@ class LAMMPS(object):
         self.output = output.decode('utf-8').split('\n')[:-1]
 
         # Check if the calculation completed without errors. If it does,
-        # we need to copy the files.
-        if 'ERROR' in self.output[-1]:
+        # we need to save the files self.calcdir.
+        if CALCULATION_END_MARK not in self.output[-1]:
             return True
 
         return False
