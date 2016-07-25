@@ -131,19 +131,13 @@ class LAMMPS(object):
         n_atom_types = len(species)
         f.write('{}  atom types\n'.format(n_atom_types))
 
-        pbc = self.atoms.get_pbc()
         xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
-        for index, axis in enumerate(['x','y','z']):
-            if pbc[index]:    
-                f.write('0.0 {}  {}lo {}hi\n'.format(xhi, axis, axis))
-            else:
-                xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
-                xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
-                f.write('{} {}  {}lo {}hi\n'.format(xlo, xhi, axis, axis))
-        
+        f.write('0.0 {}  xlo xhi\n'.format(xhi))
+        f.write('0.0 {}  ylo yhi\n'.format(yhi))
+        f.write('0.0 {}  zlo zhi\n'.format(zhi))
+
         if prism.is_skewed():
             f.write('{} {} {}  xy xz yz\n'.format(xy, xz, yz))
-        
         f.write('\n\n')
 
         f.write('Atoms \n\n')
@@ -491,3 +485,4 @@ class prism:
         prism = self.get_lammps_prism()
         axy, axz, ayz = [np.abs(x) for x in prism[3:]]
         return (axy >= acc) or (axz >= acc) or (ayz >= acc)
+
