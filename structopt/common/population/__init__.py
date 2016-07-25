@@ -9,7 +9,7 @@ from .selections import Selections
 from .fitnesses import Fitnesses
 from .relaxations import Relaxations
 from .mutations import Mutations
-from .pso_moves import Pso_moves
+from .pso_moves import Pso_Moves
 from structopt.tools import root, single_core, parallel
 
 POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
@@ -73,8 +73,7 @@ class Population(list):
 
     def __setstate__(self, other):
         self.__dict__.update(other)
-        if self.has_modules:
-            self.load_modules()
+        self.load_modules()
 
 
     def load_modules(self):
@@ -165,7 +164,7 @@ class Population(list):
 
 
     @root
-    def pso_moves(self, best_swarm, best_particles):
+    def run_pso_moves(self, best_swarm, best_particles):
         """Perform PSO moves on the population."""
         self.pso_moves.move(self, best_swarm, best_particles)
         return self

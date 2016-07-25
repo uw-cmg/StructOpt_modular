@@ -171,7 +171,19 @@ class Individual(ase.Atoms):
 
         if self.pso_moves_parameters is not None:
             pso_moves = import_module('structopt.{}.individual.pso_moves'.format(cls_name))
-            self.pso_moves = pso_moves.Pso_moves(parameters=self.pso_moves_parameters)
+            self.pso_moves = pso_moves.Pso_Moves(parameters=self.pso_moves_parameters)
+
+
+    @property
+    @single_core
+    def velocities(self):
+        return self.get_velocities()
+
+
+    @property
+    @single_core
+    def positions(self):
+        return self.get_positions()
 
 
     @parallel

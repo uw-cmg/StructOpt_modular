@@ -5,13 +5,14 @@
     "generators": {
         "sphere": {"number_of_individuals": 8,
                    "kwargs": {"atomlist": [["Au", 5]],
+                              "cell": [10.0, 10.0, 10.0],
                               "fill_factor": 0.7}}
     },
     "fitnesses": {
         "LAMMPS": {"weight": 1.0,
-                   "kwargs": {"use_mpi4py": false,
+                   "kwargs": {"use_mpi4py": true,
                               "MPMD": 0,
-                              "keep_files": true,
+                              "keep_files": false,
                               "min_style": "cg",
                               "min_modify": "line quadratic",
                               "minimize": "1e-8 1e-8 5000 10000",
@@ -21,7 +22,7 @@
     },
     "relaxations": {
         "LAMMPS": {"order": 0,
-                   "kwargs": {"use_mpi4py": false,
+                   "kwargs": {"use_mpi4py": true,
                               "MPMD": 0,
                               "keep_files": false,
                               "min_style": "cg",
@@ -35,9 +36,13 @@
         "max_generations": 5
     },
     "pso_moves" : {
-        "omega" : 0.5,
-        "phi_g" : 0.5,
-        "phi_p" : 0.5
+        "update_particles":{
+            "kwargs":{
+                "omega" : 0.5,
+                "phi_g" : 0.5,
+                "phi_p" : 0.5
+            }
+        }
     },
     "fileio": {},
     "postprocessing": {},

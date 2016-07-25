@@ -6,6 +6,9 @@ import os
 from structopt.tools.dictionaryobject import DictionaryObject
 import time
 
+MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'pso_moves']
+
+
 def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""
 
@@ -20,14 +23,14 @@ def read(input):
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the logging parameters
     use_mpi4py = False
     for module in parameters.relaxations:
-        parameters.relaxations[module].setdefault('use_mpi4py', False)
-        parameters.relaxations[module].setdefault('MPMD_cores_per_structure', 0)
-        if parameters.relaxations[module].use_mpi4py:
+        parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
+        parameters.relaxations[module].kwargs.setdefault('MPMD_cores_per_structure', 0)
+        if parameters.relaxations[module].kwargs.use_mpi4py:
             use_mpi4py = True
     for module in parameters.fitnesses:
-        parameters.fitnesses[module].setdefault('use_mpi4py', False)
-        parameters.fitnesses[module].setdefault('MPMD_cores_per_structure', 0)
-        if parameters.fitnesses[module].use_mpi4py:
+        parameters.fitnesses[module].kwargs.setdefault('use_mpi4py', False)
+        parameters.fitnesses[module].kwargs.setdefault('MPMD_cores_per_structure', 0)
+        if parameters.fitnesses[module].kwargs.use_mpi4py:
             use_mpi4py = True
 
     if use_mpi4py:
@@ -77,19 +80,15 @@ def set_default(parameters):
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
     parameters.convergence.setdefault('max_generations', 10)
-    parameters.setdefault('relaxations', None)
-    parameters.setdefault('fitnesses', None)
-    parameters.setdefault('mutations', None)
-    parameters.setdefault('generators', None)
-    parameters.setdefault('crossovers', None)
-    parameters.setdefault('pso_moves', None)
+    for module_name in MODULES:
+        parameters.setdefault(module_name, None)
 
     # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
-    for operation in ['generators', 'fitnesses', 'relaxations', 'mutations',
-                      'crossovers', 'selections', 'predators']:
+    for operation in MODULES:
         if parameters[operation] is None:
             continue
         for operator in parameters[operation]:
             parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
+

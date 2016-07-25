@@ -4,7 +4,7 @@ import structopt
 from structopt.tools import root, single_core, parallel
 
 
-class Pso_moves(object):
+class Pso_Moves(object):
     """ """
 
     @single_core
@@ -15,7 +15,7 @@ class Pso_moves(object):
     @single_core
     def move(self, population, best_swarm, best_particles):
         for i, individual in enumerate(population):
-            individual.pso_moves.update_particle(individual, best_swarm, best_particles[i])
+            individual.pso_moves.move(individual, best_swarm, best_particles[i])
         return population
 
     @single_core

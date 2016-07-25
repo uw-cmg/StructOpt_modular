@@ -55,7 +55,7 @@ class ParticleSwarmOptimization(object):
                     if self.best_particles[i]._fitness < self.best_swarm._fitness:
                         self.best_swarm = self.best_particles[i].copy()
         
-        self.population.pso_moves(best_swarm, best_particles)
+        self.population.run_pso_moves(self.best_swarm, self.best_particles)
         self.check_convergence()
         self.population.generation += 1
         self.generation += 1
@@ -78,6 +78,7 @@ if __name__ == "__main__":
     import sys
     import structopt
     import numpy as np
+    from pso import ParticleSwarmOptimization
 
     parameters = structopt.setup(sys.argv[1])
 
@@ -86,7 +87,7 @@ if __name__ == "__main__":
 
     population = Population(parameters=parameters)
 
-    with structopt.ParticleSwarmOptimization(population=population,
+    with ParticleSwarmOptimization(population=population,
                                     convergence=parameters.convergence
                                     ) as optimizer:
         optimizer.run()

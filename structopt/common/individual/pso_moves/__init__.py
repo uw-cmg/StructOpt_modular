@@ -7,15 +7,14 @@ from .update_particle import update_particle
 from structopt.tools import root, single_core, parallel
 
 
-class Pso_moves(object):
+class Pso_Moves(object):
     """ """
 
     @single_core
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        self.kwargs = defaultdict(dict)
-        self.kwargs.update( {getattr(self, name): kwords for name, kwords in self.parameters.kwargs.items()} )
+        self.kwargs = self.parameters.update_particles.kwargs
 
 
     @single_core
@@ -23,7 +22,7 @@ class Pso_moves(object):
         logger = logging.getLogger("default")        
         individual._relaxed = False
         individual._fitted = False
-        return self.update_particle(individual, best_swarm, best_particle)
+        return self.update_particle(individual, best_swarm, best_particle, self.kwargs.omega, self.kwargs.phi_p, self.kwargs.phi_g)
 
 
     @single_core
@@ -33,11 +32,6 @@ class Pso_moves(object):
 
     @staticmethod
     @functools.wraps(update_particle)
-    def update_particle(individual, best_swarm, best_particle):
-        return update_particle(individual,
-                               best_swarm,
-                               best_particle,
-                               omega=self.parameters.omega,
-                               phi_p=self.parameters.phi_p,
-                               phi_g=self.parameters.phi_g)
+    def update_particle(individual, best_swarm, best_particle, omega, phi_p, phi_g):
+        return update_particle(individual, best_swarm, best_particle, omega, phi_p, phi_g)
 
