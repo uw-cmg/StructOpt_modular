@@ -4,6 +4,7 @@ import os
 
 from . import io as structopt_io
 from .genetic import GeneticAlgorithm
+from .pso import ParticleSwarmOptimization
 from . import common
 from .tools import get_size, get_rank
 

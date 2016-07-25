@@ -26,6 +26,7 @@ class Population(list):
         self.fitnesses = Fitnesses(self.parameters.fitnesses)
         self.relaxations = Relaxations(self.parameters.relaxations)
         self.mutations = Mutations(self.parameters.mutations)
+        self.pso_moves = Pso_moves(self.parameters.pso_moves)
         self.generation = 0
 
         if individuals is None:
@@ -164,6 +165,13 @@ class Population(list):
     def mutate(self):
         """Perform mutations on the population."""
         self.mutations.mutate(self)
+        return self
+
+
+    @root
+    def pso_moves(self, best_swarm, best_particles):
+        """Perform PSO moves on the population."""
+        self.pso_moves.move(self, best_swarm, best_particles)
         return self
 
 
