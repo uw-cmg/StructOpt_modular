@@ -6,7 +6,7 @@ import os
 from structopt.tools.dictionaryobject import DictionaryObject
 import time
 
-MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'pso_moves']
+MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'pso_moves']
 
 
 def read(input):

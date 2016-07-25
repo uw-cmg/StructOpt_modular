@@ -186,6 +186,12 @@ class Individual(ase.Atoms):
         return self.get_positions()
 
 
+    @property
+    @single_core
+    def fits(self):
+        return [getattr(self, module) for module in self.fitnesses.module_names]
+
+
     @parallel
     def mutate(self):
         """Mutate an individual.
