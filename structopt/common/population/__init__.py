@@ -117,7 +117,6 @@ class Population(list):
             individual.relaxations = self[i].relaxations
             individual.mutations = self[i].mutations
             individual._calc = self[i]._calc
-            individual._generator_kwargs = self[i]._generator_kwargs
 
         self.replace(correct_population)
 
