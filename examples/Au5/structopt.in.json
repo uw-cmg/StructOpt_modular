@@ -59,9 +59,10 @@
         "best": {"probability": 1.0}
     },
     "selections": {
-        "rank": {"probability": 1.0,
+        "rank": {"probability": 0.0,
                  "kwargs": {"unique_pairs": false,
-                            "unique_parents": false}}
+                            "unique_parents": false}},
+        "random_selection": {"probability": 1.0}
     },
     "fileio": {},
     "postprocessing": {},
