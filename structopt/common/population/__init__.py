@@ -18,11 +18,11 @@ class Population(list):
     @single_core
     def __init__(self, parameters, individuals=None):
         self.parameters = parameters
-        self.structure_type = self.parameters.generators.structure_type.lower()
+        self.structure_type = self.parameters.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
         self.crossovers = Crossovers(self.parameters.crossovers)
-        self.predators = Predators(self.parameters.predators)
         self.selections = Selections(self.parameters.selections)
+        self.predators = Predators(self.parameters.predators)
         self.fitnesses = Fitnesses(self.parameters.fitnesses)
         self.relaxations = Relaxations(self.parameters.relaxations)
         self.mutations = Mutations(self.parameters.mutations)
@@ -37,10 +37,10 @@ class Population(list):
 
             # Generate/load initial structures
             starting_index = 0
-            for generator in self.parameters.generators.initializers:
-                n = self.parameters.generators.initializers[generator].number_of_individuals
+            for generator in self.parameters.generators:
+                n = self.parameters.generators[generator].number_of_individuals
                 for j in range(n):
-                    kwargs = self.parameters.generators.initializers[generator].kwargs
+                    kwargs = self.parameters.generators[generator].kwargs
 
                     # For the read_xyz, the input is a list of filenames. These need to be
                     # passed as arguments one by one instead of all at once

@@ -52,7 +52,7 @@ class GeneticAlgorithm(object):
 
 
     def check_convergence(self):
-        if self.generation >= self.convergence.maxgen:
+        if self.generation >= self.convergence.max_generations:
             self.converged = True
         else:
             self.converged = False
