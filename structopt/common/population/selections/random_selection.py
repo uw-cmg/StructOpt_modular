@@ -1,10 +1,9 @@
-import random as random
 from itertools import combinations
+import random
 
-def random_selection(population, fits, prob):
-    pairs = []
-    for pair in combinations(population, 2):
-        if random.random() < prob:
-            pairs.append(pair)
+def random_selection(population, fits):
+    pairs = [pair for pair in combinations(population, 2)]
+    random.shuffle(pairs)
+    pairs = pairs[:len(population) // 2]
     return pairs
 

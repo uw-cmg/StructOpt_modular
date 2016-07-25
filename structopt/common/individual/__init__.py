@@ -9,6 +9,7 @@ from . import relaxations, fitnesses, mutations, fingerprinters, mutations
 from structopt.tools import root, single_core, parallel
 from structopt.io.read_xyz import read_xyz
 
+INDIVIDUAL_MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'fingerprinters']
 
 class Individual(ase.Atoms):
     """An abstract base class for a structure."""

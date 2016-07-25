@@ -21,10 +21,13 @@ class Mutations(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        self.kwargs = defaultdict(dict)
-        self.kwargs.update( {getattr(self, name): kwords for name, kwords in self.parameters.kwargs.items()} )
 
-        self.mutations = {getattr(self, name): prob for name, prob in self.parameters.options.items()}
+        # self.mutations is a dictionary containing {function: probability} pairs
+        self.mutations = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
+
+        #self.kwargs is a dictionary containing {function: kwargs} pairs
+        self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
+
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
 
@@ -49,7 +52,8 @@ class Mutations(object):
         else:
             individual._relaxed = False
             individual._fitted = False
-            return self.selected_mutation(individual, **self.kwargs[self.selected_mutation])
+            kwargs = self.kwargs[self.selected_mutation]
+            return self.selected_mutation(individual, **kwargs)
 
     @single_core
     def post_processing(self):

@@ -19,12 +19,12 @@ def read(input):
 
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the logging parameters
     use_mpi4py = False
-    for module in parameters.relaxations.modules:
+    for module in parameters.relaxations:
         parameters.relaxations[module].setdefault('use_mpi4py', False)
         parameters.relaxations[module].setdefault('MPMD_cores_per_structure', 0)
         if parameters.relaxations[module].use_mpi4py:
             use_mpi4py = True
-    for module in parameters.fitnesses.modules:
+    for module in parameters.fitnesses:
         parameters.fitnesses[module].setdefault('use_mpi4py', False)
         parameters.fitnesses[module].setdefault('MPMD_cores_per_structure', 0)
         if parameters.fitnesses[module].use_mpi4py:
@@ -76,11 +76,13 @@ def set_default(parameters):
     if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
-    parameters.setdefault('weights', [1.0 for _ in parameters.fitnesses.weights])
+    parameters.convergence.setdefault('max_generations', 10)
 
-    parameters.selections.crossover_probability = sum(parameters.crossovers.options.values())
-
-    parameters.convergence.setdefault('maxgen', 10)
+    # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
+    for operation in ['generators', 'fitnesses', 'relaxations', 'mutations',
+                      'crossovers', 'selections', 'predators']:
+        for operator in parameters[operation]:
+            parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
 
