@@ -22,15 +22,14 @@ class Population(list):
         self.structure_type = self.parameters.structure_type.lower()
         importlib.import_module('structopt.{}'.format(self.structure_type))
         for module in self.parameters:
-            if module not in POPULATION_MODULES:
-                continue
-            Module = globals()[module.title()](getattr(self.parameters, module))
-            setattr(self, module, Module)
+            if module in POPULATION_MODULES and self.parameters[module] is not None:
+                Module = globals()[module.title()](getattr(self.parameters, module))
+                setattr(self, module, Module)
         self.generation = 0
 
         if individuals is None:
             # Import the structure type class: e.g from structopt.crystal import Crystal
-            # Unfortunately `from` doesn't seem to work implicitly
+            # Unfortunately 'from' doesn't seem to work implicitly
             # so a getattr on the module is needed
             module = importlib.import_module('structopt.{}'.format(self.structure_type))
             Structure = getattr(module, self.structure_type.title())
@@ -46,6 +45,8 @@ class Population(list):
                     # passed as arguments one by one instead of all at once
                     if generator == 'read_xyz':
                         kwargs = {'filename': kwargs[j]}
+
+                    generator_parameters = {generator: kwargs}
 
                     structure = Structure(index=starting_index + j,
                                           relaxation_parameters=self.parameters.relaxations,
