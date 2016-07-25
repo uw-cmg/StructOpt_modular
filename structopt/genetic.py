@@ -67,6 +67,7 @@ if __name__ == "__main__":
     import structopt
     import random
     import numpy as np
+    from genetic import GeneticAlgorithm
 
     parameters = structopt.setup(sys.argv[1])
     random.seed(parameters.seed)
@@ -74,7 +75,7 @@ if __name__ == "__main__":
     
     population = Population(parameters=parameters)
 
-    with structopt.GeneticAlgorithm(population=population,
+    with GeneticAlgorithm(population=population,
                                     convergence=parameters.convergence
                                     ) as optimizer:
         optimizer.run()

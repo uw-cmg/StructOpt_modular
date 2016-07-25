@@ -68,7 +68,7 @@ class Population(list):
         for name in ['crossovers', 'predators', 'selections', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']:
              if name in state:
                 del state[name]
-       return state
+        return state
 
 
     def __setstate__(self, other):

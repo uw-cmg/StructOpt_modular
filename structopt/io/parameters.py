@@ -82,6 +82,7 @@ def set_default(parameters):
     parameters.setdefault('mutations', None)
     parameters.setdefault('generators', None)
     parameters.setdefault('crossovers', None)
+    parameters.setdefault('pso_moves', None)
 
     # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
     for operation in ['generators', 'fitnesses', 'relaxations', 'mutations',
