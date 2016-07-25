@@ -36,9 +36,6 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
     # Get ranks of each population value based on its fitness
     ranks = scipy.stats.rankdata(fits)
 
-    print('unique_pairs:', unique_pairs)
-    print('unique_parents:', unique_parents)
-
     # Work with indexes of the population instead of the population
     inds_population = list(range(len(population)))
 
