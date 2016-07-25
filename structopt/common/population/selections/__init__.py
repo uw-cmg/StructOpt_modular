@@ -46,7 +46,7 @@ class Selections(object):
     @staticmethod
     @functools.wraps(random_selection)
     def random_selection(population, fits):
-        return random_selection(population, fits, prob)
+        return random_selection(population, fits)
 
 
     @staticmethod
