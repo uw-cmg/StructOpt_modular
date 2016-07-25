@@ -9,8 +9,6 @@ from . import relaxations, fitnesses, mutations, fingerprinters, mutations
 from structopt.tools import root, single_core, parallel
 from structopt.io.read_xyz import read_xyz
 
-INDIVIDUAL_MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'fingerprinters']
-
 class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
@@ -18,7 +16,7 @@ class Individual(ase.Atoms):
     def __init__(self, index=None,
                  load_modules=True,
                  relaxation_parameters=None, fitness_parameters=None, mutation_parameters=None,
-                 generator=None, generator_kwargs=None):
+                 generator_parameters=None):
         """Additional class parameters that extend ASE.Atoms:
             index
             _generator_args
@@ -62,31 +60,8 @@ class Individual(ase.Atoms):
         # code when using similar functions for generating clusters, bulk, surfaces, etc.
         # However, read_xyz is a function and must be called uniquely.
 
-        if self.generator_kwargs is not None:
+        if self.generator_parameters is not None:
             self.generate()
-
-        if generator == 'read_xyz':
-            filename = generator_kwargs['filename']
-            atoms = read_xyz(filename)
-            self.extend(atoms)
-            self.set_pbc(True)
-
-            with open(filename) as of:
-                of.readline()  # number of atoms
-                sizes = of.readline()  # comment == box size
-                sizes = sizes.split()[:3]
-                sizes = [float(x) for x in sizes]
-                cell = np.identity(3)
-                np.fill_diagonal(cell, sizes)
-                self.set_cell(cell)
-
-        elif generator:
-            generator_module = import_module('structopt.common.individual.generators.{}'.format(generator))
-            generator_object = getattr(generator_module, generator.title())(**generator_kwargs)
-            atoms = generator_object.generate()
-            self.extend(atoms)
-            self.set_cell(atoms.get_cell())
-            self.set_pbc(atoms.get_pbc())
 
         else:
             return None
@@ -244,11 +219,11 @@ class Individual(ase.Atoms):
         """Generate an individual using generator_kwargs parameter. By defualt
         it extends the current atoms object"""
 
-        assert len(self.generator_parameters == 1)
+        assert len(self.generator_parameters) == 1
         generator_name = list(self.generator_parameters.keys())[0]
-        generator_module = import_module('structopt.common.individual.generators.{}'.format(generator))
-        generator = getattr(generator_module, generator.title())
-        kwargs = self.generator_parameters['kwargs']
+        generator_module = import_module('structopt.common.individual.generators.{}'.format(generator_name))
+        generator = getattr(generator_module, generator_name)
+        kwargs = self.generator_parameters[generator_name]
         atoms = generator(**kwargs)
 
         self.extend(atoms)
@@ -272,13 +247,12 @@ class Individual(ase.Atoms):
     @single_core
     def copy(self, include_atoms=True):
         """Return a copy."""
-        generator_kwargs = self._generator_kwargs.copy()
         new = self.__class__(index=self.index,
                              load_modules=True,
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,
                              mutation_parameters=self.mutation_parameters,
-                             generator=None, generator_kwargs=generator_kwargs)
+                             generator_parameters=self.generator_parameters)
         if include_atoms:
             new.arrays = self.arrays.copy()
         else:

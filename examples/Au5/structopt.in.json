@@ -51,7 +51,6 @@
     "fingerprinters": {
         "options": []
     },
-
     "crossovers": {
         "rotate": {"probability": 1.0}
     },
