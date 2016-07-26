@@ -21,6 +21,7 @@ class Mutations(object):
                 individual.mutate()
         return population
 
+
     @single_core
     def post_processing(self):
         pass

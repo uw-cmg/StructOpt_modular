@@ -5,7 +5,10 @@ from bisect import bisect
 
 import structopt
 from structopt.tools import root, single_core, parallel
+
 from .rotate import rotate
+
+rotate.tag = 'Ro'
 
 
 class Crossovers(object):
@@ -48,12 +51,19 @@ class Crossovers(object):
                     children.append(child1)
                 if child2 is not None:
                     children.append(child2)
+
+                self.post_processing((individual1, individual2), (child1, child2))
         return children
 
 
     @single_core
-    def post_processing(self):
-        pass
+    def post_processing(self, parent_pair, child_pair):
+        parent1, parent2 = parent_pair
+        child1, child2 = child_pair
+        for child in child_pair:
+            if child is not None:
+                child.crossover_tag = '({parent1}+{parent2}){tag}'.format(parent1=parent1.index, parent2=parent2.index, tag=self.selected_crossover.tag)
+
 
     @staticmethod
     @functools.wraps(rotate)

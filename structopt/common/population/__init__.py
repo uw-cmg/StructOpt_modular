@@ -144,9 +144,13 @@ class Population(list):
 
     @single_core
     def extend(self, other):
+        # Rudimentary implementation of MEX (minimum excluded value) to assign unique
+        # index values to the new individuals
+        indexes = sorted([individual.index for individual in self])
+        excluded = [i for i in range(len(indexes)+len(other)) if i not in indexes]
+        for i, individual in enumerate(other):
+            individual.index = excluded[i]
         super().extend(other)
-        for i, individual in enumerate(self):
-            individual.index = i
 
 
     @root
