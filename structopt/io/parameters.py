@@ -60,7 +60,10 @@ def write(parameters):
 
 
 def set_default(parameters):
-    logger = logging.getLogger('default')
+    if "path" not in logging.parameters:
+        logging.parameters.path = "logs{}".format(time.strftime("%Y%m%d%H%M%S"))
+    else:
+        raise ValueError("'path' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
 
     # If parallel and no seed, all nodes need the same seed
     if parameters.logging.ncores > 1:
@@ -70,8 +73,6 @@ def set_default(parameters):
         seed = None
 
     parameters.setdefault('seed', seed)
-
-    parameters.logging.setdefault('output_filename', 'Output')
 
     if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')

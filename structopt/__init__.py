@@ -2,46 +2,38 @@ import time
 import logging
 import os
 
-from . import io as structopt_io
+from .io.parameters import read as read_parameters
+from .io.parameters import write as write_parameters
+from .io.logger_utils import initialize_logger, initialize_logger_for_root
 from . import common
 from .tools import get_size, get_rank
 
 def setup(parameter_file):
-    parameters = structopt_io.parameters.read(parameter_file)
+    # Read in the parameters
+    parameters = read_parameters(parameter_file)
 
     # Setup all the loggers
     logging_level = logging.parameters.get("logging_level", "info")
     logging_level = getattr(logging, logging_level.upper())
 
-    if "loggername" not in logging.parameters:
-        logging.parameters.loggername = "{0}-rank{1}-{2}".format(logging.parameters.output_filename, logging.parameters.rank, time.strftime("%Y%m%d%H%M%S"))
-    else:
-        raise ValueError("'loggername' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
+    rank = logging.parameters.rank
+    path = logging.parameters.path
+    os.makedirs(path, exist_ok=True)
 
-    if logging.parameters.rank == 0:
-        logger = structopt_io.logger_utils.initialize_logger(filename='{}.out'.format(logging.parameters.output_filename), name="output", level=logging_level)
-        default_logger = structopt_io.logger_utils.initialize_logger(filename='{}.log'.format(logging.parameters.loggername), name="default", level=logging_level)
-        fitness_logger = structopt_io.logger_utils.initialize_logger(filename='fitnesses.log'.format(logging.parameters.loggername), name="fitness", level=logging_level)
-        genealogy_logger = structopt_io.logger_utils.initialize_logger(filename='genealogy.log'.format(logging.parameters.loggername), name="genealogy", level=logging_level)
+    logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'output.log'), name="output", level=logging_level)
+    logger_by_rank = initialize_logger(filename=os.path.join(path, 'log-by-rank-{}.log'.format(rank)), name="by-rank", level=logging_level)
 
-        if logging_level <= logging.DEBUG:
-            debug_logger = structopt_io.logger_utils.initialize_logger(filename='{}.debug'.format(logging.parameters.loggername), name="debug", level=logging_level)
+    default_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'default.log'), name="default", level=logging_level)
 
-    else:
-        logger = structopt_io.logger_utils.initialize_logger(filename='{}.out'.format(logging.parameters.output_filename), name="output", level=logging_level, disable_output=True)
-        default_logger = structopt_io.logger_utils.initialize_logger(filename='{}.log'.format(logging.parameters.loggername), name="default", level=logging_level, disable_output=True)
-        fitness_loggr = structopt_io.logger_utils.initialize_logger(filename='fitnesses.log'.format(logging.parameters.loggername), name="fitness", level=logging_level, disable_output=True)
-        genealogy_loggr = structopt_io.logger_utils.initialize_logger(filename='genealogy.log'.format(logging.parameters.loggername), name="genealogy", level=logging_level, disable_output=True)
+    fitness_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'fitnesses.log'), name="fitness", level=logging_level)
 
-    logger_by_rank = structopt_io.logger_utils.initialize_logger(filename='{}-by-rank.out'.format(logging.parameters.loggername), name="by-rank", level=logging_level)
+    genealogy_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'genealogy.log'), name="genealogy", level=logging_level)
 
     if logging_level <= logging.DEBUG:
-        debug_logger = structopt_io.logger_utils.initialize_logger(filename='{}-by-rank.debug'.format(logging.parameters.loggername), name="by-rank-debug", level=logging_level)
+        debug_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'debug.log'), name="debug", level=logging_level)
+        debug_logger_by_rank = initialize_logger(filename=os.path.join(path, 'debug-by-rank-{}.log'.format(rank)), name="debug-by-rank", level=logging_level)
 
-    os.makedirs(logging.parameters.output_filename, exist_ok=True)
-
-    structopt_io.parameters.write(parameters)
-
+    write_parameters(parameters)
     return parameters
 
 __all__ = ['parameters', 'cluster', 'crystal', 'defect', 'surface']
