@@ -5,63 +5,11 @@ from ase import Atom, Atoms
 from ase.visualize import view
 from ase.data import atomic_numbers, reference_states
 
-def random_three_vector():
-    """Generates a random 3D unit vector (direction) with a uniform spherical distribution
-    Algo from http://stackoverflow.com/questions/5408276/python-uniform-spherical-distribution
-    """
+from structopt.tools import random_three_vector
+from structopt.tools import get_avg_radii
+from structopt.tools import get_particle_radius
 
-    phi = np.random.uniform(0,np.pi*2)
-    costheta = np.random.uniform(-1,1)
-
-    theta = np.arccos(costheta)
-    x = np.sin(theta) * np.cos(phi)
-    y = np.sin(theta) * np.sin(phi)
-    z = np.cos(theta)
-    return np.array((x,y,z))
-
-def get_avg_radii(atomlist):
-    """Returns the average atomic radius of a list of
-    atoms. The radius is the radius of the close packed sphere
-    in a given crystal structure
-    """
-
-    # Get the average atomic radii of close packed atoms
-    n_tot = sum([atom[1] for atom in atomlist])
-    r = 0
-    for atom in atomlist:
-        n = atom[1]
-        conc = float(n)/float(n_tot)
-        atomic_number = atomic_numbers[atom[0]]
-        struct = reference_states[atomic_number]['symmetry']
-        if struct == 'fcc':
-            a = reference_states[atomic_number]['a']
-            r += conc * np.linalg.norm([a, a]) / 4.0
-        elif struct == 'bcc':
-            a = reference_states[atomic_number]['a']
-            r += conc * np.linalg.norm([a, a, a]) / 4.0
-        else:
-            raise IOError('{} structure not supported yet'.format(struct))
-
-    return r
-
-def get_particle_radius(atomlist, fill_factor):
-    """Returns an estimated nanoparticle radius given a
-    concentration of atoms and void fraction of the sphere.
-    Given an average sphere, this is given by the formula
-
-    R_sphere = (n_tot / f)**(1.0/3.0) * R_atom
-
-    where n_tot is the total number of atoms and f is
-    the fill factor of the particle.
-    """
-
-    n_tot = sum([atom[1] for atom in atomlist])
-    R_atom = get_avg_radii(atomlist)
-    R_sphere = (n_tot / fill_factor)**(1.0/3.0) * R_atom
-
-    return R_sphere
-
-def sphere(atomlist, fill_factor=0.7, radius=None, cell=None):
+def sphere(atomlist, fill_factor=0.74, radius=None, cell=None):
     """Generates a random sphere of particles given an
     atomlist and radius. If radius is None, one is 
     automatically estimated. min_dist and tries_b4_expand
