@@ -15,8 +15,6 @@ class GeneticAlgorithm(object):
         self.convergence = convergence
 
         self.generation = 0
-
-        # Set starting convergence
         self.converged = False
 
 
@@ -43,6 +41,7 @@ class GeneticAlgorithm(object):
         self.population.relax()
         fits = self.population.fitness()
         self.population.kill(fits)
+        self.population.sort()
         self.check_convergence()
         if logging.parameters.rank == 0:
             self.post_processing_step()
@@ -61,7 +60,7 @@ class GeneticAlgorithm(object):
         # Save the fitnesses for each individual
         fitness_logger = logging.getLogger('fitness')
         for individual in self.population:
-            fitness_logger.info('Generation {}: {}'.format(self.generation, ', '.join([str(x) for x in individual.fits])))
+            fitness_logger.info('Generation {}, Individual {}: {}'.format(self.generation, individual.index, ', '.join([str(x) for x in individual.fits])))
 
         # Save the XYZ file for each individual
         for individual in self.population:
@@ -72,6 +71,15 @@ class GeneticAlgorithm(object):
             if not os.path.exists(path):
                 os.makedirs(path)
             individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.index)))
+
+        # Save the genealogy
+        tags = ['' for _ in self.population]
+        for i, individual in enumerate(self.population):
+            tags[i] = '{ctag}{index}{mtag}'.format(ctag=individual.crossover_tag or '', index=individual.index, mtag=individual.mutation_tag or '')
+            individual.crossover_tag = None
+            individual.mutation_tag = None
+        genealogy_logger = logging.getLogger('genealogy')
+        genealogy_logger.info(' '.join(tags))
 
 
     def __enter__(self):

@@ -21,6 +21,8 @@ class Individual(ase.Atoms):
                  generator_parameters=None):
 
         self.index = index
+        self.mutation_tag = None
+        self.crossover_tag = None
         self.relaxation_parameters = relaxation_parameters
         self.fitness_parameters = fitness_parameters
         self.mutation_parameters = mutation_parameters
@@ -201,7 +203,6 @@ class Individual(ase.Atoms):
         """
         self.mutations.select_mutation()
         self.mutations.mutate(self)
-        self.mutations.post_processing()
 
 
     @parallel
@@ -212,7 +213,6 @@ class Individual(ase.Atoms):
             individual (Individual): the individual to relax
         """
         self.relaxations.relax(self)
-        self.relaxations.post_processing()
 
 
     @parallel
@@ -224,7 +224,6 @@ class Individual(ase.Atoms):
         """
         fits = self.fitnesses.fitness(self)
         self._fitted = True
-        self.fitnesses.post_processing()
         return fits
 
     @single_core
