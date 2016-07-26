@@ -17,7 +17,7 @@ def random_three_vector():
     x = np.sin(theta) * np.cos(phi)
     y = np.sin(theta) * np.sin(phi)
     z = np.cos(theta)
-    return (x,y,z)
+    return np.array((x,y,z))
 
 def get_avg_radii(atomlist):
     """Returns the average atomic radius of a list of
@@ -81,7 +81,7 @@ def sphere(atomlist, fill_factor=0.7, radius=None, cell=None):
 
     random.shuffle(chemical_symbols)
 
-    unit_vec = np.array([np.array(random_three_vector()) for i in range(len(chemical_symbols))])
+    unit_vec = np.array([random_three_vector() for i in range(len(chemical_symbols))])
     D = radius * np.random.sample(size=len(chemical_symbols)) ** (1.0/3.0)
     positions = np.array([D]).T * unit_vec
 
