@@ -42,11 +42,12 @@
         "max_generations": 5
     },
     "mutations": {
-	"move_atoms": {"probability": 0.5},
+	"move_atoms": {"probability": 0.0},
 	"swap_positions": {"probability": 0.0},
 	"swap_species": {"probability": 0.0},
-	"rotate_atoms": {"probability": 0.3},
-	"rotate_cluster": {"probability": 0.0}
+	"rotate_atoms": {"probability": 0.0},
+	"rotate_cluster": {"probability": 0.3},
+        "rotate_all": {"probability": 0.7}
     },
     "fingerprinters": {
         "options": []

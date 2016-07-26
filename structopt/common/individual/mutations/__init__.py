@@ -11,6 +11,7 @@ from .swap_species import swap_species
 from .move_atoms import move_atoms
 from .rotate_atoms import rotate_atoms
 from .rotate_cluster import rotate_cluster
+from .rotate_all import rotate_all
 from structopt.tools import root, single_core, parallel
 
 
@@ -83,4 +84,9 @@ class Mutations(object):
     @functools.wraps(rotate_cluster)
     def rotate_cluster(individual):
         return rotate_cluster(individual)
+
+    @staticmethod
+    @functools.wraps(rotate_all)
+    def rotate_all(individual, vector=None, angle=None, center=None):
+        return rotate_all(individual, vector, angle, center)
 
