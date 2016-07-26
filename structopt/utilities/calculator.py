@@ -43,13 +43,23 @@ class StructOpt(object):
         return
 
     def initialize(self):
-        '''Gets the status of the calculation. Meant to be run when within
-        the calculation directory'''
+        """Gets the status of the calculation. Meant to be run when within
+        the calculation directory"""
+
+        pass
+
+    def run(self):
+        """Runs the job as is in the current directory."""
+
+        pass
+
+    def submit(self):
+        """Submits the job to the queue"""
 
         pass
 
     def read_fitness(self):
-        '''Reads fitness.log and stores the data'''
+        """Reads fitness.log and stores the data"""
 
         all_fitness = []
         pattern = '.* Generation (.*), Individual (.*): (.*)'
@@ -58,6 +68,8 @@ class StructOpt(object):
         current_generation = 0
         with open('fitnesses.log') as fitness_file:
             for line in fitness_file:
+
+                # Get the data from the line
                 match = re.match(pattern, line, re.I|re.M)
                 if match:
                     generation = int(match.group(1))
@@ -66,11 +78,14 @@ class StructOpt(object):
                 else:
                     continue
 
+                # If we get here, we've finished reading all fitnesses
+                # for a current generation
                 if generation > current_generation:
                     current_generation = generation
                     all_fitness.append(current_population)
                     current_population = []
 
+                # Make sure the fitness list is big enough
                 if len(current_population) < individual + 1:
                     current_population += [None]*(individual + 1 - len(current_population))
 
@@ -85,7 +100,7 @@ class StructOpt(object):
 
         Output
         ------
-        out : N x M list
+        out : N x M numpy.ndarray
             N = Number of generations
             M = Number of individuals in each generation
             out[i][j] gives fitness of individual j in generation i.
@@ -101,7 +116,7 @@ class StructOpt(object):
 
         Output
         ------
-        out : N list
+        out : numpy.ndarray
             N = Number of generations
             out[i] gives average fitness of generation i
         """
@@ -110,3 +125,48 @@ class StructOpt(object):
             self.read_fitness()
 
         return np.average(self.fitness, axis=1)
+
+    def get_min_fitnesses(self):
+        """Returns a list of the minimum fitness of each generation
+
+        Output
+        ------
+        out : N sized numpy.ndarray
+            N = Number of generations
+            out[i] gives  fitness of generation i
+        """
+
+        if self.fitness is None:
+            self.read_fitness()
+
+        return np.amin(self.fitness, axis=1)
+
+    def get_max_fitnesses(self):
+        """Returns a list of the minimum fitness of each generation
+
+        Output
+        ------
+        out : N sized numpy.ndarray
+            N = Number of generations
+            out[i] gives fitness of generation i
+        """
+
+        if self.fitness is None:
+            self.read_fitness()
+
+        return np.amax(self.fitness, axis=1)
+
+    def get_stdev_fitness(self):
+        """Returns the fitness standard deviation of each generation
+
+        Output
+        ------
+        out : N sized numpy.ndarray
+            N = Number of generations
+            out[i] gives standard devaiation of generation i
+        """
+
+        if self.fitness is None:
+            self.read_fitness()
+
+        return np.std(self.fitness, axis=1)
