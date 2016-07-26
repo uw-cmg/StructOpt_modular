@@ -1,7 +1,8 @@
-'''This contains a StructOpt calculator for submitting jobs to queue, tracking their progress, and reading their output. Currently only works with genetic.py'''
+"""This contains a StructOpt calculator for submitting jobs to queue, tracking their progress, and reading their output. Currently only works with genetic.py"""
 
 import os
 import re
+from operator import itemgetter
 
 import numpy as np
 
@@ -17,13 +18,16 @@ class StructOpt(object):
         self.optimizer = optimizer
         self.parameters = parameters
 
+        # Set default analysis parameters
         self.fitness = None
+        self.log_dirs = None
+        self.log_dir = None
 
         self.system_name = os.path.basename(self.calcdir)
 
     def __enter__(self):
-        '''On enter, make sure directory exists. Create it if necessary
-        and change into the directory. Then return the calculator.'''
+        """On enter, make sure directory exists. Create it if necessary
+        and change into the directory. Then return the calculator."""
 
         # Make directory if it doesn't already exist
         if not os.path.isdir(self.calcdir):
@@ -36,7 +40,7 @@ class StructOpt(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        '''On exit, change back to the original directory'''
+        """On exit, change back to the original directory"""
 
         os.chdir(self.cwd)
 
@@ -53,6 +57,49 @@ class StructOpt(object):
 
         pass
 
+    def read_runs(self):
+        """Stores the output directory in the order in which they were run"""
+
+        log_dirs = [d for d in os.listdir('.') if os.path.isdir('./' + d)]
+        pattern = r'logs(.*)'
+        log_times = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in log_dirs
+                     if re.match(pattern, d, re.I|re.M)]
+
+        log_dirs_times = zip(log_dirs, log_times)
+        log_dirs_times = sorted(log_dirs_times, key=itemgetter(1))
+        log_dirs, log_times = zip(*log_dirs_times)
+
+        self.log_dirs = log_dirs
+
+        return
+
+    def set_run(self, run_number):
+        """Sets the get and read functions on a certain run number.
+
+        Parameters
+        ----------
+        run_number : int
+            The run number we wish to extra data out of. Normal indexing rules
+            apply, so run_number = -1 is the last (most recent) run, while 0
+            is the first (earliest) run.
+        """
+
+        if self.log_dirs is None:
+            self.read_runs()
+
+        new_log_dir = self.log_dirs[run_number]
+        if new_log_dir is not self.log_dir:
+            self.clear_data()
+
+        self.log_dir = new_log_dir
+
+    def clear_data(self):
+        """Run to clear the stored data."""
+
+        self.fitnesses = None
+
+        return
+
     def submit(self):
         """Submits the job to the queue"""
 
@@ -66,7 +113,7 @@ class StructOpt(object):
 
         current_population = []
         current_generation = 0
-        with open('fitnesses.log') as fitness_file:
+        with open('{}/fitnesses.log'.format(self.log_dir)) as fitness_file:
             for line in fitness_file:
 
                 # Get the data from the line
