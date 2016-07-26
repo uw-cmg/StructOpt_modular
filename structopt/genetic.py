@@ -64,12 +64,10 @@ class GeneticAlgorithm(object):
 
         # Save the XYZ file for each individual
         for individual in self.population:
-            path = 'XYZs'
-            if not os.path.exists(path):
-                os.makedirs(path)
+            path = os.path.join(logging.parameters.path, 'XYZs')
+            os.makedirs(path, exist_ok=True)
             path = os.path.join(path, 'generation{}'.format(self.generation))
-            if not os.path.exists(path):
-                os.makedirs(path)
+            os.makedirs(path, exist_ok=True)
             individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.index)))
 
         # Save the genealogy
