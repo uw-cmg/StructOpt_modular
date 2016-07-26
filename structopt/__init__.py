@@ -21,6 +21,7 @@ def setup(parameter_file):
     if logging.parameters.rank == 0:
         logger = structopt_io.logger_utils.initialize_logger(filename='{}.out'.format(logging.parameters.output_filename), name="output", level=logging_level)
         default_logger = structopt_io.logger_utils.initialize_logger(filename='{}.log'.format(logging.parameters.loggername), name="default", level=logging_level)
+        fitness_logger = structopt_io.logger_utils.initialize_logger(filename='fitnesses.log'.format(logging.parameters.loggername), name="fitness", level=logging_level)
 
         if logging_level <= logging.DEBUG:
             debug_logger = structopt_io.logger_utils.initialize_logger(filename='{}.debug'.format(logging.parameters.loggername), name="debug", level=logging_level)
@@ -28,6 +29,7 @@ def setup(parameter_file):
     else:
         logger = structopt_io.logger_utils.initialize_logger(filename='{}.out'.format(logging.parameters.output_filename), name="output", level=logging_level, disable_output=True)
         default_logger = structopt_io.logger_utils.initialize_logger(filename='{}.log'.format(logging.parameters.loggername), name="default", level=logging_level, disable_output=True)
+        fitness_loggr = structopt_io.logger_utils.initialize_logger(filename='fitnesses.log'.format(logging.parameters.loggername), name="fitness", level=logging_level, disable_output=True)
 
     logger_by_rank = structopt_io.logger_utils.initialize_logger(filename='{}-by-rank.out'.format(logging.parameters.loggername), name="by-rank", level=logging_level)
 
