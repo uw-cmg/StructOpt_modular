@@ -21,7 +21,7 @@ def setup(parameter_file):
     os.makedirs(path, exist_ok=True)
 
     logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'output.log'), name="output", level=logging_level)
-    logger_by_rank = initialize_logger(filename=os.path.join(path, 'log-by-rank-{}.log'.format(rank)), name="by-rank", level=logging_level)
+    logger_by_rank = initialize_logger(filename=os.path.join(path, 'output-by-rank-{}.log'.format(rank)), name="by-rank", level=logging_level)
 
     default_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'default.log'), name="default", level=logging_level)
 
