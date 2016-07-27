@@ -6,25 +6,36 @@ import json
 from operator import itemgetter
 
 import numpy as np
+import ase
+
+from ..common.individual import Individual
 
 class StructOpt(object):
 
-    def __init__(self, calcdir=None, optimizer=None, parameters=None, submit_parameters=None):
+    def __init__(self, calcdir=None, optimizer=None, parameters=None,
+                 submit_parameters=None):
 
+        # Initialize inputs
         if calcdir is None:
             self.calcdir = os.getcwd()
         else:
             self.calcdir = os.path.expandvars(calcdir)
-        self.abs_calcdir = os.path.abspath(self.calcdir)
-        self.cwd = os.getcwd()
         self.optimizer = optimizer
         self.parameters = parameters
         self.submit_parameters = submit_parameters
 
-        # Set default analysis parameters
+        self.abs_calcdir = os.path.abspath(self.calcdir)
+        self.cwd = os.getcwd()
+
+        # Initialize results dictionaries
         self.fitness = None
+        self.genenerations = None
+        self.individuals = None
         self.log_dirs = None
         self.log_dir = None
+
+        # Initialize status
+        self.status = 'clean'
 
         self.system_name = os.path.basename(self.calcdir)
 
@@ -50,10 +61,17 @@ class StructOpt(object):
         return
 
     def initialize(self):
-        """Gets the status of the calculation. Meant to be run when within
-        the calculation directory"""
+        """Gets the status of the calculation."""
 
-        pass
+        self.read_runs()
+        if self.status == 'done':
+            self.check_for_errors()
+
+        self.read_input()
+        if self.log_dir is not None:
+            self.read_generations()
+
+        return
 
     def run(self):
         """Runs the job as is in the current directory."""
@@ -61,18 +79,25 @@ class StructOpt(object):
         pass
 
     def read_runs(self):
-        """Stores the output directory in the order in which they were run"""
+        """Stores the output directory in the order in which they were run. 
+        Sets StructOpt to read results form most recent by default"""
 
-        log_dirs = [d for d in os.listdir('.') if os.path.isdir('./' + d)]
+        dirs = [d for d in os.listdir('.') if os.path.isdir('./' + d)]
         pattern = r'logs(.*)'
-        log_times = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in log_dirs
+        log_times = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in dirs
                      if re.match(pattern, d, re.I|re.M)]
+        log_dirs = ['logs' + str(time) for time in log_times]
 
-        log_dirs_times = zip(log_dirs, log_times)
-        log_dirs_times = sorted(log_dirs_times, key=itemgetter(1))
-        log_dirs, log_times = zip(*log_dirs_times)
-
-        self.log_dirs = log_dirs
+        if len(log_dirs) > 0:
+            log_dirs_times = zip(log_dirs, log_times)
+            log_dirs_times = sorted(log_dirs_times, key=itemgetter(1))
+            log_dirs, log_times = zip(*log_dirs_times)
+            self.log_dirs = log_dirs
+            self.set_run(-1)
+            self.status = 'done'
+        else:
+            self.log_dirs = []
+            self.status = 'clean'
 
         return
 
@@ -96,6 +121,74 @@ class StructOpt(object):
 
         self.log_dir = new_log_dir
 
+    def read_generations(self):
+        """Determines which generations exists and initializes
+        a list to store the individuals"""
+
+        # Get list of generations available to be read for output
+        dirs = [d for d in os.listdir(self.log_dir + '/XYZs')]
+        pattern = r'generation(.*)'
+        generations = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in dirs]
+        self.generations = sorted(generations)
+
+        # Initialize dictionary for storing XYZ coordinates
+        self.populations = [None for generation in range(max(generations) + 1)]
+
+        return
+
+    def read_population(self, generation):
+        """Reads and stores extended .xyz files into self.individuals dictionary"""
+
+        # Get a list of individuals available in the generation
+        generation_dir = os.path.join(self.log_dir,
+                                      'XYZs/generation{}'.format(generation))
+
+        population = []
+        for f in os.listdir(generation_dir):
+            pattern = r'individual(.*).xyz'
+            index = int(re.match(pattern, f, re.I|re.M).group(1))
+            atoms = ase.io.read(os.path.join(generation_dir, f))
+
+            individual = Individual(index=index)
+            individual.extend(atoms)
+            individual.set_pbc(atoms.get_pbc())
+            individual.set_cell(atoms.get_cell())
+            population.append(individual)
+
+            # TODO: Probably need to add methods for reading other properties
+
+        population.sort(key=lambda individual: individual.index)
+        self.populations[generation] = population
+
+        return
+
+    def get_population(self, generation=-1):
+        """Returns a list of Individual objects, ordered by their index,
+        for a given generation. Note this is NOT a structopt Population.
+
+        Parameters
+        ----------
+        generation : int
+            Specifies which generation to return.
+        """
+
+        if generation < 0:
+            generation = max(self.generations) + generation
+
+        if generation not in self.generations:
+            raise IOError('Generation {} not found'.format(generation))
+
+        self.read_population(generation)
+        return self.populations[generation]
+
+    def get_all_populations(self):
+        """Returns all of populations stored"""
+
+        for generation in self.generations:
+            self.read_population(generation)
+
+        return self.populations
+
     def clear_data(self):
         """Run to clear the stored data."""
 
@@ -103,13 +196,22 @@ class StructOpt(object):
 
         return
 
+    def check_for_errors(self):
+        """After obtaining list of log directories, eliminate directories
+        that returned an error or is not done"""
+
+        pass
+
+    def read_input(self):
+        """Read the input and store them self.parameter"""
+
+        pass
+
     def submit(self):
         """Submits the job to the queue"""
 
         self.write_input()
         self.write_submit()
-
-        
 
         return
 
