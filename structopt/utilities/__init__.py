@@ -1,1 +1,1 @@
-from .calculator import StructOpt
+from .optimizer import StructOpt
