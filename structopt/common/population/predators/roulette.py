@@ -5,8 +5,7 @@ from structopt.tools import root, single_core, parallel
 @single_core
 def roulette(population, fits, nkeep):
     """Select individuals with a probability proportional to their fitness.
-    Fitnesses are renormalized from 0 - 1, which means minimum fitness
-    individual is never included in in the new population.
+    Fitnesses are renormalized from 0 - 1.
     """
 
     # Normalize fits from 0 (min fit) to 1 (max fit)
