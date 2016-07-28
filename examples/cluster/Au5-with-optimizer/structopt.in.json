@@ -15,7 +15,7 @@
         "LAMMPS": {
             "kwargs": {
                 "MPMD": 0,
-                "keep_files": true,
+                "keep_files": false,
                 "min_modify": "line quadratic",
                 "min_style": "cg",
                 "minimize": "1e-8 1e-8 5000 10000",
@@ -28,16 +28,6 @@
         }
     },
     "generators": {
-        "read_xyz": {
-            "kwargs": [
-                "structure1.xyz",
-                "structure2.xyz",
-                "structure3.xyz",
-                "structure4.xyz",
-                "structure5.xyz"
-            ],
-            "number_of_individuals": 4
-        },
         "sphere": {
             "kwargs": {
                 "atomlist": [
@@ -53,7 +43,7 @@
                 ],
                 "fill_factor": 0.4
             },
-            "number_of_individuals": 8
+            "number_of_individuals": 20
         }
     },
     "logging": {},
@@ -87,7 +77,7 @@
         "LAMMPS": {
             "kwargs": {
                 "MPMD": 0,
-                "keep_files": true,
+                "keep_files": false,
                 "min_modify": "line quadratic",
                 "min_style": "cg",
                 "minimize": "1e-8 1e-8 5000 10000",

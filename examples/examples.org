@@ -2,19 +2,14 @@
 ** Au5
 #+BEGIN_SRC python :results output org drawer
 from structopt.utilities.optimizer import StructOpt
+from structopt.utilities.exceptions import *
 
 parameters = {
     "seed": 0,
     "logging": { },
     "structure_type": "cluster",
     "generators": {
-        "read_xyz": {"number_of_individuals": 4,
-		     "kwargs": ["structure1.xyz",
-				"structure2.xyz",
-				"structure3.xyz",
-				"structure4.xyz",
-				"structure5.xyz"]},
-	"sphere": {"number_of_individuals": 8,
+	"sphere": {"number_of_individuals": 20,
 		   "kwargs": {"atomlist": [["Au", 5]],
 			      "cell": [10, 10, 10],
 			      "fill_factor": 0.4}}
@@ -23,7 +18,7 @@ parameters = {
         "LAMMPS": {"weight": 1.0,
 	           "kwargs": {"use_mpi4py": False,
 	                      "MPMD": 0,
-	                      "keep_files": True,
+	                      "keep_files": False,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -35,7 +30,7 @@ parameters = {
         "LAMMPS": {"order": 0,
                    "kwargs": {"use_mpi4py": False,
 	                      "MPMD": 0,
-	                      "keep_files": True,
+	                      "keep_files": False,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -74,12 +69,23 @@ parameters = {
     "tools": {}
 }
 
-with StructOpt('cluster/Au5', 'genetic', parameters) as optimizer:
-    print(optimizer.get_fitnesses())
+submit = {'job_name': 'Au5-with-optimizer',
+          'system': 'PBS',
+          'queue': 'morgan2',
+          'nodes': 1,
+          'cores': 1,
+          'walltime': 2}
+
+with StructOpt('cluster/Au5-with-optimizer', 'genetic', parameters, submit) as optimizer:
+    try:
+        optimizer.submit()
+    except StructOptSubmitted:
+        print(optimizer.calcdir, 'running')
 #+END_SRC
 
 #+RESULTS:
 :RESULTS:
+cluster/Au5-with-optimizer running
 :END:
 
 * Crystal examples
