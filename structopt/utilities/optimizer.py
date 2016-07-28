@@ -26,7 +26,7 @@ class StructOpt(object):
         self.parameters = parameters
         self.submit_parameters = submit_parameters
 
-        self.abs_calcdir = os.path.abspath(self.calcdir)
+        self.path = os.path.abspath(self.calcdir)
         self.cwd = os.getcwd()
         self.system_name = os.path.basename(self.calcdir)
 
@@ -37,42 +37,18 @@ class StructOpt(object):
         self.log_dirs = None
         self.log_dir = None
 
-        # Initialize status
-        self.status = 'clean'
+        # Initialize status and read output
+        if not os.path.isdir(self.path):
+            self.status = 'clean'
+            os.makedirs(self.path)
+        else:
+            self.read_runs()
+            if self.status == 'done':
+                self.check_for_errors()
 
-    def __enter__(self):
-        """On enter, make sure directory exists. Create it if necessary
-        and change into the directory. Then return the calculator."""
-
-        # Make directory if it doesn't already exist
-        if not os.path.isdir(self.calcdir):
-            os.makedirs(self.calcdir)
-
-        # Now change into the new working directory
-        os.chdir(self.calcdir)
-        self.initialize()
-
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """On exit, change back to the original directory"""
-
-        os.chdir(self.cwd)
-
-        return
-
-    def initialize(self):
-        """Gets the status of the calculation."""
-
-        self.read_runs()
-        if self.status == 'done':
-            self.check_for_errors()
-
-        self.read_input()
-        if self.log_dir is not None:
-            self.read_generations()
-
-        return
+            self.read_input()
+            if self.log_dir is not None:
+                self.read_generations()
 
     def restart(self): # TODO
         """Loads up the last generation of a previous run and modifies 
@@ -106,7 +82,8 @@ class StructOpt(object):
         return
 
     def submit(self):
-        """Submits the job to the queue"""
+        """Submits the job to the queue. Do this in the calculation
+        directory"""
 
         from .rc import QUEUE_OPTIONS as queue_options
 
@@ -114,18 +91,24 @@ class StructOpt(object):
         self.write_submit()
 
         submit_cmd = queue_options[self.submit_parameters['system']]['submit']
+
+        os.chdir(self.path)
+
         p = Popen([submit_cmd, 'submit.sh'], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
 
         with open('jobid', 'wb') as f:
             f.write(out)
 
+        os.chdir(self.cwd)
+
         raise StructOptSubmitted(out)
 
     def write_input(self):
         """Writes the parameters input to a json file"""
 
-        with open('structopt.in.json', 'w') as f:
+        input_file = os.path.join(self.path, 'structopt.in.json')
+        with open(input_file, 'w') as f:
             json.dump(self.parameters, f, indent=4, sort_keys=True)
 
         return
@@ -166,11 +149,12 @@ class StructOpt(object):
 
         script += '{custom_lines}\n\n'.format(**locals())
 
-        script += 'cd {}\n\n'.format(self.abs_calcdir)
+        script += 'cd {}\n\n'.format(self.path)
 
         script += '{mpirun} -n {total_cores} {python} {optimizer} {input_file}'.format(**locals())
 
-        with open('submit.sh', 'w') as f:
+        submit_file = os.path.join(self.path, 'submit.sh')
+        with open(submit_file, 'w') as f:
             f.write(script)
 
         return
@@ -183,11 +167,12 @@ class StructOpt(object):
         """Stores the output directory in the order in which they were run. 
         Sets StructOpt to read results form most recent by default"""
 
-        dirs = [d for d in os.listdir('.') if os.path.isdir('./' + d)]
+        dirs = [d for d in os.listdir(self.path)
+                if os.path.isdir(os.path.join(self.path, d))]
         pattern = r'logs(.*)'
         log_times = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in dirs
                      if re.match(pattern, d, re.I|re.M)]
-        log_dirs = ['logs' + str(time) for time in log_times]
+        log_dirs = [os.path.join(self.path, 'logs{}'.format(t)) for t in log_times]
 
         if len(log_dirs) > 0:
             log_dirs_times = zip(log_dirs, log_times)
@@ -227,7 +212,7 @@ class StructOpt(object):
         a list to store the individuals"""
 
         # Get list of generations available to be read for output
-        dirs = [d for d in os.listdir(self.log_dir + '/XYZs')]
+        dirs = [d for d in os.listdir(os.path.join(self.log_dir, 'XYZs'))]
         pattern = r'generation(.*)'
         generations = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in dirs]
         self.generations = sorted(generations)
@@ -316,7 +301,7 @@ class StructOpt(object):
 
         current_fitnesses = []
         current_generation = 0
-        with open('{}/fitnesses.log'.format(self.log_dir)) as fitness_file:
+        with open(os.path.join(self.log_dir, 'fitnesses.log')) as fitness_file:
             for line in fitness_file:
 
                 # Get the data from the line
