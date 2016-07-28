@@ -52,9 +52,9 @@
         "roulette": {"probability": 1.0}
     },
     "selections": {
-        "rank": {"probability": 1.0,
-                 "kwargs": {"unique_pairs": false,
-                            "unique_parents": false}}
+        "roulette": {"probability": 1.0,
+                     "kwargs": {"unique_pairs": false,
+                                "unique_parents": false}}
     },
     "fileio": {},
     "postprocessing": {},
