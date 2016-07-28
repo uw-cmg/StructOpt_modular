@@ -4,11 +4,13 @@ import os
 import re
 import json
 from operator import itemgetter
+from subprocess import Popen, PIPE
 
 import numpy as np
 import ase
 
 from ..common.individual import Individual
+from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued, StructOptSubmitted
 
 class StructOpt(object):
 
@@ -26,6 +28,7 @@ class StructOpt(object):
 
         self.abs_calcdir = os.path.abspath(self.calcdir)
         self.cwd = os.getcwd()
+        self.system_name = os.path.basename(self.calcdir)
 
         # Initialize results dictionaries
         self.fitness = None
@@ -36,8 +39,6 @@ class StructOpt(object):
 
         # Initialize status
         self.status = 'clean'
-
-        self.system_name = os.path.basename(self.calcdir)
 
     def __enter__(self):
         """On enter, make sure directory exists. Create it if necessary
@@ -73,10 +74,110 @@ class StructOpt(object):
 
         return
 
-    def run(self):
-        """Runs the job as is in the current directory."""
+    def restart(self): # TODO
+        """Loads up the last generation of a previous run and modifies 
+        the self.parameters to load up those structures on the next run"""
 
         pass
+
+    ####################################################################
+    ### Calculation methods. Includes write, run, and submit scripts ###
+    ####################################################################
+
+    def optimize(self, run_method='submit', rerun=False, restart=False):
+        """Runs the optimizer"""
+
+        run_method = getattr(self, run_method)
+
+        if restart:
+            self.restart()
+
+        if self.status == 'clean' or rerun:
+            run_method()
+
+        return
+
+    def run(self): # TODO
+        """Runs the job as is in the current directory."""
+
+        self.write_input()
+        self.write_submit()
+
+        return
+
+    def submit(self):
+        """Submits the job to the queue"""
+
+        from .rc import QUEUE_OPTIONS as queue_options
+
+        self.write_input()
+        self.write_submit()
+
+        submit_cmd = queue_options[self.submit_parameters['system']]['submit']
+        p = Popen([submit_cmd, 'submit.sh'], stdout=PIPE, stderr=PIPE)
+        out, err = p.communicate()
+
+        with open('jobid', 'wb') as f:
+            f.write(out)
+
+        raise StructOptSubmitted(out)
+
+    def write_input(self):
+        """Writes the parameters input to a json file"""
+
+        with open('structopt.in.json', 'w') as f:
+            json.dump(self.parameters, f, indent=4, sort_keys=True)
+
+        return
+
+    def write_submit(self):
+        """This function writes the submit script."""
+
+        from .rc import QUEUE_OPTIONS as queue_options
+        from .rc import RUN_OPTIONS as run_options
+        from .rc import CUSTOM_LINES as custom_lines
+
+        # Gather variables from rc file
+        submit = self.submit_parameters
+        queue_system = submit['system']
+        options = queue_options[queue_system]
+
+        prefix = options['prefix']
+        job_name = options['job_name'].format(submit['job_name'])
+        queue = options['queue'].format(submit['queue'])
+        nodes_cores = options['nodes_cores'].format(submit['nodes'], submit['cores'])
+        total_cores = submit['nodes'] * submit['cores']
+        walltime = options['walltime'].format(submit['walltime'])
+        misc = options['misc']
+
+        mpirun = run_options['mpirun']
+        python = run_options['python']
+        optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/{}.py'.format(self.optimizer))
+        input_file = 'structopt.in.json'
+
+        # Write the submit script
+        script = '#!/bin/bash\n\n'
+
+        script += '{prefix} {job_name}\n'.format(**locals())
+        script += '{prefix} {queue}\n'.format(**locals())
+        script += '{prefix} {nodes_cores}\n'.format(**locals())
+        script += '{prefix} {walltime}\n'.format(**locals())
+        script += '{prefix} {misc}\n\n'.format(**locals())
+
+        script += '{custom_lines}\n\n'.format(**locals())
+
+        script += 'cd {}\n\n'.format(self.abs_calcdir)
+
+        script += '{mpirun} -n {total_cores} {python} {optimizer} {input_file}'.format(**locals())
+
+        with open('submit.sh', 'w') as f:
+            f.write(script)
+
+        return
+
+    #############################################################
+    ### Postprocessing methods. Includes read and get scripts ###
+    #############################################################
 
     def read_runs(self):
         """Stores the output directory in the order in which they were run. 
@@ -189,84 +290,23 @@ class StructOpt(object):
 
         return self.populations
 
-    def clear_data(self):
+    def clear_data(self): # TODO
         """Run to clear the stored data."""
 
         self.fitnesses = None
 
         return
 
-    def check_for_errors(self):
+    def check_for_errors(self): # TODO
         """After obtaining list of log directories, eliminate directories
         that returned an error or is not done"""
 
         pass
 
-    def read_input(self):
+    def read_input(self): # TODO
         """Read the input and store them self.parameter"""
 
         pass
-
-    def submit(self):
-        """Submits the job to the queue"""
-
-        self.write_input()
-        self.write_submit()
-
-        return
-
-    def write_input(self):
-        """Writes the parameters input to a json file"""
-
-        with open('structopt.in.json', 'w') as f:
-            json.dump(self.parameters, f, indent=4, sort_keys=True)
-
-        return
-
-    def write_submit(self):
-        """This function writes the submit script."""
-
-        from .rc import QUEUE_OPTIONS as queue_options
-        from .rc import RUN_OPTIONS as run_options        
-        from .rc import CUSTOM_LINES as custom_lines
-
-        # Gather variables from rc file
-        queue_system = 'PBS'
-        options = queue_options[queue_system]
-        submit = self.submit_parameters
-
-        prefix = options['prefix']
-        job_name = options['job_name'].format(submit['job_name'])
-        queue = options['queue'].format(submit['queue'])
-        nodes_cores = options['nodes_cores'].format(submit['nodes'], submit['cores'])
-        total_cores = submit['nodes'] * submit['cores']
-        walltime = options['walltime'].format(submit['walltime'])
-        misc = options['misc']
-
-        mpirun = run_options['mpirun']
-        python = run_options['python']
-        optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/{}.py'.format(self.optimizer))
-        input_file = 'structopt.in.json'
-
-        # Write the submit script
-        script = '#!/bin/bash\n\n'
-        
-        script += '{prefix} {job_name}\n'.format(**locals())
-        script += '{prefix} {queue}\n'.format(**locals())
-        script += '{prefix} {nodes_cores}\n'.format(**locals())
-        script += '{prefix} {walltime}\n'.format(**locals())
-        script += '{prefix} {misc}\n\n'.format(**locals())
-
-        script += '{custom_lines}\n\n'.format(**locals())
-
-        script += 'cd {}\n\n'.format(self.abs_calcdir)
-
-        script += '{mpirun} -n {total_cores} {python} {optimizer} {input_file}'.format(**locals())
-
-        with open('submit.sh', 'w') as f:
-            f.write(script)
-
-        return
 
     def read_fitness(self):
         """Reads fitness.log and stores the data"""

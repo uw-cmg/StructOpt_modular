@@ -1,4 +1,5 @@
 QUEUE_OPTIONS = {'PBS': {'prefix': '#PBS',
+                         'submit': 'qsub',
                          'job_name': '-N {}',
                          'queue': '-q {}',
                          'nodes_cores': '-l nodes={0}:ppn={1}',
