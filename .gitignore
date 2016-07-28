@@ -4,6 +4,9 @@ Output*
 log.lammps
 tests/
 XYZs/
+jobid
+*.o[0-9]*
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
