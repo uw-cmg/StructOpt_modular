@@ -274,7 +274,7 @@ class StructOpt(object):
         all_fitness = []
         pattern = '.* Generation (.*), Individual (.*): (.*)'
 
-        current_population = []
+        current_fitnesses = []
         current_generation = 0
         with open('{}/fitnesses.log'.format(self.log_dir)) as fitness_file:
             for line in fitness_file:
@@ -283,7 +283,7 @@ class StructOpt(object):
                 match = re.match(pattern, line, re.I|re.M)
                 if match:
                     generation = int(match.group(1))
-                    individual = int(match.group(2))
+                    index = int(match.group(2))
                     fitness = float(match.group(3))
                 else:
                     continue
@@ -292,14 +292,14 @@ class StructOpt(object):
                 # for a current generation
                 if generation > current_generation:
                     current_generation = generation
-                    all_fitness.append(current_population)
-                    current_population = []
+                    all_fitness.append(current_fitnesses)
+                    current_fitnesses = []
 
                 # Make sure the fitness list is big enough
-                if len(current_population) < individual + 1:
-                    current_population += [None]*(individual + 1 - len(current_population))
+                if len(current_fitnesses) < index + 1:
+                    current_fitnesses.extend([None]*(index + 1 - len(current_fitnesses)))
 
-                current_population[individual] = fitness
+                current_fitnesses[index] = fitness
 
         self.fitness = np.array(all_fitness)
 

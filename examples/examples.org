@@ -75,7 +75,7 @@ parameters = {
 }
 
 with StructOpt('cluster/Au5', 'genetic', parameters) as optimizer:
-    populations = optimizer.get_all_populations()
+    print(optimizer.get_fitnesses())
 #+END_SRC
 
 #+RESULTS:
