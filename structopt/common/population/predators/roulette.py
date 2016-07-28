@@ -1,51 +1,34 @@
-import random
-from itertools import accumulate
+import numpy as np
 
 from structopt.tools import root, single_core, parallel
 
-
 @single_core
 def roulette(population, fits, nkeep):
-    """Selection function to order and select structures based on simple relative cost. Does not allow duplicates."""
-    """The cost selection option is a roulette wheel selection method.  Each individual is given a selection probability relative to the least fit individual in the population.  The primary difference between the cost selection method and the rank selection method is the weighting each individual receives.  In the cost selection method, the weight is assigned by not only giving those with higher fitness a higher weight, but by giving the higher fitness individuals a proportionally higher weight.  This can be useful in populations with higher diversity, as it will proportionally favor those individuals with higher fitness better than the rank selection method. Note that if an individual is chosen twice, a random one is chosen instead (I should probably fix that)."""
-    """Modifies `population` in place."""
-    # TODO Read the end of the doc string; merge docstrings
+    """Select individuals with a probability proportional to their fitness.
+    Fitnesses are renormalized from 0 - 1, which means minimum fitness
+    individual is never included in in the new population.
+    """
 
-    # Sort by fitnesses and calculate the cumulative probability of selecting each individual
-    sorted_fits, sorted_population = zip(*sorted(zip(fits, population), key=lambda pair: pair[0]))
-    population.replace(list(sorted_population))
+    # Normalize fits from 0 (min fit) to 1 (max fit)
+    fit_max = max(fits)
+    fits = np.array([-(fit - fit_max) for fit in fits])
+    fits /= np.nan_to_num(max(fits))
 
-    try:
-        norms = [fit - fits[nkeep+1] for fit in fits[0:nkeep]]
-    except IndexError:
-        norms = [fit - fits[nkeep-1] for fit in fits[0:nkeep]]
-    sumn = sum(norms)
-    # TODO one thing I don't like about this is that the when nkeep == len(population), norms[-1] == 0. That means cumprob[-1] == cumprob[-2] and the last individual can never be selected unless it's random chance
-    #print(fits)  # TODO
-    #print(norms)  # TODO
-    if sumn == 0.0:
-        return None  # TODO DELETE; this occurs when all the individuals in the population are identical
-        raise ZeroDivisionError
-    probability = [x/sumn for x in norms]
-    cumulative_probability = list(accumulate(probability))
-    #print(probability)  # TODO
-    #print(cumulative_probability)  # TODO
+    # Generate probabilities and pick individuals
+    p = np.nan_to_num(fits / np.sum(fits))
 
-    chosen = []
-    for i in range(nkeep):
-        rand = random.random()
-        counter = 0
-        while cumulative_probability[counter] < rand:
-            counter += 1
-        if population[counter] in chosen:
-            a = random.choice(population)
-            while a in chosen:
-                a = random.choice(population)
-            chosen.append(a)
-        else:
-            chosen.append(population[counter])
+    # If less species have nonzero probability than nkeep, select
+    # all nonzero probability and select random zero probability
+    indexes_nonzero_p = [i for i, p_i in enumerate(p) if p_i != 0]
+    indexes_zero_p = [i for i, p_i in enumerate(p) if p_i == 0]
+    if len(indexes_nonzero_p) < nkeep:
+        n_zero_p_to_add = nkeep - len(indexes_zero_p) - len(indexes_nonzero_p)
+        indexes_zero_p_keep = np.random.choice(indexes_zero_p, n_zero_p_to_add, replace=False)
+        indexes_keep = np.append(indexes_nonzero_p, indexes_zero_p_keep)
+    else:
+        indexes_keep = np.random.choice(len(population), nkeep, replace=False, p=p)    
 
-    for i, ind in enumerate(chosen):
-        ind.index = i
-    population.replace(chosen)
+    new_population = [population[i] for i in indexes_keep]
+    population.replace(new_population)
 
+    return None

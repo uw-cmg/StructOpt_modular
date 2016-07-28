@@ -19,6 +19,7 @@ class Population(list):
 
     @single_core
     def __init__(self, parameters, individuals=None):
+
         self.parameters = parameters
         self.structure_type = self.parameters.structure_type.lower()
         self.load_modules()
@@ -121,6 +122,9 @@ class Population(list):
 
     @single_core
     def replace(self, a_list):
+        """Currently best used for updating index and ase.Atoms attributes
+        of individuals. Only works when len(a_list) <= self"""
+
         counter = Counter(individual.index for individual in self)
         assert max(counter.values()) == 1
 

@@ -56,7 +56,7 @@
         "rotate": {"probability": 1.0}
     },
     "predators": {
-        "best": {"probability": 1.0}
+        "roulette": {"probability": 1.0}
     },
     "selections": {
         "rank": {"probability": 1.0,
