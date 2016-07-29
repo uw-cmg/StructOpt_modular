@@ -54,10 +54,12 @@ class ParticleSwarmOptimization(object):
                     if self.best_particles[i]._fitness < self.best_swarm._fitness:
                         self.best_swarm = self.best_particles[i]
         
-        self.population.run_pso_moves(self.best_swarm, self.best_particles)
+        updated_population = self.population.run_pso_moves(self.best_swarm, self.best_particles)
+        self.population.replace(updated_population)
         self.check_convergence()
         self.population.generation += 1
         self.generation += 1
+
 
     def check_convergence(self):
         if self.generation >= self.convergence.max_generations:
@@ -68,6 +70,7 @@ class ParticleSwarmOptimization(object):
 
     def __enter__(self):
         return self
+
 
     def __exit__(self, type, value, traceback):
         pass
