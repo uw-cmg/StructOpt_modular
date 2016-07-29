@@ -191,7 +191,7 @@ class Individual(ase.Atoms):
     @property
     @single_core
     def fits(self):
-        return [getattr(self, module) for module in self.fitnesses.module_names]
+        return {module: getattr(self, module) for module in self.fitnesses.module_names}
 
 
     @parallel
