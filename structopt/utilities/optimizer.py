@@ -151,7 +151,10 @@ class StructOpt(object):
 
         script += 'cd {}\n\n'.format(self.path)
 
-        script += '{mpirun} -n {total_cores} {python} {optimizer} {input_file}'.format(**locals())
+        if total_cores > 1:
+            script += '{mpirun} -n {total_cores} {python} {optimizer} {input_file}'.format(**locals())
+        else:
+            script += '{python} {optimizer} {input_file}'.format(**locals())
 
         submit_file = os.path.join(self.path, 'submit.sh')
         with open(submit_file, 'w') as f:
