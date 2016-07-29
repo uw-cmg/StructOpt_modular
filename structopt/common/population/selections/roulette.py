@@ -1,10 +1,9 @@
-from copy import deepcopy
 import numpy as np
-import scipy
+from copy import deepcopy
 
-def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False):
+def roulette(population, fits, unique_pairs=False, unique_parents=False):
     """Selection function that chooses pairs of structures 
-    based on linear ranking.
+    based on their fitness. Fitnesses are normalized from 0 to 1.
 
     See "Grefenstette and Baker 1989 Whitley 1989".
     
@@ -15,12 +14,6 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
         StructOpt individual objects.
     fits : list
         A list of fitnesses of the population
-    p_min : float
-        The probability of choosing the lowest ranked individual.
-        Given population of size N, this should be below 1/nindiv. 
-        The probability of selecting rank N (worst) to rank 1 (best) 
-        increases from p_min to (2/N - p_min) in even, (1/N - p_min)
-        increments. Defaults to (1/N)^2.
     unique_pairs : bool
         If True, all combinations of parents are unique.
         True increases the diveristy of the population.
@@ -35,20 +28,16 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
         of the population.
     """
 
-    # Get ranks of each population value based on its fitness
-    ranks = scipy.stats.rankdata(fits, method='ordinal')
-
     # Work with indexes of the population instead of the population
     inds_population = list(range(len(population)))
+    
+    # Normalize fits from 0 (min fit) to 1 (max fit)
+    fit_max = max(fits)
+    fits = np.array([-(fit - fit_max) for fit in fits])
+    fits /= np.nan_to_num(max(fits))
 
-    # Get probabilities based on linear ranking
-    if p_min is None:
-        p_min = 1.0 / len(population) ** 2
-    N = len(fits)
-    eta_min = p_min * N
-    eta_max = 2 - eta_min
-    p_max = eta_max / N
-    p = p_min + (p_max - p_min)*(N - ranks)/(N - 1)
+    # Generate probabilities and pick individuals
+    p = np.nan_to_num(fits / np.sum(fits))
 
     # Construct list of parents
     n_pairs = int(len(fits) / 2)
@@ -56,7 +45,10 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
 
     for i in range(n_pairs):
         # Choose the first parent based on probabilties
-        ind_father = np.random.choice(inds_population, p=p)
+        if np.count_nonzero(p) > 0:
+            ind_father = np.random.choice(inds_population, p=p)
+        else:
+            ind_father = np.random.choice(inds_population)
 
         # Choose the second parent based on renormalized probabilities
         # First remove the father from the population and make a temporary
@@ -70,7 +62,7 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
         if unique_parents:
             del inds_population[ind_delete]
             p = np.delete(p, ind_delete)
-            p /= sum(p)
+            p = np.nan_to_num(p / np.sum(p))
 
         # Now remove mothers that would make repeat father/mother pairs
         if unique_pairs:
@@ -82,14 +74,17 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
                     del inds_population_temp[ind_delete]
                     p_temp = np.delete(p_temp, ind_delete)
 
-        p_temp /= sum(p_temp)
-        ind_mother = np.random.choice(inds_population_temp, p=p_temp)
+        p_temp = np.nan_to_num(p_temp / np.sum(p_temp))
+        if np.count_nonzero(p_temp) > 0:
+            ind_mother = np.random.choice(inds_population_temp, p=p_temp)
+        else:
+            ind_mother = np.random.choice(inds_population_temp)
 
         if unique_parents:
             ind_delete = inds_population.index(ind_mother)
             del inds_population[ind_delete]
             p = np.delete(p, ind_delete)
-            p /= sum(p)
+            p = np.nan_to_num(p / np.sum(p))
 
         pairs_ind.append([ind_father, ind_mother])
 
