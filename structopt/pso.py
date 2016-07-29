@@ -16,13 +16,8 @@ class ParticleSwarmOptimization(object):
         self.convergence = convergence
 
         self.generation = 0
-        #bounds = self.init_velo
-        bounds = 1.0
         nindiv = len(self.population)
         natoms = len(self.population[0].positions)
-        #self.velocities = [[[random.uniform(-bounds/2,bounds/2) for j in range(3)] for n in range(natoms)] for i in range(nindiv)]
-        self.best_swarm = self.population[0].copy()
-        self.best_particles = [self.population[i].copy() for i in range(len(self.population))]
 
         
         # Prep output monitoring
@@ -48,12 +43,16 @@ class ParticleSwarmOptimization(object):
         self.population.relax()        
         fits = self.population.fitness()
 
+        if self.generation == 0:
+            self.best_swarm = self.population[0]
+            self.best_particles = self.population
+
         if self.generation > 0:
             for i in range(len(self.population)):
                 if fits[i] < self.best_particles[i]._fitness:
-                    self.best_particles[i] = self.population[i].copy()
+                    self.best_particles[i] = self.population[i]
                     if self.best_particles[i]._fitness < self.best_swarm._fitness:
-                        self.best_swarm = self.best_particles[i].copy()
+                        self.best_swarm = self.best_particles[i]
         
         self.population.run_pso_moves(self.best_swarm, self.best_particles)
         self.check_convergence()
@@ -61,7 +60,7 @@ class ParticleSwarmOptimization(object):
         self.generation += 1
 
     def check_convergence(self):
-        if self.generation >= self.convergence.maxgen:
+        if self.generation >= self.convergence.max_generations:
             self.converged = True
         else:
             self.converged = False

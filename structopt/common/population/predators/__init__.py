@@ -7,7 +7,8 @@ import structopt
 from structopt.tools import root, single_core, parallel
 from .best import best
 from .roulette import roulette
-
+from .tournament import tournament
+from .rank import rank
 
 class Predators(object):
     """ """
@@ -30,12 +31,10 @@ class Predators(object):
         x = random.random() * cumdist[-1]
         self.selected_predator = choices[bisect(cumdist, x)]
 
-
     @single_core
     def kill(self, population, fits, nkeep):
         kwargs = self.kwargs[self.selected_predator]
         self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
-
 
     @single_core
     def post_processing(self):
@@ -51,3 +50,12 @@ class Predators(object):
     def roulette(population, fits, nkeep):
         return roulette(population, fits, nkeep)
 
+    @staticmethod
+    @functools.wraps(tournament)
+    def tournament(population, fits, nkeep, tournament_size=5):
+        return tournament(population, fits, nkeep, tournament_size)
+
+    @staticmethod
+    @functools.wraps(rank)
+    def rank(population, fits, nkeep, p_min=None):
+        return rank(population, fits, nkeep, p_min)

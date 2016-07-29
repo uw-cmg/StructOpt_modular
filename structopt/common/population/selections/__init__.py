@@ -6,6 +6,9 @@ from bisect import bisect
 import structopt
 from .random_selection import random_selection
 from .rank import rank
+from .roulette import roulette
+from .tournament import tournament
+from .best import best
 from structopt.tools import root, single_core, parallel
 
 
@@ -48,9 +51,22 @@ class Selections(object):
     def random_selection(population, fits):
         return random_selection(population, fits)
 
-
     @staticmethod
     @functools.wraps(rank)
     def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False):
         return rank(population, fits, p_min, unique_pairs, unique_parents)
 
+    @staticmethod
+    @functools.wraps(roulette)
+    def roulette(population, fits, unique_pairs=False, unique_parents=False):
+        return roulette(population, fits, unique_pairs, unique_parents)
+
+    @staticmethod
+    @functools.wraps(tournament)
+    def tournament(population, fits, tournament_size=5, unique_pairs=False, unique_parents=False):
+        return tournament(population, fits, tournament_size, unique_pairs, unique_parents)
+
+    @staticmethod
+    @functools.wraps(best)
+    def best(population, fits):
+        return best(population, fits)

@@ -8,7 +8,7 @@ from re import compile as re_compile, IGNORECASE
 from ase import Atoms, Atom
 
 #from structopt.tools import root, single_core, parallel
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, TimeoutExpired
 
 # "End mark" used to indicate that the calculation is done
 CALCULATION_END_MARK = '__end_of_ase_invoked_calculation__'
@@ -59,6 +59,7 @@ class LAMMPS(object):
             self.calcdir = os.getcwd()
 
         self.parameters.setdefault('thermosteps', 0)
+        self.parameters.setdefault('timeout', 10)
 
         return
 
@@ -237,12 +238,16 @@ class LAMMPS(object):
         input_file = open(self.input_file)
 
         p = Popen([lammps_cmd_line], stdin=input_file, stdout=PIPE, stderr=PIPE)
-        output, error = p.communicate()
+        try:
+            output, error = p.communicate(timeout=self.parameters['timeout'])
+        except TimeoutExpired:
+            return True            
+            
         self.output = output.decode('utf-8').split('\n')[:-1]
 
         # Check if the calculation completed without errors. If it does,
         # we need to save the files self.calcdir.
-        if CALCULATION_END_MARK not in self.output[-1]:
+        if len(self.output) == 0 or CALCULATION_END_MARK not in self.output[-1]:
             return True
 
         return False

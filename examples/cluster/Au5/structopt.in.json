@@ -30,7 +30,7 @@
         "LAMMPS": {"order": 0,
                    "kwargs": {"use_mpi4py": false,
 	                      "MPMD": 0,
-	                      "keep_files": false,
+	                      "keep_files": true,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -46,8 +46,8 @@
 	"swap_positions": {"probability": 0.0},
 	"swap_species": {"probability": 0.0},
 	"rotate_atoms": {"probability": 0.0},
-	"rotate_cluster": {"probability": 0.3},
-        "rotate_all": {"probability": 0.7}
+	"rotate_cluster": {"probability": 0.2},
+        "rotate_all": {"probability": 0.1}
     },
     "fingerprinters": {
         "options": []
@@ -56,13 +56,10 @@
         "rotate": {"probability": 1.0}
     },
     "predators": {
-        "best": {"probability": 1.0}
+        "rank": {"probability": 1.0}
     },
     "selections": {
-        "rank": {"probability": 1.0,
-                 "kwargs": {"unique_pairs": false,
-                            "unique_parents": false}},
-        "random_selection": {"probability": 0.0}
+        "tournament": {"probability": 1.0}
     },
     "fileio": {},
     "postprocessing": {},
