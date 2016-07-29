@@ -3,6 +3,7 @@ import numpy as np
 from collections import Counter
 
 import structopt
+from ..individual import Individual
 from .crossovers import Crossovers
 from .predators import Predators
 from .selections import Selections
@@ -121,40 +122,45 @@ class Population(list):
 
 
     @single_core
-    def replace(self, a_list):
-        """Currently best used for updating index and ase.Atoms attributes
-        of individuals. Only works when len(a_list) <= self"""
+    def append(self, individual):
+        """Does a standard list append and assigns an index to the individual if it doesn't already have one."""
+        assert isinstance(individual, Individual)
+        # Rudimentary implementation of MEX (minimum excluded value) to assign unique
+        # index values to the new individuals
+        indexes = sorted([_individual.index for _individual in self])
+        excluded = [i for i in range(len(indexes)+1) if i not in indexes]
+        assert individual.index not in indexes
+        if individual.index is None:
+            individual.index = excluded[0]
+        super().append(individual)
 
+
+    @single_core
+    def replace(self, a_list):
+        """Deletes the current list of individuals and replaces them with the ones in a_list."""
         counter = Counter(individual.index for individual in self)
         assert max(counter.values()) == 1
+        counter = Counter(individual.index for individual in a_list)
+        assert max(counter.values()) == 1
 
-        # TODO somehow check that this works
-        mark_for_removal = [True for _ in self]
-        for individual in a_list:
-            for i, old_individual in enumerate(self):
-                if individual.index == old_individual.index:
-                    old_individual.update(individual)
-                    mark_for_removal[i] = False
-                    break
-
-        mark_for_removal = [i for i, tf in enumerate(mark_for_removal) if tf]
-        mark_for_removal.reverse()
-        for i in mark_for_removal:
-            self.pop(i)
-
-        for i, individual in enumerate(self):
-            individual.index = i
+        self.clear()
+        self.extend(a_list)
 
 
     @single_core
     def extend(self, other):
+        """Does a standard list extend and assigns an index to each individual if it doesn't already have one."""
         # Rudimentary implementation of MEX (minimum excluded value) to assign unique
         # index values to the new individuals
         indexes = sorted([individual.index for individual in self])
         excluded = [i for i in range(len(indexes)+len(other)) if i not in indexes]
         for i, individual in enumerate(other):
-            individual.index = excluded[i]
+            assert individual.index is None or individual.index not in indexes
+            individual.index = individual.index or excluded[i]
         super().extend(other)
+
+        counter = Counter(individual.index for individual in self)
+        assert max(counter.values()) == 1
 
 
     @root
