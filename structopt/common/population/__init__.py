@@ -11,7 +11,7 @@ from .fitnesses import Fitnesses
 from .relaxations import Relaxations
 from .mutations import Mutations
 from .pso_moves import Pso_Moves
-from structopt.tools import root, single_core, parallel
+from structopt.tools import root, single_core, parallel, allgather
 
 POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
 
@@ -94,30 +94,7 @@ class Population(list):
 
         See stuctopt.tools.parallel.allgather for a similar function.
         """
-        # TODO Make this call tool/parallel.allgather rather than reimplement it
-        from mpi4py import MPI
-        # The lists in individuals_per_core all need to be of the same length 
-        max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())
-        for rank, individuals in individuals_per_core.items():
-            while len(individuals) < max_individuals_per_core:
-                individuals.append(None)
-
-        populations_per_rank = MPI.COMM_WORLD.allgather(self)
-        #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
-        #correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
-        #correct_population = [None for _ in range(max_individuals_per_core+1)]
-        correct_population = [None for _ in self]
-        for rank, indices in individuals_per_core.items():
-            for index in indices:
-                if index is not None:
-                    assert populations_per_rank[rank][index].index == index
-                    correct_population[index] = populations_per_rank[rank][index]
-
-        # If something didn't get sent, use the value on the core
-        for i, individual in enumerate(correct_population):
-            if individual is None:
-                correct_population[i] = self[i]
-
+        correct_population = allgather(self, individuals_per_core)
         self.replace(correct_population)
 
 
