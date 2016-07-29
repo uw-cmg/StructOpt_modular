@@ -94,7 +94,7 @@ class GeneticAlgorithm(object):
 
         -n : Only generation up to current generation - n are kept
 
-        n : Every n generation is kept. """
+        n : Every n generation is kept"""
 
         path = None
 
