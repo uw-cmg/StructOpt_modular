@@ -11,8 +11,6 @@ def best(population, fits):
     for i in range(len(population) // 2):
         rank_father = 2*i + 1
         rank_mother = 2*i + 2
-        print(rank_father, rank_mother)
-        print(ranks)
         father = population[ranks.index(rank_father)]
         mother = population[ranks.index(rank_mother)]
         pairs.append([father, mother])
