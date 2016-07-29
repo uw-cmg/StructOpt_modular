@@ -44,17 +44,18 @@ class ParticleSwarmOptimization(object):
         fits = self.population.fitness()
 
         if self.generation == 0:
-            self.best_swarm = self.population[0]
-            self.best_particles = self.population
+            self.best_swarm = self.population[0].copy()
+            self.best_particles = [individual.copy() for individual in self.population]
 
         if self.generation > 0:
             for i in range(len(self.population)):
                 if fits[i] < self.best_particles[i]._fitness:
-                    self.best_particles[i] = self.population[i]
+                    self.best_particles[i] = self.population[i].copy()
                     if self.best_particles[i]._fitness < self.best_swarm._fitness:
-                        self.best_swarm = self.best_particles[i]
+                        self.best_swarm = self.best_particles[i].copy()
         
-        self.population.run_pso_moves(self.best_swarm, self.best_particles)
+        updated_population = self.population.run_pso_moves(self.best_swarm, self.best_particles)
+        self.population.replace(updated_population)
         self.check_convergence()
         self.population.generation += 1
         self.generation += 1

@@ -268,13 +268,22 @@ class Individual(ase.Atoms):
                              pso_moves_parameters=self.pso_moves_parameters,
                              generator_parameters=self.generator_parameters)
         if include_atoms:
-            new.arrays = self.arrays.copy()
+            new.arrays = {}
+            for name, a in self.arrays.items():
+                new.arrays[name] = a.copy()
         else:
             new.empty()
         new.set_cell(self.get_cell())
         new.set_pbc(self.get_pbc())
-        return new
 
+        new.mutation_tag = self.mutation_tag
+        new.crossover_tag = self.crossover_tag = None
+        new.fitted = self._fitted
+        new._relaxed = self._relaxed
+        new._fitness = self._fitness
+        for module_name in self.fitnesses.module_names:
+            setattr(new, module_name, getattr(self, module_name, None))
+        return new
 
     @single_core
     def empty(self):
