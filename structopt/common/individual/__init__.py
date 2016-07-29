@@ -144,15 +144,6 @@ class Individual(ase.Atoms):
     __repr__ = __str__
 
 
-    def update(self, other):
-        """Meant to update self from an individual that has been sent from an MPI call.
-        The issue is that some parts of an individual cannot be passed through MPI calls,
-        but we don't want to fully lose them. Therefore when an Individual is passed
-        through an MPI call from core A to core B, the individual on core B will be
-        updated with the new data from core A but will retain the individual's information
-        on core B that could not be transfered."""
-        self.__dict__.update(other.__dict__)
-
     @parallel
     def load_modules(self):
         """Loads the relevant modules."""
@@ -191,7 +182,7 @@ class Individual(ase.Atoms):
     @property
     @single_core
     def fits(self):
-        return [getattr(self, module) for module in self.fitnesses.module_names]
+        return {module: getattr(self, module) for module in self.fitnesses.module_names}
 
 
     @parallel

@@ -62,7 +62,10 @@ class GeneticAlgorithm(object):
         # Save the fitnesses for each individual
         fitness_logger = logging.getLogger('fitness')
         for individual in self.population:
-            fitness_logger.info('Generation {}, Individual {}: {}'.format(self.generation, individual.index, ', '.join([str(x) for x in individual.fits])))
+            line = 'Generation {}, Individual {}:'.format(self.generation, individual.index)
+            for module in individual.fits:
+                line += ' {}: {}'.format(module, individual.fits[module])
+            fitness_logger.info(line)
 
         # Save the XYZ file for each individual
         for individual in self.population:
@@ -86,11 +89,12 @@ class GeneticAlgorithm(object):
     def clear_XYZs(self):
         """Depending on the value in the post_processing dictionary, clear old
         XYZ files to save space. Specified by the parameters.post_processing.XYZs kwarg.
-        Takes an integer value. Behavior depends on sign of integer
+        Takes an integer n  value. Behavior depends on sign of integer. Always 
+        includes the first and last generation
 
         -n : Only generation up to current generation - n are kept
 
-        n : Every n generation is kept (always includes the last"""
+        n : Every n generation is kept"""
 
         path = None
 
@@ -102,10 +106,10 @@ class GeneticAlgorithm(object):
             return
 
         # Keeping the last n generations
-        if type(n) is int and n < 0 and self.generation > -n:
+        if n < 0 and self.generation > -n:
             path = os.path.join(logging.parameters.path, 'XYZs/generation{}'.format(self.generation + n))
         # Keeping every n generation
-        elif type(n) is int and n > 0 and self.generation > 1 and self.generation % n != 1:
+        elif n > 0 and self.generation > 1 and self.generation % n != 1:
             path = os.path.join(logging.parameters.path, 'XYZs/generation{}'.format(self.generation - 1))
 
         if path is not None:
