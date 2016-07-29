@@ -1,3 +1,5 @@
+import logging
+
 from structopt.tools import root, single_core, parallel
 from structopt.tools.lammps import LAMMPS as lammps
 
@@ -8,6 +10,7 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
+        self.output_dir = logging.parameters.path
 
 
     @single_core
@@ -25,8 +28,8 @@ class LAMMPS(object):
         else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
             if generation is not None:
-                calcdir = os.path.join(os.getcwd(), 'fitness-files/LAMMPS/generation-{}/individual-{}')
-                calcdir = calcdir.format(generation, individual.index)
+                calcdir = os.path.join(os.getcwd(), '{}/fitness/LAMMPS/generation{}/individual{}')
+                calcdir = calcdir.format(self.output_dir, generation, individual.index)
             else:
                 calcdir = None
 
