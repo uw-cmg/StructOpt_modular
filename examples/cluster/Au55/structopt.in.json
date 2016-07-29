@@ -11,7 +11,7 @@
         "LAMMPS": {"weight": 1.0,
 	           "kwargs": {"use_mpi4py": false,
 	                      "MPMD": 0,
-	                      "keep_files": false,
+	                      "keep_files": true,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -23,7 +23,7 @@
         "LAMMPS": {"order": 0,
                    "kwargs": {"use_mpi4py": false,
 	                      "MPMD": 0,
-	                      "keep_files": false,
+	                      "keep_files": true,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -32,7 +32,7 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 20
+        "max_generations": 5
     },
     "mutations": {
 	"move_atoms": {"probability": 0.1},
