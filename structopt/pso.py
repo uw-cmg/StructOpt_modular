@@ -60,6 +60,7 @@ class ParticleSwarmOptimization(object):
         self.population.generation += 1
         self.generation += 1
 
+
     def check_convergence(self):
         if self.generation >= self.convergence.max_generations:
             self.converged = True
@@ -69,6 +70,7 @@ class ParticleSwarmOptimization(object):
 
     def __enter__(self):
         return self
+
 
     def __exit__(self, type, value, traceback):
         pass

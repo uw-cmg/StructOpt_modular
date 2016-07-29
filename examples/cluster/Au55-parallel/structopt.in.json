@@ -3,22 +3,15 @@
     "logging": { },
     "structure_type": "cluster",
     "generators": {
-        "read_xyz": {"number_of_individuals": 4,
-		     "kwargs": ["structure1.xyz",
-				"structure2.xyz",
-				"structure3.xyz",
-				"structure4.xyz",
-				"structure5.xyz"]},
-	"sphere": {"number_of_individuals": 8,
-		   "kwargs": {"atomlist": [["Au", 5]],
-			      "cell": [10, 10, 10],
-			      "fill_factor": 0.4}}
+	"sphere": {"number_of_individuals": 20,
+		   "kwargs": {"atomlist": [["Au", 55]],
+			      "cell": [20, 20, 20]}}
     },
     "fitnesses": {
         "LAMMPS": {"weight": 1.0,
-	           "kwargs": {"use_mpi4py": false,
+	           "kwargs": {"use_mpi4py": true,
 	                      "MPMD": 0,
-	                      "keep_files": true,
+	                      "keep_files": false,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -28,9 +21,9 @@
     },
     "relaxations": {
         "LAMMPS": {"order": 0,
-                   "kwargs": {"use_mpi4py": false,
+                   "kwargs": {"use_mpi4py": true,
 	                      "MPMD": 0,
-	                      "keep_files": true,
+	                      "keep_files": false,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -39,27 +32,29 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 5
+        "max_generations": 10
     },
     "mutations": {
-	"move_atoms": {"probability": 0.0},
+	"move_atoms": {"probability": 0.1},
 	"swap_positions": {"probability": 0.0},
 	"swap_species": {"probability": 0.0},
 	"rotate_atoms": {"probability": 0.0},
-	"rotate_cluster": {"probability": 0.2},
-        "rotate_all": {"probability": 0.1}
+	"rotate_cluster": {"probability": 0.1},
+        "rotate_all": {"probability": 0.0}
     },
     "fingerprinters": {
         "options": []
     },
     "crossovers": {
-        "rotate": {"probability": 1.0}
+        "rotate": {"probability": 0.7}
     },
     "predators": {
-        "rank": {"probability": 1.0}
+        "best": {"probability": 1.0}
     },
     "selections": {
-        "tournament": {"probability": 1.0}
+        "rank": {"probability": 1.0,
+                 "kwargs": {"unique_pairs": false,
+                            "unique_parents": false}}
     },
     "fileio": {},
     "postprocessing": {},

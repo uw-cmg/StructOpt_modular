@@ -32,7 +32,7 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 5
+        "max_generations": 20
     },
     "mutations": {
 	"move_atoms": {"probability": 0.1},
@@ -49,14 +49,12 @@
         "rotate": {"probability": 0.7}
     },
     "predators": {
-        "best": {"probability": 1.0}
+        "rank": {"probability": 1.0}
     },
     "selections": {
-        "rank": {"probability": 1.0,
-                 "kwargs": {"unique_pairs": false,
-                            "unique_parents": false}}
+        "best": {"probability": 1.0}
     },
     "fileio": {},
-    "postprocessing": {},
+    "post_processing": {"XYZs": 5},
     "tools": {}
 }

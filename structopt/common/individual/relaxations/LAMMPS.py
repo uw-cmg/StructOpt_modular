@@ -13,6 +13,7 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
+        self.output_dir = logging.parameters.path
 
 
     @single_core
@@ -31,8 +32,8 @@ class LAMMPS(object):
         print("Relaxing individual {} on rank {} with LAMMPS".format(individual.index, rank))
 
         if generation is not None:
-            calcdir = os.path.join(os.getcwd(), 'relaxation-files/LAMMPS/generation-{}/individual-{}')
-            calcdir = calcdir.format(generation, individual.index)
+            calcdir = os.path.join(os.getcwd(), '{}/relaxation/LAMMPS/generation{}/individual{}')
+            calcdir = calcdir.format(self.output_dir, generation, individual.index)
         else:
             calcdir = None
 
