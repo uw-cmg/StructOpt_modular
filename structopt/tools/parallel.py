@@ -107,10 +107,8 @@ def allgather(stuff, stuffs_per_core):
     """
     from mpi4py import MPI
     # The lists in stuffs_per_core all need to be of the same length 
-    amount_of_stuff = 0
     max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
     for rank, stuffs in stuffs_per_core.items():
-        amount_of_stuff += len(stuffs)
         while len(stuffs) < max_stuffs_per_core:
             stuffs.append(None)
 

@@ -3,6 +3,7 @@ import numpy as np
 from collections import Counter
 
 import structopt
+from ..individual import Individual
 from .crossovers import Crossovers
 from .predators import Predators
 from .selections import Selections
@@ -10,7 +11,7 @@ from .fitnesses import Fitnesses
 from .relaxations import Relaxations
 from .mutations import Mutations
 from .pso_moves import Pso_Moves
-from structopt.tools import root, single_core, parallel
+from structopt.tools import root, single_core, parallel, allgather
 
 POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
 
@@ -93,68 +94,50 @@ class Population(list):
 
         See stuctopt.tools.parallel.allgather for a similar function.
         """
-        # TODO Make this call tool/parallel.allgather rather than reimplement it
-        from mpi4py import MPI
-        # The lists in individuals_per_core all need to be of the same length 
-        max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())
-        for rank, individuals in individuals_per_core.items():
-            while len(individuals) < max_individuals_per_core:
-                individuals.append(None)
-
-        populations_per_rank = MPI.COMM_WORLD.allgather(self)
-        #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
-        #correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
-        #correct_population = [None for _ in range(max_individuals_per_core+1)]
-        correct_population = [None for _ in self]
-        for rank, indices in individuals_per_core.items():
-            for index in indices:
-                if index is not None:
-                    assert populations_per_rank[rank][index].index == index
-                    correct_population[index] = populations_per_rank[rank][index]
-
-        # If something didn't get sent, use the value on the core
-        for i, individual in enumerate(correct_population):
-            if individual is None:
-                correct_population[i] = self[i]
-
+        correct_population = allgather(self, individuals_per_core)
         self.replace(correct_population)
 
 
     @single_core
-    def replace(self, a_list):
-        """Currently best used for updating index and ase.Atoms attributes
-        of individuals. Only works when len(a_list) <= self"""
+    def append(self, individual):
+        """Does a standard list append and assigns an index to the individual if it doesn't already have one."""
+        assert isinstance(individual, Individual)
+        # Rudimentary implementation of MEX (minimum excluded value) to assign unique
+        # index values to the new individuals
+        indexes = sorted([_individual.index for _individual in self])
+        excluded = [i for i in range(len(indexes)+1) if i not in indexes]
+        assert individual.index not in indexes
+        if individual.index is None:
+            individual.index = excluded[0]
+        super().append(individual)
 
+
+    @single_core
+    def replace(self, a_list):
+        """Deletes the current list of individuals and replaces them with the ones in a_list."""
         counter = Counter(individual.index for individual in self)
         assert max(counter.values()) == 1
+        counter = Counter(individual.index for individual in a_list)
+        assert max(counter.values()) == 1
 
-        # TODO somehow check that this works
-        mark_for_removal = [True for _ in self]
-        for individual in a_list:
-            for i, old_individual in enumerate(self):
-                if individual.index == old_individual.index:
-                    old_individual.update(individual)
-                    mark_for_removal[i] = False
-                    break
-
-        mark_for_removal = [i for i, tf in enumerate(mark_for_removal) if tf]
-        mark_for_removal.reverse()
-        for i in mark_for_removal:
-            self.pop(i)
-
-        for i, individual in enumerate(self):
-            individual.index = i
+        self.clear()
+        self.extend(a_list)
 
 
     @single_core
     def extend(self, other):
+        """Does a standard list extend and assigns an index to each individual if it doesn't already have one."""
         # Rudimentary implementation of MEX (minimum excluded value) to assign unique
         # index values to the new individuals
         indexes = sorted([individual.index for individual in self])
         excluded = [i for i in range(len(indexes)+len(other)) if i not in indexes]
         for i, individual in enumerate(other):
-            individual.index = excluded[i]
+            assert individual.index is None or individual.index not in indexes
+            individual.index = individual.index or excluded[i]
         super().extend(other)
+
+        counter = Counter(individual.index for individual in self)
+        assert max(counter.values()) == 1
 
 
     @root
