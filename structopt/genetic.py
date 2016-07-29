@@ -1,5 +1,6 @@
 import sys, os
 import logging
+import shutil
 
 import structopt
 from structopt.common.population import Population
@@ -8,11 +9,12 @@ from structopt.common.population import Population
 class GeneticAlgorithm(object):
     """Defines methods to run a genetic algorithm optimization using the functions in the rest of the library."""
 
-    def __init__(self, population, convergence):
+    def __init__(self, population, convergence, post_processing):
         self.logger = logging.getLogger('default')
 
         self.population = population
         self.convergence = convergence
+        self.post_processing = post_processing
 
         self.generation = 0
         self.converged = False
@@ -70,6 +72,8 @@ class GeneticAlgorithm(object):
             os.makedirs(path, exist_ok=True)
             individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.index)))
 
+        self.clear_XYZs()
+
         # Save the genealogy
         tags = ['' for _ in self.population]
         for i, individual in enumerate(self.population):
@@ -79,6 +83,35 @@ class GeneticAlgorithm(object):
         genealogy_logger = logging.getLogger('genealogy')
         genealogy_logger.info(' '.join(tags))
 
+    def clear_XYZs(self):
+        """Depending on the value in the post_processing dictionary, clear old
+        XYZ files to save space. Specified by the parameters.post_processing.XYZs kwarg.
+        Takes an integer value. Behavior depends on sign of integer
+
+        -n : Only generation up to current generation - n are kept
+
+        n : Every n generation is kept (always includes the last"""
+
+        path = None
+
+        n = self.post_processing['XYZs']
+        assert(type(n) is int)
+
+        # If nothing is getting removed
+        if self.generation == 0:
+            return
+
+        # Keeping the last n generations
+        if type(n) is int and n < 0 and self.generation > -n:
+            path = os.path.join(logging.parameters.path, 'XYZs/generation{}'.format(self.generation + n))
+        # Keeping every n generation
+        elif type(n) is int and n > 0 and self.generation > 1 and self.generation % n != 1:
+            path = os.path.join(logging.parameters.path, 'XYZs/generation{}'.format(self.generation - 1))
+
+        if path is not None:
+            shutil.rmtree(path)
+
+        return
 
     def __enter__(self):
         return self
@@ -101,7 +134,7 @@ if __name__ == "__main__":
     population = Population(parameters=parameters)
 
     with GeneticAlgorithm(population=population,
-                                    convergence=parameters.convergence
-                                    ) as optimizer:
+                          convergence=parameters.convergence,
+                          post_processing=parameters.post_processing) as optimizer:    
         optimizer.run()
 
