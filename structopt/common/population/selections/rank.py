@@ -1,7 +1,6 @@
-import random
 from copy import deepcopy
 import numpy as np
-import scipy.stats
+import scipy
 
 def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False):
     """Selection function that chooses pairs of structures 
@@ -18,7 +17,10 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
         A list of fitnesses of the population
     p_min : float
         The probability of choosing the lowest ranked individual.
-        This should be below 1/nindiv.
+        Given population of size N, this should be below 1/nindiv. 
+        The probability of selecting rank N (worst) to rank 1 (best) 
+        increases from p_min to (2/N - p_min) in even, (1/N - p_min)
+        increments. Defaults to (1/N)^2.
     unique_pairs : bool
         If True, all combinations of parents are unique.
         True increases the diveristy of the population.
@@ -34,13 +36,13 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
     """
 
     # Get ranks of each population value based on its fitness
-    ranks = scipy.stats.rankdata(fits)
+    ranks = scipy.stats.rankdata(fits, method='ordinal')
 
     # Work with indexes of the population instead of the population
     inds_population = list(range(len(population)))
 
     # Get probabilities based on linear ranking
-    if p_min==None:
+    if p_min is None:
         p_min = 1.0 / len(population) ** 2
     N = len(fits)
     eta_min = p_min * N

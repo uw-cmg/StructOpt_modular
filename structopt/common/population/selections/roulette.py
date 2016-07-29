@@ -1,5 +1,4 @@
 import numpy as np
-import random
 from copy import deepcopy
 
 def roulette(population, fits, unique_pairs=False, unique_parents=False):
