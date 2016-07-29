@@ -221,9 +221,16 @@ class LAMMPS(object):
             for element in elements:
                 pair_coeff += ' {}'.format(element)
             self.parameters['pair_coeff'] = pair_coeff
+        elif self.parameters['pair_style'] == 'eam/fs':
+            elements = sorted(set(atoms.get_chemical_symbols()))
+            pot_file = os.path.expandvars(self.parameters['potential_file'])
+            pair_coeff = '* * {}'.format(pot_file)
+            for element in elements:
+                pair_coeff += ' {}'.format(element)
+            self.parameters['pair_coeff'] = pair_coeff            
         else:
             s = self.parameters['pair_style']
-            raise ValueError('{} pair_style not yet implemented'.format(s))
+            raise NotImplementedError('{} pair_style not yet implemented'.format(s))
 
         return
 
