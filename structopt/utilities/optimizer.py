@@ -300,6 +300,7 @@ class StructOpt(object):
         """Reads fitness.log and stores the data"""
 
         all_fitness = []
+        modules = self.parameters['fitness']
         pattern = '.* Generation (.*), Individual (.*): (.*)'
 
         current_fitnesses = []
