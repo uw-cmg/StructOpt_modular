@@ -30,7 +30,7 @@
         "LAMMPS": {"order": 0,
                    "kwargs": {"use_mpi4py": false,
 	                      "MPMD": 0,
-	                      "keep_files": false,
+	                      "keep_files": true,
 	                      "min_style": "cg",
                               "min_modify": "line quadratic",
 	                      "minimize": "1e-8 1e-8 5000 10000",
@@ -56,10 +56,10 @@
         "rotate": {"probability": 1.0}
     },
     "predators": {
-        "roulette": {"probability": 1.0}
+        "rank": {"probability": 1.0}
     },
     "selections": {
-        "roulette": {"probability": 1.0}
+        "tournament": {"probability": 1.0}
     },
     "fileio": {},
     "postprocessing": {},

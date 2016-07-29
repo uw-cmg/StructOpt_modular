@@ -1,0 +1,14 @@
+ITEM: TIMESTEP
+2
+ITEM: NUMBER OF ATOMS
+5
+ITEM: BOX BOUNDS pp pp pp
+0 10
+0 10
+0 10
+ITEM: ATOMS id type x y z c_pea 
+2 1 nan nan nan 0 
+4 1 nan nan nan 0 
+1 1 nan nan nan 0 
+3 1 nan nan nan 0 
+5 1 6.23183 5.64541 5.74016 0 

@@ -49,12 +49,10 @@
         "rotate": {"probability": 0.7}
     },
     "predators": {
-        "roulette": {"probability": 1.0}
+        "rank": {"probability": 1.0}
     },
     "selections": {
-        "roulette": {"probability": 1.0,
-                     "kwargs": {"unique_pairs": false,
-                                "unique_parents": false}}
+        "best": {"probability": 1.0}
     },
     "fileio": {},
     "postprocessing": {},
