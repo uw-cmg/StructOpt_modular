@@ -301,7 +301,10 @@ class StructOpt(object):
 
         all_fitness = []
         modules = self.parameters['fitnesses']
+
         pattern = '.* Generation (.*), Individual (.*): (.*)'
+        for module in modules:
+            
 
         current_fitnesses = []
         current_generation = 0

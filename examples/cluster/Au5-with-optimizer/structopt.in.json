@@ -67,7 +67,7 @@
             "probability": 0.0
         }
     },
-    "postprocessing": {},
+    "post_processing": {},
     "predators": {
         "best": {
             "probability": 1.0
