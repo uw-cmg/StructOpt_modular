@@ -32,7 +32,7 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 5
+        "max_generations": 20
     },
     "mutations": {
 	"move_atoms": {"probability": 0.1},
@@ -55,6 +55,6 @@
         "best": {"probability": 1.0}
     },
     "fileio": {},
-    "postprocessing": {},
+    "post_processing": {"XYZs": 5},
     "tools": {}
 }
