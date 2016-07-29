@@ -273,6 +273,14 @@ class Individual(ase.Atoms):
             new.empty()
         new.set_cell(self.get_cell())
         new.set_pbc(self.get_pbc())
+
+        new.mutation_tag = self.mutation_tag
+        new.crossover_tag = self.crossover_tag = None
+        new.fitted = self._fitted
+        new._relaxed = self._relaxed
+        new._fitness = self._fitness
+        for module_name in self.fitnesses.module_names:
+            setattr(new, module_name, getattr(self, module_name, None))
         return new
 
 
