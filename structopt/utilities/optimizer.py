@@ -3,6 +3,7 @@
 import os
 import re
 import json
+from copy import deepcopy
 from operator import itemgetter
 from subprocess import Popen, PIPE
 
@@ -23,8 +24,11 @@ class StructOpt(object):
         else:
             self.calcdir = os.path.expandvars(calcdir)
         self.optimizer = optimizer
-        self.parameters = parameters
-        self.submit_parameters = submit_parameters
+        self.parameters = deepcopy(parameters)
+        self.submit_parameters = deepcopy(submit_parameters)
+        if 'job_name' not in self.submit_parameters:
+            self.submit_parameters['job_name'] = self.calcdir
+        
 
         self.path = os.path.abspath(self.calcdir)
         self.cwd = os.getcwd()
@@ -37,12 +41,26 @@ class StructOpt(object):
         self.log_dirs = None
         self.log_dir = None
 
-        # Initialize status and read output
+        # If totally clean calculation
         if not os.path.isdir(self.path):
             self.status = 'clean'
             os.makedirs(self.path)
-        else:
-            self.read_runs()
+
+        # If directory exists
+        elif not os.path.isfile(os.path.join(self.path, 'structopt.in.json')):
+            self.status = 'clean'
+
+        # If input exists but was never run
+        elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
+              and not self.job_in_queue(os.path.join(self.path, 'jobid'))
+              and True not in [os.path.isdir(link) for link in os.listdir(self.path)]):
+            self.read_input()
+            self.status = 'clean'
+
+        # If the job is running
+        elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
+              and self.job_in_queue(os.path.join(self.path, 'jobid'))
+            
             if self.status == 'done':
                 self.check_for_errors()
 
@@ -55,6 +73,34 @@ class StructOpt(object):
         the self.parameters to load up those structures on the next run"""
 
         pass
+
+    def job_in_queue(self, jobid='jobid'):
+        '''return True or False if the directory has a job in the queue'''
+        if not os.path.exists(jobid):
+            return False
+        else:
+            # get the jobid
+            jobid = open(jobid).readline().split()[-1]
+
+            # Behavior will depend on whether we are in the slurm or pbs environment
+            if self.submit_parameters['system'] == 'PBS':
+                jobids_in_queue = commands.getoutput('qselect').split('\n')
+            else:
+                jobids_in_queue = commands.getoutput('squeue -h -o %A').split('\n')
+
+            if jobid in jobids_in_queue:
+                # get details on specific jobid
+                status, output = commands.getstatusoutput('qstat %s' % jobid)
+                if status == 0:
+                    lines = output.split('\n')
+                    fields = lines[-1].split()
+                    job_status = fields[4]
+                    if job_status == 'C':
+                        return False
+                    else:
+                        return True
+            else:
+                return False    
 
     ####################################################################
     ### Calculation methods. Includes write, run, and submit scripts ###
@@ -299,14 +345,16 @@ class StructOpt(object):
     def read_fitness(self):
         """Reads fitness.log and stores the data"""
 
-        all_fitness = []
+        all_fitnesses = {'total': []}
+        current_fitnesses = {'total': []}
         modules = self.parameters['fitnesses']
 
-        pattern = '.* Generation (.*), Individual (.*): (.*)'
+        pattern = '.* Generation (.*), Individual (.*):'
         for module in modules:
-            
+            pattern += ' (.*): (.*)'
+            all_fitnesses.update({module: []})
+            current_fitnesses.update({module: []})
 
-        current_fitnesses = []
         current_generation = 0
         with open(os.path.join(self.log_dir, 'fitnesses.log')) as fitness_file:
             for line in fitness_file:
@@ -316,7 +364,12 @@ class StructOpt(object):
                 if match:
                     generation = int(match.group(1))
                     index = int(match.group(2))
-                    fitness = float(match.group(3))
+                    fitness = {match.group(2*i + 3): match.group(2*i + 4) for i in range(len(modules))}
+                    for module in fitness:
+                        try:
+                            fitness[module] = float(fitness[module])
+                        except ValueError:
+                            fitness[module] = np.nan
                 else:
                     continue
 
@@ -324,20 +377,34 @@ class StructOpt(object):
                 # for a current generation
                 if generation > current_generation:
                     current_generation = generation
-                    all_fitness.append(current_fitnesses)
-                    current_fitnesses = []
+                    all_fitnesses['total'].append(current_fitnesses['total'])
+                    for module in modules:
+                        all_fitnesses[module].append(current_fitnesses[module])
+                    current_fitnesses = {module: [] for module in current_fitnesses}
 
-                # Make sure the fitness list is big enough
-                if len(current_fitnesses) < index + 1:
-                    current_fitnesses.extend([None]*(index + 1 - len(current_fitnesses)))
+                total_fit = 0
+                # Store data of current individual
+                for module in modules:
+                    # Make sure the fitness list is big enough
+                    if len(current_fitnesses[module]) < index + 1:
+                        current_fitnesses[module].extend([None]*(index + 1 - len(current_fitnesses[module])))
+                    current_fitnesses[module][index] = fitness[module]
+                    total_fit += fitness[module]
 
-                current_fitnesses[index] = fitness
+                if len(current_fitnesses['total']) < index + 1:
+                    current_fitnesses['total'].extend([None]*(index + 1 - len(current_fitnesses['total'])))
+                current_fitnesses['total'][index] = total_fit
 
-        self.fitness = np.array(all_fitness)
+            # Append the last generation
+            all_fitnesses['total'].append(current_fitnesses['total'])
+            for module in modules:
+                all_fitnesses[module].append(current_fitnesses[module])
+
+        self.fitness = {module: np.array(all_fitnesses[module]) for module in all_fitnesses}
 
         return
 
-    def get_fitnesses(self):
+    def get_fitnesses(self, module='all'):
         """Returns a list of fitnesses of all individuals in all generations.
 
         Output
@@ -351,9 +418,12 @@ class StructOpt(object):
         if self.fitness is None:
             self.read_fitness()
 
-        return self.fitness
+        if module == 'all':
+            return self.fitness
 
-    def get_avg_fitnesses(self):
+        return self.fitness[module]
+
+    def get_avg_fitnesses(self, module='all'):
         """Returns a list of the average fitness of each generation
 
         Output
@@ -366,7 +436,10 @@ class StructOpt(object):
         if self.fitness is None:
             self.read_fitness()
 
-        return np.average(self.fitness, axis=1)
+        if module == 'all':
+            self.fitness = {module: np.average(self.fitness[module], axis=1) for module in self.fitness}
+
+        return np.average(self.fitness[module], axis=1)
 
     def get_min_fitnesses(self):
         """Returns a list of the minimum fitness of each generation
@@ -381,7 +454,10 @@ class StructOpt(object):
         if self.fitness is None:
             self.read_fitness()
 
-        return np.amin(self.fitness, axis=1)
+        if module == 'all':
+            self.fitness = {module: np.amin(self.fitness[module], axis=1) for module in self.fitness}
+
+        return np.amin(self.fitness[module], axis=1)            
 
     def get_max_fitnesses(self):
         """Returns a list of the minimum fitness of each generation
@@ -396,7 +472,11 @@ class StructOpt(object):
         if self.fitness is None:
             self.read_fitness()
 
-        return np.amax(self.fitness, axis=1)
+        if module == 'all':
+            self.fitness = {module: np.amax(self.fitness[module], axis=1) for module in self.fitness}
+
+        return np.amax(self.fitness[module], axis=1)            
+
 
     def get_stdev_fitness(self):
         """Returns the fitness standard deviation of each generation
@@ -411,4 +491,7 @@ class StructOpt(object):
         if self.fitness is None:
             self.read_fitness()
 
-        return np.std(self.fitness, axis=1)
+        if module == 'all':
+            self.fitness = {module: np.std(self.fitness[module], axis=1) for module in self.fitness}
+
+        return np.std(self.fitness[module], axis=1)
