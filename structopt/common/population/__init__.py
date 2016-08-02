@@ -1,6 +1,7 @@
 import importlib
 import numpy as np
 from collections import Counter
+from reprlib import recursive_repr as _recursive_repr
 
 import structopt
 from ..individual import Individual
@@ -12,19 +13,23 @@ from .relaxations import Relaxations
 from .mutations import Mutations
 from .pso_moves import Pso_Moves
 from structopt.tools import root, single_core, parallel, allgather
+from structopt.tools import SortedDict
 
 POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
 
-class Population(list):
+class Population(SortedDict):
     """A list-like class that contains the Individuals and the operations to be run on them."""
 
     @single_core
     def __init__(self, parameters, individuals=None):
+        super().__init__()
 
         self.parameters = parameters
         self.structure_type = self.parameters.structure_type.lower()
         self.load_modules()
         self.generation = 0
+
+        self._max_individual_index = 0
 
         if individuals is None:
             # Import the structure type class: e.g from structopt.crystal import Crystal
@@ -53,12 +58,36 @@ class Population(list):
                                           mutation_parameters=self.parameters.mutations,
                                           pso_moves_parameters=self.parameters.pso_moves,
                                           generator_parameters=generator_parameters)
-                    self.append(structure)
+                    self.add(structure)
                 starting_index += n
         else:
-            self.extend(individuals)
+            self.update(individuals)
 
         self.initial_number_of_individuals = len(self)
+
+
+    def __iter__(self):
+        iterable = super().__iter__()
+        curr = next(iterable)
+        while curr is not StopIteration:
+            yield self[curr]
+            curr = next(iterable)
+
+
+    def __reduce__(self):
+        'Return state information for pickling'
+        inst_dict = vars(self).copy()
+        for k in vars(SortedDict()):
+            inst_dict.pop(k, None)
+        return self.__class__, (), inst_dict or None, None, iter(self.items())
+
+
+    @_recursive_repr()
+    def __repr__(self):
+        'od.__repr__() <==> repr(od)'
+        if not self:
+            return '%s()' % (self.__class__.__name__,)
+        return '%s(%r)' % (self.__class__.__name__, list(self))
 
 
     def __getstate__(self):
@@ -86,6 +115,22 @@ class Population(list):
                 setattr(self, module, Module)
 
 
+    @single_core
+    def position(self, individual):
+        """Returns the position of the individual in the population."""
+        for i, _individual in enumerate(self):
+            if _individual is individual:
+                return i
+
+
+    @single_core
+    def get_by_position(self, position):
+        """Returns the individual at position `position`."""
+        for i, individual in enumerate(self):
+            if i == position:
+                return individual
+
+
     @parallel
     def allgather(self, individuals_per_core):
         """Performs an MPI.allgather on self (the population) and updates the
@@ -94,50 +139,53 @@ class Population(list):
 
         See stuctopt.tools.parallel.allgather for a similar function.
         """
-        correct_population = allgather(self, individuals_per_core)
-        self.replace(correct_population)
+        to_send = [individual for individual in self]
+
+        positions_per_core = {rank: [self.position(individual) for individual in individuals] for rank, individuals in individuals_per_core.items()}
+
+        correct_individuals = allgather(to_send, positions_per_core)
+        self.replace(correct_individuals)
+
+
+    @parallel
+    def bcast(self):
+        """Performs and MPI.bcast on self."""
+        from mpi4py import MPI
+        correct_individuals = MPI.COMM_WORLD.bcast([individual for individual in self], root=0)
+        self.replace(correct_individuals)
 
 
     @single_core
-    def append(self, individual):
-        """Does a standard list append and assigns an index to the individual if it doesn't already have one."""
+    def add(self, individual):
+        """Adds the Individual to the population."""
         assert isinstance(individual, Individual)
-        # Rudimentary implementation of MEX (minimum excluded value) to assign unique
-        # index values to the new individuals
-        indexes = sorted([_individual.index for _individual in self])
-        excluded = [i for i in range(len(indexes)+1) if i not in indexes]
-        assert individual.index not in indexes
-        if individual.index is None:
-            individual.index = excluded[0]
-        super().append(individual)
+        assert individual.index not in [_individual.index for _individual in self]
+        self.update([individual])
 
 
     @single_core
     def replace(self, a_list):
         """Deletes the current list of individuals and replaces them with the ones in a_list."""
-        counter = Counter(individual.index for individual in self)
-        assert max(counter.values()) == 1
-        counter = Counter(individual.index for individual in a_list)
-        assert max(counter.values()) == 1
-
+        if self is a_list:
+            return None
         self.clear()
-        self.extend(a_list)
+        self.update(a_list)
 
 
     @single_core
-    def extend(self, other):
-        """Does a standard list extend and assigns an index to each individual if it doesn't already have one."""
-        # Rudimentary implementation of MEX (minimum excluded value) to assign unique
-        # index values to the new individuals
-        indexes = sorted([individual.index for individual in self])
-        excluded = [i for i in range(len(indexes)+len(other)) if i not in indexes]
-        for i, individual in enumerate(other):
-            assert individual.index is None or individual.index not in indexes
-            individual.index = individual.index or excluded[i]
-        super().extend(other)
+    def update(self, individuals):
+        """Overwrites and adds to the population using the `index` attribute of the individuals as a keyword.
+        Assigns an index to an individual if it doesn't already have one."""
+        for individual in individuals:
+            if individual.index is None:
+                individual.index = self._max_individual_index + 1
+                self._max_individual_index += 1
+            if individual.index > self._max_individual_index:
+                self._max_individual_index = individual.index
+        super().update((individual.index, individual) for individual in individuals)
 
-        counter = Counter(individual.index for individual in self)
-        assert max(counter.values()) == 1
+
+    extend = update
 
 
     @root

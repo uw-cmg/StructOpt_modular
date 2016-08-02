@@ -1,6 +1,9 @@
 {
     "seed": 0,
     "logging": { },
+    "post_processing": {
+        "XYZs": 1
+    },
     "structure_type": "cluster",
     "generators": {
         "read_xyz": {"number_of_individuals": 4,

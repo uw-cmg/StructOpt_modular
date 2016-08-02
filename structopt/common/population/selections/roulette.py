@@ -29,7 +29,7 @@ def roulette(population, fits, unique_pairs=False, unique_parents=False):
     """
 
     # Work with indexes of the population instead of the population
-    inds_population = list(range(len(population)))
+    inds_population = [individual.index for individual in population]
     
     # Normalize fits from 0 (min fit) to 1 (max fit)
     fit_max = max(fits)

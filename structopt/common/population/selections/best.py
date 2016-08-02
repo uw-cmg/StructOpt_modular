@@ -15,6 +15,5 @@ def best(population, fits):
         mother = population[ranks.index(rank_mother)]
         pairs.append([father, mother])
 
-    return(pairs)
-
+    return pairs
 

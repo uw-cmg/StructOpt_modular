@@ -1,3 +1,4 @@
+import os
 import logging
 
 from structopt.tools import root, single_core, parallel
@@ -37,10 +38,10 @@ class LAMMPS(object):
             individual.set_calculator(calc)
             try:
                 E = individual.get_potential_energy()
-                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, rank))
+                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, logging.parameters.rank))
             except RuntimeError:
                 E = 0
-                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, rank))
+                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, logging.parameters.rank))
 
             return E
 

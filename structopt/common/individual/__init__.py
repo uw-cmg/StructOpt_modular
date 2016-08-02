@@ -251,7 +251,7 @@ class Individual(ase.Atoms):
     @single_core
     def copy(self, include_atoms=True):
         """Return a copy."""
-        new = self.__class__(index=self.index,
+        new = self.__class__(index=None,
                              load_modules=True,
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,

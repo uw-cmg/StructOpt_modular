@@ -31,6 +31,7 @@ class GeneticAlgorithm(object):
 
     def step(self):
         if logging.parameters.rank == 0:
+            print('')
             print("Starting generation {}".format(self.generation))
         sys.stdout.flush()
         if self.generation > 0:
@@ -40,10 +41,10 @@ class GeneticAlgorithm(object):
             self.population.extend(children)
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
+
         self.population.relax()
         fits = self.population.fitness()
         self.population.kill(fits)
-        self.population.sort()
         self.check_convergence()
         if logging.parameters.rank == 0:
             self.post_processing_step()
