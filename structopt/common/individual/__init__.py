@@ -13,14 +13,14 @@ class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
     @single_core
-    def __init__(self, index=None,
+    def __init__(self, id=None,
                  load_modules=True,
                  relaxation_parameters=None, fitness_parameters=None,
                  mutation_parameters=None,
                  pso_moves_parameters=None,
                  generator_parameters=None):
 
-        self.index = index
+        self.id = id
         self.mutation_tag = None
         self.crossover_tag = None
         self.relaxation_parameters = relaxation_parameters
@@ -140,7 +140,7 @@ class Individual(ase.Atoms):
 
 
     def __str__(self):
-        return '<Individual {}>'.format(self.index)
+        return '<Individual {}>'.format(self.id)
     __repr__ = __str__
 
 
@@ -251,7 +251,7 @@ class Individual(ase.Atoms):
     @single_core
     def copy(self, include_atoms=True):
         """Return a copy."""
-        new = self.__class__(index=None,
+        new = self.__class__(id=None,
                              load_modules=True,
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,

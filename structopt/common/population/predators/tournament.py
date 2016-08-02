@@ -26,12 +26,13 @@ def tournament(population, fits, nkeep, tournament_size=5):
     out : None
         Population modified in place.
     """
+    raise NotImplementedError("After the Population was changed from a list to a sorted dict, this function needs to be updated.")
 
     # Get ranks determined by their fitness
     ranks = scipy.stats.rankdata(fits, method='ordinal')
 
     # Work with indices of the indices of the population
-    indices_population = list(range(len(population)))
+    inds_population = [individual.id for individual in population]
     new_population = []
 
     # Run nkeep tournaments
@@ -50,3 +51,4 @@ def tournament(population, fits, nkeep, tournament_size=5):
     population.replace(new_population)
 
     return
+

@@ -7,6 +7,7 @@ def roulette(population, fits, nkeep):
     """Select individuals with a probability proportional to their fitness.
     Fitnesses are renormalized from 0 - 1.
     """
+    raise NotImplementedError("After the Population was changed from a list to a sorted dict, this function needs to be updated.")
 
     # Normalize fits from 0 (min fit) to 1 (max fit)
     fit_max = max(fits)

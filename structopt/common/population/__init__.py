@@ -29,7 +29,7 @@ class Population(SortedDict):
         self.load_modules()
         self.generation = 0
 
-        self._max_individual_index = 0
+        self._max_individual_id = 0
 
         if individuals is None:
             # Import the structure type class: e.g from structopt.crystal import Crystal
@@ -39,7 +39,7 @@ class Population(SortedDict):
             Structure = getattr(module, self.structure_type.title())
 
             # Generate/load initial structures
-            starting_index = 0
+            starting_id = 0
             for generator in self.parameters.generators:
                 n = self.parameters.generators[generator].number_of_individuals
                 for j in range(n):
@@ -52,14 +52,14 @@ class Population(SortedDict):
 
                     generator_parameters = {generator: kwargs}
 
-                    structure = Structure(index=starting_index + j,
+                    structure = Structure(id=starting_id + j,
                                           relaxation_parameters=self.parameters.relaxations,
                                           fitness_parameters=self.parameters.fitnesses,
                                           mutation_parameters=self.parameters.mutations,
                                           pso_moves_parameters=self.parameters.pso_moves,
                                           generator_parameters=generator_parameters)
                     self.add(structure)
-                starting_index += n
+                starting_id += n
         else:
             self.update(individuals)
 
@@ -159,7 +159,7 @@ class Population(SortedDict):
     def add(self, individual):
         """Adds the Individual to the population."""
         assert isinstance(individual, Individual)
-        assert individual.index not in [_individual.index for _individual in self]
+        assert individual.id not in [_individual.id for _individual in self]
         self.update([individual])
 
 
@@ -174,15 +174,15 @@ class Population(SortedDict):
 
     @single_core
     def update(self, individuals):
-        """Overwrites and adds to the population using the `index` attribute of the individuals as a keyword.
-        Assigns an index to an individual if it doesn't already have one."""
+        """Overwrites and adds to the population using the `id` attribute of the individuals as a keyword.
+        Assigns an id to an individual if it doesn't already have one."""
         for individual in individuals:
-            if individual.index is None:
-                individual.index = self._max_individual_index + 1
-                self._max_individual_index += 1
-            if individual.index > self._max_individual_index:
-                self._max_individual_index = individual.index
-        super().update((individual.index, individual) for individual in individuals)
+            if individual.id is None:
+                individual.id = self._max_individual_id + 1
+                self._max_individual_id += 1
+            if individual.id > self._max_individual_id:
+                self._max_individual_id = individual.id
+        super().update((individual.id, individual) for individual in individuals)
 
 
     extend = update

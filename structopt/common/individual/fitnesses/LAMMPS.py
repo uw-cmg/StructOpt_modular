@@ -27,10 +27,10 @@ class LAMMPS(object):
         if individual._relaxed and hasattr(individual, 'LAMMPS') and individual.LAMMPS is not None:
             return individual.LAMMPS
         else:
-            print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.index))
+            print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.id))
             if generation is not None:
                 calcdir = os.path.join(os.getcwd(), '{}/fitness/LAMMPS/generation{}/individual{}')
-                calcdir = calcdir.format(self.output_dir, generation, individual.index)
+                calcdir = calcdir.format(self.output_dir, generation, individual.id)
             else:
                 calcdir = None
 
@@ -38,10 +38,10 @@ class LAMMPS(object):
             individual.set_calculator(calc)
             try:
                 E = individual.get_potential_energy()
-                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, logging.parameters.rank))
+                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, logging.parameters.rank))
             except RuntimeError:
                 E = 0
-                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.index, logging.parameters.rank))
+                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, logging.parameters.rank))
 
             return E
 
