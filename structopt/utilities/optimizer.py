@@ -1,11 +1,12 @@
-"""This contains a StructOpt calculator for submitting jobs to queue, tracking their progress, and reading their output. Currently only works with genetic.py"""
+"""This contains a StructOpt calculator for submitting jobs to queue, tracking their progress, and reading their output."""
 
 import os
 import re
 import json
 from copy import deepcopy
 from operator import itemgetter
-from subprocess import Popen, PIPE
+import subprocess
+from subprocess import PIPE
 
 import numpy as np
 import ase
@@ -28,7 +29,6 @@ class StructOpt(object):
         self.submit_parameters = deepcopy(submit_parameters)
         if 'job_name' not in self.submit_parameters:
             self.submit_parameters['job_name'] = self.calcdir
-        
 
         self.path = os.path.abspath(self.calcdir)
         self.cwd = os.getcwd()
@@ -53,20 +53,23 @@ class StructOpt(object):
         # If input exists but was never run
         elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
               and not self.job_in_queue(os.path.join(self.path, 'jobid'))
-              and True not in [os.path.isdir(link) for link in os.listdir(self.path)]):
+              and not self.read_runs()):
             self.read_input()
-            self.status = 'clean'
+            self.status = 'initialized'
 
         # If the job is running
         elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
-              and self.job_in_queue(os.path.join(self.path, 'jobid'))
-            
-            if self.status == 'done':
-                self.check_for_errors()
-
+              and self.job_in_queue(os.path.join(self.path, 'jobid'))):
             self.read_input()
-            if self.log_dir is not None:
-                self.read_generations()
+            self.status = 'running'
+
+        # If the job is done, check the output
+        elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
+              and not self.job_in_queue(os.path.join(self.path, 'jobid'))
+              and self.read_runs()):
+            self.read_input()
+            self.status = self.check_run() # Can be "done" or "error"
+            self.read_generations()
 
     def restart(self): # TODO
         """Loads up the last generation of a previous run and modifies 
@@ -78,29 +81,31 @@ class StructOpt(object):
         '''return True or False if the directory has a job in the queue'''
         if not os.path.exists(jobid):
             return False
+
+        with open(os.path.join(self.path, 'jobid')) as f:
+            jobid = f.readline().split()[-1]
+
+        # Behavior will depend on whether we are in the slurm or pbs environment
+        if self.submit_parameters['system'] == 'PBS':
+            jobids_in_queue = subprocess.check_output('qselect')
+            jobids_in_queue = [job.decode('utf-8') for job in jobids_in_queue.split()]
         else:
-            # get the jobid
-            jobid = open(jobid).readline().split()[-1]
+            raise NotImplemented(self.submit_parameters['system'], 'not implemented yet')
 
-            # Behavior will depend on whether we are in the slurm or pbs environment
-            if self.submit_parameters['system'] == 'PBS':
-                jobids_in_queue = commands.getoutput('qselect').split('\n')
-            else:
-                jobids_in_queue = commands.getoutput('squeue -h -o %A').split('\n')
+        if jobid in jobids_in_queue:
+            # get details on specific jobid
+            output, error = subprocess.Popen(['qstat', format(jobid)], stdout=PIPE).communicate()
+            if error is None:
+                fields = output.decode('utf-8').split('\n')[-2].split()
+                job_status = fields[4]
+                if job_status == 'C':
+                    return False
+                else:
+                    return True
+            return False
+        else:
+            return False
 
-            if jobid in jobids_in_queue:
-                # get details on specific jobid
-                status, output = commands.getstatusoutput('qstat %s' % jobid)
-                if status == 0:
-                    lines = output.split('\n')
-                    fields = lines[-1].split()
-                    job_status = fields[4]
-                    if job_status == 'C':
-                        return False
-                    else:
-                        return True
-            else:
-                return False    
 
     ####################################################################
     ### Calculation methods. Includes write, run, and submit scripts ###
@@ -140,7 +145,7 @@ class StructOpt(object):
 
         os.chdir(self.path)
 
-        p = Popen([submit_cmd, 'submit.sh'], stdout=PIPE, stderr=PIPE)
+        p = subprocess.Popen([submit_cmd, 'submit.sh'], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
 
         with open('jobid', 'wb') as f:
@@ -229,12 +234,10 @@ class StructOpt(object):
             log_dirs, log_times = zip(*log_dirs_times)
             self.log_dirs = log_dirs
             self.set_run(-1)
-            self.status = 'done'
+            return True
         else:
             self.log_dirs = []
-            self.status = 'clean'
-
-        return
+            return False
 
     def set_run(self, run_number):
         """Sets the get and read functions on a certain run number.
@@ -255,6 +258,37 @@ class StructOpt(object):
             self.clear_data()
 
         self.log_dir = new_log_dir
+
+    def check_run(self):
+        """Check the stdout to see if a run is complete. NOTE, only works
+        for jobs submitted to the queue and jobs where the stdout is
+        saved to stdout.txt"""
+
+        if 'stdout.txt' in os.listdir(self.path):
+            out_file = os.path.join(self.path, 'stdout.txt')
+        else:
+            files = os.listdir(self.path)
+            pattern = '.*.o(.*)'
+            files = [f for f in files if re.match(pattern, f, re.I|re.M)]
+            files = [f for f in files if re.match(pattern, f, re.I|re.M).group(1).isnumeric()]
+            jobids = [int(re.match(pattern, f, re.I|re.M).group(1)) for f in files]
+            files_jobids = zip(files, jobids)
+            files_jobids = sorted(files_jobids, key=lambda i: i[1])
+            out_file = files_jobids[-1][0]
+
+        with open(os.path.join(self.path, out_file)) as f:
+            last = None
+            for last in (line for line in f if line.rstrip('\n')):
+                pass
+
+        # Check if the job ran error free. Happens with "Finished!" gets
+        # printed and if the job was killed due to walltime
+        if ('Finished!' in last):
+            return 'done'
+        elif ('walltime' in last):
+            return 'timeout'
+        else:
+            return 'error'
 
     def read_generations(self):
         """Determines which generations exists and initializes
