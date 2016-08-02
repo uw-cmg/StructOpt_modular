@@ -16,13 +16,11 @@ def relax(population, parameters):
     ncores = logging.parameters.ncores
     rank = logging.parameters.rank
 
-    individuals_per_core = {r: [] for r in range(ncores)}
+    individuals_per_core = {rank: [] for rank in range(ncores)}
     for i, individual in enumerate(to_relax):
-        individuals_per_core[i % ncores].append(individual.index)
+        individuals_per_core[i % ncores].append(individual)
 
-    for index in individuals_per_core[rank]:
-        individual = population[index]
-        assert individual.index == index
+    for individual in individuals_per_core[rank]:
         #individual.relaxations.HardSphereCutoff.relax(individual)
         individual.relaxations.hard_sphere_cutoff.relax(individual)
 

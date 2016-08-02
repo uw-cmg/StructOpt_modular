@@ -1,8 +1,10 @@
 import importlib
 import numpy as np
 from collections import Counter
+from reprlib import recursive_repr as _recursive_repr
 
 import structopt
+from ..individual import Individual
 from .crossovers import Crossovers
 from .predators import Predators
 from .selections import Selections
@@ -10,20 +12,24 @@ from .fitnesses import Fitnesses
 from .relaxations import Relaxations
 from .mutations import Mutations
 from .pso_moves import Pso_Moves
-from structopt.tools import root, single_core, parallel
+from structopt.tools import root, single_core, parallel, allgather
+from structopt.tools import SortedDict
 
 POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
 
-class Population(list):
+class Population(SortedDict):
     """A list-like class that contains the Individuals and the operations to be run on them."""
 
     @single_core
     def __init__(self, parameters, individuals=None):
+        super().__init__()
 
         self.parameters = parameters
         self.structure_type = self.parameters.structure_type.lower()
         self.load_modules()
         self.generation = 0
+
+        self._max_individual_id = 0
 
         if individuals is None:
             # Import the structure type class: e.g from structopt.crystal import Crystal
@@ -33,7 +39,7 @@ class Population(list):
             Structure = getattr(module, self.structure_type.title())
 
             # Generate/load initial structures
-            starting_index = 0
+            starting_id = 0
             for generator in self.parameters.generators:
                 n = self.parameters.generators[generator].number_of_individuals
                 for j in range(n):
@@ -46,18 +52,42 @@ class Population(list):
 
                     generator_parameters = {generator: kwargs}
 
-                    structure = Structure(index=starting_index + j,
+                    structure = Structure(id=starting_id + j,
                                           relaxation_parameters=self.parameters.relaxations,
                                           fitness_parameters=self.parameters.fitnesses,
                                           mutation_parameters=self.parameters.mutations,
                                           pso_moves_parameters=self.parameters.pso_moves,
                                           generator_parameters=generator_parameters)
-                    self.append(structure)
-                starting_index += n
+                    self.add(structure)
+                starting_id += n
         else:
-            self.extend(individuals)
+            self.update(individuals)
 
         self.initial_number_of_individuals = len(self)
+
+
+    def __iter__(self):
+        iterable = super().__iter__()
+        curr = next(iterable)
+        while curr is not StopIteration:
+            yield self[curr]
+            curr = next(iterable)
+
+
+    def __reduce__(self):
+        'Return state information for pickling'
+        inst_dict = vars(self).copy()
+        for k in vars(SortedDict()):
+            inst_dict.pop(k, None)
+        return self.__class__, (), inst_dict or None, None, iter(self.items())
+
+
+    @_recursive_repr()
+    def __repr__(self):
+        'od.__repr__() <==> repr(od)'
+        if not self:
+            return '%s()' % (self.__class__.__name__,)
+        return '%s(%r)' % (self.__class__.__name__, list(self))
 
 
     def __getstate__(self):
@@ -85,6 +115,22 @@ class Population(list):
                 setattr(self, module, Module)
 
 
+    @single_core
+    def position(self, individual):
+        """Returns the position of the individual in the population."""
+        for i, _individual in enumerate(self):
+            if _individual is individual:
+                return i
+
+
+    @single_core
+    def get_by_position(self, position):
+        """Returns the individual at position `position`."""
+        for i, individual in enumerate(self):
+            if i == position:
+                return individual
+
+
     @parallel
     def allgather(self, individuals_per_core):
         """Performs an MPI.allgather on self (the population) and updates the
@@ -93,68 +139,53 @@ class Population(list):
 
         See stuctopt.tools.parallel.allgather for a similar function.
         """
-        # TODO Make this call tool/parallel.allgather rather than reimplement it
+        to_send = [individual for individual in self]
+
+        positions_per_core = {rank: [self.position(individual) for individual in individuals] for rank, individuals in individuals_per_core.items()}
+
+        correct_individuals = allgather(to_send, positions_per_core)
+        self.replace(correct_individuals)
+
+
+    @parallel
+    def bcast(self):
+        """Performs and MPI.bcast on self."""
         from mpi4py import MPI
-        # The lists in individuals_per_core all need to be of the same length 
-        max_individuals_per_core = max(len(individuals) for individuals in individuals_per_core.values())
-        for rank, individuals in individuals_per_core.items():
-            while len(individuals) < max_individuals_per_core:
-                individuals.append(None)
+        correct_individuals = MPI.COMM_WORLD.bcast([individual for individual in self], root=0)
+        self.replace(correct_individuals)
 
-        populations_per_rank = MPI.COMM_WORLD.allgather(self)
-        #correct_population = [None for _ in range(sum(len(l) for l in populations_per_rank))]
-        #correct_population = [None for _ in range(np.amax(list(individuals_per_core.values()))+1)]
-        #correct_population = [None for _ in range(max_individuals_per_core+1)]
-        correct_population = [None for _ in self]
-        for rank, indices in individuals_per_core.items():
-            for index in indices:
-                if index is not None:
-                    assert populations_per_rank[rank][index].index == index
-                    correct_population[index] = populations_per_rank[rank][index]
 
-        # If something didn't get sent, use the value on the core
-        for i, individual in enumerate(correct_population):
-            if individual is None:
-                correct_population[i] = self[i]
-
-        self.replace(correct_population)
+    @single_core
+    def add(self, individual):
+        """Adds the Individual to the population."""
+        assert isinstance(individual, Individual)
+        assert individual.id not in [_individual.id for _individual in self]
+        self.update([individual])
 
 
     @single_core
     def replace(self, a_list):
-        """Currently best used for updating index and ase.Atoms attributes
-        of individuals. Only works when len(a_list) <= self"""
-
-        counter = Counter(individual.index for individual in self)
-        assert max(counter.values()) == 1
-
-        # TODO somehow check that this works
-        mark_for_removal = [True for _ in self]
-        for individual in a_list:
-            for i, old_individual in enumerate(self):
-                if individual.index == old_individual.index:
-                    old_individual.update(individual)
-                    mark_for_removal[i] = False
-                    break
-
-        mark_for_removal = [i for i, tf in enumerate(mark_for_removal) if tf]
-        mark_for_removal.reverse()
-        for i in mark_for_removal:
-            self.pop(i)
-
-        for i, individual in enumerate(self):
-            individual.index = i
+        """Deletes the current list of individuals and replaces them with the ones in a_list."""
+        if self is a_list:
+            return None
+        self.clear()
+        self.update(a_list)
 
 
     @single_core
-    def extend(self, other):
-        # Rudimentary implementation of MEX (minimum excluded value) to assign unique
-        # index values to the new individuals
-        indexes = sorted([individual.index for individual in self])
-        excluded = [i for i in range(len(indexes)+len(other)) if i not in indexes]
-        for i, individual in enumerate(other):
-            individual.index = excluded[i]
-        super().extend(other)
+    def update(self, individuals):
+        """Overwrites and adds to the population using the `id` attribute of the individuals as a keyword.
+        Assigns an id to an individual if it doesn't already have one."""
+        for individual in individuals:
+            if individual.id is None:
+                individual.id = self._max_individual_id + 1
+                self._max_individual_id += 1
+            if individual.id > self._max_individual_id:
+                self._max_individual_id = individual.id
+        super().update((individual.id, individual) for individual in individuals)
+
+
+    extend = update
 
 
     @root

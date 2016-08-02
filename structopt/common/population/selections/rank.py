@@ -38,8 +38,8 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
     # Get ranks of each population value based on its fitness
     ranks = scipy.stats.rankdata(fits, method='ordinal')
 
-    # Work with indexes of the population instead of the population
-    inds_population = list(range(len(population)))
+    # Work with ids of the population instead of the population
+    inds_population = [individual.id for individual in population]
 
     # Get probabilities based on linear ranking
     if p_min is None:

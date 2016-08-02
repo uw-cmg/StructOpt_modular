@@ -37,7 +37,7 @@ def tournament(population, fits, tournament_size=5,
 
     # Get ranks of each population value based on its fitness
     ranks = scipy.stats.rankdata(fits, method='ordinal')
-    inds_population = list(range(len(population)))
+    inds_population = [individual.id for individual in population]
     n_pairs = int(len(fits) / 2)    
     pairs_ind = []
 
@@ -87,3 +87,4 @@ def tournament(population, fits, tournament_size=5,
     pairs = [[population[i], population[j]] for i, j in pairs_ind]    
 
     return pairs
+

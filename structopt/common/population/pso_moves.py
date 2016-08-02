@@ -12,8 +12,12 @@ class Pso_Moves(object):
         self.parameters = parameters
 
 
-    @single_core
+    @single_core    
     def move(self, population, best_swarm, best_particles):
+        """Update the entire population.
+        Args:
+            population (Population): the population to update
+        """
         for i, individual in enumerate(population):
             individual.pso_moves.move(individual, best_swarm, best_particles[i])
         return population

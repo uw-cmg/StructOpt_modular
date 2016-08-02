@@ -13,14 +13,14 @@ class Individual(ase.Atoms):
     """An abstract base class for a structure."""
 
     @single_core
-    def __init__(self, index=None,
+    def __init__(self, id=None,
                  load_modules=True,
                  relaxation_parameters=None, fitness_parameters=None,
                  mutation_parameters=None,
                  pso_moves_parameters=None,
                  generator_parameters=None):
 
-        self.index = index
+        self.id = id
         self.mutation_tag = None
         self.crossover_tag = None
         self.relaxation_parameters = relaxation_parameters
@@ -140,18 +140,9 @@ class Individual(ase.Atoms):
 
 
     def __str__(self):
-        return '<Individual {}>'.format(self.index)
+        return '<Individual {}>'.format(self.id)
     __repr__ = __str__
 
-
-    def update(self, other):
-        """Meant to update self from an individual that has been sent from an MPI call.
-        The issue is that some parts of an individual cannot be passed through MPI calls,
-        but we don't want to fully lose them. Therefore when an Individual is passed
-        through an MPI call from core A to core B, the individual on core B will be
-        updated with the new data from core A but will retain the individual's information
-        on core B that could not be transfered."""
-        self.__dict__.update(other.__dict__)
 
     @parallel
     def load_modules(self):
@@ -260,7 +251,7 @@ class Individual(ase.Atoms):
     @single_core
     def copy(self, include_atoms=True):
         """Return a copy."""
-        new = self.__class__(index=self.index,
+        new = self.__class__(id=None,
                              load_modules=True,
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,
@@ -268,13 +259,21 @@ class Individual(ase.Atoms):
                              pso_moves_parameters=self.pso_moves_parameters,
                              generator_parameters=self.generator_parameters)
         if include_atoms:
-            new.arrays = self.arrays.copy()
+            new.arrays = {}
+            for name, a in self.arrays.items():
+                new.arrays[name] = a.copy()
         else:
             new.empty()
         new.set_cell(self.get_cell())
         new.set_pbc(self.get_pbc())
+        new.mutation_tag = self.mutation_tag
+        new.crossover_tag = self.crossover_tag = None
+        new.fitted = self._fitted
+        new._relaxed = self._relaxed
+        new._fitness = self._fitness
+        for module_name in self.fitnesses.module_names:
+            setattr(new, module_name, getattr(self, module_name, None))
         return new
-
 
     @single_core
     def empty(self):

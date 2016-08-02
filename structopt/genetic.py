@@ -31,6 +31,7 @@ class GeneticAlgorithm(object):
 
     def step(self):
         if logging.parameters.rank == 0:
+            print('')
             print("Starting generation {}".format(self.generation))
         sys.stdout.flush()
         if self.generation > 0:
@@ -40,10 +41,10 @@ class GeneticAlgorithm(object):
             self.population.extend(children)
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
+
         self.population.relax()
         fits = self.population.fitness()
         self.population.kill(fits)
-        self.population.sort()
         self.check_convergence()
         if logging.parameters.rank == 0:
             self.post_processing_step()
@@ -62,7 +63,7 @@ class GeneticAlgorithm(object):
         # Save the fitnesses for each individual
         fitness_logger = logging.getLogger('fitness')
         for individual in self.population:
-            line = 'Generation {}, Individual {}:'.format(self.generation, individual.index)
+            line = 'Generation {}, Individual {}:'.format(self.generation, individual.id)
             for module in individual.fits:
                 line += ' {}: {}'.format(module, individual.fits[module])
             fitness_logger.info(line)
@@ -73,14 +74,14 @@ class GeneticAlgorithm(object):
             os.makedirs(path, exist_ok=True)
             path = os.path.join(path, 'generation{}'.format(self.generation))
             os.makedirs(path, exist_ok=True)
-            individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.index)))
+            individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.id)))
 
         self.clear_XYZs()
 
         # Save the genealogy
         tags = ['' for _ in self.population]
         for i, individual in enumerate(self.population):
-            tags[i] = '{ctag}{index}{mtag}'.format(ctag=individual.crossover_tag or '', index=individual.index, mtag=individual.mutation_tag or '')
+            tags[i] = '{ctag}{id}{mtag}'.format(ctag=individual.crossover_tag or '', id=individual.id, mtag=individual.mutation_tag or '')
             individual.crossover_tag = None
             individual.mutation_tag = None
         genealogy_logger = logging.getLogger('genealogy')
