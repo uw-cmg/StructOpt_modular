@@ -48,8 +48,12 @@ class Crossovers(object):
                 kwargs = self.kwargs[self.selected_crossover]
                 child1, child2 = self.selected_crossover(individual1, individual2, **kwargs)
                 if child1 is not None:
+                    child1._fitted = False
+                    child1._relaxed = False
                     children.append(child1)
                 if child2 is not None:
+                    child2._fitted = False
+                    child2._relaxed = False
                     children.append(child2)
 
                 self.post_processing((individual1, individual2), (child1, child2))
