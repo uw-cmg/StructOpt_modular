@@ -39,7 +39,10 @@ def root(method=None, broadcast=True):
                 data = method(*args, **kwargs)
             else:
                 data = None
-            data = MPI.COMM_WORLD.bcast(data, root=0)
+            if hasattr(data, 'bcast'):
+                data.bcast()
+            else:
+                data = MPI.COMM_WORLD.bcast(data, root=0)
         else:
             data = method(*args, **kwargs)
         return data
@@ -105,12 +108,13 @@ def allgather(stuff, stuffs_per_core):
             x = allgather(values, stuffs_per_core)
             print(x)  # returns:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     """
+    if hasattr(stuff, 'allgather'):
+        raise TypeError('instance of {} has an `allgather` function that should be used instead'.format(stuff.__class__.__name__))
+
     from mpi4py import MPI
     # The lists in stuffs_per_core all need to be of the same length 
-    amount_of_stuff = 0
     max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
     for rank, stuffs in stuffs_per_core.items():
-        amount_of_stuff += len(stuffs)
         while len(stuffs) < max_stuffs_per_core:
             stuffs.append(None)
 

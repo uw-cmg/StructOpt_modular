@@ -68,33 +68,33 @@ class FEMSIM(object):
 
         logger = logging.getLogger('by-rank')
 
-        logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.index))
+        logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.id))
 
         # Make individual folder and copy files there
-        self.folder = os.path.abspath('Output-rank0/FEMSIMFiles/Individual{i}'.format(i=individual.index))
+        self.folder = os.path.abspath('Output-rank0/FEMSIMFiles/Individual{i}'.format(i=individual.id))
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
             shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
 
-        self.paramfilename = os.path.join(self.folder, "femsim.{}.in".format(individual.index))
+        self.paramfilename = os.path.join(self.folder, "femsim.{}.in".format(individual.id))
         shutil.copy(self.parameters.parameter_filename, self.paramfilename)
         self.write_paramfile(individual)
 
-        base = 'indiv{i}'.format(i=individual.index) # TODO Add generation number
+        base = 'indiv{i}'.format(i=individual.id) # TODO Add generation number
         self.base = base
 
 
     @single_core
     def write_paramfile(self, individual):
         # Write structure file to disk so that the fortran femsim can read it in
-        #ase.io.write('structure_{i}.xyz'.format(i=individual.index), individual)
+        #ase.io.write('structure_{i}.xyz'.format(i=individual.id), individual)
         comment = "{} {} {}".format(self.parameters.xsize, self.parameters.ysize, self.parameters.zsize)
-        write_xyz('structure_{i}.xyz'.format(i=individual.index), individual, comment=comment)
+        write_xyz('structure_{i}.xyz'.format(i=individual.id), individual, comment=comment)
 
         with open(self.paramfilename, 'w') as f:
-            f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=None, i=individual.index))  # TODO Add generation number
-            f.write('{}\n'.format(os.path.join(os.getcwd(), 'structure_{i}.xyz'.format(i=individual.index))))
+            f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=None, i=individual.id))  # TODO Add generation number
+            f.write('{}\n'.format(os.path.join(os.getcwd(), 'structure_{i}.xyz'.format(i=individual.id))))
             f.write('{}\n'.format(self.parameters.vk_data_filename))
             f.write('{}\n'.format(self.parameters.Q))
             f.write('{} {} {}\n'.format(self.parameters.nphi, self.parameters.npsi, self.parameters.ntheta))

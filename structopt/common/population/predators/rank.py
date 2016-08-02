@@ -30,6 +30,7 @@ def rank(population, fits, nkeep, p_min=None):
 
     # Get ranks of each population value based on its fitness
     ranks = scipy.stats.rankdata(fits, method='ordinal')
+    ids = [individual.id for individual in population]
 
     # Get probabilities based on linear ranking
     if p_min is None:
@@ -40,7 +41,7 @@ def rank(population, fits, nkeep, p_min=None):
     p_max = eta_max / N
     p = p_min + (p_max - p_min)*(N - ranks)/(N - 1)
 
-    indexes_keep = np.random.choice(len(population), nkeep, replace=False, p=p)
+    indexes_keep = np.random.choice(ids, nkeep, replace=False, p=p)
     new_population = [population[i] for i in indexes_keep]
     population.replace(new_population)
 

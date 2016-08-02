@@ -25,7 +25,7 @@ class hard_sphere_cutoff(object):
             individual (Individual):  the individual to relax
         """
         rank = logging.parameters.rank
-        print("Relaxing individual {} on rank {} with hard-sphere cutoff method".format(individual.index, rank))
+        print("Relaxing individual {} on rank {} with hard-sphere cutoff method".format(individual.id, rank))
         radii = [2.0 for atom in individual]
         nl = NeighborList(radii, bothways=True, self_interaction=False)
         nl.update(individual)

@@ -28,23 +28,22 @@ def fitness(population, parameters):
 
     individuals_per_core = {r: [] for r in range(ncores)}
     for i, individual in enumerate(to_fit):
-        individuals_per_core[i % ncores].append(individual.index)
+        individuals_per_core[i % ncores].append(individual)
 
-    for index in individuals_per_core[rank]:
-        individual = population[index]
-        assert individual.index == index
-        print("Running LAMMPS fitness evaluation on individual {}".format(individual.index))
+    for individual in individuals_per_core[rank]:
+        print("Running LAMMPS fitness evaluation on individual {}".format(individual.id))
         energy = individual.fitnesses.LAMMPS.fitness(individual, population.generation)
         individual.LAMMPS = energy
-        logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.index, energy))
+        logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.id, energy))
 
     fits = [individual.LAMMPS for individual in population]
+    positions_per_core = {rank: [population.position(individual) for individual in individuals] for rank, individuals in individuals_per_core.items()}
     if parameters.use_mpi4py:
-        fits = allgather(fits, individuals_per_core)
+        fits = allgather(fits, positions_per_core)
 
     # Save the fitness value for the module to each individual after they have been allgathered
     for i, fit in enumerate(fits):
-        population[i].LAMMPS = fit
+        population.get_by_position(i).LAMMPS = fit
 
     return [individual.LAMMPS for individual in population]
 

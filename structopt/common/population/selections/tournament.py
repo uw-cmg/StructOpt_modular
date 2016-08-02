@@ -36,54 +36,58 @@ def tournament(population, fits, tournament_size=5,
     """
 
     # Get ranks of each population value based on its fitness
-    ranks = scipy.stats.rankdata(fits, method='ordinal')
-    inds_population = list(range(len(population)))
+    ranks = list(scipy.stats.rankdata(fits, method='ordinal'))
+    ids_population = [individual.id for individual in population]
+    id_to_rank = {id: rank for id, rank in zip(ids_population, ranks)}
+    rank_to_id = {rank: id for id, rank in zip(ids_population, ranks)}
     n_pairs = int(len(fits) / 2)    
-    pairs_ind = []
+    pairs_id = []
 
-    for i in range(n_pairs):
+    for _ in range(n_pairs):
         # Perform tournament for father selection
-        if len(inds_population) > tournament_size:
-            tournament_father = np.random.choice(inds_population, tournament_size)
+        if len(ids_population) > tournament_size:
+            tournament_father = np.random.choice(ids_population, tournament_size, replace=False)
         else:
-            tournament_father = inds_population
-        max_rank = min([ranks[i] for i in tournament_father])
-        ind_father = list(ranks).index(max_rank)
+            tournament_father = ids_population
 
+        max_rank = min([id_to_rank[id] for id in tournament_father])
+        id_father = rank_to_id[max_rank]
+        
         # Choose the second parent based on renormalized probabilities
         # First remove the father from the population and make a temporary
         # population for choosing the mother. If unique_parents
         # is on, remove him from the global population as well.
-        inds_population_temp = deepcopy(inds_population)
-        ind_delete = inds_population.index(ind_father)
-        del inds_population_temp[ind_delete]
+        ids_population_temp = deepcopy(ids_population)
+        ind_delete = ids_population.index(id_father)
+        del ids_population_temp[ind_delete]
 
         if unique_parents:
-            del inds_population[ind_delete]
+            del ids_population[ind_delete]
 
         # Now remove mothers that would make repeat father/mother pairs
         if unique_pairs:
-            for pair in deepcopy(pairs_ind):
-                if ind_father in pair:
-                    del pair[pair.index(ind_father)]
-                    ind_mother = pair[0]
-                    ind_delete = inds_population_temp.index(ind_mother)
-                    del inds_population_temp[ind_delete]
+            for pair in deepcopy(pairs_id):
+                if id_father in pair:
+                    del pair[pair.index(id_father)]
+                    id_mother = pair[0]
+                    ind_delete = ids_population_temp.index(id_mother)
+                    del ids_population_temp[ind_delete]
 
         # Using subset, perform tournament to find mother
-        if len(inds_population_temp) > tournament_size:
-            tournament_mother = np.random.choice(inds_population_temp, tournament_size)
+        if len(ids_population_temp) > tournament_size:
+            tournament_mother = np.random.choice(ids_population_temp, tournament_size, replace=False)
         else:
-            tournament_mother = inds_population_temp
-        max_rank = min([ranks[i] for i in tournament_mother])
-        ind_mother = list(ranks).index(max_rank)
+            tournament_mother = ids_population_temp
+        max_rank = min([id_to_rank[id] for id in tournament_mother])
+        id_mother = rank_to_id[max_rank]
 
         if unique_parents:
-            ind_delete = inds_population.index(ind_mother)
-            del inds_population[ind_delete]
+            ind_delete = ids_population.index(id_mother)
+            del ids_population[ind_delete]
 
-        pairs_ind.append([ind_father, ind_mother])
+        pairs_id.append([id_father, id_mother])
 
-    pairs = [[population[i], population[j]] for i, j in pairs_ind]    
+    pairs = [[population[i], population[j]] for i, j in pairs_id]
 
     return pairs
+

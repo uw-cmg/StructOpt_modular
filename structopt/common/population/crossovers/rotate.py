@@ -1,4 +1,3 @@
-import logging
 import random
 import numpy
 from ase import Atoms
@@ -24,9 +23,6 @@ def rotate(individual1, individual2, conserve_composition=True):
 
     The children are returned without indicies.
     """
-    logger = logging.getLogger('output')
-    logger.info('Rotate Cut/Splice Cx between individual {} and individual {}\n'.format(repr(individual1.index), repr(individual2.index)))
-
     # Preserve starting conditions of individual
     ind1c = individual1.copy()
     ind2c = individual2.copy()
