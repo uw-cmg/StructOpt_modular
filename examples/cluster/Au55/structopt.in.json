@@ -49,10 +49,10 @@
         "rotate": {"probability": 0.7}
     },
     "predators": {
-        "rank": {"probability": 1.0}
+        "tournament": {"probability": 1.0}
     },
     "selections": {
-        "best": {"probability": 1.0}
+        "rank": {"probability": 1.0}
     },
     "fileio": {},
     "post_processing": {"XYZs": 5},

@@ -37,7 +37,7 @@ class StructOpt(object):
         # Initialize results dictionaries
         self.fitness = None
         self.genenerations = None
-        self.individuals = None
+        self.individuals = {}
         self.log_dirs = None
         self.log_dir = None
 
@@ -315,18 +315,19 @@ class StructOpt(object):
         population = []
         for f in os.listdir(generation_dir):
             pattern = r'individual(.*).xyz'
-            index = int(re.match(pattern, f, re.I|re.M).group(1))
+            id = int(re.match(pattern, f, re.I|re.M).group(1))
             atoms = ase.io.read(os.path.join(generation_dir, f))
 
-            individual = Individual(index=index)
+            individual = Individual(id=id)
             individual.extend(atoms)
             individual.set_pbc(atoms.get_pbc())
             individual.set_cell(atoms.get_cell())
+            self.individuals[id] = individual
             population.append(individual)
 
             # TODO: Probably need to add methods for reading other properties
 
-        population.sort(key=lambda individual: individual.index)
+        population.sort(key=lambda individual: individual.id)
         self.populations[generation] = population
 
         return
@@ -342,13 +343,36 @@ class StructOpt(object):
         """
 
         if generation < 0:
-            generation = max(self.generations) + generation
+            generation = max(self.generations) + generation + 1
 
         if generation not in self.generations:
             raise IOError('Generation {} not found'.format(generation))
 
         self.read_population(generation)
         return self.populations[generation]
+
+    def get_individual(self, id=-1):
+        """Returns an individual by its ID. If negative, in a list of all
+        individual sorted by their ID, returns that index"""
+
+        self.read_fitness()
+        for generation in self.generations:
+            self.read_population(generation)
+        sorted_keys = sorted(self.individuals.keys(), reverse=True)
+        if id >= 0 and id not in sorted_keys:
+            raise ValueError("Individual {} never calculated")
+        elif id >= 0 and self.individuals[id] is None:
+            raise ValueError("Individual {} calculated by not stored")
+        elif id >= 0:
+            return self.individuals[id]
+        else:
+            counter = -1
+            for key in sorted_keys:
+                if (self.individuals[key] is not None
+                    and id == counter):
+                    return self.individuals[key]
+                elif self.individuals[key] is not None:
+                    counter -= 1
 
     def get_all_populations(self):
         """Returns all of populations stored"""
@@ -377,11 +401,12 @@ class StructOpt(object):
         pass
 
     def read_fitness(self):
-        """Reads fitness.log and stores the data"""
+        """Reads fitness.log and stores the data. The fitness of each generation is
+        stored in self.fitness"""
 
         all_fitnesses = {'total': []}
         current_fitnesses = {'total': []}
-        modules = self.parameters['fitnesses']
+        modules = list(self.parameters['fitnesses'].keys())
 
         pattern = '.* Generation (.*), Individual (.*):'
         for module in modules:
@@ -390,6 +415,7 @@ class StructOpt(object):
             current_fitnesses.update({module: []})
 
         current_generation = 0
+        ids = []
         with open(os.path.join(self.log_dir, 'fitnesses.log')) as fitness_file:
             for line in fitness_file:
 
@@ -397,7 +423,9 @@ class StructOpt(object):
                 match = re.match(pattern, line, re.I|re.M)
                 if match:
                     generation = int(match.group(1))
-                    index = int(match.group(2))
+                    id = int(match.group(2))
+                    ids.append(id)
+                    self.individuals.setdefault(id, None)
                     fitness = {match.group(2*i + 3): match.group(2*i + 4) for i in range(len(modules))}
                     for module in fitness:
                         try:
@@ -408,26 +436,26 @@ class StructOpt(object):
                     continue
 
                 # If we get here, we've finished reading all fitnesses
-                # for a current generation
+                # for a current generation. Sort the fitnesses by their
+                # individual id for easy generation specific generation
                 if generation > current_generation:
-                    current_generation = generation
-                    all_fitnesses['total'].append(current_fitnesses['total'])
-                    for module in modules:
-                        all_fitnesses[module].append(current_fitnesses[module])
+                    for module in modules + ['total']:
+                        fitnesses_ids = list(zip(current_fitnesses[module], ids))
+                        fitnesses_ids = sorted(fitnesses_ids, key=lambda i: i[1])
+                        sorted_fitnesses = list(zip(*fitnesses_ids))[0]
+                        all_fitnesses[module].append(sorted_fitnesses)
                     current_fitnesses = {module: [] for module in current_fitnesses}
+                    ids = []
+                    current_generation = generation                    
 
                 total_fit = 0
                 # Store data of current individual
                 for module in modules:
                     # Make sure the fitness list is big enough
-                    if len(current_fitnesses[module]) < index + 1:
-                        current_fitnesses[module].extend([None]*(index + 1 - len(current_fitnesses[module])))
-                    current_fitnesses[module][index] = fitness[module]
+                    current_fitnesses[module].append(fitness[module])
                     total_fit += fitness[module]
 
-                if len(current_fitnesses['total']) < index + 1:
-                    current_fitnesses['total'].extend([None]*(index + 1 - len(current_fitnesses['total'])))
-                current_fitnesses['total'][index] = total_fit
+                current_fitnesses['total'].append(total_fit)
 
             # Append the last generation
             all_fitnesses['total'].append(current_fitnesses['total'])

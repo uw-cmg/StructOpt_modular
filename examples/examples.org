@@ -65,7 +65,7 @@ parameters = {
         "random_selection": {"probability": 0.0}
     },
     "fileio": {},
-    "post_processing": {},
+    "post_processing": {'XYZs':0},
     "tools": {}
 }
 
@@ -77,15 +77,150 @@ submit = {'job_name': 'Au5-with-optimizer',
           'walltime': 2}
 
 optimizer = StructOpt('cluster/Au5-with-optimizer', 'genetic', parameters, submit)
-try:
-    optimizer.optimize(rerun=True)
-except StructOptSubmitted:
-    print(optimizer.calcdir, 'running')
+optimizer.write_input()
 print(optimizer.get_fitnesses())
 #+END_SRC
 
 #+RESULTS:
 :RESULTS:
+{'total': array([[-13.433259, -13.433258, -13.433258, -13.433258, -13.433259,
+        -13.433259, -13.433258, -13.433258, -13.433258, -13.433259,
+        -13.433258, -13.433258, -13.433259, -13.433259, -13.433258,
+        -13.433258, -13.433258, -13.433259, -13.433258, -13.433258],
+       [-13.433259, -13.433259, -13.433258, -13.433258, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259]]), 'LAMMPS': array([[-13.433259, -13.433258, -13.433258, -13.433258, -13.433259,
+        -13.433259, -13.433258, -13.433258, -13.433258, -13.433259,
+        -13.433258, -13.433258, -13.433259, -13.433259, -13.433258,
+        -13.433258, -13.433258, -13.433259, -13.433258, -13.433258],
+       [-13.433259, -13.433259, -13.433258, -13.433258, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259],
+       [-13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259,
+        -13.433259, -13.433259, -13.433259, -13.433259, -13.433259]])}
+:END:
+
+** Au55
+#+BEGIN_SRC python :results output org drawer
+from structopt.utilities.optimizer import StructOpt
+from structopt.utilities.exceptions import *
+
+parameters = {
+    "seed": 0,
+    "logging": { },
+    "structure_type": "cluster",
+    "generators": {
+	"sphere": {"number_of_individuals": 20,
+		   "kwargs": {"atomlist": [["Au", 55]],
+			      "cell": [10, 10, 10],
+			      "fill_factor": 0.4}}
+    },
+    "fitnesses": {
+        "LAMMPS": {"weight": 1.0,
+	           "kwargs": {"use_mpi4py": False,
+	                      "MPMD": 0,
+	                      "keep_files": False,
+	                      "min_style": "cg",
+                              "min_modify": "line quadratic",
+	                      "minimize": "1e-8 1e-8 5000 10000",
+	                      "pair_style": "eam",
+	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	                      "thermo_steps": 0}}
+    },
+    "relaxations": {
+        "LAMMPS": {"order": 0,
+                   "kwargs": {"use_mpi4py": False,
+	                      "MPMD": 0,
+	                      "keep_files": False,
+	                      "min_style": "cg",
+                              "min_modify": "line quadratic",
+	                      "minimize": "1e-8 1e-8 5000 10000",
+	                      "pair_style": "eam",
+	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	                      "thermo_steps": 0}}
+    },
+    "convergence": {
+        "max_generations": 5
+    },
+    "mutations": {
+	"move_atoms": {"probability": 0.0},
+	"swap_positions": {"probability": 0.0},
+	"swap_species": {"probability": 0.0},
+	"rotate_atoms": {"probability": 0.0},
+	"rotate_cluster": {"probability": 0.3},
+        "rotate_all": {"probability": 0.7}
+    },
+    "fingerprinters": {
+        "options": []
+    },
+    "crossovers": {
+        "rotate": {"probability": 1.0}
+    },
+    "predators": {
+        "best": {"probability": 1.0}
+    },
+    "selections": {
+        "rank": {"probability": 1.0,
+                 "kwargs": {"unique_pairs": False,
+                            "unique_parents": False}},
+        "random_selection": {"probability": 0.0}
+    },
+    "fileio": {},
+    "post_processing": {'XYZs':0},
+    "tools": {}
+}
+
+submit = {'system': 'PBS',
+          'queue': 'morgan2',
+          'nodes': 1,
+          'cores': 1,
+          'walltime': 2}
+          
+optimizer = StructOpt('cluster/Au55-with-optimizer', 'genetic', parameters, submit)
+optimizer.write_input()
+#print(optimizer.get_fitnesses())
+population = optimizer.get_population(-1)
+print(population)
+last_individual = optimizer.get_individual(-1)
+#print(last_individual)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+5
+[<Individual 5>, <Individual 29>, <Individual 34>, <Individual 51>, <Individual 60>, <Individual 79>, <Individual 85>, <Individual 100>, <Individual 101>, <Individual 102>, <Individual 104>, <Individual 105>, <Individual 107>, <Individual 109>, <Individual 110>, <Individual 115>, <Individual 116>, <Individual 117>, <Individual 118>, <Individual 119>]
 :END:
 
 * Crystal examples
