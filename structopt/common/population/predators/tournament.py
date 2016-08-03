@@ -26,29 +26,33 @@ def tournament(population, fits, nkeep, tournament_size=5):
     out : None
         Population modified in place.
     """
-    raise NotImplementedError("After the Population was changed from a list to a sorted dict, this function needs to be updated.")
 
     # Get ranks determined by their fitness
-    ranks = scipy.stats.rankdata(fits, method='ordinal')
+    ranks = list(scipy.stats.rankdata(fits, method='ordinal'))
 
     # Work with indices of the indices of the population
-    inds_population = [individual.id for individual in population]
+    ids_population = [individual.id for individual in population]
     new_population = []
 
+    fits_keep, ids_keep = [], []
+    
     # Run nkeep tournaments
     for _ in range(nkeep):
-        if len(indices_population) > tournament_size:
-            tournament_indices = np.random.choice(indices_population,
-                                                  tournament_size, replace=False)
+        if len(ids_population) > tournament_size:
+            tournament_ids = np.random.choice(ids_population,
+                                              tournament_size, replace=False)
         else:
-            tournament_indices = indices_population
-        tournament_ranks = [ranks[i] for i in tournament_indices]
-        max_fit = min(tournament_ranks)
-        tournament_winner = tournament_indices[tournament_ranks.index(max_fit)]
+            tournament_ids = ids_population
+        tournament_ranks = [ranks[ids_population.index(i)] for i in tournament_ids]
+        best_rank = min(tournament_ranks)
+        tournament_winner = tournament_ids[tournament_ranks.index(best_rank)]
         new_population.append(population[tournament_winner])
-        indices_population.pop(indices_population.index(tournament_winner))
+        fits_keep.append(best_rank)
+        ids_keep.append(tournament_winner)
+        del ranks[ids_population.index(tournament_winner)]
+        del ids_population[ids_population.index(tournament_winner)]
 
     population.replace(new_population)
 
-    return
+    return [ids_keep, fits_keep]
 
