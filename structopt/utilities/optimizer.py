@@ -61,7 +61,8 @@ class StructOpt(object):
         elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
               and self.job_in_queue(os.path.join(self.path, 'jobid'))):
             self.read_input()
-            self.status = 'running'
+            if self.status == 'running':
+                self.read_runs()
 
         # If the job is done, check the output
         elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
@@ -100,7 +101,11 @@ class StructOpt(object):
                 job_status = fields[4]
                 if job_status == 'C':
                     return False
+                elif job_status == 'R':
+                    self.status = 'running'
+                    return True
                 else:
+                    self.status = 'queued'
                     return True
             return False
         else:
@@ -121,6 +126,10 @@ class StructOpt(object):
 
         if self.status == 'clean' or rerun:
             run_method()
+        elif self.status == 'running':
+            raise StructOptRunning
+        elif self.status == 'queued':
+            raise StructOptQueued
 
         return
 
