@@ -14,6 +14,7 @@ from .move_atoms import move_atoms
 from .rotate_atoms import rotate_atoms
 from .rotate_cluster import rotate_cluster
 from .rotate_all import rotate_all
+from .move_surface_atoms import move_surface_atoms
 
 swap_positions.tag = 'SwPo'
 swap_species.tag = 'SwSp'
@@ -21,7 +22,7 @@ move_atoms.tag = 'MoAt'
 rotate_atoms.tag = 'RoAt'
 rotate_cluster.tag = 'RoCl'
 rotate_all.tag = 'RoAl'
-
+move_surface_atoms.tag = 'MoSuAt'
 
 class Mutations(object):
     """ """
@@ -108,4 +109,10 @@ class Mutations(object):
     @functools.wraps(rotate_all)
     def rotate_all(individual, vector=None, angle=None, center=None):
         return rotate_all(individual, vector, angle, center)
+
+    @staticmethod
+    @functools.wraps(move_surface_atoms)
+    def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
+        return move_surface_atoms(individual, max_natoms, move_CN, surf_CN)
+    
 
