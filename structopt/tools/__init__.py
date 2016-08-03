@@ -4,3 +4,5 @@ from .random_three_vector import random_three_vector
 from .get_avg_radii import get_avg_radii
 from .get_particle_radius import get_particle_radius
 from .sorted_dict import SortedDict
+from .analysis import CoordinationNumbers
+from .analysis import NeighborList
