@@ -13,7 +13,10 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        self.output_dir = logging.parameters.path
+        if hasattr(logging, 'parameters'):
+            self.output_dir = logging.parameters.path
+        else:
+            self.output_dir = os.getcwd()
 
 
     @single_core
