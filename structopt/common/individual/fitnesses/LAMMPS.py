@@ -14,6 +14,12 @@ class LAMMPS(object):
         self.parameters = parameters
         self.output_dir = logging.parameters.path
 
+        # Set default normalization to E = E/natoms
+        if "normalize" not in self.parameters:
+            self.parameters.setdefault("normalize", DictionaryObject({}))
+        self.parameters.normalize.setdefault('natoms', True)
+
+
     @single_core
     def get_command(self, individual):
         raise NotImplementedError
