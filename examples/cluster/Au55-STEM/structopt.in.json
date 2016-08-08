@@ -26,7 +26,9 @@
                             "HWHM": 0.4,
                             "dimensions": [20.0, 20.0],
                             "resolution": 5.0,
-                            "zed": 1}}
+                            "zed": 1,
+                            "normalize": {"SSE": true,
+                                          "nprotons": true}}}
     },
     "relaxations": {
         "LAMMPS": {"order": 0,

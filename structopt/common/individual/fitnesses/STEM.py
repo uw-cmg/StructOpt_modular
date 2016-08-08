@@ -5,6 +5,7 @@ import numpy as np
 from ase.io import read
 
 from structopt.tools import root, single_core, parallel
+from structopt.tools.dictionaryobject import DictionaryObject
 
 class STEM(object):
     """Calculates the chi^2 difference between a simulated and experimental image.
@@ -30,6 +31,13 @@ class STEM(object):
         self.target = None
         self.phantom = True
 
+        # Set default normalization to E = E/natoms
+        if "normalize" not in self.parameters:
+            self.parameters.setdefault("normalize", {})
+        self.parameters['normalize'].setdefault('nprotons', True)
+        self.parameters['normalize'].setdefault('SSE', False)
+
+
     def fitness(self, individual):
         """Calculates the fitness of an individual with respect to a target
         image. Noramlize this fitness by the number of atoms."""
@@ -40,9 +48,27 @@ class STEM(object):
             self.generate_target()
 
         image = self.get_image(individual)
-        chi2 = np.sum(np.square(image - self.target)) / len(individual)
+        chi = image - self.target
+        chi = self.normalize(chi, individual)
 
-        return chi2
+        return chi
+
+    def normalize(self, chi, individual):
+        if 'normalize' not in self.parameters:
+            return chi
+
+        norms = self.parameters['normalize']
+
+        if 'SSE' in norms and norms['SSE']:
+            chi = np.sum(np.square(chi)) ** 0.5
+            if 'nprotons' in norms and norms['nprotons']:
+                chi /= sum(individual.get_atomic_numbers()) ** 0.5
+        else:
+            chi = np.sum(np.absolute(chi))
+            if 'nprotons' in norms and norms['nprotons']:
+                chi /= sum(individual.get_atomic_numbers())
+
+        return chi
 
     def get_Z_diff(self, individual):
         """Returns the difference between the individual and target's
