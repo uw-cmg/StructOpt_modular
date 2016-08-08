@@ -8,7 +8,7 @@
 			      "cell": [20, 20, 20]}}
     },
     "fitnesses": {
-        "LAMMPS": {"weight": 1.0,
+        "LAMMPS": {"weight": 1.0, 
 	           "kwargs": {"use_mpi4py": false,
 	                      "MPMD": 0,
 	                      "keep_files": true,
@@ -17,7 +17,9 @@
 	                      "minimize": "1e-8 1e-8 5000 10000",
 	                      "pair_style": "eam",
 	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
-	                      "thermo_steps": 0}}
+	                      "thermo_steps": 0,
+                              "normalize": {"natoms": true},
+                              "reference": {"Au": -3.930}}}
     },
     "relaxations": {
         "LAMMPS": {"order": 0,
