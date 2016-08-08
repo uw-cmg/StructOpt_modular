@@ -4,7 +4,7 @@ import importlib
 import numpy as np
 
 import structopt
-from . import LAMMPS, FEMSIM
+from . import LAMMPS, FEMSIM, STEM
 from structopt.tools import root, single_core, parallel
 
 

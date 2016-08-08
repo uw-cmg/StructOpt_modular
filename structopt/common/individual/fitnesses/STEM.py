@@ -8,14 +8,14 @@ from structopt.tools import root, single_core, parallel
 
 class STEM(object):
     """Calculates the chi^2 difference between a simulated and experimental image.
-    In order to calculate a z-contrast image and cost function the following
+    In order to calculate a z-contrast image and chi^2 function the following
     parameters are required
 
     Parameters
     ----------
     HWHM : float
         The half-width half-maximum of the gaussian function used for the 
-        point spread function. Larger HWHM 
+        point spread function.
     dimensions : list
         The x and y dimensions of STEM image.
     resolution : float
