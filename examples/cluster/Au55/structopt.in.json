@@ -18,7 +18,6 @@
 	                      "pair_style": "eam",
 	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
 	                      "thermo_steps": 0,
-                              "normalize": {"natoms": true},
                               "reference": {"Au": -3.930}}}
     },
     "relaxations": {
