@@ -16,8 +16,8 @@ from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued
 
 class StructOpt(object):
 
-    def __init__(self, calcdir=None, optimizer=None, parameters=None,
-                 submit_parameters=None):
+    def __init__(self, calcdir=None, optimizer=None, parameters={},
+                 submit_parameters={}):
 
         # Initialize inputs
         if calcdir is None:
@@ -407,7 +407,12 @@ class StructOpt(object):
     def read_input(self): # TODO
         """Read the input and store them self.parameter"""
 
-        pass
+        with open(os.path.join(self.path, 'structopt.in.json')) as f:
+            parameters = json.load(f)
+
+        self.parameters.update(parameters)
+
+        return
 
     def read_fitness(self):
         """Reads fitness.log and stores the data. The fitness of each generation is
