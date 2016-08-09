@@ -25,9 +25,11 @@ class Fitnesses(object):
             population (Population): the population to evaluate
         """
         fitnesses = np.zeros((len(population),), dtype=np.float)
-        # Run each fitness module on the population
-        for i, module in enumerate(self.modules):
-            module_name = module.__name__.split('.')[-1]
+        # Run each fitness module on the population. Create sorted
+        # module list so all cores run modules in the same order
+        modules_module_names = [[module, module.__name__.split('.')[-1]] for module in self.modules]
+        modules_module_names.sort(key=lambda i: i[1])
+        for module, module_name in modules_module_names:
             module_parameters = self.parameters[module_name]
 
             if logging.parameters.rank == 0:
