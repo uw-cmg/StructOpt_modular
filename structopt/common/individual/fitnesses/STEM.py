@@ -1,6 +1,7 @@
 import os
 import logging
 import numpy as np
+from scipy.signal import fftconvolve
 
 from ase.io import read
 
@@ -48,6 +49,13 @@ class STEM(object):
             self.generate_target()
 
         image = self.get_image(individual)
+
+        # Align the image using convolution
+        convolution = fftconvolve(image, self.target, mode='same')
+        y, x = np.unravel_index(np.argmax(convolution), convolution.shape)
+        image = np.roll(image, x, axis=0)
+        image = np.roll(image, y, axis=1)
+
         chi = image - self.target
         chi = self.normalize(chi, individual)
 
