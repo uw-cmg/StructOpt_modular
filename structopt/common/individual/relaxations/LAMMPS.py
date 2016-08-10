@@ -5,6 +5,7 @@ import numpy as np
 
 from structopt.tools.lammps import LAMMPS as lammps
 from structopt.tools import root, single_core, parallel
+from structopt.common.individual.mutations.move_surface_atoms import move_surface_atoms
 
 class LAMMPS(object):
     """ """
@@ -49,8 +50,43 @@ class LAMMPS(object):
             E = np.nan
             print("Error relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
-        individual.set_calculator()
         individual.LAMMPS = E
+
+        if 'repair' in self.parameters and self.parameters['repair']:
+            E = self.repair(individual, generation)
+            if E is not None:
+                individual.LAMMPS = E
 
         return
 
+    @parallel
+    def repair(self, individual, generation):
+        """Repairs an individual. Currently takes isolated atoms moves them next to
+        a non-isolated atom"""
+
+        rank = logging.parameters.rank
+
+        n_moves = move_surface_atoms(individual, max_natoms=1.0, move_CN=3)
+        if n_moves == 0:
+            return
+
+        if generation is not None:
+            calcdir = os.path.join(os.getcwd(), '{}/relaxation/LAMMPS/generation{}/individual{}-repair')
+            calcdir = calcdir.format(self.output_dir, generation, individual.id)
+        else:
+            calcdir = None
+
+        from ase.io import write
+        write('repaired_atoms.xyz', individual)
+
+        calc = lammps(self.parameters, calcdir=calcdir)
+        individual.set_calculator(calc)
+
+        try:
+            E = individual.get_potential_energy()
+            print("Finished repairing individual {} on rank {} with LAMMPS".format(individual.id, rank))
+        except RuntimeError:
+            E = np.nan
+            print("Error repairing individual {} on rank {} with LAMMPS".format(individual.id, rank))
+
+        return E
