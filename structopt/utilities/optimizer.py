@@ -13,6 +13,8 @@ import ase
 
 from ..common.individual import Individual
 from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued, StructOptSubmitted
+from ..common.individual import mutations as Mutations
+from ..common.population import crossovers as Crossovers
 
 class StructOpt(object):
 
@@ -40,6 +42,8 @@ class StructOpt(object):
         self.individuals = {}
         self.log_dirs = None
         self.log_dir = None
+        self.mutations = None
+        self.crossovers = None
 
         # If totally clean calculation
         if not os.path.isdir(self.path):
@@ -413,6 +417,65 @@ class StructOpt(object):
         self.parameters.update(parameters)
 
         return
+
+    def read_moves(self):
+        """Counts successful mutations and crossovers"""
+
+        if self.mutations is not None and self.crossovers is not None:
+            return
+
+        # Get mutations, crossovers, and their tags
+        mutation_tags, mutations = {}, {}
+        for attr in dir(Mutations):
+            if (hasattr(getattr(Mutations, attr), 'tag')
+                and attr in self.parameters['mutations']
+                and self.parameters['mutations'][attr]['probability'] > 0):
+                tag = (getattr(getattr(Mutations, attr), 'tag'))
+                mutation_tags[tag] = attr
+                mutations[attr] = []
+
+        crossover_tags, crossovers = {}, {}
+        for attr in dir(Crossovers):
+            if (hasattr(getattr(Crossovers, attr), 'tag')
+                and attr in self.parameters['crossovers']
+                and self.parameters['crossovers'][attr]['probability'] > 0):
+                tag = (getattr(getattr(Crossovers, attr), 'tag'))
+                crossover_tags[tag] = attr
+                crossovers[attr] = []
+
+        with open(os.path.join(self.log_dir, 'genealogy.log')) as geneology_file:
+            for i, line in enumerate(geneology_file):
+
+                # Start the counter for each mutation
+                [mutations[mutation].append(0) for mutation in mutations]
+                [crossovers[crossover].append(0) for crossover in crossovers]
+
+                for id in line.split()[5:]:
+                    # Check for successful crossovers
+                    if '(' in id:
+                        pattern = r'\(.*\)(\D*).*'
+                        crossover = crossover_tags[re.match(pattern, id, re.I|re.M).group(1)]
+                        crossovers[crossover][-1] += 1
+
+                    pattern = r'.*[0-9]m(.*)'
+                    if re.match(pattern, id, re.I|re.M):
+                        mutation = mutation_tags[re.match(pattern, id, re.I|re.M).group(1)]
+                        mutations[mutation][-1] += 1
+
+
+        # Prune mutations that never got called
+
+        self.mutations = mutations
+        self.crossovers = crossovers
+
+        return
+
+
+    def get_mutations(self):
+        """"""
+
+        self.read_moves()
+        return self.mutations
 
     def read_fitness(self):
         """Reads fitness.log and stores the data. The fitness of each generation is
