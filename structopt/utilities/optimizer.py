@@ -18,8 +18,8 @@ from ..common.population import crossovers as Crossovers
 
 class StructOpt(object):
 
-    def __init__(self, calcdir=None, optimizer=None, parameters={},
-                 submit_parameters={}):
+    def __init__(self, calcdir=None, optimizer='genetic', parameters={},
+                 submit_parameters={'system':'PBS'}):
 
         # Initialize inputs
         if calcdir is None:
@@ -38,7 +38,7 @@ class StructOpt(object):
 
         # Initialize results dictionaries
         self.fitness = None
-        self.genenerations = None
+        self.generations = None
         self.individuals = {}
         self.log_dirs = None
         self.log_dir = None
@@ -66,7 +66,10 @@ class StructOpt(object):
               and self.job_in_queue(os.path.join(self.path, 'jobid'))):
             self.read_input()
             if self.status == 'running':
-                self.read_runs()
+                if not self.read_runs():
+                    self.status = 'queued'
+                else:
+                    self.read_generations()
 
         # If the job is done, check the output
         elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
@@ -92,7 +95,11 @@ class StructOpt(object):
 
         # Behavior will depend on whether we are in the slurm or pbs environment
         if self.submit_parameters['system'] == 'PBS':
-            jobids_in_queue = subprocess.check_output('qselect')
+            try:
+                jobids_in_queue = subprocess.check_output('qselect')
+            except FileNotFoundError:
+                self.status = 'running'
+                return True
             jobids_in_queue = [job.decode('utf-8') for job in jobids_in_queue.split()]
         else:
             raise NotImplemented(self.submit_parameters['system'], 'not implemented yet')
@@ -471,11 +478,11 @@ class StructOpt(object):
         return
 
 
-    def get_mutations(self):
+    def get_moves(self):
         """"""
 
         self.read_moves()
-        return self.mutations
+        return self.mutations, self.crossovers
 
     def read_fitness(self):
         """Reads fitness.log and stores the data. The fitness of each generation is
