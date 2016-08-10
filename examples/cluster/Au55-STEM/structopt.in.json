@@ -40,7 +40,8 @@
 	                      "minimize": "1e-8 1e-8 5000 10000",
 	                      "pair_style": "eam",
 	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
-	                      "thermo_steps": 0}}
+	                      "thermo_steps": 0,
+                              "repair": true}}
     },
     "convergence": {
         "max_generations": 5
