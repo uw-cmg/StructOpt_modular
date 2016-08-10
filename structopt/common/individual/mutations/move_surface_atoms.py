@@ -3,6 +3,8 @@ import numpy as np
 from structopt.tools import NeighborList
 from structopt.tools import get_avg_radii
 
+from ase.io import write
+
 def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
     """Randomly moves atoms at the surface to other surface sites
 
@@ -33,13 +35,15 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
     
     # Get indexes of atoms considered to be moved
     move_indexes_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < move_CN]
+    if len(move_indexes_CNs) == 0:
+        return 0
     move_indexes_CNs.sort(key=lambda i: i[1])
     move_indexes = list(zip(*move_indexes_CNs))[0]
 
     # Get surface sites to move atoms to
     # First get all surface atoms
     positions = individual.get_positions()
-    surf_indexes_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < surf_CN]
+    surf_indexes_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < surf_CN and CN > 3]
     surf_indexes_CNs.sort(key=lambda i: i[1])
     surf_indexes = list(zip(*surf_indexes_CNs))[0]
     surf_positions = np.array([positions[i] for i in surf_indexes])
@@ -51,7 +55,7 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
     avg_bond_length = get_avg_radii(atomlist) * 2
 
     # Choose sites as projections one bond length away from COM
-    COM = individual.get_center_of_mass()    
+    COM = np.sum(surf_positions) / len(surf_positions)
     vec = surf_positions - COM
     vec /= np.array([np.linalg.norm(vec, axis=1)]).T
     add_positions = surf_positions + vec * avg_bond_length
@@ -64,5 +68,5 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
 
     individual.set_positions(positions)
 
-    return None
+    return len(move_indexes)
 
