@@ -53,8 +53,8 @@ class STEM(object):
         # Align the image using convolution
         convolution = fftconvolve(image, self.target, mode='same')
         y, x = np.unravel_index(np.argmax(convolution), convolution.shape)
-        image = np.roll(image, x, axis=0)
-        image = np.roll(image, y, axis=1)
+        image = np.roll(image, -x + corr.shape[1]//2, axis=1)
+        image = np.roll(image, -y + corr.shape[0]//2, axis=0)
 
         chi = image - self.target
         chi = self.normalize(chi, individual)
