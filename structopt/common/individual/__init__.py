@@ -179,6 +179,11 @@ class Individual(ase.Atoms):
         return self.get_positions()
 
 
+    def wrap(self, *args, **kwargs):
+        super().wrap(*args, **kwargs)
+        self.set_scaled_positions(self.get_scaled_positions() % [1, 1, 1])
+
+
     @property
     @single_core
     def fits(self):

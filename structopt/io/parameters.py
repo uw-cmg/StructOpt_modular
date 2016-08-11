@@ -61,9 +61,10 @@ def write(parameters):
 
 def set_default(parameters):
     if "path" not in logging.parameters:
-        logging.parameters.path = "logs{}".format(time.strftime("%Y%m%d%H%M%S"))
+        logging.parameters.path = os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S")))
     else:
         raise ValueError("'path' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
+    logging.parameters.generation = 0
 
     # If parallel and no seed, all nodes need the same seed
     if parameters.logging.ncores > 1:

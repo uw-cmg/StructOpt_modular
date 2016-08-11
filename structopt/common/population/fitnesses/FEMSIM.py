@@ -28,7 +28,8 @@ def fitness(population, parameters):
             cores_per_individual = 1
 
         pow(2.0, math.floor(math.log2(cores_per_individual)))
-        minmax = parse_MPMD_cores_per_structure(parameters.MPMD_cores_per_structure)
+        minmax = parse_MPMD_cores_per_structure(parameters.MPMD)
+        assert minmax['max'] >= minmax['min'] > 0
         if cores_per_individual < minmax['min']:
             cores_per_individual = minmax['min']
         elif cores_per_individual > minmax['max']:
