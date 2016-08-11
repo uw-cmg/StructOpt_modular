@@ -26,7 +26,7 @@ class LAMMPS(object):
 
 
     @single_core
-    def fitness(self, individual, generation=None):
+    def fitness(self, individual):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation
@@ -34,9 +34,8 @@ class LAMMPS(object):
             E = individual.LAMMPS
         else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.id))
-            if generation is not None:
-                calcdir = os.path.join(os.getcwd(), '{}/fitness/LAMMPS/generation{}/individual{}')
-                calcdir = calcdir.format(self.output_dir, generation, individual.id)
+            if hasattr(logging, 'parameters'):
+                calcdir = os.path.join(self.output_dir, 'fitness/LAMMPS/generation{}/individual{}'.format(logging.parameters.generation, individual.id))
             else:
                 calcdir = None
 

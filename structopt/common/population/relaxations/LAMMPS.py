@@ -22,7 +22,7 @@ def relax(population, parameters):
         individuals_per_core[i % ncores].append(individual)
 
     for individual in individuals_per_core[rank]:
-        individual.relaxations.LAMMPS.relax(individual, population.generation)
+        individual.relaxations.LAMMPS.relax(individual)
 
     if parameters.use_mpi4py:
         population.allgather(individuals_per_core)

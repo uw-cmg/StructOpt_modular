@@ -17,12 +17,15 @@ class FEMSIM(object):
         self.k = None
         self.parameters = self.read_inputs(parameters)
         self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)  # Multiply the experimental data by the thickness scaling factor
+        self.parameters.path = logging.parameters.path
 
         # These parameteres do not need to exist between generations
         # They are used for before/after femsim processing
         self.base = None
         self.folder = None
         self.paramfilename = None
+
+        assert self.parameters.xsize == self.parameters.ysize == self.parameters.zsize
 
 
     @single_core
@@ -71,9 +74,8 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.id))
 
         # Make individual folder and copy files there
-        self.folder = os.path.abspath('Output-rank0/FEMSIMFiles/Individual{i}'.format(i=individual.id))
-        if not os.path.exists(self.folder):
-            os.makedirs(self.folder)
+        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/Individual{i}'.format(gen=logging.parameters.generation, i=individual.id)))
+        os.makedirs(self.folder, exist_ok=True)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
             shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
 
@@ -81,20 +83,26 @@ class FEMSIM(object):
         shutil.copy(self.parameters.parameter_filename, self.paramfilename)
         self.write_paramfile(individual)
 
-        base = 'indiv{i}'.format(i=individual.id) # TODO Add generation number
+        base = 'indiv{i}'.format(i=individual.id)
         self.base = base
 
 
     @single_core
     def write_paramfile(self, individual):
         # Write structure file to disk so that the fortran femsim can read it in
-        #ase.io.write('structure_{i}.xyz'.format(i=individual.id), individual)
+        individual.set_cell([[self.parameters.xsize,0.,0.], [0., self.parameters.ysize, 0.], [0., 0., self.parameters.zsize]])
+        individual.wrap()
+        for index in range(0,3):
+            lo = np.amin(individual.get_positions()[:, index])
+            hi = np.amax(individual.get_positions()[:, index])
+            assert lo >= 0
+            assert hi <= self.parameters.xsize
         comment = "{} {} {}".format(self.parameters.xsize, self.parameters.ysize, self.parameters.zsize)
-        write_xyz('structure_{i}.xyz'.format(i=individual.id), individual, comment=comment)
+        write_xyz(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id)), individual, comment=comment)
 
         with open(self.paramfilename, 'w') as f:
-            f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=None, i=individual.id))  # TODO Add generation number
-            f.write('{}\n'.format(os.path.join(os.getcwd(), 'structure_{i}.xyz'.format(i=individual.id))))
+            f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=logging.parameters.generation, i=individual.id))
+            f.write('{}\n'.format(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id))))
             f.write('{}\n'.format(self.parameters.vk_data_filename))
             f.write('{}\n'.format(self.parameters.Q))
             f.write('{} {} {}\n'.format(self.parameters.nphi, self.parameters.npsi, self.parameters.ntheta))

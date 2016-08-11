@@ -57,7 +57,7 @@ class ParticleSwarmOptimization(object):
         updated_population = self.population.run_pso_moves(self.best_swarm, self.best_particles)
         self.population.replace(updated_population)
         self.check_convergence()
-        self.population.generation += 1
+        logging.parameters.generation += 1
         self.generation += 1
 
 
