@@ -59,7 +59,7 @@ class LAMMPS(object):
             self.calcdir = os.getcwd()
 
         self.parameters.setdefault('thermosteps', 0)
-        self.parameters.setdefault('timeout', 10)
+        self.parameters.setdefault('timeout', 60)
 
         return
 
@@ -248,7 +248,7 @@ class LAMMPS(object):
         try:
             output, error = p.communicate(timeout=self.parameters['timeout'])
         except TimeoutExpired:
-            return True            
+            return True
             
         self.output = output.decode('utf-8').split('\n')[:-1]
 
@@ -383,7 +383,12 @@ class LAMMPS(object):
             os.makedirs(self.calcdir)
         for f in os.listdir(self.tmp_dir):
             f = os.path.join(self.tmp_dir, f)
-            shutil.copy(f, self.calcdir)
+            if os.path.isfile(f):
+                shutil.copy(f, self.calcdir)
+            elif os.path.isdir(f):
+                shutil.move(f, self.calcdir)
+            else:
+                raise ValueError("The thing trying to be copied is not a file or directory")
 
         error_file = os.path.join(self.calcdir, 'error')
         open(error_file, 'a').close()

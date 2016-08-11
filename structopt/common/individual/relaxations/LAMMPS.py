@@ -25,7 +25,7 @@ class LAMMPS(object):
 
 
     @parallel
-    def relax(self, individual, generation=None):
+    def relax(self, individual):
         """Relax an individual.
 
         Args:
@@ -34,9 +34,8 @@ class LAMMPS(object):
         rank = logging.parameters.rank
         print("Relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
-        if generation is not None:
-            calcdir = os.path.join(os.getcwd(), '{}/relaxation/LAMMPS/generation{}/individual{}')
-            calcdir = calcdir.format(self.output_dir, generation, individual.id)
+        if hasattr(logging, 'parameters'):
+            calcdir = os.path.join(self.output_dir, 'relaxation/LAMMPS/generation{}/individual{}'.format(logging.parameters.generation, individual.id))
         else:
             calcdir = None
 

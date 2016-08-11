@@ -26,7 +26,7 @@ class GeneticAlgorithm(object):
         while not self.converged:
             self.step()
         if logging.parameters.rank == 0:
-            print("Finished!")
+            print("Finished running GA!")
 
 
     def step(self):
@@ -48,7 +48,7 @@ class GeneticAlgorithm(object):
         self.check_convergence()
         if logging.parameters.rank == 0:
             self.post_processing_step()
-        self.population.generation += 1
+        logging.parameters.generation += 1
         self.generation += 1
 
 
