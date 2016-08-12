@@ -36,7 +36,7 @@
         "max_generations": 5
     },
     "mutations": {
-	"move_atoms": {"probability": 0.1},
+	"move_surface_atoms": {"probability": 0.1},
 	"swap_positions": {"probability": 0.0},
 	"swap_species": {"probability": 0.0},
 	"rotate_atoms": {"probability": 0.0},
@@ -56,6 +56,6 @@
         "best": {"probability": 1.0}
     },
     "fileio": {},
-    "post_processing": {"XYZs": 5},
+    "post_processing": {"XYZs": 0},
     "tools": {}
 }
