@@ -54,7 +54,8 @@ class StructOpt(object):
         elif not os.path.isfile(os.path.join(self.path, 'structopt.in.json')):
             self.status = 'clean'
 
-        # If input exists but was never run
+        # If input exists but was never run. This also applies to cancelled
+        # jobs that were never submitted
         elif (os.path.isfile(os.path.join(self.path, 'structopt.in.json'))
               and not self.job_in_queue(os.path.join(self.path, 'jobid'))
               and not self.read_runs()):
@@ -135,7 +136,7 @@ class StructOpt(object):
         if restart:
             self.restart()
 
-        if self.status == 'clean' or rerun:
+        if self.status in ['clean', 'initialized'] or rerun:
             run_method()
         elif self.status == 'running':
             raise StructOptRunning
@@ -291,6 +292,8 @@ class StructOpt(object):
             pattern = '.*.o(.*)'
             files = [f for f in files if re.match(pattern, f, re.I|re.M)]
             files = [f for f in files if re.match(pattern, f, re.I|re.M).group(1).isnumeric()]
+            if len(files) == 0:
+                return 'error'
             jobids = [int(re.match(pattern, f, re.I|re.M).group(1)) for f in files]
             files_jobids = zip(files, jobids)
             files_jobids = sorted(files_jobids, key=lambda i: i[1])
