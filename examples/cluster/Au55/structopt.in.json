@@ -33,7 +33,7 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 5
+        "max_generations": 10
     },
     "mutations": {
 	"move_surface_atoms": {"probability": 0.2},
@@ -50,7 +50,7 @@
         "rotate": {"probability": 0.7}
     },
     "predators": {
-        "tournament": {"probability": 1.0}
+        "fuss": {"probability": 1.0}
     },
     "selections": {
         "rank": {"probability": 1.0}

@@ -9,6 +9,7 @@ from .best import best
 from .roulette import roulette
 from .tournament import tournament
 from .rank import rank
+from .fuss import fuss
 
 class Predators(object):
     """ """
@@ -59,3 +60,8 @@ class Predators(object):
     @functools.wraps(rank)
     def rank(population, fits, nkeep, p_min=None):
         return rank(population, fits, nkeep, p_min)
+
+    @staticmethod
+    @functools.wraps(fuss)
+    def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
+        return fuss(population, fits, nkeep, nbest=1, fusslimit=10)
