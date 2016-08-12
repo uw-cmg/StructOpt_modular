@@ -36,9 +36,9 @@
         "max_generations": 5
     },
     "mutations": {
-	"move_surface_atoms": {"probability": 0.1},
-	"swap_positions": {"probability": 0.0},
-	"swap_species": {"probability": 0.0},
+	"move_surface_atoms": {"probability": 0.2},
+        "move_atoms": {"probability": 0.2},
+        "move_atoms_group": {"probability": 0.2},
 	"rotate_atoms": {"probability": 0.0},
 	"rotate_cluster": {"probability": 0.1},
         "rotate_all": {"probability": 0.0}
