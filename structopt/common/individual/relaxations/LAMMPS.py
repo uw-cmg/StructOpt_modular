@@ -52,7 +52,7 @@ class LAMMPS(object):
         individual.LAMMPS = E
 
         if 'repair' in self.parameters and self.parameters['repair']:
-            E = self.repair(individual, generation)
+            E = self.repair(individual, logging.parameters.generation)
             if E is not None:
                 individual.LAMMPS = E
 
