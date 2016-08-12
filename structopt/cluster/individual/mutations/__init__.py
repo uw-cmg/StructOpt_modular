@@ -25,4 +25,3 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(move_atoms_group)
     def move_atoms_group(individual, max_natoms=0.20):
         return move_atoms_group(individual, max_natoms=0.20)
-    
