@@ -5,7 +5,7 @@ import numpy as np
 
 from structopt.tools.lammps import LAMMPS as lammps
 from structopt.tools import root, single_core, parallel
-from structopt.common.individual.mutations.move_surface_atoms import move_surface_atoms
+from structopt.cluster.individual.mutations.move_surface_atoms import move_surface_atoms
 
 class LAMMPS(object):
     """ """

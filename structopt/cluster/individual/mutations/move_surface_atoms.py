@@ -5,7 +5,7 @@ from structopt.tools import get_avg_radii
 
 from ase.io import write
 
-def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
+def move_surface_atoms(individual, max_natoms=0.5, move_CN=9, surf_CN=11):
     """Randomly moves atoms at the surface to other surface sites
 
     Parameters
@@ -26,7 +26,7 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
         Modifies individual in-place
     """
 
-    if not len(individual):
+    if len(individual) == 0:
         return
 
     # Analyze the individual
