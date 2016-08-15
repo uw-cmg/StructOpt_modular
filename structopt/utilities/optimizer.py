@@ -7,14 +7,14 @@ from copy import deepcopy
 from operator import itemgetter
 import subprocess
 from subprocess import PIPE
+from importlib import import_module
 
 import numpy as np
 import ase
 
+import structopt.utilities
 from ..common.individual import Individual
 from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued, StructOptSubmitted
-from ..common.individual import mutations as Mutations
-from ..common.population import crossovers as Crossovers
 
 class StructOpt(object):
 
@@ -435,23 +435,33 @@ class StructOpt(object):
             return
 
         # Get mutations, crossovers, and their tags
+        structures = ['common', 'cluster', 'crystal', 'surface', 'defect', 'surface]'
+
         mutation_tags, mutations = {}, {}
-        for attr in dir(Mutations):
-            if (hasattr(getattr(Mutations, attr), 'tag')
-                and attr in self.parameters['mutations']
-                and self.parameters['mutations'][attr]['probability'] > 0):
-                tag = (getattr(getattr(Mutations, attr), 'tag'))
-                mutation_tags[tag] = attr
-                mutations[attr] = []
+        for structure in structures:
+            package = import_module('..{}.individual.mutations'.format(structure),
+                                   package='structopt.utilities')
+            module = getattr(package, 'Mutations')
+            for attr in dir(module):
+                if (hasattr(getattr(module, attr), 'tag')
+                    and attr in self.parameters['mutations']
+                    and self.parameters['mutations'][attr]['probability'] > 0):
+                    tag = (getattr(getattr(module, attr), 'tag'))
+                    mutation_tags[tag] = attr
+                    mutations[attr] = []
 
         crossover_tags, crossovers = {}, {}
-        for attr in dir(Crossovers):
-            if (hasattr(getattr(Crossovers, attr), 'tag')
-                and attr in self.parameters['crossovers']
-                and self.parameters['crossovers'][attr]['probability'] > 0):
-                tag = (getattr(getattr(Crossovers, attr), 'tag'))
-                crossover_tags[tag] = attr
-                crossovers[attr] = []
+        for struture in structures:
+            package = import_module('..{}.population.crossovers'.format(structure),
+                                    package='structopt.utilities')
+            module = getattr(package, 'Crossovers')
+            for attr in dir(module):
+                if (hasattr(getattr(module, attr), 'tag')
+                    and attr in self.parameters['crossovers']
+                    and self.parameters['crossovers'][attr]['probability'] > 0):
+                    tag = (getattr(getattr(module, attr), 'tag'))
+                    crossover_tags[tag] = attr
+                    crossovers[attr] = []
 
         with open(os.path.join(self.log_dir, 'genealogy.log')) as geneology_file:
             for i, line in enumerate(geneology_file):
@@ -588,7 +598,7 @@ class StructOpt(object):
         if module == 'all':
             self.fitness = {module: np.average(self.fitness[module], axis=1) for module in self.fitness}
 
-        return np.average(self.fitness[module], axis=1)
+        return [np.average(fits) for fits in self.fitness[module]]
 
     def get_min_fitnesses(self):
         """Returns a list of the minimum fitness of each generation
@@ -606,7 +616,7 @@ class StructOpt(object):
         if module == 'all':
             self.fitness = {module: np.amin(self.fitness[module], axis=1) for module in self.fitness}
 
-        return np.amin(self.fitness[module], axis=1)            
+        return [np.amin(fits) for fits in self.fitness[module]]
 
     def get_max_fitnesses(self):
         """Returns a list of the minimum fitness of each generation
@@ -624,7 +634,7 @@ class StructOpt(object):
         if module == 'all':
             self.fitness = {module: np.amax(self.fitness[module], axis=1) for module in self.fitness}
 
-        return np.amax(self.fitness[module], axis=1)            
+        return [np.amax(fits) for fits in self.fitness[module]]
 
 
     def get_stdev_fitness(self):
@@ -643,4 +653,4 @@ class StructOpt(object):
         if module == 'all':
             self.fitness = {module: np.std(self.fitness[module], axis=1) for module in self.fitness}
 
-        return np.std(self.fitness[module], axis=1)
+        return [np.std(fits) for fits in self.fitness[module]]
