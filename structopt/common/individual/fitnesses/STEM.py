@@ -32,7 +32,7 @@ class STEM(object):
         self.target = None
         self.phantom = True
 
-        # Set default normalization to E = E/natoms
+        # Set default normalization to E = E/nprotons
         if "normalize" not in self.parameters:
             self.parameters.setdefault("normalize", {})
         self.parameters['normalize'].setdefault('nprotons', True)
@@ -51,10 +51,10 @@ class STEM(object):
         image = self.get_image(individual)
 
         # Align the image using convolution
-        convolution = fftconvolve(image, self.target, mode='full')
+        convolution = fftconvolve(image, self.target[::-1, ::-1], mode='full')
         y, x = np.unravel_index(np.argmax(convolution), convolution.shape)
-        image = np.roll(image, x - image.shape[1], axis=1)
-        image = np.roll(image, y - image.shape[0], axis=0)
+        image = np.roll(image, x - image.shape[1] + 1, axis=1)
+        image = np.roll(image, y - image.shape[0] + 1, axis=0)
 
         chi = image - self.target
         chi = self.normalize(chi, individual)
