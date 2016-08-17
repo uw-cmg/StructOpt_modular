@@ -1,6 +1,8 @@
 import numpy as np
 from structopt.tools import get_avg_radii
 
+np.seterr(all='ignore')
+
 def CoordinationNumbers(atoms, cutoff=None, factor=1.1):
     """Calculates the coordination number of all atoms based on
     cutoff radius "cutoff". Does not obey periodic boundary conditions.
