@@ -3,6 +3,7 @@
 import os
 import re
 import json
+import shutil
 from copy import deepcopy
 from operator import itemgetter
 import subprocess
@@ -18,7 +19,7 @@ from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued
 
 class StructOpt(object):
 
-    def __init__(self, calcdir=None, optimizer='genetic', parameters={},
+    def __init__(self, calcdir=None, optimizer='genetic.py', parameters={},
                  submit_parameters={'system':'PBS'}):
 
         # Initialize inputs
@@ -26,6 +27,12 @@ class StructOpt(object):
             self.calcdir = os.getcwd()
         else:
             self.calcdir = os.path.expandvars(calcdir)
+
+        if not os.path.isfile(os.path.abspath(optimizer)):
+            optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/{}'.format(optimizer))
+        else:
+            optimizer = os.path.abspath(os.path.expandvars(optimizer))
+
         self.optimizer = optimizer
         self.parameters = deepcopy(parameters)
         self.submit_parameters = deepcopy(submit_parameters)
@@ -160,6 +167,7 @@ class StructOpt(object):
         from .rc import QUEUE_OPTIONS as queue_options
 
         self.write_input()
+        shutil.copy(self.optimizer, os.path.join(self.path, os.path.basename(self.optimizer)))
         self.write_submit()
 
         submit_cmd = queue_options[self.submit_parameters['system']]['submit']
@@ -207,7 +215,7 @@ class StructOpt(object):
 
         mpirun = run_options['mpirun']
         python = run_options['python']
-        optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/{}.py'.format(self.optimizer))
+        optimizer = os.path.basename(self.optimizer)
         input_file = 'structopt.in.json'
 
         # Write the submit script
