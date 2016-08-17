@@ -69,8 +69,6 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         individual.rotate([x, y, z], a, center='COP')
         print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
 
-        individual.STEM = self.fitness(individual)
-
         return
 
     @staticmethod
