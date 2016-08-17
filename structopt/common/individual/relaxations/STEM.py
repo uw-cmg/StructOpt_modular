@@ -1,5 +1,7 @@
+import logging
 import numpy as np
 import scipy.ndimage.filters as filters
+from scipy.ndimage import center_of_mass
 from scipy.optimize import fmin, brute
 
 import structopt.common.individual.fitnesses
@@ -41,6 +43,12 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         if self.target is None:
             self.generate_target()
 
+        if hasattr(logging, 'parameters'):
+            rank = logging.parameters.rank
+            print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
+        else:
+            rank = 0
+
         steps = self.parameters['rotation_grid']
         bonds = self.get_bulk_bonds(individual)
         projection = self.get_STEM_projection(individual)
@@ -59,6 +67,8 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         z = np.cos(theta)
 
         individual.rotate([x, y, z], a, center='COP')
+        print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
+
         individual.STEM = self.fitness(individual)
 
         return
@@ -125,7 +135,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         target = self.target
 
         # Get a list of xy positions from analyzing local maxima in STEM image
-        # as well as the position of the brighest atom
+        # as well as the position of a spot near the center of mass
         chemical_symbols = individual.get_chemical_symbols()
         unique_symbols = set(chemical_symbols)
         atomlist = [[symbol, chemical_symbols.count(symbol)]
@@ -135,11 +145,12 @@ class STEM(structopt.common.individual.fitnesses.STEM):
 
         data_max = filters.maximum_filter(target, size=size)
         maxima = ((target == data_max) & (target > 0.1)) # Filter out low maxima
-        max_pixel = np.argmax(target)
-        y, x = np.unravel_index(np.argmax(target), target.shape)
-        max_pos = np.array([x, y]) / np.asarray(parameters['resolution'])
+        com = np.asarray(center_of_mass(target)[::-1]) / parameters['resolution']
         pos = np.asarray(np.argwhere(maxima)[:,::-1] / parameters['resolution'])
-        vecs = pos - max_pos
+        dists_from_com = np.linalg.norm(pos - com, axis=1)
+        bulk_atom_index = np.argmin(dists_from_com)
+        bulk_atom_pos = pos[bulk_atom_index]
+        vecs = pos - bulk_atom_pos
         dists = np.linalg.norm(vecs, axis=1)
         vecs = vecs[((dists < cutoff) & (dists > 0))]
 

@@ -41,7 +41,10 @@ class STEM(object):
 
     def fitness(self, individual):
         """Calculates the fitness of an individual with respect to a target
-        image. Noramlize this fitness by the number of atoms."""
+        image. Normalize this fitness by the number of atoms."""
+
+        if hasattr(individual, 'STEM') and individual.STEM is not None:
+            return individual.STEM
 
         if self.psf is None:
             self.generate_psf()

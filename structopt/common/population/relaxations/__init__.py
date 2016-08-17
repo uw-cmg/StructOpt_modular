@@ -4,6 +4,7 @@ import importlib
 
 import structopt
 from . import LAMMPS
+from . import STEM
 from . import hard_sphere_cutoff
 from structopt.tools import root, single_core, parallel
 

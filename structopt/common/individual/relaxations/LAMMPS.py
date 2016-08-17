@@ -32,13 +32,14 @@ class LAMMPS(object):
         Args:
             individual (Individual): the individual to relax
         """
-        rank = logging.parameters.rank
-        print("Relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         if hasattr(logging, 'parameters'):
             calcdir = os.path.join(self.output_dir, 'relaxation/LAMMPS/generation{}/individual{}'.format(logging.parameters.generation, individual.id))
+            rank = logging.parameters.rank
+            print("Relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
         else:
             calcdir = None
+            rank = 0
 
         calc = lammps(self.parameters, calcdir=calcdir)
         individual.set_calculator(calc)
