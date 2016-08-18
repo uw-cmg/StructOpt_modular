@@ -3,19 +3,19 @@ import logging
 import shutil
 
 import structopt
+import structopt.utilities
 from structopt.common.population import Population
-from structopt.utilities import clear_XYZs
-
 
 class GeneticAlgorithm(object):
     """Defines methods to run a genetic algorithm optimization using the functions in the rest of the library."""
 
-    def __init__(self, population, convergence, post_processing):
+    def __init__(self, population, convergence, post_processing, adaptation):
         self.logger = logging.getLogger('default')
 
         self.population = population
         self.convergence = convergence
         self.post_processing = post_processing
+        self.adaptation = adaptation
 
         self.generation = 0
         self.converged = False
@@ -49,6 +49,7 @@ class GeneticAlgorithm(object):
         self.check_convergence()
         if logging.parameters.rank == 0:
             self.post_processing_step()
+        structopt.utilities.adapt(self.adaptation, self.population, self.generation)
         logging.parameters.generation += 1
         self.generation += 1
 
@@ -58,7 +59,6 @@ class GeneticAlgorithm(object):
             self.converged = True
         else:
             self.converged = False
-
 
     def post_processing_step(self):
         # Save the fitnesses for each individual
@@ -77,7 +77,7 @@ class GeneticAlgorithm(object):
             os.makedirs(path, exist_ok=True)
             individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.id)))
 
-        clear_XYZs(self.post_processing.XYZs, self.generation, logging.parameters.path)
+        structopt.utilities.clear_XYZs(self.post_processing.XYZs, self.generation, logging.parameters.path)
 
         # Save the genealogy
         tags = ['' for _ in self.population]
@@ -110,6 +110,7 @@ if __name__ == "__main__":
 
     with GeneticAlgorithm(population=population,
                           convergence=parameters.convergence,
-                          post_processing=parameters.post_processing) as optimizer:    
+                          post_processing=parameters.post_processing,
+                          adaptation=parameters.adaptation) as optimizer:    
         optimizer.run()
 
