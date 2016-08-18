@@ -76,6 +76,7 @@ def set_default(parameters):
     parameters.setdefault('seed', seed)
     parameters.setdefault('post_processing', DictionaryObject({}))
     parameters.post_processing.setdefault('XYZs', 0)
+    parameters.setdefault('adaptation', [])
 
     if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
