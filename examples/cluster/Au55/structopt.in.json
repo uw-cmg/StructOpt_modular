@@ -56,6 +56,5 @@
         "rank": {"probability": 1.0}
     },
     "fileio": {},
-    "post_processing": {"XYZs": 0},
     "tools": {}
 }
