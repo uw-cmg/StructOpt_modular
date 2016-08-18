@@ -1,4 +1,5 @@
 import os
+import math
 import logging
 import numpy as np
 from scipy.signal import fftconvolve
@@ -101,14 +102,21 @@ class STEM(object):
     def get_linear_convolution(self, individual):
         """Calculate linear convoluted potential of an individual"""
 
-        xmax, ymax = self.parameters['dimensions']
         r = self.parameters['resolution']
         zed = self.parameters['zed']
-
-        nx = xmax * r
-        ny = ymax * r
-        dx = xmax/nx
-        dy = ymax/ny
+        xmax, ymax = self.parameters['dimensions']
+        if type(xmax) is float:
+            nx = int(xmax * r)
+            ny = int(ymax * r)
+            dx = xmax/nx
+            dy = ymax/ny
+        elif type(xmax) is int:
+            nx = xmax
+            ny = ymax
+            xmax = nx / r
+            ymax = ny / r
+            dx = xmax / nx
+            dy = ymax / ny
 
         ax, ay, az = individual.get_positions().T
 
@@ -147,11 +155,15 @@ class STEM(object):
         parameters specified in the parameters dictionary are below."""
 
         HWHM = self.parameters['HWHM']
-        a, b = self.parameters['dimensions']
         r = self.parameters['resolution']
+        a, b = self.parameters['dimensions']
 
-        N_a = a * r
-        N_b = b * r
+        if type(a) is float:
+            N_a = int(a * r)
+            N_b = int(b * r)
+        else:
+            N_a = a
+            N_b = b
 
         k_a_min = -0.5 * r
         k_a_max = (0.5 - 1.0/N_a) * r
