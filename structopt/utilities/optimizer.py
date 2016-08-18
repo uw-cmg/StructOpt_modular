@@ -451,12 +451,10 @@ class StructOpt(object):
                                    package='structopt.utilities')
             module = getattr(package, 'Mutations')
             for attr in dir(module):
-                if (hasattr(getattr(module, attr), 'tag')
-                    and attr in self.parameters['mutations']
-                    and self.parameters['mutations'][attr]['probability'] > 0):
+                if hasattr(getattr(module, attr), 'tag'):
                     tag = (getattr(getattr(module, attr), 'tag'))
                     mutation_tags[tag] = attr
-                    mutations[attr] = []
+
 
         crossover_tags, crossovers = {}, {}
         for struture in structures:
@@ -464,12 +462,9 @@ class StructOpt(object):
                                     package='structopt.utilities')
             module = getattr(package, 'Crossovers')
             for attr in dir(module):
-                if (hasattr(getattr(module, attr), 'tag')
-                    and attr in self.parameters['crossovers']
-                    and self.parameters['crossovers'][attr]['probability'] > 0):
+                if hasattr(getattr(module, attr), 'tag'):
                     tag = (getattr(getattr(module, attr), 'tag'))
                     crossover_tags[tag] = attr
-                    crossovers[attr] = []
 
         with open(os.path.join(self.log_dir, 'genealogy.log')) as geneology_file:
             for i, line in enumerate(geneology_file):
@@ -483,15 +478,17 @@ class StructOpt(object):
                     if '(' in id:
                         pattern = r'\(.*\)(\D*).*'
                         crossover = crossover_tags[re.match(pattern, id, re.I|re.M).group(1)]
+                        if crossover not in crossovers:
+                            crossovers[crossover] = [0] * (i + 1)
+                        crossover = crossover_tags[re.match(pattern, id, re.I|re.M).group(1)]
                         crossovers[crossover][-1] += 1
 
                     pattern = r'.*[0-9]m(.*)'
                     if re.match(pattern, id, re.I|re.M):
                         mutation = mutation_tags[re.match(pattern, id, re.I|re.M).group(1)]
+                        if mutation not in mutations:
+                            mutations[mutation] = [0] * (i + 1)
                         mutations[mutation][-1] += 1
-
-
-        # Prune mutations that never got called
 
         self.mutations = mutations
         self.crossovers = crossovers
