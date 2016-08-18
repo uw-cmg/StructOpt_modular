@@ -67,7 +67,8 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         z = np.cos(theta)
 
         individual.rotate([x, y, z], a, center='COP')
-        print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
+        if hasattr(individual, 'id'):
+            print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
 
         return
 
