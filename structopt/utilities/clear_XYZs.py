@@ -24,11 +24,13 @@ def clear_XYZs(n, generation, path):
         return
 
     # Keeping the last n generations
-    if n < 0 and self.generation > -n:
+    if n < 0 and generation > -n:
         path = os.path.join(path, 'XYZs/generation{}'.format(generation + n))
     # Keeping every n generation
     elif n > 0 and generation > 1 and generation % n != 1:
         path = os.path.join(path, 'XYZs/generation{}'.format(generation - 1))
+    else:
+        path = None
 
     if path is not None:
         shutil.rmtree(path)
