@@ -33,8 +33,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
     """
 
     def __init__(self, parameters={}):
-        if 'rotation_grid' not in parameters:
-            parameters.setdefault('rotation_grid', 10)
+        parameters.setdefault('rotation_grid', 10)
+        parameters.setdefault('iterations', 10)
+
         super().__init__(parameters)
 
     def relax(self, individual):
@@ -43,30 +44,40 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         if self.target is None:
             self.generate_target()
 
+        current_fitness = self.fitness(individual)
         if hasattr(logging, 'parameters'):
             rank = logging.parameters.rank
             print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
         else:
             rank = 0
 
-        steps = self.parameters['rotation_grid']
-        bonds = self.get_bulk_bonds(individual)
-        projection = self.get_STEM_projection(individual)
-        solution = brute(self.epsilon,
-                         args=(bonds, projection),
-                         ranges=(slice(0, np.pi, np.pi/steps),
-                                 slice(-1, 1, 2/steps),
-                                 slice(0, 2*np.pi, 2*np.pi/steps)),
-                         finish=fmin)
+        steps = self.parameters['rotation_grid']            
 
-        phi, costheta, a = solution
-        theta = np.arccos(costheta)
+        for i in range(self.parameters['iterations']):
+            bonds = self.get_bulk_bonds(individual)
+            projection = self.get_STEM_projection(individual)
+            solution = brute(self.epsilon,
+                             args=(bonds, projection),
+                             ranges=(slice(0, np.pi, np.pi/steps),
+                                     slice(-1, 1, 2/steps),
+                                     slice(0, 2*np.pi, 2*np.pi/steps)),
+                             finish=fmin)
 
-        x = np.sin(theta) * np.cos(phi)
-        y = np.sin(theta) * np.sin(phi)
-        z = np.cos(theta)
+            phi, costheta, a = solution
+            theta = np.arccos(costheta)
 
-        individual.rotate([x, y, z], a, center='COP')
+            x = np.sin(theta) * np.cos(phi)
+            y = np.sin(theta) * np.sin(phi)
+            z = np.cos(theta)
+
+            individual.rotate([x, y, z], a, center='COP')
+            new_fitness = self.fitness(individual)
+            if new_fitness > current_fitness:
+                individual.rotate([x, y, z], -a, center='COP')
+            else:
+                self.iterations = i
+                break
+
         if hasattr(individual, 'id'):
             print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
 
@@ -109,13 +120,16 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         return total_error
 
     def get_bulk_bonds(self, individual):
-        """Returns the bonds to a bulk atom near the center of mass"""
+        """Chooses a random atom to orient around. The probability
+        of choosing the atom is proportional to the atom's distance
+        from the center of mass"""
 
         # Get a bulk atom near the center of the particle
         pos = individual.get_positions()
         com = individual.get_center_of_mass()
         dists_from_com = np.linalg.norm(pos - com, axis=1)
-        bulk_atom_index = np.argmin(dists_from_com)
+        prob = dists_from_com / sum(dists_from_com)
+        bulk_atom_index = np.random.choice(list(range(len(individual))), p=prob)
         bulk_atom_pos = pos[bulk_atom_index]
 
         # Get the neighbors of the bulk atom
@@ -133,8 +147,8 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         parameters = self.parameters
         target = self.target
 
-        # Get a list of xy positions from analyzing local maxima in STEM image
-        # as well as the position of a spot near the center of mass
+        # Get a cutoff between maximum points in the STEM image based
+        # on nearest neighbor distances
         chemical_symbols = individual.get_chemical_symbols()
         unique_symbols = set(chemical_symbols)
         atomlist = [[symbol, chemical_symbols.count(symbol)]
@@ -142,12 +156,15 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         cutoff = get_avg_radii(atomlist) * 2 * 1.1
         size = cutoff / 8 * parameters['resolution']
 
+        # Get a list of xy positions from analyzing local maxima in STEM image
+        # as well as the position of a spot near the center of mass
         data_max = filters.maximum_filter(target, size=size)
         maxima = ((target == data_max) & (target > 0.1)) # Filter out low maxima
         com = np.asarray(center_of_mass(target)[::-1]) / parameters['resolution']
         pos = np.asarray(np.argwhere(maxima)[:,::-1] / parameters['resolution'])
         dists_from_com = np.linalg.norm(pos - com, axis=1)
-        bulk_atom_index = np.argmin(dists_from_com)
+        prob = dists_from_com / sum(dists_from_com)
+        bulk_atom_index = np.random.choice(list(range(len(dists_from_com))), p=prob)
         bulk_atom_pos = pos[bulk_atom_index]
         vecs = pos - bulk_atom_pos
         dists = np.linalg.norm(vecs, axis=1)
