@@ -227,9 +227,13 @@ class Individual(ase.Atoms):
         """Generate an individual using generator_kwargs parameter. By defualt
         it extends the current atoms object"""
 
+        cls_name = self.__class__.__name__.lower()
+
         assert len(self.generator_parameters) == 1
         generator_name = list(self.generator_parameters.keys())[0]
-        generator_module = import_module('structopt.common.individual.generators.{}'.format(generator_name))
+        generator_module = import_module('structopt.{}.individual.generators.{}'.format(cls_name, generator_name))
+        if not hasattr(generator_module, generator_name):
+            generator_module = import_module('structopt.common.individual.generators.{}'.format(generator_name))
         generator = getattr(generator_module, generator_name)
         kwargs = self.generator_parameters[generator_name]
         atoms = generator(**kwargs)

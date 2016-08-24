@@ -9,7 +9,7 @@ def ellipsoid(atomlist, fill_factor=0.74, radii=None, ratio=[1, 1, 1], cell=None
     
 
     # Get the dimensions of the ellipsoid if required
-    if size is None:
+    if radii is None:
         radius = get_particle_radius(atomlist, fill_factor)
         a = radius / ((ratio[1]/ratio[0])**(1.0/3.0) * (ratio[2]/ratio[0])**(1.0/3.0))
         b = radius / ((ratio[0]/ratio[1])**(1.0/3.0) * (ratio[2]/ratio[1])**(1.0/3.0))
