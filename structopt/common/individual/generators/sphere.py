@@ -6,7 +6,6 @@ from ase.visualize import view
 from ase.data import atomic_numbers, reference_states
 
 from structopt.tools import random_three_vector
-from structopt.tools import get_avg_radii
 from structopt.tools import get_particle_radius
 
 def sphere(atomlist, fill_factor=0.74, radius=None, cell=None):
@@ -17,10 +16,8 @@ def sphere(atomlist, fill_factor=0.74, radius=None, cell=None):
     of atoms are enforced.
     """
 
-    if not radius:
+    if radius is None:
         radius = get_particle_radius(atomlist, fill_factor)
-
-    avg_radii = get_avg_radii(atomlist)
 
     # Create a list of random order of the atoms
     chemical_symbols = []
