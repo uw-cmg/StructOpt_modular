@@ -5,15 +5,9 @@
     "generators": {
 	"fcc": {"number_of_individuals": 5,
 		"kwargs": {"atomlist": [["Au", 55]],
+                           "orientation": "100",
 			   "cell": [20, 20, 20],
-                           "a": 4.08}},
-        "ellipsoid": {"number_of_individuals": 5,
-                      "kwargs": {"atomlist": [["Au", 55]],
-                                 "ratio": [2, 2, 1],
-                                 "cell": [20, 20, 20]}},
-	"sphere": {"number_of_individuals": 5,
-		   "kwargs": {"atomlist": [["Au", 55]],
-			      "cell": [20, 20, 20]}}
+                           "a": 4.08}}
     },
     "fitnesses": {
         "LAMMPS": {"weight": 1.0, 
