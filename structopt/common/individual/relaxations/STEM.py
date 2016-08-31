@@ -34,7 +34,8 @@ class STEM(structopt.common.individual.fitnesses.STEM):
 
     def __init__(self, parameters={}):
         parameters.setdefault('rotation_grid', 10)
-        parameters.setdefault('iterations', 10)
+        parameters.setdefault('rotation_iterations', 10)
+        parameters.setdefault('surface_moves', 10)
 
         super().__init__(parameters)
 
@@ -51,9 +52,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         else:
             rank = 0
 
-        steps = self.parameters['rotation_grid']            
-
-        for i in range(self.parameters['iterations']):
+        # Relax the atom by rotating it
+        steps = self.parameters['rotation_grid']
+        for i in range(self.parameters['surface_moves']):
             bonds = self.get_bulk_bonds(individual)
             projection = self.get_STEM_projection(individual)
             solution = brute(self.epsilon,
@@ -77,6 +78,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             else:
                 self.iterations = i
                 break
+
+        # Relax the atom by moving surface atoms around
+        
 
         if hasattr(individual, 'id'):
             print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
@@ -149,11 +153,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
 
         # Get a cutoff between maximum points in the STEM image based
         # on nearest neighbor distances
-        chemical_symbols = individual.get_chemical_symbols()
-        unique_symbols = set(chemical_symbols)
-        atomlist = [[symbol, chemical_symbols.count(symbol)]
-                    for symbol in unique_symbols]
-        cutoff = get_avg_radii(atomlist) * 2 * 1.1
+        cutoff = get_avg_radii(individual) * 2 * 1.1
         size = cutoff / 8 * parameters['resolution']
 
         # Get a list of xy positions from analyzing local maxima in STEM image
@@ -161,7 +161,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         data_max = filters.maximum_filter(target, size=size)
         maxima = ((target == data_max) & (target > 0.1)) # Filter out low maxima
         com = np.asarray(center_of_mass(target)[::-1]) / parameters['resolution']
-        pos = np.asarray(np.argwhere(maxima)[:,::-1] / parameters['resolution'])
+        pos = np.argwhere(maxima)[:,::-1] / parameters['resolution']
         dists_from_com = np.linalg.norm(pos - com, axis=1)
         prob = dists_from_com / sum(dists_from_com)
         bulk_atom_index = np.random.choice(list(range(len(dists_from_com))), p=prob)
