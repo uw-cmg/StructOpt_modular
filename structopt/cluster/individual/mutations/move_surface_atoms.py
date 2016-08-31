@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 from structopt.tools import NeighborList
@@ -60,10 +61,13 @@ def move_surface_atoms(individual, max_natoms=0.5, move_CN=9, surf_CN=11):
     COM = np.sum(surf_positions) / len(surf_positions)
     vec = surf_positions - COM
     vec /= np.array([np.linalg.norm(vec, axis=1)]).T
-    add_positions = surf_positions + vec * avg_bond_length
+    add_positions = surf_positions + vec * avg_bond_length * 0.5
 
     # Set positions of a fraction of the surface atoms
-    move_indices = move_indices[:int(max_natoms * len(move_indices))]
+    if type(max_natoms) is float:
+        max_natoms = int(max_natoms * len(move_indices))
+    move_natoms = random.randint(0, max_natoms)
+    move_indices = move_indices[:move_natoms]
     add_indices = np.random.choice(len(add_positions), len(move_indices), replace=False)
     for move_index, add_index in zip(move_indices, add_indices):
         positions[move_index] = add_positions[add_index]
