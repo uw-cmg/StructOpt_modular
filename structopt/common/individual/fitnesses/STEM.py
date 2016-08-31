@@ -213,6 +213,13 @@ class STEM(object):
         """Generates the target STEM image from the parameters. The bulk of
         this code generates the target from an atoms object. """
 
+        # Load the target from a file
+        if (self.path is not None
+            and os.path.isfile(os.path.join(self.path, 'target.npy'))):
+            self.target = np.load(os.path.join(self.path, 'target.npy'))
+            print('target loaded')
+            return
+
         if self.psf is None:
             self.generate_psf()
 
@@ -224,6 +231,10 @@ class STEM(object):
         atoms = read(self.parameters['target'])
         self.target = self.get_image(atoms)
         self.phantom = True
+
+        # Try saving the target for future calculations
+        if self.path is not None:
+            np.save(os.path.join(self.path, 'target'), self.target)
 
         return
 
