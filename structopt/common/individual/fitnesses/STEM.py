@@ -172,7 +172,6 @@ class STEM(object):
         if (self.path is not None
             and os.path.isfile(os.path.join(self.path, 'psf.npy'))):
             self.psf = np.load(os.path.join(self.path, 'psf.npy'))
-            print('psf loaded')
             return
 
         HWHM = self.parameters['HWHM']
@@ -217,7 +216,6 @@ class STEM(object):
         if (self.path is not None
             and os.path.isfile(os.path.join(self.path, 'target.npy'))):
             self.target = np.load(os.path.join(self.path, 'target.npy'))
-            print('target loaded')
             return
 
         if self.psf is None:
