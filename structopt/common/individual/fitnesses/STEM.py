@@ -39,6 +39,13 @@ class STEM(object):
         self.parameters['normalize'].setdefault('nprotons', True)
         self.parameters['normalize'].setdefault('SSE', False)
 
+        # If running within StructOpt, create directory for saving files
+        # and faster loading of PSF and target data
+        if hasattr(logging, 'parameters'):
+            self.path = os.path.join(logging.parameters.path, 'fitness/STEM')
+            os.makedirs(self.path, exist_ok=True)
+        else:
+            self.path = None
 
     def fitness(self, individual):
         """Calculates the fitness of an individual with respect to a target
@@ -161,6 +168,13 @@ class STEM(object):
         """Generates a psf array built from a gaussian function. The relevant 
         parameters specified in the parameters dictionary are below."""
 
+        # We do not want to generate the psf if it has already been saved
+        if (self.path is not None
+            and os.path.isfile(os.path.join(self.path, 'psf.npy'))):
+            self.psf = np.load(os.path.join(self.path, 'psf.npy'))
+            print('psf loaded')
+            return
+
         HWHM = self.parameters['HWHM']
         r = self.parameters['resolution']
         a, b = self.parameters['dimensions']
@@ -188,6 +202,10 @@ class STEM(object):
         psf = np.exp(-Mksq / (2 * d_k ** 2))
 
         self.psf = psf
+
+        # Try saving the PSF for future calculations
+        if self.path is not None:
+            np.save(os.path.join(self.path, 'psf'), self.psf)
 
         return
 
