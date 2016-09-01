@@ -50,7 +50,8 @@
                             "resolution": 5.0,
                             "zed": 1,
                             "normalize": {"SSE": true,
-                                          "nprotons": true}}}        
+                                          "nprotons": true},
+                            "rotation_iterations": 2}}
     },
     "convergence": {
         "max_generations": 5
