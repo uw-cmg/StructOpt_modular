@@ -54,7 +54,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
 
         # Relax the atom by rotating it
         steps = self.parameters['rotation_grid']
-        for i in range(self.parameters['surface_moves']):
+        for i in range(self.parameters['rotation_iterations']):
             bonds = self.get_bulk_bonds(individual)
             projection = self.get_STEM_projection(individual)
             solution = brute(self.epsilon,
@@ -78,9 +78,6 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             else:
                 self.iterations = i
                 break
-
-        # Relax the atom by moving surface atoms around
-        
 
         if hasattr(individual, 'id'):
             print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
