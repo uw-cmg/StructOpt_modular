@@ -34,7 +34,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
 
     def __init__(self, parameters={}):
         parameters.setdefault('rotation_grid', 10)
-        parameters.setdefault('rotation_iterations', 3)
+        parameters.setdefault('rotation_iterations', 2)
         parameters.setdefault('surface_moves', 10)
 
         super().__init__(parameters)
