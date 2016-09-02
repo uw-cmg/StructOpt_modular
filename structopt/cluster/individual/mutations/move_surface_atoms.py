@@ -46,7 +46,7 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
     # Get surface sites to move atoms to
     # First get all surface atoms
     positions = individual.get_positions()
-    surf_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < surf_CN and CN > 3]
+    surf_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN<surf_CN and CN>3]
     surf_indices_CNs.sort(key=lambda i: i[1])
     surf_indices = list(zip(*surf_indices_CNs))[0]
     surf_positions = np.array([positions[i] for i in surf_indices])
