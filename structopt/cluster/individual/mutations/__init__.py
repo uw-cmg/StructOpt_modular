@@ -7,6 +7,8 @@ from .move_atoms_group import move_atoms_group
 from .rotate_cluster import rotate_cluster
 from .twist import twist
 from .swap_core_shell import swap_core_shell
+from .rich2poor import rich2poor
+from .poor2rich import poor2rich
 
 move_surface_atoms.tag = 'MoSuAt'
 move_atoms.tag = 'MoAt'
@@ -14,6 +16,7 @@ move_atoms_group.tag = 'MoAtGr'
 rotate_cluster.tag = 'RoCl'
 twist.tag = 'Twist'
 swap_core_shell.tag = 'SwCoSh'
+rich2poor.tag = 'Ri2Po'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 

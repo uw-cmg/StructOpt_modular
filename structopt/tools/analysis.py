@@ -87,4 +87,34 @@ def NeighborList(atoms, cutoff=None, factor=1.1):
 
     neighbors = [a[~(np.isnan(a) | np.isinf(a))].astype(int) for a in neighbors]    
 
+    return np.asarray(neighbors)
+
+def NeighborElements(atoms, cutoff=None, factor=1.1):
+    """Gives the neighboring elements of each atom
+    cutoff radius "cutoff". Does not obey periodic boundary conditions.
+
+    Parameters
+    ----------
+    atoms : ase.Atoms or structopt.Individual object
+        The atoms object to be analyzed
+    cutoff : float
+        The radius to search for neighbors. If cutoff is not
+        specified, returns average bond length from a weighted
+        average of experimental bond lengths.
+    factor : float
+        If cutoff is None, nearest neighbor distance is taken as
+        two times the average atomic radius. factor is used to
+        expand the cutoff by cutoff * factor to ensure python
+        numerical behavior doesn't "lose" atoms.
+
+    Output
+    ------
+    out : list
+        A list of a neighbors. out[i] returns a list of the neighbors
+        of atom i.
+    """
+
+    syms = np.asarray(atoms.get_chemical_symbols())
+    neighbors = NeighborList(atoms, cutoff=None, factor=1.1)
+    neighbors = [list(syms[i]) for i in neighbors]
     return neighbors
