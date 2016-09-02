@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 from structopt.tools import NeighborList
@@ -5,7 +6,7 @@ from structopt.tools import get_avg_radii
 
 from ase.io import write
 
-def move_surface_atoms(individual, max_natoms=0.5, move_CN=9, surf_CN=11):
+def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
     """Randomly moves atoms at the surface to other surface sites
 
     Parameters
@@ -13,12 +14,14 @@ def move_surface_atoms(individual, max_natoms=0.5, move_CN=9, surf_CN=11):
     individual : structopt.Individual object
         The individual object to be modified in place
     max_natoms : float or int
-        if float, the maximum number of atoms that will be moved is max_natoms*len(individual)
+        if float, the maximum number of atoms that will be moved is 
+        max_natoms*len(individual)
         if int, the maximum number of atoms that will be moved is max_natoms
         default: 0.20
     max_CN : int
         The coordination number cutoff for determining which atoms are surface atoms
-        Any atoms with coordnation number at or above CN will not be considered as surface.
+        Any atoms with coordnation number at or above CN will not be considered as 
+        surface.
 
     Output
     ------
@@ -33,20 +36,20 @@ def move_surface_atoms(individual, max_natoms=0.5, move_CN=9, surf_CN=11):
     NNs = NeighborList(individual)
     CNs = [len(NN) for NN in NNs]
     
-    # Get indexes of atoms considered to be moved
-    move_indexes_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < move_CN]
-    if len(move_indexes_CNs) == 0:
+    # Get indices of atoms considered to be moved
+    move_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < move_CN]
+    if len(move_indices_CNs) == 0:
         return 0
-    move_indexes_CNs.sort(key=lambda i: i[1])
-    move_indexes = list(zip(*move_indexes_CNs))[0]
+    move_indices_CNs.sort(key=lambda i: i[1])
+    move_indices = list(zip(*move_indices_CNs))[0]
 
     # Get surface sites to move atoms to
     # First get all surface atoms
     positions = individual.get_positions()
-    surf_indexes_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < surf_CN and CN > 3]
-    surf_indexes_CNs.sort(key=lambda i: i[1])
-    surf_indexes = list(zip(*surf_indexes_CNs))[0]
-    surf_positions = np.array([positions[i] for i in surf_indexes])
+    surf_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN < surf_CN and CN > 3]
+    surf_indices_CNs.sort(key=lambda i: i[1])
+    surf_indices = list(zip(*surf_indices_CNs))[0]
+    surf_positions = np.array([positions[i] for i in surf_indices])
 
     # Get the average bond length of the particle
     chemical_symbols = individual.get_chemical_symbols()
@@ -58,15 +61,18 @@ def move_surface_atoms(individual, max_natoms=0.5, move_CN=9, surf_CN=11):
     COM = np.sum(surf_positions) / len(surf_positions)
     vec = surf_positions - COM
     vec /= np.array([np.linalg.norm(vec, axis=1)]).T
-    add_positions = surf_positions + vec * avg_bond_length
+    add_positions = surf_positions + vec * avg_bond_length * 0.5
 
     # Set positions of a fraction of the surface atoms
-    move_indexes = move_indexes[:int(max_natoms * len(move_indexes))]
-    add_indexes = np.random.choice(len(add_positions), len(move_indexes), replace=False)
-    for move_index, add_index in zip(move_indexes, add_indexes):
+    if type(max_natoms) is float:
+        max_natoms = int(max_natoms * len(move_indices))
+    move_natoms = random.randint(0, max_natoms)
+    move_indices = move_indices[:move_natoms]
+    add_indices = np.random.choice(len(add_positions), len(move_indices), replace=False)
+    for move_index, add_index in zip(move_indices, add_indices):
         positions[move_index] = add_positions[add_index]
 
     individual.set_positions(positions)
 
-    return len(move_indexes)
+    return move_indices
 

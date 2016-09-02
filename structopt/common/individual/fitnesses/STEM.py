@@ -39,6 +39,13 @@ class STEM(object):
         self.parameters['normalize'].setdefault('nprotons', True)
         self.parameters['normalize'].setdefault('SSE', False)
 
+        # If running within StructOpt, create directory for saving files
+        # and faster loading of PSF and target data
+        if hasattr(logging, 'parameters'):
+            self.path = os.path.join(logging.parameters.path, 'fitness/STEM')
+            os.makedirs(self.path, exist_ok=True)
+        else:
+            self.path = None
 
     def fitness(self, individual):
         """Calculates the fitness of an individual with respect to a target
@@ -50,17 +57,26 @@ class STEM(object):
             self.generate_target()
 
         image = self.get_image(individual)
-
-        # Align the image using convolution
-        convolution = fftconvolve(image, self.target[::-1, ::-1], mode='full')
-        y, x = np.unravel_index(np.argmax(convolution), convolution.shape)
-        image = np.roll(image, x - image.shape[1] + 1, axis=1)
-        image = np.roll(image, y - image.shape[0] + 1, axis=0)
+        image, x_shift, y_shift = self.cross_correlate(image)
 
         chi = image - self.target
         chi = self.normalize(chi, individual)
 
         return chi
+
+    def cross_correlate(self, image):
+        convolution = fftconvolve(image, self.target[::-1, ::-1], mode='full')
+        y_max, x_max = np.unravel_index(np.argmax(convolution), convolution.shape)
+        x_shift = x_max - image.shape[1] + 1
+        y_shift = y_max - image.shape[0] + 1
+        image = np.roll(image, x_shift, axis=1)
+        image = np.roll(image, y_shift, axis=0)
+
+        # Return the x_shift and y_shift in real space
+        #x_shift /= self.parameters['resolution']
+        #y_shift /= self.parameters['resolution']
+
+        return image, x_shift, y_shift
 
     def normalize(self, chi, individual):
         if 'normalize' not in self.parameters:
@@ -97,7 +113,6 @@ class STEM(object):
         Z_diff = image_Z_tot - target_Z_tot
 
         return Z_diff
-
 
     def get_linear_convolution(self, individual):
         """Calculate linear convoluted potential of an individual"""
@@ -149,10 +164,15 @@ class STEM(object):
 
         return V
 
-
     def generate_psf(self):
         """Generates a psf array built from a gaussian function. The relevant 
         parameters specified in the parameters dictionary are below."""
+
+        # We do not want to generate the psf if it has already been saved
+        if (self.path is not None
+            and os.path.isfile(os.path.join(self.path, 'psf.npy'))):
+            self.psf = np.load(os.path.join(self.path, 'psf.npy'))
+            return
 
         HWHM = self.parameters['HWHM']
         r = self.parameters['resolution']
@@ -182,11 +202,21 @@ class STEM(object):
 
         self.psf = psf
 
+        # Try saving the PSF for future calculations
+        if self.path is not None:
+            np.save(os.path.join(self.path, 'psf'), self.psf)
+
         return
 
     def generate_target(self):
         """Generates the target STEM image from the parameters. The bulk of
         this code generates the target from an atoms object. """
+
+        # Load the target from a file
+        if (self.path is not None
+            and os.path.isfile(os.path.join(self.path, 'target.npy'))):
+            self.target = np.load(os.path.join(self.path, 'target.npy'))
+            return
 
         if self.psf is None:
             self.generate_psf()
@@ -199,6 +229,10 @@ class STEM(object):
         atoms = read(self.parameters['target'])
         self.target = self.get_image(atoms)
         self.phantom = True
+
+        # Try saving the target for future calculations
+        if self.path is not None:
+            np.save(os.path.join(self.path, 'target'), self.target)
 
         return
 

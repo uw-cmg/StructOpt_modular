@@ -326,6 +326,8 @@ class StructOpt(object):
         a list to store the individuals"""
 
         # Get list of generations available to be read for output
+        if not os.path.isdir(os.path.join(self.log_dir, 'XYZs')):
+            return 
         dirs = [d for d in os.listdir(os.path.join(self.log_dir, 'XYZs'))]
         pattern = r'generation(.*)'
         generations = [int(re.match(pattern, d, re.I|re.M).group(1)) for d in dirs]
