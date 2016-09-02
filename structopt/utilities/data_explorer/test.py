@@ -1,13 +1,22 @@
+import sys
 
-from core import Generations
+from core import DataExplorer
 
-generations = Generations('genealogy.log')
 
-id10 = generations[-1][10]
+dir = sys.argv[1]
+
+de = DataExplorer(dir)
+print(de.parameters)
+
+id_ = 149
+indiv = de.generations[-1][id_]
 print("History:")
-id10.print_history(generations)
+indiv.print_history(de.generations)
 
-crossovers, mutations = generations[-1][10].count_modifiers(generations)
+crossovers, mutations = de.generations[-1][id_].count_modifiers(de.generations)
 print("Crossovers:", crossovers)
 print("Mutations:", mutations)
 
+indiv.load_structure()
+print(indiv.get_positions()[:5])
+print(indiv.relaxations)
