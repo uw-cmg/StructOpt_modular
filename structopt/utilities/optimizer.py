@@ -292,6 +292,11 @@ class StructOpt(object):
         if self.log_dirs is None:
             self.read_runs()
 
+        for _ in self.log_dirs:
+            if 'fitnesses.log' not in os.listdir(self.log_dirs[run_number]):
+                run_number -= 1
+            else:
+                break
         new_log_dir = self.log_dirs[run_number]
         if new_log_dir is not self.log_dir:
             self.clear_data()
