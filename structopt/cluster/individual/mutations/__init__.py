@@ -3,6 +3,7 @@ import structopt.common.individual.mutations
 
 from .move_atoms import move_atoms
 from .move_surface_atoms import move_surface_atoms
+from .move_surface_STEM import move_surface_STEM
 from .move_atoms_group import move_atoms_group
 from .rotate_cluster import rotate_cluster
 from .twist import twist
@@ -11,6 +12,7 @@ from .rich2poor import rich2poor
 from .poor2rich import poor2rich
 
 move_surface_atoms.tag = 'MoSuAt'
+move_surface_STEM.tag = 'MoSuSTEM'
 move_atoms.tag = 'MoAt'
 move_atoms_group.tag = 'MoAtGr'
 rotate_cluster.tag = 'RoCl'
@@ -49,3 +51,8 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(swap_core_shell)
     def swap_core_shell(individual, max_natoms=0.2, surf_CN=11):
         return twist(individual, max_natoms, surf_CN)
+
+    @staticmethod
+    @functools.wraps(move_surface_STEM)
+    def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
+        return move_surface_STEM(individual, STEM_parameters, move_CN, surf_CN)

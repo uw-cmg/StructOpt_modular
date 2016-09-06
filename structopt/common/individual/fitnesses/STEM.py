@@ -157,10 +157,10 @@ class STEM(object):
 
         V = np.zeros([nx, ny])
         for j in range(len(individual)):
-            V[iax[j],iay[j]] += V1[j]
-            V[ibx[j],iay[j]] += V2[j]
-            V[iax[j],iby[j]] += V3[j]
-            V[ibx[j],iby[j]] += V4[j]
+            V[int(iax[j]), int(iay[j])] += V1[j]
+            V[int(ibx[j]), int(iay[j])] += V2[j]
+            V[int(iax[j]), int(iby[j])] += V3[j]
+            V[int(ibx[j]), int(iby[j])] += V4[j]
 
         return V
 
