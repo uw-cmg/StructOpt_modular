@@ -1,6 +1,6 @@
 import structopt.io
-
+from ase.io import read
 
 def read_xyz(filename):
-    return structopt.io.read_xyz(filename)
+    return read(filename)
 
