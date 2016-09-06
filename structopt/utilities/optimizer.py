@@ -84,14 +84,24 @@ class StructOpt(object):
               and not self.job_in_queue(os.path.join(self.path, 'jobid'))
               and self.read_runs()):
             self.read_input()
-            self.status = self.check_run() # Can be "done" or "error"
             self.read_generations()
+            if self.generations is not None:
+                self.status = 'done'
+            else:
+                self.status = 'error'
 
     def restart(self): # TODO
         """Loads up the last generation of a previous run and modifies 
         the self.parameters to load up those structures on the next run"""
 
-        pass
+        XYZs_dir = os.path.join(self.log_dir, 'XYZs/generation{}'.format(self.generations[-1]))
+        fnames = [os.path.join(XYZs_dir, f) for f in os.listdir(XYZs_dir) if f.endswith('.xyz')]
+        new_generator = {'generators': {'read_xyz': {'number_of_individuals': len(fnames),
+                                      'kwargs': fnames}}}
+        self.parameters.update(new_generator)
+        self.status = 'initialized'
+
+        return
 
     def job_in_queue(self, jobid='jobid'):
         '''return True or False if the directory has a job in the queue'''
@@ -140,7 +150,7 @@ class StructOpt(object):
 
         run_method = getattr(self, run_method)
 
-        if restart:
+        if restart and self.status == 'done':
             self.restart()
 
         if self.status in ['clean', 'initialized'] or rerun:
