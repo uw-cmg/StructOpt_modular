@@ -171,7 +171,8 @@ class STEM(object):
         # We do not want to generate the psf if it has already been saved
         if (self.path is not None
             and os.path.isfile(os.path.join(self.path, 'psf.npy'))):
-            self.psf = np.load(os.path.join(self.path, 'psf.npy'))
+            with open(os.path.join(self.path, 'psf.npy'), "rb") as npy:
+                self.psf = np.load(npy)
             return
 
         HWHM = self.parameters['HWHM']
@@ -215,7 +216,8 @@ class STEM(object):
         # Load the target from a file
         if (self.path is not None
             and os.path.isfile(os.path.join(self.path, 'target.npy'))):
-            self.target = np.load(os.path.join(self.path, 'target.npy'))
+            with open(os.path.join(self.path, 'target.npy'), "rb") as npy:
+                self.target = np.load(npy)            
             return
 
         if self.psf is None:

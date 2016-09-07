@@ -50,9 +50,20 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @staticmethod
     @functools.wraps(swap_core_shell)
     def swap_core_shell(individual, max_natoms=0.2, surf_CN=11):
-        return twist(individual, max_natoms, surf_CN)
+        return swap_core_shell(individual, max_natoms, surf_CN)
 
     @staticmethod
     @functools.wraps(move_surface_STEM)
     def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
         return move_surface_STEM(individual, STEM_parameters, move_CN, surf_CN)
+
+    @staticmethod
+    @functools.wraps(rich2poor)
+    def rich2poor(individual, max_natoms=0.05, surf_CN=11, factor=1.1):
+        return rich2poor(individual, max_natoms, surf_CN, factor)
+
+    @staticmethod
+    @functools.wraps(poor2rich)
+    def poor2rich(individual, max_natoms=0.05, surf_CN=11, factor=1.1):
+        return poor2rich(individual, max_natoms, surf_CN, factor)
+    
