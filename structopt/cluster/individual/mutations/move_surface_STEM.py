@@ -9,9 +9,22 @@ from structopt.common.individual.fitnesses import STEM
 
 from ase.io import write
 
-def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
+def move_surface_STEM(individual, STEM_parameters, surf_CN=10, filter_size=1):
     """Moves surface atoms around based on the difference in the target
-    and individual STEM image"""
+    and individual STEM image
+
+    Parameters
+    ----------
+    STEM_parameters : dict
+        Parameters for the STEM calculation. Ideally should be the same as the ones
+        used for the STEM fitness/relaxation
+    surf_CN : int
+        The maximum coordination number considered as a surface atom. Surface atoms
+        are considered for choosing which atoms to move and where to move them
+    filter_size : float
+        Filter size for choosing local maximum in the picture. Filter size is equal
+        to average_bond_length * resolution * filter_size.
+    """
 
     module = STEM(STEM_parameters)
     module.generate_target()
@@ -23,7 +36,7 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
     # Find a list of local maximum and local minimum in the image
     cutoff = get_avg_radii(individual) * 2 * 1.1
     resolution = module.parameters['resolution']        
-    size = cutoff / 8 * resolution
+    size = cutoff * resolution * filter_size
 
     data_max = filters.maximum_filter(contrast, size=size)
     maxima = ((contrast == data_max) & (contrast > 0.1)) # Filter out low maxima
@@ -42,7 +55,7 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
     positions = individual.get_positions()
 
     surf_CN = 11
-    surf_indices = [i for i, CN in enumerate(CNs) if CN < surf_CN]
+    surf_indices = [i for i, CN in enumerate(CNs) if CN <= surf_CN]
     surf_positions = positions[list(surf_indices)]
     surf_xys = surf_positions[:, :2]
 
@@ -61,7 +74,6 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
     new_position += new_position_vec * cutoff/2
 
     positions[surf_indices[move_index]] = new_position
-
     individual.set_positions(positions)
 
     return

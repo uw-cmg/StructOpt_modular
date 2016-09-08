@@ -57,8 +57,8 @@
         "max_generations": 5
     },
     "mutations": {
-        "move_surface_atoms": {"probability": 0.3},
-        "move_surface_STEM": {"probability": 0.3,
+        "move_surface_atoms": {"probability": 0.0},
+        "move_surface_STEM": {"probability": 0.7,
                               "kwargs": {"STEM_parameters": {"use_mpi4py":false,
                                                              "target": "Au55-decahedron.xyz",
                                                              "HWHM": 0.4,

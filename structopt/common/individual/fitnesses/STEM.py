@@ -254,5 +254,3 @@ class STEM(object):
         zcon_image = np.fft.ifft2(ft_psf * ft_V, axes=(0, 1)).real
 
         return zcon_image
-
-
