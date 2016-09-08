@@ -9,7 +9,8 @@ from structopt.common.individual.fitnesses import STEM
 
 from ase.io import write
 
-def move_surface_STEM(individual, STEM_parameters, surf_CN=10, filter_size=1):
+def move_surface_STEM(individual, STEM_parameters, move_CN=8, surf_CN=10,
+                      filter_size=1, move_cutoff=None, surf_cutoff=None):
     """Moves surface atoms around based on the difference in the target
     and individual STEM image
 
@@ -18,12 +19,20 @@ def move_surface_STEM(individual, STEM_parameters, surf_CN=10, filter_size=1):
     STEM_parameters : dict
         Parameters for the STEM calculation. Ideally should be the same as the ones
         used for the STEM fitness/relaxation
+    move_CN : int
+        The maximum coordination number considered as a surface atom to move.    
     surf_CN : int
-        The maximum coordination number considered as a surface atom. Surface atoms
-        are considered for choosing which atoms to move and where to move them
+        The maximum coordination number considered as a surface atom to move an
+        atom to
     filter_size : float
         Filter size for choosing local maximum in the picture. Filter size is equal
         to average_bond_length * resolution * filter_size.
+    move_cutoff : float
+        The search radius for selecting an atom to move near a high intensity point.
+        Defaults to the average bond distance
+    surf_cutoff : float
+        The search radius for selecting a surface site near a low intensity point
+        Defaults to the average bond distance
     """
 
     module = STEM(STEM_parameters)
@@ -35,6 +44,10 @@ def move_surface_STEM(individual, STEM_parameters, surf_CN=10, filter_size=1):
 
     # Find a list of local maximum and local minimum in the image
     cutoff = get_avg_radii(individual) * 2 * 1.1
+    if move_cutoff is None:
+        move_cutoff = cutoff
+    if surf_cutoff is None:
+        surf_cutoff = cutoff
     resolution = module.parameters['resolution']        
     size = cutoff * resolution * filter_size
 
@@ -42,38 +55,59 @@ def move_surface_STEM(individual, STEM_parameters, surf_CN=10, filter_size=1):
     maxima = ((contrast == data_max) & (contrast > 0.1)) # Filter out low maxima
     max_coords = np.argwhere(maxima)
     max_xys = (max_coords[:,::-1] + [x_shift, y_shift]) / resolution
-    max_intensities = np.array([data_max[tuple(coord)] for coord in max_coords])
+    max_intensities = np.asarray([data_max[tuple(coord)] for coord in max_coords])
+    max_intensities /= sum(max_intensities)
 
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < -0.1)) # Filter out high minim
     min_coords = np.argwhere(minima)
     min_xys = (min_coords[:,::-1] + [x_shift, y_shift]) / resolution
-    min_intensities = np.absolute(np.array([data_min[tuple(coord)] for coord in min_coords]))
+    min_intensities = np.asarray([data_min[tuple(coord)] for coord in min_coords])
+    min_intensities = np.absolute(min_intensities)
+    min_intensities /= sum(min_intensities)
 
-    # Get a list of surface atoms
+    # Get indices of atoms considered to be moved and sites to move too
     CNs = CoordinationNumbers(individual)
     positions = individual.get_positions()
 
-    surf_CN = 11
+    move_indices = [i for i, CN in enumerate(CNs) if CN <= move_CN]
+    print(move_indices)
+    move_xys = positions[list(move_indices)][:, :2]
+
     surf_indices = [i for i, CN in enumerate(CNs) if CN <= surf_CN]
     surf_positions = positions[list(surf_indices)]
+    COM = np.sum(surf_positions) / len(surf_positions)
+    vec = surf_positions - COM
+    vec /= np.array([np.linalg.norm(vec, axis=1)]).T
+    surf_positions = surf_positions + vec * cutoff * 0.5 * random.uniform(0.1, 1)
     surf_xys = surf_positions[:, :2]
 
-    # Randomly choose local maxima and minima locations from contrast
-    high_xy_index = np.random.choice(np.arange(len(max_xys)),
-                                     p=max_intensities/sum(max_intensities))
-    low_xy_index = np.random.choice(np.arange(len(min_xys)),
-                                    p=min_intensities/sum(min_intensities))
+    # Randomly choose local maxima and minima locations from contrast weighted
+    # by their intensity
+    high_xy_index = np.random.choice(np.arange(len(max_xys)), p=max_intensities)
+    low_xy_index = np.random.choice(np.arange(len(min_xys)), p=min_intensities)
     high_xy = max_xys[high_xy_index]
     low_xy = min_xys[low_xy_index]
 
-    # Choose atom nearest to the high_xy and position nearest to the low_xy
-    move_index = np.argmin(np.linalg.norm(surf_xys - high_xy, axis=1))
-    new_position = surf_positions[np.argmin(np.linalg.norm(surf_xys - low_xy, axis=1))]
-    new_position_vec = (new_position - individual.get_center_of_mass()) / np.linalg.norm(new_position - individual.get_center_of_mass())    
-    new_position += new_position_vec * cutoff/2
+    # Choose move_atom (surf_atom) from within the move_cutoff (surf_cutoff)
+    # of high_xy (low_xy)
+    dists_move_xys = np.linalg.norm(move_xys - high_xy, axis=1)
+    indices_move_xys = [i for i, d in enumerate(dists_move_xys) if d < move_cutoff]
+    if len(indices_move_xys) == 0:
+        move_index = np.argmin(dists_move_xys)
+    else:
+        move_index = random.choice(indices_move_xys)
 
-    positions[surf_indices[move_index]] = new_position
+    dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)
+    indices_surf_xys = [i for i, d in enumerate(dists_surf_xys) if d < surf_cutoff]
+    if len(indices_surf_xys) == 0:
+        surf_index = np.argmin(dists_surf_xys)
+    else:
+        surf_index = random.choice(indices_surf_xys)
+
+    new_position = surf_positions[surf_index]
+
+    positions[move_indices[move_index]] = new_position
     individual.set_positions(positions)
 
     return
