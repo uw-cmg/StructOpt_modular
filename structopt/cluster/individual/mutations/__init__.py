@@ -19,6 +19,7 @@ rotate_cluster.tag = 'RoCl'
 twist.tag = 'Twist'
 swap_core_shell.tag = 'SwCoSh'
 rich2poor.tag = 'Ri2Po'
+poor2rich.tag = 'Pr2Ri'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 

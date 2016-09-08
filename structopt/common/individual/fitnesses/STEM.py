@@ -42,7 +42,9 @@ class STEM(object):
         # If running within StructOpt, create directory for saving files
         # and faster loading of PSF and target data
         if hasattr(logging, 'parameters'):
-            self.path = os.path.join(logging.parameters.path, 'fitness/STEM')
+            path = os.path.join(logging.parameters.path, 'fitness/STEM')
+            path = os.path.join(path, 'rank-{}'.format(logging.parameters.rank))
+            self.path = path
             os.makedirs(self.path, exist_ok=True)
         else:
             self.path = None
