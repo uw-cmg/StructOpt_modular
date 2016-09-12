@@ -1,4 +1,5 @@
 import numpy as np
+from ase import Atoms
 from ase.data import atomic_numbers, reference_states
 
 def get_avg_radii(atomlist):
@@ -8,7 +9,7 @@ def get_avg_radii(atomlist):
 
     Parameters
     ----------
-    atomlist: list
+    atomlist: list or atoms object
         An N x M list where N is the number of unique atoms and M are
         the attributes of the atom. The first and second index of each
         N list must be the chemical symbol and number, respectively.
@@ -20,6 +21,12 @@ def get_avg_radii(atomlist):
     """
 
     # Get the average atomic radii of close packed atoms
+    if isinstance(atomlist, Atoms):
+        chemical_symbols = atomlist.get_chemical_symbols()
+        unique_symbols = set(chemical_symbols)
+        atomlist = [[symbol, chemical_symbols.count(symbol)]
+                    for symbol in unique_symbols]
+
     n_tot = sum([atom[1] for atom in atomlist])
     r = 0
     for atom in atomlist:

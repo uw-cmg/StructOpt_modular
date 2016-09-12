@@ -1,6 +1,7 @@
 import structopt
 from .FEMSIM import FEMSIM
 from .LAMMPS import LAMMPS
+from .STEM import STEM
 from structopt.tools import root, single_core, parallel
 
 

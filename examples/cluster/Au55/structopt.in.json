@@ -3,9 +3,11 @@
     "logging": { },
     "structure_type": "cluster",
     "generators": {
-	"sphere": {"number_of_individuals": 20,
-		   "kwargs": {"atomlist": [["Au", 55]],
-			      "cell": [20, 20, 20]}}
+	"fcc": {"number_of_individuals": 5,
+		"kwargs": {"atomlist": [["Au", 55]],
+                           "orientation": "100",
+			   "cell": [20, 20, 20],
+                           "a": 4.08}}
     },
     "fitnesses": {
         "LAMMPS": {"weight": 1.0, 
@@ -18,7 +20,6 @@
 	                      "pair_style": "eam",
 	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
 	                      "thermo_steps": 0,
-                              "normalize": {"natoms": true},
                               "reference": {"Au": -3.930}}}
     },
     "relaxations": {
@@ -34,12 +35,12 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 5
+        "max_generations": 10
     },
     "mutations": {
-	"move_atoms": {"probability": 0.1},
-	"swap_positions": {"probability": 0.0},
-	"swap_species": {"probability": 0.0},
+	"move_surface_atoms": {"probability": 0.2},
+        "move_atoms": {"probability": 0.2},
+        "move_atoms_group": {"probability": 0.2},
 	"rotate_atoms": {"probability": 0.0},
 	"rotate_cluster": {"probability": 0.1},
         "rotate_all": {"probability": 0.0}
@@ -51,12 +52,11 @@
         "rotate": {"probability": 0.7}
     },
     "predators": {
-        "rank": {"probability": 1.0}
+        "fuss": {"probability": 1.0}
     },
     "selections": {
-        "best": {"probability": 1.0}
+        "rank": {"probability": 1.0}
     },
     "fileio": {},
-    "post_processing": {"XYZs": 5},
     "tools": {}
 }

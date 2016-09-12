@@ -57,6 +57,6 @@
                             "unique_parents": false}}
     },
     "fileio": {},
-    "postprocessing": {},
+    "post_processing": {"XYZs": 0},
     "tools": {}
 }

@@ -4,6 +4,9 @@ Output*
 log.lammps
 tests/
 XYZs/
+jobid
+*.o[0-9]*
+
 
 # This appears on apple computers
 .DS_Store

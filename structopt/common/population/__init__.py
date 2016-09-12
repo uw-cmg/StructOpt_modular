@@ -27,7 +27,6 @@ class Population(SortedDict):
         self.parameters = parameters
         self.structure_type = self.parameters.structure_type.lower()
         self.load_modules()
-        self.generation = 0
 
         self._max_individual_id = 0
 

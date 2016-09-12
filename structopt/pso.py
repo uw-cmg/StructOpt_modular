@@ -66,7 +66,7 @@ class ParticleSwarmOptimization(object):
         self.population.replace(updated_population)
         self.check_convergence()
         self.post_processing_step()
-        self.population.generation += 1
+        logging.parameters.generation += 1
         self.generation += 1
 
 

@@ -14,6 +14,7 @@ def fitness(population, parameters):
     Args:
         population (Population): the population to evaluate
     """
+    rank = logging.parameters.rank
     if parameters.use_mpi4py:
         logger = logging.getLogger('by-rank')
     else:
@@ -24,7 +25,6 @@ def fitness(population, parameters):
         ncores = logging.parameters.ncores
     else:
         ncores = 1
-    rank = logging.parameters.rank
 
     individuals_per_core = {r: [] for r in range(ncores)}
     for i, individual in enumerate(to_fit):
@@ -32,7 +32,7 @@ def fitness(population, parameters):
 
     for individual in individuals_per_core[rank]:
         print("Running LAMMPS fitness evaluation on individual {}".format(individual.id))
-        energy = individual.fitnesses.LAMMPS.fitness(individual, population.generation)
+        energy = individual.fitnesses.LAMMPS.fitness(individual)
         individual.LAMMPS = energy
         logger.info('Individual {0} after LAMMPS evaluation has energy {1}'.format(individual.id, energy))
 
