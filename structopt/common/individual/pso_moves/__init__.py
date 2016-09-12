@@ -19,6 +19,7 @@ class Pso_Moves(object):
 
     @single_core
     def move(self, individual, best_swarm, best_particle):
+        """ """
         logger = logging.getLogger("default")        
         individual._relaxed = False
         individual._fitted = False
