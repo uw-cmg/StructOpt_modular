@@ -226,13 +226,12 @@ class STEM(object):
             self.generate_psf()
 
         if not self.parameters['target'].endswith('.xyz'):
-            self.read_image(self.parameters['target'])
-            self.process_image()
-            return
-
-        atoms = read(self.parameters['target'])
-        self.target = self.get_image(atoms)
-        self.phantom = True
+            self.target = self.read_target(self.parameters['target'])
+            self.phantom = False
+        else:
+            atoms = read(self.parameters['target'])
+            self.target = self.get_image(atoms)
+            self.phantom = True
 
         # Try saving the target for future calculations
         if self.path is not None:
@@ -240,6 +239,11 @@ class STEM(object):
 
         return
 
+    def read_target(self, path):
+        if path.endswith('.npy'):
+            target = np.load(path)
+
+        return target
 
     def get_image(self, individual):
         """Calculates the z-contrasted STEM image of an individual"""
@@ -253,6 +257,28 @@ class STEM(object):
         ft_psf = np.fft.fftshift(psf)
         ft_V = np.fft.fft2(V).T
 
-        zcon_image = np.fft.ifft2(ft_psf * ft_V, axes=(0, 1)).real
+        image = np.fft.ifft2(ft_psf * ft_V, axes=(0, 1)).real
 
-        return zcon_image
+        if 'multislice' in self.parameters:
+            image = self.get_multislice(image, self.parameters['multislice'])
+
+        return image
+
+    def get_multislice(self, image, multislice_params):
+        """Converts pixel by pixel""" 
+        coeffs = multislice_params['coeffs']
+        plot_type = multislice_params['plot_type']
+
+        if 'fit_resolution' not in multislice_params:
+            scale = 50 / 3.9231
+        else:
+            scale = multislice_params['fit_resolution']
+
+        image *= (self.parameters['resolution'] / scale) ** 2
+
+        if plot_type == 'log':
+            image = np.log(image + 1)
+
+        image = np.nan_to_num(np.poly1d(coeffs)(image))
+
+        return image
