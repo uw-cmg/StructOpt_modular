@@ -271,12 +271,18 @@ class StructOpt(object):
             log_dirs_times = zip(log_dirs, log_times)
             log_dirs_times = sorted(log_dirs_times, key=itemgetter(1))
             log_dirs, log_times = zip(*log_dirs_times)
+            for i, log_dir in reversed(list(enumerate(log_dirs))):
+                if 'fitnesses.log' not in os.listdir(log_dirs[i]):
+                    log_dirs.pop(i)
             self.log_dirs = log_dirs
             self.set_run(-1)
             return True
         else:
-            self.log_dirs = []
+            self.log_dirs = log_dirs
             return False
+
+    def get_number_of_runs(self):
+        return len(self.log_dirs)
 
     def set_run(self, run_number):
         """Sets the get and read functions on a certain run number.
@@ -292,13 +298,8 @@ class StructOpt(object):
         if self.log_dirs is None:
             self.read_runs()
 
-        for _ in self.log_dirs:
-            if 'fitnesses.log' not in os.listdir(self.log_dirs[run_number]):
-                run_number -= 1
-            else:
-                break
         new_log_dir = self.log_dirs[run_number]
-        if new_log_dir is not self.log_dir:
+        if new_log_dir != self.log_dir:
             self.clear_data()
 
         self.log_dir = new_log_dir
@@ -433,7 +434,7 @@ class StructOpt(object):
     def clear_data(self): # TODO
         """Run to clear the stored data."""
 
-        self.fitnesses = None
+        self.fitness = None
 
         return
 
@@ -622,7 +623,7 @@ class StructOpt(object):
 
         return [np.average(fits) for fits in self.fitness[module]]
 
-    def get_min_fitnesses(self):
+    def get_min_fitnesses(self, module='all'):
         """Returns a list of the minimum fitness of each generation
 
         Output
