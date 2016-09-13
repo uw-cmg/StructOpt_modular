@@ -71,7 +71,6 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=8, surf_CN=10,
     positions = individual.get_positions()
 
     move_indices = [i for i, CN in enumerate(CNs) if CN <= move_CN]
-    print(move_indices)
     move_xys = positions[list(move_indices)][:, :2]
 
     surf_indices = [i for i, CN in enumerate(CNs) if CN <= surf_CN]
