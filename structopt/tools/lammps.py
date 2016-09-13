@@ -132,13 +132,19 @@ class LAMMPS(object):
         n_atom_types = len(species)
         f.write('{}  atom types\n'.format(n_atom_types))
 
+        pbc = self.atoms.get_pbc()
         xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
-        f.write('0.0 {}  xlo xhi\n'.format(xhi))
-        f.write('0.0 {}  ylo yhi\n'.format(yhi))
-        f.write('0.0 {}  zlo zhi\n'.format(zhi))
-
+        for index, axis in enumerate(['x','y','z']):
+            if pbc[index]:    
+                f.write('0.0 {}  {}lo {}hi\n'.format(xhi, axis, axis))
+            else:
+                xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
+                xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
+                f.write('{} {}  {}lo {}hi\n'.format(xlo, xhi, axis, axis))
+        
         if prism.is_skewed():
             f.write('{} {} {}  xy xz yz\n'.format(xy, xz, yz))
+        
         f.write('\n\n')
 
         f.write('Atoms \n\n')
@@ -227,7 +233,10 @@ class LAMMPS(object):
             pair_coeff = '* * {}'.format(pot_file)
             for element in elements:
                 pair_coeff += ' {}'.format(element)
-            self.parameters['pair_coeff'] = pair_coeff            
+            self.parameters['pair_coeff'] = pair_coeff  
+        elif 'lj/cut' in self.parameters['pair_style']:
+            self.parameters['pair_coeff'] = '* * 1 1'
+            self.parameters['mass'] = '* 1.0'
         else:
             s = self.parameters['pair_style']
             raise NotImplementedError('{} pair_style not yet implemented'.format(s))
@@ -249,7 +258,7 @@ class LAMMPS(object):
             output, error = p.communicate(timeout=self.parameters['timeout'])
         except TimeoutExpired:
             return True
-            
+
         self.output = output.decode('utf-8').split('\n')[:-1]
 
         # Check if the calculation completed without errors. If it does,
@@ -337,8 +346,11 @@ class LAMMPS(object):
                 atom_lines = [l.split() for l in lines[i+1:i+1+n_atoms]]
                 ids, types, xs, ys, zs, peas = zip(*atom_lines)
                 syms = [species[int(i) - 1] for i in types]
-                pos = [[float(x), float(y), float(z)] for x, y, z in zip(xs, ys, zs)]
-                peas = [float(E) for E in peas]
+                pos = [None for i in range(len(ids))]
+                peas = [None for i in range(len(ids))]
+                for id, x, y, z, E in zip(ids, xs, ys, zs, peas):
+                    pos[int(id) - 1] = [float(x), float(y), float(z)]
+                    #peas[int(id) - 1] = float(E)
 
                 # Update the positions of the atom
                 self.atoms.set_positions(pos)
@@ -360,8 +372,7 @@ class LAMMPS(object):
         zhilo = (hi[2] - lo[2])
 
         cell = [[xhilo,0,0],[xy,yhilo,0],[xz,yz,zhilo]]
-        if all(atoms.get_pbc()):
-            self.atoms.set_cell(cell)
+        self.atoms.set_cell(cell)
                 
         return
         
@@ -503,4 +514,3 @@ class prism:
         prism = self.get_lammps_prism()
         axy, axz, ayz = [np.abs(x) for x in prism[3:]]
         return (axy >= acc) or (axz >= acc) or (ayz >= acc)
-

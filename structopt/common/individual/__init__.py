@@ -31,6 +31,7 @@ class Individual(ase.Atoms):
         self._fitted = False
         self._relaxed = False
         self._fitness = None
+        self._Q_l = np.array([])
 
         cls_name = self.__class__.__name__.lower()
         if load_modules:
@@ -280,6 +281,7 @@ class Individual(ase.Atoms):
         new.fitted = self._fitted
         new._relaxed = self._relaxed
         new._fitness = self._fitness
+        new._Q_l = self._Q_l
         for module_name in self.fitnesses.module_names:
             setattr(new, module_name, getattr(self, module_name, None))
         return new

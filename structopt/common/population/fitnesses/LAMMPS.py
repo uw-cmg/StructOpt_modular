@@ -34,7 +34,7 @@ def fitness(population, parameters):
         print("Running LAMMPS fitness evaluation on individual {}".format(individual.id))
         energy = individual.fitnesses.LAMMPS.fitness(individual)
         individual.LAMMPS = energy
-        logger.info('Individual {0} after LAMPPS evaluation has energy {1}'.format(individual.id, energy))
+        logger.info('Individual {0} after LAMMPS evaluation has energy {1}'.format(individual.id, energy))
 
     fits = [individual.LAMMPS for individual in population]
     positions_per_core = {rank: [population.position(individual) for individual in individuals] for rank, individuals in individuals_per_core.items()}

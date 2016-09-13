@@ -49,5 +49,5 @@ class Fitnesses(object):
     @single_core
     def post_processing(self, fitnesses):
         logger = logging.getLogger("output")
-        logger.info("Total fitnesses for the population: {} (rank {})".format(fitnesses, logging.parameters.rank))
+        logger.info("Total fitnesses for the population: \n{} (rank {})".format(fitnesses, logging.parameters.rank))
 

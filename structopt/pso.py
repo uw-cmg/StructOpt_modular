@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import random
 import logging
 
@@ -39,24 +39,33 @@ class ParticleSwarmOptimization(object):
         if logging.parameters.rank == 0:
             print("Starting generation {}".format(self.generation))
         sys.stdout.flush()
-        
-        self.population.relax()        
-        fits = self.population.fitness()
-
+        self._is_best_swarm_updated = False        
         if self.generation == 0:
+            for id in range(1, len(self.population)):
+                self.population[id] = self.population[0].copy()
+                self.population[id].id = id
+                self.population[id].rattle(stdev = 0.5, seed = id)
+            
+            self.population.relax()
+            fits = self.population.fitness()
             self.best_swarm = self.population[0].copy()
             self.best_particles = [individual.copy() for individual in self.population]
 
+        self.population.relax()
+        fits = self.population.fitness()
+        
         if self.generation > 0:
             for i in range(len(self.population)):
                 if fits[i] < self.best_particles[i]._fitness:
                     self.best_particles[i] = self.population[i].copy()
                     if self.best_particles[i]._fitness < self.best_swarm._fitness:
                         self.best_swarm = self.best_particles[i].copy()
-        
+                        self._is_best_swarm_updated = True
+
         updated_population = self.population.run_pso_moves(self.best_swarm, self.best_particles)
         self.population.replace(updated_population)
         self.check_convergence()
+        self.post_processing_step()
         logging.parameters.generation += 1
         self.generation += 1
 
@@ -66,7 +75,13 @@ class ParticleSwarmOptimization(object):
             self.converged = True
         else:
             self.converged = False
-    
+
+    def post_processing_step(self):
+        if not self._is_best_swarm_updated:
+            return
+        path = os.path.join(logging.parameters.path, 'BestXYZs')
+        os.makedirs(path, exist_ok=True)
+        structopt.io.write_xyz(os.path.join(path, 'generation{}.xyz'.format(self.generation)), self.best_swarm, self.best_swarm._fitness)
 
     def __enter__(self):
         return self
