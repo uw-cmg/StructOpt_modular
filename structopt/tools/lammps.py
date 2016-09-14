@@ -372,7 +372,8 @@ class LAMMPS(object):
         zhilo = (hi[2] - lo[2])
 
         cell = [[xhilo,0,0],[xy,yhilo,0],[xz,yz,zhilo]]
-        self.atoms.set_cell(cell)
+        if all(atoms.get_pbc()):
+            self.atoms.set_cell(cell)
                 
         return
         
