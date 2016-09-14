@@ -122,12 +122,12 @@ class STEM(object):
         r = self.parameters['resolution']
         zed = self.parameters['zed']
         xmax, ymax = self.parameters['dimensions']
-        if type(xmax) is float:
+        if isinstance(xmax, float):
             nx = int(xmax * r)
             ny = int(ymax * r)
             dx = xmax/nx
             dy = ymax/ny
-        elif type(xmax) is int:
+        elif isinstance(xmax, int):
             nx = xmax
             ny = ymax
             xmax = nx / r
@@ -181,7 +181,7 @@ class STEM(object):
         r = self.parameters['resolution']
         a, b = self.parameters['dimensions']
 
-        if type(a) is float:
+        if isinstance(a, float):
             N_a = int(a * r)
             N_b = int(b * r)
         else:
