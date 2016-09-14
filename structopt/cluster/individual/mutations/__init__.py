@@ -55,8 +55,12 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(move_surface_STEM)
-    def move_surface_STEM(individual, STEM_parameters, move_CN=9, surf_CN=11):
-        return move_surface_STEM(individual, STEM_parameters, move_CN, surf_CN)
+    def move_surface_STEM(individual, STEM_parameters, move_CN=8, surf_CN=10,
+                          filter_size=1, move_cutoff=0.5, surf_cutoff=0.5,
+                          max_cutoff=0.5, min_cutoff=0.5):
+        return move_surface_STEM(individual, STEM_parameters, move_CN, surf_CN,
+                                 filter_size, move_cutoff, surf_cutoff,
+                                 max_cutoff, min_cutoff)
 
     @staticmethod
     @functools.wraps(rich2poor)
@@ -67,4 +71,3 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(poor2rich)
     def poor2rich(individual, max_natoms=0.05, surf_CN=11, factor=1.1):
         return poor2rich(individual, max_natoms, surf_CN, factor)
-    

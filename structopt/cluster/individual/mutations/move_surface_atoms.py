@@ -58,7 +58,7 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=9, surf_CN=11):
     avg_bond_length = get_avg_radii(atomlist) * 2
 
     # Choose sites as projections one bond length away from COM
-    COM = np.sum(surf_positions) / len(surf_positions)
+    COM = surf_positions.mean(axis=0)
     vec = surf_positions - COM
     vec /= np.array([np.linalg.norm(vec, axis=1)]).T
     add_positions = surf_positions + vec * avg_bond_length * 0.5
