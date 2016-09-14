@@ -36,6 +36,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         parameters.setdefault('rotation_grid', 10)
         parameters.setdefault('rotation_iterations', 2)
         parameters.setdefault('surface_moves', 10)
+        parameters.setdefault('filter_size', 1)
 
         super().__init__(parameters)
 
@@ -139,7 +140,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
 
         return bonds
 
-    def get_STEM_projection(self, individual):
+    def get_STEM_projection(self, individual, test=False):
         """Gets the projection of bonds from the brighest STEM image"""
 
         if self.target is None:
@@ -151,7 +152,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         # Get a cutoff between maximum points in the STEM image based
         # on nearest neighbor distances
         cutoff = get_avg_radii(individual) * 2 * 1.1
-        size = cutoff / 8 * parameters['resolution']
+        size = cutoff * parameters['resolution'] * parameters['filter_size']
 
         # Get a list of xy positions from analyzing local maxima in STEM image
         # as well as the position of a spot near the center of mass
@@ -166,5 +167,26 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         vecs = pos - bulk_atom_pos
         dists = np.linalg.norm(vecs, axis=1)
         vecs = vecs[((dists < cutoff) & (dists > 0))]
+
+        if test:
+            import matplotlib.pyplot as plt
+            import matplotlib.cm as cm
+
+            fig, ax = plt.subplots(num=1)
+            fig.colorbar(ax.pcolormesh(target, cmap=cm.viridis, linewidths=0))
+            ax.set_xlim((0, parameters['dimensions'][0] * parameters['resolution']))
+            ax.set_ylim((0, parameters['dimensions'][1] * parameters['resolution']))
+
+            fig, ax = plt.subplots(num=2)
+            fig.colorbar(ax.pcolormesh(data_max, cmap=cm.viridis, linewidths=0))
+            ax.set_xlim((0, parameters['dimensions'][0] * parameters['resolution']))
+            ax.set_ylim((0, parameters['dimensions'][1] * parameters['resolution']))
+
+            fig, ax = plt.subplots(num=3)
+            fig.colorbar(ax.pcolormesh(maxima, cmap=cm.viridis, linewidths=0))
+            ax.set_xlim((0, parameters['dimensions'][0] * parameters['resolution']))
+            ax.set_ylim((0, parameters['dimensions'][1] * parameters['resolution']))
+
+            plt.show()
 
         return vecs

@@ -211,7 +211,7 @@ def get_vector_angle(orientation=None, v=None, angle=None):
         v = np.array([1, 0, 0])
     elif orientation == '110':
         angle = np.pi / 4
-        v = np.array([1, 0, 0])
+        v = np.array([0, 1, 0])
     elif orientation == '111':
         angle = np.arcsin(1.0 / 3.0 ** 0.5)
         v = np.array([-1.0 / 2.0 ** 0.5, 1.0 / 2.0 ** 0.5, 0])
