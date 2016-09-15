@@ -6,22 +6,19 @@ from structopt.tools import get_avg_radii
 
 from ase.io import write
 
-def flip_surface_atoms(individual, surf_CN=11, min_thickness=None):
-    """Randomly moves atoms at the surface to other surface sites
+def flip_surface_atom(individual, surf_CN=11, min_thickness=None):
+    """Randomly "flips" an atom from one side of the particle to the other side
+    of the particle, ideally making little changes to the STEM fitness
 
     Parameters
     ----------
     individual : structopt.Individual object
         The individual object to be modified in place
-    max_natoms : float or int
-        if float, the maximum number of atoms that will be moved is 
-        max_natoms*len(individual)
-        if int, the maximum number of atoms that will be moved is max_natoms
-        default: 0.20
-    max_CN : int
-        The coordination number cutoff for determining which atoms are surface atoms
-        Any atoms with coordnation number at or above CN will not be considered as 
-        surface.
+    surf_CN : int
+        The maximum coordination number for determining an atom as a surface atom
+    min_thickness : float
+        The minimum distance to consider an atom as on the other side
+        of the particle.
 
     Output
     ------
@@ -33,7 +30,7 @@ def flip_surface_atoms(individual, surf_CN=11, min_thickness=None):
         return
 
     if min_thickness is None:
-        min_thickness = get_avg_radii(individual)
+        min_thickness = get_avg_radii(individual) * 2
     
     # Analyze the individual
     NNs = NeighborList(individual)
@@ -43,40 +40,31 @@ def flip_surface_atoms(individual, surf_CN=11, min_thickness=None):
     positions = individual.get_positions()
     surf_indices_CNs = [[i, CN] for i, CN in enumerate(CNs)
                         if CN <= surf_CN and CN > 2]
-    surf_indices_CNs.sort(key=lambda i: i[1])
-    surf_indices = list(zip(*surf_indices_CNs))[0]
-    surf_positions = np.array([positions[i] for i in surf_indices])
+    surf_indices, surf_CNs = list(zip(*surf_indices_CNs))
 
     # Pair each surface atom with a surface atom on the other side
     # of the particle
+    surf_positions = np.array([positions[i] for i in surf_indices])    
     surf_xys = np.array([surf_positions[:,:2]])
     surf_xy_vecs = surf_xys - np.transpose(surf_xys, [1, 0, 2])
     surf_xy_dists = np.linalg.norm(surf_xy_vecs, axis=2)
 
-    surf_zs = np.array(surf_positions[:,-1])
-    surf_z_dists = surf_zs - surf_zs.T
+    surf_zs = np.array([surf_positions[:,-1]])
+    surf_z_dists = np.absolute(surf_zs - surf_zs.T)
 
     flips = (surf_z_dists > min_thickness).astype(float)
     flips[flips == 0] = np.inf
     
-    
-    surf_xy_dists *= np.inf
-    
-    # Get the average bond length of the particle
-    chemical_symbols = individual.get_chemical_symbols()
-    unique_symbols = set(chemical_symbols)
-    atomlist = [[symbol, chemical_symbols.count(symbol)] for symbol in unique_symbols]
-    avg_bond_length = get_avg_radii(atomlist) * 2
+    surf_xy_dists *= flips
+    np.fill_diagonal(surf_xy_dists, np.inf)
+    flips = [np.argmin(dists) for dists in surf_xy_dists]
+    flip_indices = [[surf_indices[i], surf_indices[j]] for i, j in enumerate(flips)]
+    flip_CNs_diffs = [CNs[i] - CNs[j] for i, j in flip_indices]
 
-    # Set positions of a fraction of the surface atoms
-    if type(max_natoms) is float:
-        max_natoms = int(max_natoms * len(move_indices))
-    move_natoms = random.randint(0, max_natoms)
-    move_indices = move_indices[:move_natoms]
-    add_indices = np.random.choice(len(add_positions), len(move_indices), replace=False)
-    for move_index, add_index in zip(move_indices, add_indices):
-        positions[move_index] = add_positions[add_index]
+    # Simple rank based selection 
+
+    
 
     individual.set_positions(positions)
 
-    return move_indices
+    return
