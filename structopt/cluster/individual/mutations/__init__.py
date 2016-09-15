@@ -10,6 +10,7 @@ from .twist import twist
 from .swap_core_shell import swap_core_shell
 from .rich2poor import rich2poor
 from .poor2rich import poor2rich
+from .flip_surface_atom import flip_surface_atom
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -20,6 +21,7 @@ twist.tag = 'Twist'
 swap_core_shell.tag = 'SwCoSh'
 rich2poor.tag = 'Ri2Po'
 poor2rich.tag = 'Pr2Ri'
+flip_surface_atom.tag = 'FlSuAt'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
