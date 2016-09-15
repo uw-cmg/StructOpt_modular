@@ -9,7 +9,7 @@ from structopt.common.individual.fitnesses import STEM
 
 from ase.io import write
 
-def move_surface_STEM(individual, STEM_parameters, move_CN=8, surf_CN=10,
+def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
                       filter_size=1, move_cutoff=0.5, surf_cutoff=0.5,
                       max_cutoff=0.5, min_cutoff=0.5):
     """Moves surface atoms around based on the difference in the target
@@ -102,6 +102,7 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=8, surf_CN=10,
 
     dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)
     indices_surf_xys = [i for i, d in enumerate(dists_surf_xys) if d < surf_cutoff]
+
     if len(indices_surf_xys) == 0:
         surf_index = np.argmin(dists_surf_xys)
     else:
