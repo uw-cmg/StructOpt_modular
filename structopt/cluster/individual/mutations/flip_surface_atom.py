@@ -6,7 +6,7 @@ from structopt.tools import get_avg_radii
 
 from ase.io import write
 
-def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
+def flip_surface_atoms(individual, surf_CN=11, min_thickness=None):
     """Randomly moves atoms at the surface to other surface sites
 
     Parameters
@@ -32,19 +32,14 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
     if len(individual) == 0:
         return
 
+    if min_thickness is None:
+        min_thickness = get_avg_radii(individual)
+    
     # Analyze the individual
     NNs = NeighborList(individual)
     CNs = [len(NN) for NN in NNs]
     
-    # Get indices of atoms considered to be moved
-    move_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN <= move_CN]
-    if len(move_indices_CNs) == 0:
-        return 0
-    move_indices_CNs.sort(key=lambda i: i[1])
-    move_indices = list(zip(*move_indices_CNs))[0]
-
-    # Get surface sites to move atoms to
-    # First get all surface atoms
+    # Get all surface atoms
     positions = individual.get_positions()
     surf_indices_CNs = [[i, CN] for i, CN in enumerate(CNs)
                         if CN <= surf_CN and CN > 2]
@@ -52,17 +47,26 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
     surf_indices = list(zip(*surf_indices_CNs))[0]
     surf_positions = np.array([positions[i] for i in surf_indices])
 
+    # Pair each surface atom with a surface atom on the other side
+    # of the particle
+    surf_xys = np.array([surf_positions[:,:2]])
+    surf_xy_vecs = surf_xys - np.transpose(surf_xys, [1, 0, 2])
+    surf_xy_dists = np.linalg.norm(surf_xy_vecs, axis=2)
+
+    surf_zs = np.array(surf_positions[:,-1])
+    surf_z_dists = surf_zs - surf_zs.T
+
+    flips = (surf_z_dists > min_thickness).astype(float)
+    flips[flips == 0] = np.inf
+    
+    
+    surf_xy_dists *= np.inf
+    
     # Get the average bond length of the particle
     chemical_symbols = individual.get_chemical_symbols()
     unique_symbols = set(chemical_symbols)
     atomlist = [[symbol, chemical_symbols.count(symbol)] for symbol in unique_symbols]
     avg_bond_length = get_avg_radii(atomlist) * 2
-
-    # Choose sites as projections one bond length away from COM
-    COM = surf_positions.mean(axis=0)
-    vec = surf_positions - COM
-    vec /= np.array([np.linalg.norm(vec, axis=1)]).T
-    add_positions = surf_positions + vec * avg_bond_length * 0.5
 
     # Set positions of a fraction of the surface atoms
     if type(max_natoms) is float:
@@ -76,4 +80,3 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
     individual.set_positions(positions)
 
     return move_indices
-
