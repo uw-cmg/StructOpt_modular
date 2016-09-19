@@ -41,9 +41,22 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     target = module.target
 
     image, x_shift, y_shift = module.cross_correlate(module.get_image(individual))
+    print(x_shift, y_shift)
     contrast = image - target
     max_max = np.max(contrast)
     min_min = np.min(contrast)
+
+    ###################################
+    ## Code for testing the contrast ##
+    ###################################
+    # import matplotlib.pyplot as plt
+    # import matplotlib.cm as cm
+    # fig, ax = plt.subplots()
+    # fig.colorbar(ax.pcolormesh(contrast, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # plt.show()
+    # import sys; sys.exit()
 
     # Find a list of local maximum and local minimum in the image
     cutoff = get_avg_radii(individual) * 2 * 1.1
@@ -55,17 +68,43 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     data_max = filters.maximum_filter(contrast, size=size)
     maxima = ((contrast == data_max) & (contrast > max_max * max_cutoff))
     max_coords = np.argwhere(maxima)
-    max_xys = (max_coords[:,::-1] + [x_shift, y_shift]) / resolution
+    max_xys = (max_coords[:,::-1] - np.array([[x_shift, y_shift]])) / resolution
     max_intensities = np.asarray([data_max[tuple(coord)] for coord in max_coords])
     max_intensities /= sum(max_intensities)
+
+    ###################################
+    ## Code for testing the max find ##
+    ###################################
+    # import matplotlib.pyplot as plt
+    # import matplotlib.cm as cm
+    # fig, ax = plt.subplots()
+    # fig.colorbar(ax.pcolormesh(maxima, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # plt.show()
+    # print(len(max_intensities))
+    # import sys; sys.exit()
 
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < min_min * min_cutoff))
     min_coords = np.argwhere(minima)
-    min_xys = (min_coords[:,::-1] + [x_shift, y_shift]) / resolution
+    min_xys = (min_coords[:,::-1] - [x_shift, y_shift]) / resolution
     min_intensities = np.asarray([data_min[tuple(coord)] for coord in min_coords])
     min_intensities = np.absolute(min_intensities)
     min_intensities /= sum(min_intensities)
+
+    ###################################
+    ## Code for testing the min find ##
+    ###################################
+    # import matplotlib.pyplot as plt
+    # import matplotlib.cm as cm
+    # fig, ax = plt.subplots()
+    # fig.colorbar(ax.pcolormesh(data_min, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # plt.show()
+    # print(len(min_intensities))
+    # import sys; sys.exit()
 
     # Get indices of atoms considered to be moved and sites to move too
     CNs = CoordinationNumbers(individual)
@@ -95,6 +134,15 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     dists_move_xys = np.linalg.norm(move_xys - high_xy, axis=1)
     indices_move_xys = [i for i, d in zip(move_indices, dists_move_xys) if d < move_cutoff]
 
+    ########################
+    ## Test atoms to move ##
+    ########################
+    # from ase.visualize import view
+    # for i in indices_move_xys:
+    #     individual[i].symbol = 'Mo'
+    # view(individual)
+    # import sys; sys.exit()
+
     if len(indices_move_xys) == 0:
         move_index = np.argmin(dists_move_xys)
     else:
@@ -102,6 +150,16 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
 
     dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)
     indices_surf_xys = [i for i, d in enumerate(dists_surf_xys) if d < surf_cutoff]
+
+    ########################
+    ## Test atoms to move ##
+    ########################
+    # from ase import Atom
+    # from ase.visualize import view
+    # for i in indices_surf_xys:
+    #     individual.append(Atom('Mo', surf_positions[i]))
+    # view(individual)
+    # import sys; sys.exit()
 
     if len(indices_surf_xys) == 0:
         surf_index = np.argmin(dists_surf_xys)

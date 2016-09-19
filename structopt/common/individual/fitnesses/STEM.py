@@ -67,7 +67,7 @@ class STEM(object):
         return chi
 
     def cross_correlate(self, image):
-        convolution = fftconvolve(image, self.target[::-1, ::-1], mode='full')
+        convolution = fftconvolve(self.target, image[::-1, ::-1], mode='full')
         y_max, x_max = np.unravel_index(np.argmax(convolution), convolution.shape)
         x_shift = x_max - image.shape[1] + 1
         y_shift = y_max - image.shape[0] + 1
