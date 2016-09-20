@@ -75,5 +75,5 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(permute_column_surface)
     def permute_column_surface(individual, STEM_parameters, filter_size=0.5,
                                column_cutoff=0.5):
-        return return permute_column_surface(individual, STEM_parameters,
-                                             filter_size, column_cutoff)
+        return permute_column_surface(individual, STEM_parameters,
+                                      filter_size, column_cutoff)
