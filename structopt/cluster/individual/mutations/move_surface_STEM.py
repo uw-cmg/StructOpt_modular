@@ -41,7 +41,6 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     target = module.target
 
     image, x_shift, y_shift = module.cross_correlate(module.get_image(individual))
-    print(x_shift, y_shift)
     contrast = image - target
     max_max = np.max(contrast)
     min_min = np.min(contrast)

@@ -8,7 +8,7 @@ from ase.io import write
 
 def flip_surface_atom(individual, surf_CN=11, min_thickness=None):
     """Randomly "flips" an atom from one side of the particle to the other side
-    of the particle, ideally making little changes to the STEM fitness
+    of the particle or to a defect within a column.
 
     Parameters
     ----------
