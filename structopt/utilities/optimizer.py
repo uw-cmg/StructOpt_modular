@@ -90,6 +90,8 @@ class StructOpt(object):
             else:
                 self.status = 'error'
 
+        self.parameters.update(parameters)
+
     def restart(self): # TODO
         """Loads up the last generation of a previous run and modifies 
         the self.parameters to load up those structures on the next run"""
