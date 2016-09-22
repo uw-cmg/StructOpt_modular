@@ -24,6 +24,7 @@ swap_core_shell.tag = 'SwCoSh'
 rich2poor.tag = 'Ri2Po'
 poor2rich.tag = 'Pr2Ri'
 permute_column_surface.tag = 'PeCoSu'
+flip_surface_atom.tag = 'FlSuAt'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -77,3 +78,8 @@ class Mutations(structopt.common.individual.mutations.Mutations):
                                column_cutoff=0.5):
         return permute_column_surface(individual, STEM_parameters,
                                       filter_size, column_cutoff)
+
+    @staticmethod
+    @functools.wraps(flip_surface_atom)
+    def flip_surface_atom(individual, surf_CN=11, cutoff=0.5):
+        return flip_surface_atom(individual, surf_CN, cutoff)
