@@ -38,12 +38,13 @@
         "max_generations": 10
     },
     "mutations": {
-	"move_surface_atoms": {"probability": 0.2},
-        "move_atoms": {"probability": 0.2},
-        "move_atoms_group": {"probability": 0.2},
+	"move_surface_atoms": {"probability": 0.0},
+        "move_atoms": {"probability": 0.0},
+        "move_atoms_group": {"probability": 0.0},
 	"rotate_atoms": {"probability": 0.0},
-	"rotate_cluster": {"probability": 0.1},
-        "rotate_all": {"probability": 0.0}
+	"rotate_cluster": {"probability": 0.0},
+        "rotate_all": {"probability": 0.0},
+        "flip_surface_atom": {"probability": 1.0}
     },
     "fingerprinters": {
         "options": []
