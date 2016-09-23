@@ -14,6 +14,10 @@ from .flip_surface_atom import flip_surface_atom
 from .permute_column_STEM import permute_column_STEM
 from .permute_column_surface import permute_column_surface
 from .move_surface_defects import move_surface_defects
+from .enrich_surface import enrich_surface
+from .enrich_bulk import enrich_bulk
+from .enrich_surface_defects import enrich_surface_defects
+from .enrich_surface_facets import enrich_surface_facets
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -27,6 +31,10 @@ poor2rich.tag = 'Pr2Ri'
 permute_column_surface.tag = 'PeCoSu'
 flip_surface_atom.tag = 'FlSuAt'
 move_surface_defects.tag = 'MoSuDe'
+enrich_surface.tag = 'EnSu'
+enrich_bulk.tag = 'EnBu'
+enrich_surface_defects.tag = 'EnSuDe'
+enrich_surface_facets.tag = 'EnSuFa'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -71,13 +79,13 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(rich2poor)
-    def rich2poor(individual, max_natoms=0.05, surf_CN=11, factor=1.1):
-        return rich2poor(individual, max_natoms, surf_CN, factor)
+    def rich2poor(individual, surf_CN=11):
+        return rich2poor(individual, surf_CN)
 
     @staticmethod
     @functools.wraps(poor2rich)
-    def poor2rich(individual, max_natoms=0.05, surf_CN=11, factor=1.1):
-        return poor2rich(individual, max_natoms, surf_CN, factor)
+    def poor2rich(individual, surf_CN=11):
+        return poor2rich(individual, surf_CN)
 
     @staticmethod
     @functools.wraps(permute_column_surface)
@@ -95,3 +103,23 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(move_surface_defects)
     def move_surface_defects(individual, surf_CN=11):
         return move_surface_defects(individual, surf_CN)
+
+    @staticmethod
+    @functools.wraps(enrich_surface)
+    def enrich_surface(individual, surf_CN=11, species=None):
+        return enrich_surface(individual, surf_CN, species)
+
+    @staticmethod
+    @functools.wraps(enrich_bulk)
+    def enrich_bulk(individual, surf_CN=11, species=None):
+        return enrich_bulk(individual, surf_CN, species)
+
+    @staticmethod
+    @functools.wraps(enrich_surface_defects)
+    def enrich_surface_defects(individual, surf_CN=11, species=None):
+        return enrich_surface_defects(individual, surf_CN, species)
+
+    @staticmethod
+    @functools.wraps(enrich_surface_facets)
+    def enrich_surface_facets(individual, surf_CN=11, species=None):
+        return enrich_surface_facets(individual, surf_CN, species)
