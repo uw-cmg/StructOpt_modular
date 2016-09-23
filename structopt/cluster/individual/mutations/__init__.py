@@ -72,6 +72,11 @@ class Mutations(structopt.common.individual.mutations.Mutations):
         return rich2poor(individual, max_natoms, surf_CN, factor)
 
     @staticmethod
+    @functools.wraps(poor2rich)
+    def poor2rich(individual, max_natoms=0.05, surf_CN=11, factor=1.1):
+        return poor2rich(individual, max_natoms, surf_CN, factor)
+
+    @staticmethod
     @functools.wraps(permute_column_surface)
     def permute_column_surface(individual, STEM_parameters, filter_size=0.5,
                                column_cutoff=0.5):
