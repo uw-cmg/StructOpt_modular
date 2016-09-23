@@ -44,7 +44,7 @@
 	"rotate_atoms": {"probability": 0.0},
 	"rotate_cluster": {"probability": 0.0},
         "rotate_all": {"probability": 0.0},
-        "flip_surface_atom": {"probability": 1.0}
+        "move_surface_defects": {"probability": 1.0}
     },
     "fingerprinters": {
         "options": []

@@ -13,6 +13,7 @@ from .poor2rich import poor2rich
 from .flip_surface_atom import flip_surface_atom
 from .permute_column_STEM import permute_column_STEM
 from .permute_column_surface import permute_column_surface
+from .move_surface_defects import move_surface_defects
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -25,6 +26,7 @@ rich2poor.tag = 'Ri2Po'
 poor2rich.tag = 'Pr2Ri'
 permute_column_surface.tag = 'PeCoSu'
 flip_surface_atom.tag = 'FlSuAt'
+move_surface_defects.tag = 'MoSuDe'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -88,3 +90,8 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(flip_surface_atom)
     def flip_surface_atom(individual, surf_CN=11, cutoff=0.5):
         return flip_surface_atom(individual, surf_CN, cutoff)
+
+    @staticmethod
+    @functools.wraps(move_surface_defects)
+    def move_surface_defects(individual, surf_CN=11):
+        return move_surface_defects(individual, surf_CN)
