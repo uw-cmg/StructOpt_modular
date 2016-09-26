@@ -40,6 +40,9 @@ def get_avg_radii(atomlist):
         elif struct == 'bcc':
             a = reference_states[atomic_number]['a']
             r += conc * np.linalg.norm([a, a, a]) / 4.0
+        elif struct == 'hcp':
+            a = reference_states[atomic_number]['a']
+            r += conc * a
         else:
             raise NotImplementedError('{} structure not supported yet'.format(struct))
 

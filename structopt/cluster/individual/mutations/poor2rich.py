@@ -2,50 +2,38 @@ import random
 import numpy as np
 from structopt.tools import NeighborList
 
-def poor2rich(atoms, max_natoms=0.05, surf_CN=11, factor=1.1):
+def poor2rich(atoms, surf_CN=11):
     '''Moves an atom from a rich region to a poor region'''
 
-    if type(max_natoms) is float:
-        max_natoms = int(max_natoms * len(atoms))
-
-    moves = random.randint(0, max_natoms)
-
     syms = np.asarray(atoms.get_chemical_symbols())
-    NN_list = NeighborList(atoms, cutoff=None, factor=1.1)
+    NN_list = NeighborList(atoms)
     NNs = [list(syms[i]) for i in NN_list]
-    unique_syms = list(set(atoms.get_chemical_symbols()))
+    max_CN = max([len(NN) for NN in NNs])
 
-    for _ in range(moves):
+    # Pick an atom in a poor environment
+    ns_to_rich = np.array([max_CN - NNs[i].count(sym) for i, sym in enumerate(syms)])
 
-        # Pick an atom in a poor environment
-        count_syms = np.zeros([len(unique_syms), len(NNs)])
-        for i, sym in enumerate(unique_syms):
-            count_syms[i] = [neighbors.count(sym)/len(neighbors) for neighbors in NNs]
-        min_counts = np.min(count_syms.T, axis=1)
-        prob_poor = np.absolute(min_counts - 1)
-        prob_poor = prob_poor / sum(prob_poor)
-        index_poor = np.random.choice(np.arange(len(syms)), p=prob_poor)
-        element_poor = atoms[index_poor].symbol
+    unique_ns = np.array(list(set(ns_to_rich)))
+    prob_poor = 2.0 ** unique_ns
+    prob_poor /= np.sum(prob_poor)
+    n_to_rich = np.random.choice(unique_ns, p=prob_poor)
+    indices_poor = np.where(ns_to_rich == n_to_rich)[0]
+    index_poor = np.random.choice(indices_poor)
+    symbol_poor = syms[index_poor]
 
-        # Pick an atom of different species in rich environment of the same atom
-        indices_rich = [i for i, sym in enumerate(syms) if sym != element_poor]
-        max_counts = count_syms[unique_syms.index(element_poor)]
-        max_counts = np.asarray([count for count, sym in zip(max_counts, syms)
-                                 if sym != element_poor])
-        prob_rich = max_counts / sum(max_counts)
-        index_rich = np.random.choice(indices_rich, p=prob_rich)
-        element_rich = atoms[index_rich].symbol
+    # Pick another atom in a rich environment
+    indices_other = [i for i, sym in enumerate(syms) if sym != symbol_poor]
+    ns = np.array([NNs[i].count(symbol_poor) for i in indices_other])
+    unique_ns = np.array(list(set(ns)))
+    prob_rich = 2.0 ** unique_ns
+    prob_rich /= np.sum(prob_rich)
+    n = np.random.choice(unique_ns, p=prob_rich)
+    indices_rich = np.where(ns == n)[0]
+    index_rich = np.random.choice(indices_rich)
+    index_rich = indices_other[index_rich]
+    symbol_rich = syms[index_rich]
 
-        # Update symbols and nearest neighborlist
-        syms[index_rich] = element_poor
-        syms[index_poor] = element_rich
-
-        for i, neighbors in enumerate(NN_list):
-            if index_rich in neighbors:
-                NNs[i][list(neighbors).index(index_rich)] = element_poor
-            if index_poor in neighbors:
-                NNs[i][list(neighbors).index(index_poor)] = element_rich
-
-    atoms.set_chemical_symbols(syms)
+    atoms[index_poor].symbol = symbol_rich
+    atoms[index_rich].symbol = symbol_poor
 
     return
