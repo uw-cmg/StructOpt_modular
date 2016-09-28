@@ -155,13 +155,6 @@ class Mutations(structopt.common.individual.mutations.Mutations):
                            column_cutoff=0.5, species=None, surf_CN=11):
         return enrich_bulk_column(individual, STEM_parameters, filter_size,
                                   column_cutoff, species, surf_CN)
-
-    @staticmethod
-    @functools.wraps(enrich_bulk_column)
-    def enrich_bulk_column(individual, STEM_parameters, filter_size=0.5,
-                           column_cutoff=0.5, species=None, surf_CN=11):
-        return enrich_bulk_column(individual, STEM_parameters, filter_size,
-                                  column_cutoff, species, surf_CN)
     
     @staticmethod
     @functools.wraps(rich2poor_column)

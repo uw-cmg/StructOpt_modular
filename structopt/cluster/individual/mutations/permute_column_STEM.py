@@ -56,7 +56,7 @@ def permute_column_STEM(individual, STEM_parameters, filter_size=1,
     # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
     # plt.show()
     # print(len(max_intensities))
-    # import sys; sys.exit()    
+    # import sys; sys.exit()
 
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < -0.01))

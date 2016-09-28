@@ -64,22 +64,22 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     ###################################
     ## Code for testing the max find ##
     ###################################
-    import matplotlib.pyplot as plt
-    import matplotlib.cm as cm
-    fig, ax = plt.subplots()
-    fig.colorbar(ax.pcolormesh(maxima, cmap=cm.viridis, linewidths=0))
-    ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
-    print(len(max_intensities))
+    # import matplotlib.pyplot as plt
+    # import matplotlib.cm as cm
+    # fig, ax = plt.subplots()
+    # fig.colorbar(ax.pcolormesh(maxima, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # print(len(max_intensities))
 
-    fig, ax = plt.subplots(num=2)
-    fig.colorbar(ax.pcolormesh(data_max, cmap=cm.viridis, linewidths=0))
-    ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # fig, ax = plt.subplots(num=2)
+    # fig.colorbar(ax.pcolormesh(data_max, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
     
-    plt.show()
-    print(len(min_intensities))
-    import sys; sys.exit()    
+    # plt.show()
+    # print(len(min_intensities))
+    # import sys; sys.exit()
 
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < min_min * min_cutoff))
