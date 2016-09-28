@@ -3,6 +3,8 @@ import structopt.common.population.crossovers
 
 from .rotate import rotate
 
+rotate.tag = 'Ro'
+
 class Crossovers(structopt.common.population.crossovers.Crossovers):
 
     @staticmethod

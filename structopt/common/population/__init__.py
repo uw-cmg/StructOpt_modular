@@ -5,7 +5,7 @@ from reprlib import recursive_repr as _recursive_repr
 
 import structopt
 from ..individual import Individual
-from .crossovers import Crossovers
+#from .crossovers import Crossovers
 from .predators import Predators
 from .selections import Selections
 from .fitnesses import Fitnesses
@@ -64,7 +64,6 @@ class Population(SortedDict):
 
         self.initial_number_of_individuals = len(self)
 
-
     def __iter__(self):
         iterable = super().__iter__()
         curr = next(iterable)
@@ -109,10 +108,14 @@ class Population(SortedDict):
     def load_modules(self):
         importlib.import_module('structopt.{}'.format(self.structure_type))
         for module in self.parameters:
+            if module == 'crossovers':
+                Module = importlib.import_module('structopt.{}.population.crossovers'.format(self.structure_type))
+                Module = getattr(Module, module.title())(getattr(self.parameters, module))
+                setattr(self, module, Module)
+                continue
             if module in POPULATION_MODULES and self.parameters[module] is not None:
                 Module = globals()[module.title()](getattr(self.parameters, module))
                 setattr(self, module, Module)
-
 
     @single_core
     def position(self, individual):

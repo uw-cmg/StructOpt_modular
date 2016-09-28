@@ -5,6 +5,7 @@ from ase import Atoms
 from structopt.common.individual import Individual
 from structopt.tools import root, single_core, parallel
 from structopt.tools import random_three_vector
+from structopt.tools import repair_cluster
 
 @single_core
 def rotate(individual1, individual2, center_at_atom=True, repair_composition=True):
@@ -60,17 +61,31 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
     ind2c.rotate(rot_vec, a=rot_angle, center=(0, 0, 0))
 
     # Create the children
-    child1 = ind1c[ind1c.positions[:,2] >= 0] + ind2c[ind2c.positions[:,2] < 0]
-    child2 = ind2c[ind2c.positions[:,2] >= 0] + ind1c[ind1c.positions[:,2] < 0]
+    child1 = Atoms()
+    child2 = Atoms()
+    child1.extend(ind1c[ind1c.positions[:,2] >= 0])
+    child1.extend(ind2c[ind2c.positions[:,2] < 0])
+    child2.extend(ind2c[ind2c.positions[:,2] >= 0])
+    child2.extend(ind1c[ind1c.positions[:,2] < 0])
 
     # Repair the children
-    syms1, syms2 = ind1c.get_chemical_symbols(), ind2c.get_chemical_symbols()
-    if repair_composition and sorted(syms1) == sorted(syms2):
-        if len(syms1
+    if repair_composition:
+        syms = ind1c.get_chemical_symbols()
+        atomlist = [[sym, syms.count(sym)] for sym in set(syms)]
+        repair_cluster(child1, atomlist)
+        repair_cluster(child2, atomlist)
 
+    # Reorient the children
     child1.rotate(rot_vec, a=-rot_angle, center=(0, 0, 0))
     child1.center()
     child2.rotate(rot_vec, a=-rot_angle, center=(0, 0, 0))
     child2.center()
 
-    return child1, child2
+    full_child1 = individual1.copy()
+    full_child1.empty()
+    full_child1.extend(child1)
+    full_child2 = individual2.copy()
+    full_child2.empty()
+    full_child2.extend(child2)
+    
+    return full_child1, full_child2
