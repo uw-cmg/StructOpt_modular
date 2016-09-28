@@ -2,6 +2,7 @@ from importlib import import_module
 
 from structopt.common.individual import Individual
 from structopt.tools import root, single_core, parallel
+from .population.crossovers import Crossovers
 
 class Cluster(Individual):
     """ A stucture containing a non-periodic cluster of atoms. Relaxation algorithms such as LAMMPS and VASP require

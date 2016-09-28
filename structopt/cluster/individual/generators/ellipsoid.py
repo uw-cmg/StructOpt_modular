@@ -5,7 +5,23 @@ from structopt.tools import get_particle_radius
 
 def ellipsoid(atomlist, fill_factor=0.74, radii=None, ratio=[1, 1, 1], cell=None):
     """Generates a random ellipsoid by rejection sampling. Not the most efficient
-    code but good at garaunteeing an even distribution inside the ellipsoid"""
+    code but good at garaunteeing an even distribution inside the ellipsoid.
+
+    Parameters
+    ----------
+    fill_factor : float
+        Determines how "close" the atoms are packed. 
+        See structopt.tools.get_particle_radius for description
+    radii : list (3 elements)
+        The size, in angstroms, of the ellipsoid in the x, y and z
+        direction
+    ratio : list (3 elements)
+        The ratio of the dimensions of the ellipsoid in the x, y
+        and z direction.
+    cell : list (3  elements)
+        The size, in angstroms, of the dimensions that holds the
+        atoms object
+    """
     
 
     # Get the dimensions of the ellipsoid if required

@@ -18,7 +18,7 @@ class Individual(ase.Atoms):
                  relaxation_parameters=None, fitness_parameters=None,
                  mutation_parameters=None,
                  pso_moves_parameters=None,
-                 generator_parameters=None):
+                 generator_parameters=None, **kwargs):
 
         self.id = id
         self.mutation_tag = None
