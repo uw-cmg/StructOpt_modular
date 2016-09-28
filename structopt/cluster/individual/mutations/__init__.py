@@ -13,11 +13,17 @@ from .poor2rich import poor2rich
 from .flip_surface_atom import flip_surface_atom
 from .permute_column_STEM import permute_column_STEM
 from .permute_column_surface import permute_column_surface
+from .permute_column_bulk import permute_column_bulk
 from .move_surface_defects import move_surface_defects
 from .enrich_surface import enrich_surface
 from .enrich_bulk import enrich_bulk
 from .enrich_surface_defects import enrich_surface_defects
 from .enrich_surface_facets import enrich_surface_facets
+from .permutation_STEM import permutation_STEM
+from .enrich_surface_column import enrich_surface_column
+from .enrich_bulk_column import enrich_bulk_column
+from .rich2poor_column import rich2poor_column
+from .poor2rich_column import poor2rich_column
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -35,6 +41,11 @@ enrich_surface.tag = 'EnSu'
 enrich_bulk.tag = 'EnBu'
 enrich_surface_defects.tag = 'EnSuDe'
 enrich_surface_facets.tag = 'EnSuFa'
+permutation_STEM.tag ='PeSTEM'
+enrich_surface_column.tag = 'EnSuCo'
+enrich_bulk_column.tag = 'EnBuCo'
+rich2poor_column.tag = 'Ri2PoCo'
+poor2rich_column.tag = 'Po2RiCo'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -123,3 +134,45 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(enrich_surface_facets)
     def enrich_surface_facets(individual, surf_CN=11, species=None):
         return enrich_surface_facets(individual, surf_CN, species)
+
+    @staticmethod
+    @functools.wraps(permutation_STEM)
+    def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
+                         move_cutoff=0.5, max_cutoff=0.5, min_cutoff=0.5):
+        return permutation_STEM(individual, STEM_parameters, filter_size,
+                                move_cutoff, max_cutoff, min_cutoff)
+
+    @staticmethod
+    @functools.wraps(enrich_surface_column)
+    def enrich_surface_column(individual, STEM_parameters, filter_size=0.5,
+                              column_cutoff=0.5, species=None, surf_CN=11):
+        return enrich_surface_column(individual, STEM_parameters, filter_size,
+                                     column_cutoff, species, surf_CN)
+
+    @staticmethod
+    @functools.wraps(enrich_bulk_column)
+    def enrich_bulk_column(individual, STEM_parameters, filter_size=0.5,
+                           column_cutoff=0.5, species=None, surf_CN=11):
+        return enrich_bulk_column(individual, STEM_parameters, filter_size,
+                                  column_cutoff, species, surf_CN)
+
+    @staticmethod
+    @functools.wraps(enrich_bulk_column)
+    def enrich_bulk_column(individual, STEM_parameters, filter_size=0.5,
+                           column_cutoff=0.5, species=None, surf_CN=11):
+        return enrich_bulk_column(individual, STEM_parameters, filter_size,
+                                  column_cutoff, species, surf_CN)
+    
+    @staticmethod
+    @functools.wraps(rich2poor_column)
+    def rich2poor_column(individual, STEM_parameters, filter_size=0.5,
+                         column_cutoff=0.5, species=None, surf_CN=11):
+        return rich2poor_column(individual, STEM_parameters, filter_size,
+                                column_cutoff, species, surf_CN)
+
+    @staticmethod
+    @functools.wraps(poor2rich_column)
+    def poor2rich_column(individual, STEM_parameters, filter_size=0.5,
+                         column_cutoff=0.5, species=None, surf_CN=11):
+        return poor2rich_column(individual, STEM_parameters, filter_size,
+                                column_cutoff, species, surf_CN)

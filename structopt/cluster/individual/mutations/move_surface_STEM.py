@@ -61,7 +61,7 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     cutoff = get_avg_radii(individual) * 2 * 1.1
     move_cutoff *= cutoff
     surf_cutoff *= cutoff
-    resolution = module.parameters['resolution']        
+    resolution = module.parameters['resolution']
     size = cutoff * resolution * filter_size
 
     data_max = filters.maximum_filter(contrast, size=size)
