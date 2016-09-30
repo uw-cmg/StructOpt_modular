@@ -41,8 +41,8 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
     # fig.colorbar(ax.pcolormesh(contrast, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * STEM_parameters['resolution']))
     # plt.show()
     # import sys; sys.exit()
 
@@ -68,17 +68,17 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
     # fig.colorbar(ax.pcolormesh(maxima, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * STEM_parameters['resolution']))
     # print(len(max_intensities))
 
     # fig, ax = plt.subplots(num=2)
     # fig.colorbar(ax.pcolormesh(data_max, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * STEM_parameters['resolution']))
     
     # plt.show()
-    # print(len(min_intensities))
+    # print(len(max_intensities))
     # import sys; sys.exit()
 
     data_min = filters.minimum_filter(contrast, size=size)
@@ -98,13 +98,13 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots(num=1)
     # fig.colorbar(ax.pcolormesh(minima, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * STEM_parameters['resolution']))
 
     # fig, ax = plt.subplots(num=2)
     # fig.colorbar(ax.pcolormesh(data_min, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * STEM_parameters['resolution']))
     
     # plt.show()
     # print(len(min_intensities))
@@ -119,6 +119,9 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     min_dists = np.expand_dims(xys, 0) - np.transpose(np.expand_dims(min_xys, 0), (1, 0, 2))
     min_dists = np.linalg.norm(min_dists, axis=2)
     min_column_indices = [np.where(dists < move_cutoff)[0] for dists in min_dists]
+
+    if np.size(min_column_indices) == 0 or np.size(min_column_indices) == 0:
+        return
 
     # Eliminate columns that cannot be "improved" by a permutation
     syms = np.asarray(individual.get_chemical_symbols())
@@ -139,12 +142,12 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
             min_intensities = np.delete(min_intensities, i)
             min_intensities /= np.sum(min_intensities)
 
-    # Pick a max column and min column based on their intensities
-    try:
-        max_column_indices = max_column_indices[np.random.choice(np.arange(len(max_intensities)), p=max_intensities)]
-        min_column_indices = min_column_indices[np.random.choice(np.arange(len(min_intensities)), p=min_intensities)]
-    except:
+    # Pick a max column and min column based on their intensities 
+    if np.size(min_column_indices) == 0 or np.size(min_column_indices) == 0:
         return
+
+    max_column_indices = max_column_indices[np.random.choice(np.arange(len(max_intensities)), p=max_intensities)]
+    min_column_indices = min_column_indices[np.random.choice(np.arange(len(min_intensities)), p=min_intensities)]
 
     # Pick a move between the two columns based on differences in atomic numbers
     max_column_numbers = [atomic_numbers[sym] for sym in syms[max_column_indices]]    
