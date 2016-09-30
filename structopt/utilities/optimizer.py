@@ -273,6 +273,8 @@ class StructOpt(object):
             log_dirs_times = zip(log_dirs, log_times)
             log_dirs_times = sorted(log_dirs_times, key=itemgetter(1))
             log_dirs, log_times = zip(*log_dirs_times)
+            log_dirs = list(log_dirs)
+            log_times = list(log_times)
             for i, log_dir in reversed(list(enumerate(log_dirs))):
                 if 'fitnesses.log' not in os.listdir(log_dirs[i]):
                     log_dirs.pop(i)

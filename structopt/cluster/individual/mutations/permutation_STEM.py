@@ -140,11 +140,11 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
             min_intensities /= np.sum(min_intensities)
 
     # Pick a max column and min column based on their intensities
-    max_column_indices = max_column_indices[np.random.choice(np.arange(len(max_intensities)), p=max_intensities)]
     try:
+        max_column_indices = max_column_indices[np.random.choice(np.arange(len(max_intensities)), p=max_intensities)]
         min_column_indices = min_column_indices[np.random.choice(np.arange(len(min_intensities)), p=min_intensities)]
     except:
-        print(min_column_indices, min_intensities); import sys; sys.exit()
+        return
 
     # Pick a move between the two columns based on differences in atomic numbers
     max_column_numbers = [atomic_numbers[sym] for sym in syms[max_column_indices]]    
