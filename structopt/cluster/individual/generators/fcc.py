@@ -7,7 +7,7 @@ from ase import Atoms
 from structopt.tools import random_three_vector
 
 def fcc(atomlist, cell, a, shape=[1, 1, 1], orientation=None, size=21,
-        roundness=0.5, alpha=10, v=None, angle=None):        
+        roundness=0.5, alpha=10, v=None, angle=None):
 
     grid = np.zeros((size, size, size), dtype=np.int)
 
@@ -123,20 +123,26 @@ def get_atoms(grid, atomlist, cell, a, v=[1, 0, 0], angle=0.0):
     a1 = a/2.0 * np.array([1, 1, 0])
     a2 = a/2.0 * np.array([1, 0, 1])
     a3 = a/2.0 * np.array([0, 1, 1])
-
     temp_cell = np.array([a1, a2, a3])
 
-    # First make the cell the rotated cell
-    v = np.asarray(v, dtype=float)
-    v /= np.linalg.norm(v)
+    if np.shape(v) == (3,) and not hasattr(angle, '__iter__'):
+        vs = np.expand_dims(v, 0)
+        angles = [angle]
+    else:
+        vs = v
+        angles = angle
 
-    c = cos(angle)
-    s = sin(angle)
+    for v, angle in zip(vs, angles):
+        v = np.asarray(v, dtype=float)
+        v /= np.linalg.norm(v)
 
-    temp_cell[:] = (c * temp_cell -
-                    np.cross(temp_cell, s * v) +
-                    np.outer(np.dot(temp_cell, v), (1.0 - c) * v))
+        c = cos(angle)
+        s = sin(angle)
 
+        temp_cell[:] = (c * temp_cell -
+                        np.cross(temp_cell, s * v) +
+                        np.outer(np.dot(temp_cell, v), (1.0 - c) * v))
+    
     # Loop through each lattice point and add the atom
     scaled_positions = []
     size = np.shape(grid)
@@ -173,15 +179,23 @@ def get_norm_dists(grid, center, shape, a, v=[0, 0, 1], angle=0.0):
     a3 = a/2.0 * np.array([0, 1, 1])
     cell = np.array([a1, a2, a3])
 
-    v = np.asarray(v, dtype=float)
-    v /= np.linalg.norm(v)
+    if np.shape(v) == (3,) and not hasattr(angle, '__iter__'):
+        vs = np.expand_dims(v, 0)
+        angles = [angle]
+    else:
+        vs = v
+        angles = angle
 
-    c = cos(angle)
-    s = sin(angle)
+    for v, angle in zip(vs, angles):
+        v = np.asarray(v, dtype=float)
+        v /= np.linalg.norm(v)
 
-    cell[:] = (c * cell -
-               np.cross(cell, s * v) +
-               np.outer(np.dot(cell, v), (1.0 - c) * v))
+        c = cos(angle)
+        s = sin(angle)
+
+        cell[:] = (c * cell -
+                   np.cross(cell, s * v) +
+                   np.outer(np.dot(cell, v), (1.0 - c) * v))
 
     # Get the coordinates of each grid point in real space
     size = np.shape(grid)
@@ -203,19 +217,31 @@ def get_vector_angle(orientation=None, v=None, angle=None):
     if (np.shape(v) == (3,) and type(a) in [float, int]):
         v = np.asarray(v, dtype=float)
         v /= np.linalg.norm(v)
+        return v, angle
+
     elif orientation is None:
         angle = np.random.uniform(0,np.pi*2)
         v = random_three_vector()
+        return v, angle
+
     elif orientation == '100':
-        angle = 0.0
-        v = np.array([1, 0, 0])
+        orientation_angle = 0.0
+        orientation_v = np.array([1, 0, 0])
     elif orientation == '110':
-        angle = np.pi / 4
-        v = np.array([0, 1, 0])
+        orientation_angle = np.pi / 4
+        orientation_v = np.array([0, 1, 0])
     elif orientation == '111':
-        angle = np.arcsin(1.0 / 3.0 ** 0.5)
-        v = np.array([-1.0 / 2.0 ** 0.5, 1.0 / 2.0 ** 0.5, 0])
+        orientation_angle = np.arcsin(1.0 / 3.0 ** 0.5)
+        orientation_v = np.array([-1.0 / 2.0 ** 0.5, 1.0 / 2.0 ** 0.5, 0])
     else:
         raise NotImplementedError('Orientation not implemented')
+
+    # Sometimes we want another rotation after an orientation
+    if v is None and angle is not None:
+        v = [orientation_v, np.array([0, 0, 1])]
+        angle = [orientation_angle, np.asarray(angle)]
+    else:
+        v = orientation_v
+        angle = orientation_angle        
 
     return v, angle
