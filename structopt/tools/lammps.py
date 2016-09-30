@@ -212,7 +212,7 @@ class LAMMPS(object):
 
         # Initialize the potential parameters
         if 'pair_style' not in self.parameters:
-            self.parameters['pair_style'] = 'lj/cut 2.5'
+            self.parameters['pair_style'] = 'lj/cut 10.0'
             self.parameters['pair_coeff'] = '* * 1 1'
             self.parameters['mass'] = '* 1.0'
 
@@ -423,7 +423,6 @@ class prism:
         """
         a, b, c = cell
         an, bn, cn = [np.linalg.norm(v) for v in cell]
-        
         alpha = np.arccos(np.dot(b, c)/(bn*cn))
         beta  = np.arccos(np.dot(a, c)/(an*cn))
         gamma = np.arccos(np.dot(a, b)/(an*bn))
