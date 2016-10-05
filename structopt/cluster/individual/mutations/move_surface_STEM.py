@@ -67,7 +67,7 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     data_max = filters.maximum_filter(contrast, size=size)
     maxima = ((contrast == data_max) & (contrast > max_max * max_cutoff))
     if len(maxima) == 0:
-        return
+        return False
     max_coords = np.argwhere(maxima)
     max_xys = (max_coords[:,::-1] - np.array([[x_shift, y_shift]])) / resolution
     max_intensities = np.asarray([data_max[tuple(coord)] for coord in max_coords])
@@ -89,7 +89,7 @@ def move_surface_STEM(individual, STEM_parameters, move_CN=11, surf_CN=11,
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < min_min * min_cutoff))
     if len(minima) == 0:
-        return
+        return False
     min_coords = np.argwhere(minima)
     min_xys = (min_coords[:,::-1] - [x_shift, y_shift]) / resolution
     min_intensities = np.asarray([data_min[tuple(coord)] for coord in min_coords])

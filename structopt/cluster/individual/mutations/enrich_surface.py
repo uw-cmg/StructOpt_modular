@@ -27,7 +27,7 @@ def enrich_surface(individual, surf_CN=11, species=None):
     bulk_indices = [i for i, CN in enumerate(CNs) if CN > surf_CN and syms[i] == species]
 
     if len(surf_indices) == 0 or len(bulk_indices) == 0:
-        return
+        return False
 
     surf_index = random.choice(surf_indices)
     surf_symbol = syms[surf_index]    

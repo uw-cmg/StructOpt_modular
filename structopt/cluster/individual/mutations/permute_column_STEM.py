@@ -39,7 +39,7 @@ def permute_column_STEM(individual, STEM_parameters, filter_size=1,
     data_max = filters.maximum_filter(contrast, size=size)
     maxima = ((contrast == data_max) & (contrast > 0.01))
     if len(maxima) == 0:
-        return
+        return False
     max_coords = np.argwhere(maxima)
     max_xys = (max_coords[:,::-1] - np.array([[x_shift, y_shift]])) / resolution
     max_intensities = np.asarray([data_max[tuple(coord)] for coord in max_coords])
@@ -61,7 +61,7 @@ def permute_column_STEM(individual, STEM_parameters, filter_size=1,
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < -0.01))
     if len(minima) == 0:
-        return
+        return False
     min_coords = np.argwhere(minima)
     min_xys = (min_coords[:,::-1] - [x_shift, y_shift]) / resolution
     min_intensities = np.asarray([data_min[tuple(coord)] for coord in min_coords])

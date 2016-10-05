@@ -27,7 +27,7 @@ def flip_surface_atom(individual, surf_CN=11, cutoff=0.5):
     """
 
     if len(individual) == 0:
-        return
+        return False
 
     avg_bond_length = get_avg_radii(individual) * 2
     cutoff = avg_bond_length * cutoff

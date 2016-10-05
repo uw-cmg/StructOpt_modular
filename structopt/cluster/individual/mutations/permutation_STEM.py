@@ -55,7 +55,7 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     data_max = filters.maximum_filter(contrast, size=size)
     maxima = ((contrast == data_max) & (contrast > max_max * max_cutoff))
     if len(maxima) == 0:
-        return
+        return False
     max_coords = np.argwhere(maxima)
     max_xys = (max_coords[:,::-1] - np.array([[x_shift, y_shift]])) / resolution
     max_intensities = np.asarray([data_max[tuple(coord)] for coord in max_coords])
@@ -84,7 +84,7 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < min_min * min_cutoff))
     if len(minima) == 0:
-        return
+        return False
     min_coords = np.argwhere(minima)
     min_xys = (min_coords[:,::-1] - [x_shift, y_shift]) / resolution
     min_intensities = np.asarray([data_min[tuple(coord)] for coord in min_coords])
@@ -121,7 +121,7 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     min_column_indices = [np.where(dists < move_cutoff)[0] for dists in min_dists]
 
     if np.size(min_column_indices) == 0 or np.size(min_column_indices) == 0:
-        return
+        return False
 
     # Eliminate columns that cannot be "improved" by a permutation
     syms = np.asarray(individual.get_chemical_symbols())
@@ -144,7 +144,7 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
 
     # Pick a max column and min column based on their intensities 
     if np.size(min_column_indices) == 0 or np.size(min_column_indices) == 0:
-        return
+        return False
 
     max_column_indices = max_column_indices[np.random.choice(np.arange(len(max_intensities)), p=max_intensities)]
     min_column_indices = min_column_indices[np.random.choice(np.arange(len(min_intensities)), p=min_intensities)]

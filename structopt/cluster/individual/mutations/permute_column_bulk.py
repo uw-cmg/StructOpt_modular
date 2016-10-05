@@ -31,7 +31,7 @@ def permute_column_bulk(individual, STEM_parameters, filter_size=0.5,
     column_xys = column_coords[:, ::-1] / resolution
 
     if len(column_xys) < 2:
-        return
+        return False
 
     ##########################################################
     ### This code is for checking the local maximum finder ###
