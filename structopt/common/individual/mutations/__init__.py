@@ -69,7 +69,7 @@ class Mutations(object):
         individual._relaxed = False
         individual._fitted = False
         self.post_processing(individual)
-        return ret
+        return
 
 
     @single_core
