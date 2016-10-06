@@ -90,6 +90,5 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
     full_child1.extend(child1)
     full_child2 = individual2.copy(include_atoms=False)
     full_child2.extend(child2)
-    print(time.time() - t0)
     
     return full_child1, full_child2
