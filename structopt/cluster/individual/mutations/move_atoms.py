@@ -14,7 +14,7 @@ def move_atoms(individual, max_natoms=0.20):
     """
 
     if not len(individual):
-        return None
+        return False
 
     if isinstance(max_natoms, float):
         assert max_natoms <= 1

@@ -24,7 +24,7 @@ def move_surface_defects(individual, surf_CN=11):
     """
 
     if len(individual) == 0:
-        return
+        return False
 
     # Analyze the individual
     CNs = CoordinationNumbers(individual)
@@ -32,7 +32,7 @@ def move_surface_defects(individual, surf_CN=11):
     # Get indices, CNs, and positions of all surface sites
     surf_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN <= surf_CN]
     if len(surf_indices_CNs) == 0:
-        return 0
+        return False
     surf_indices, surf_CNs = list(zip(*surf_indices_CNs))
     surf_indices = list(surf_indices)
     surf_CNs = list(surf_CNs)

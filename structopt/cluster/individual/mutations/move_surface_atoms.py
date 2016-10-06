@@ -30,7 +30,7 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
     """
 
     if len(individual) == 0:
-        return
+        return False
 
     # Analyze the individual
     NNs = NeighborList(individual)
@@ -39,7 +39,7 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
     # Get indices of atoms considered to be moved
     move_indices_CNs = [[i, CN] for i, CN in enumerate(CNs) if CN <= move_CN]
     if len(move_indices_CNs) == 0:
-        return 0
+        return False
     move_indices_CNs.sort(key=lambda i: i[1])
     move_indices = list(zip(*move_indices_CNs))[0]
 
@@ -75,5 +75,5 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
 
     individual.set_positions(positions)
 
-    return move_indices
+    return
 

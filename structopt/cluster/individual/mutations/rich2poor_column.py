@@ -33,7 +33,7 @@ def rich2poor_column(individual, STEM_parameters, filter_size=0.5,
     column_xys = column_coords[:, ::-1] / resolution
 
     if len(column_xys) < 2:
-        return
+        return False
 
     ##########################################################
     ### This code is for checking the local maximum finder ###
@@ -80,7 +80,7 @@ def rich2poor_column(individual, STEM_parameters, filter_size=0.5,
             column_indices.append(indices)
 
     if len(column_indices) == 0:
-        return
+        return False
     
     # Pick a random column and calculate coordination numbers
     column_indices = column_indices[random.randint(0, len(column_indices) - 1)]
