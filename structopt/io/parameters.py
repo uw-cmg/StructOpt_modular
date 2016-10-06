@@ -83,6 +83,7 @@ def set_default(parameters):
     parameters.post_processing.setdefault('XYZs', 0)
     parameters.setdefault('adaptation', [])
     parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
+    parameters.convergence.setdefault('max_generations', 10)
 
     if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
@@ -90,16 +91,13 @@ def set_default(parameters):
     if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
-    parameters.convergence.setdefault('max_generations', 10)
-    for module_name in MODULES:
-        parameters.setdefault(module_name, None)
-
-    # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
+    # Make sure every operation is defined, and that every operation has a
+    # kwargs
     for operation in MODULES:
-        if parameters[operation] is None:
-            continue
-        for operator in parameters[operation]:
-            parameters[operation][operator].setdefault('kwargs', {})
+        parameters.setdefault(operation, None)
+        if parameters[operation] is not None:
+            for operator in parameters[operation]:
+                parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
 

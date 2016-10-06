@@ -1,6 +1,5 @@
 {
     "seed": 0,
-    "logging": { },
     "structure_type": "cluster",
     "generators": {
 	"fcc": {"number_of_individuals": 5,
@@ -46,9 +45,6 @@
         "rotate_all": {"probability": 0.0},
         "move_surface_defects": {"probability": 1.0}
     },
-    "fingerprinters": {
-        "options": []
-    },
     "crossovers": {
         "rotate": {"probability": 0.7}
     },
@@ -57,7 +53,5 @@
     },
     "selections": {
         "rank": {"probability": 1.0}
-    },
-    "fileio": {},
-    "tools": {}
+    }
 }
