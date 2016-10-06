@@ -3,6 +3,7 @@ import math
 import logging
 import numpy as np
 from scipy.signal import fftconvolve
+from scipy.ndimage import sobel
 
 from ase.io import read
 
@@ -278,7 +279,29 @@ class STEM(object):
 
         if plot_type == 'log':
             image = np.log(image + 1)
+            image = np.nan_to_num(np.poly1d(coeffs)(image))
+        elif plot_type == 'log-d':
+            log_image = np.log(image + 1)
 
-        image = np.nan_to_num(np.poly1d(coeffs)(image))
+            log_dx = sobel(log_image, axis=0, mode='wrap')
+            log_dy = sobel(log_image, axis=1, mode='wrap')
+            log_dxy = np.hypot(log_dx, log_dy)
+
+            shape = image.shape
+            log_image = log_image.flatten()
+            log_dxy = log_dxy.flatten()
+
+            A0 = np.ones(log_image.shape)
+            A1 = log_image
+            A2 = log_image ** 2
+            A3 = log_image ** 3
+            A4 = log_dxy
+
+            A = np.vstack([A4, A3, A2, A1, A0]).T
+
+            X = coeffs
+
+            image = np.dot(A, X)
+            image = np.reshape(image, shape)
 
         return image
