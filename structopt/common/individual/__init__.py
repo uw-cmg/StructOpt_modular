@@ -6,7 +6,6 @@ import numpy as np
 
 import structopt
 from structopt.tools import root, single_core, parallel
-from structopt.io.read_xyz import read_xyz
 from .generate_velocities.random_velocities import random_velocities
 
 class Individual(ase.Atoms):
@@ -18,7 +17,7 @@ class Individual(ase.Atoms):
                  relaxation_parameters=None, fitness_parameters=None,
                  mutation_parameters=None,
                  pso_moves_parameters=None,
-                 generator_parameters=None):
+                 generator_parameters=None, **kwargs):
 
         self.id = id
         self.mutation_tag = None
@@ -238,7 +237,6 @@ class Individual(ase.Atoms):
         generator = getattr(generator_module, generator_name)
         kwargs = self.generator_parameters[generator_name]
         atoms = generator(**kwargs)
-
         self.extend(atoms)
         self.set_cell(atoms.get_cell())
         self.set_pbc(atoms.get_pbc())

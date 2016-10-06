@@ -25,4 +25,3 @@ class Mutations(object):
     @single_core
     def post_processing(self):
         pass
-

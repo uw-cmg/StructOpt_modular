@@ -46,7 +46,7 @@ class Population(SortedDict):
 
                     # For the read_xyz, the input is a list of filenames. These need to be
                     # passed as arguments one by one instead of all at once
-                    if generator == 'read_xyz':
+                    if generator in ['read_xyz', 'read_extxyz']:
                         kwargs = {'filename': kwargs[j]}
 
                     generator_parameters = {generator: kwargs}

@@ -61,13 +61,15 @@ class Mutations(object):
         print("Performing mutation {} on individual {}".format(self.selected_mutation, individual.id))
         if self.selected_mutation is None:
             return individual
-        else:
-            individual._relaxed = False
-            individual._fitted = False
-            kwargs = self.kwargs[self.selected_mutation]
-            ret = self.selected_mutation(individual, **kwargs)
-            self.post_processing(individual)
-            return ret
+
+        kwargs = self.kwargs[self.selected_mutation]
+        if self.selected_mutation(individual, **kwargs) == False:
+            return individual
+
+        individual._relaxed = False
+        individual._fitted = False
+        self.post_processing(individual)
+        return
 
 
     @single_core

@@ -20,6 +20,9 @@ def read(input):
     else:
         raise IOError('Error in input or input file')
 
+    # Make sure we have a logging dictionary
+    parameters.setdefault('logging', DictionaryObject({}))
+
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the logging parameters
     use_mpi4py = False
     for module in parameters.relaxations:
@@ -60,23 +63,27 @@ def write(parameters):
 
 
 def set_default(parameters):
-    if "path" not in logging.parameters:
-        logging.parameters.path = os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S")))
-    else:
-        raise ValueError("'path' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
     logging.parameters.generation = 0
 
-    # If parallel and no seed, all nodes need the same seed
+    if "path" in logging.parameters:
+        raise ValueError("'path' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
+    
+    # If parallel and no seed, all nodes need the same seed and same path
     if parameters.logging.ncores > 1:
         from mpi4py import MPI
         seed = MPI.COMM_WORLD.bcast(int(time.time()), root=0)
+        path = MPI.COMM_WORLD.bcast(os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S"))), root=0)
     else:
         seed = None
+        path = os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S")))
 
+    logging.parameters.path = path        
     parameters.setdefault('seed', seed)
     parameters.setdefault('post_processing', DictionaryObject({}))
     parameters.post_processing.setdefault('XYZs', 0)
     parameters.setdefault('adaptation', [])
+    parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
+    parameters.convergence.setdefault('max_generations', 10)
 
     if 'relaxations' not in parameters or not parameters['relaxations']:
         raise ValueError('Relaxations must be specified in the parameter file.')
@@ -84,16 +91,13 @@ def set_default(parameters):
     if 'fitnesses' not in parameters or not parameters['fitnesses']:
         raise ValueError('Fitnesses must be specified in the parameter file.')
 
-    parameters.convergence.setdefault('max_generations', 10)
-    for module_name in MODULES:
-        parameters.setdefault(module_name, None)
-
-    # Make sure every operation has a kwargs. Not sure about fingerprinters yet.
+    # Make sure every operation is defined, and that every operation has a
+    # kwargs
     for operation in MODULES:
-        if parameters[operation] is None:
-            continue
-        for operator in parameters[operation]:
-            parameters[operation][operator].setdefault('kwargs', {})
+        parameters.setdefault(operation, None)
+        if parameters[operation] is not None:
+            for operator in parameters[operation]:
+                parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
 

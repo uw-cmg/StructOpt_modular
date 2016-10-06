@@ -1,10 +1,12 @@
 import sys, os
 import logging
 import shutil
+import time
 
 import structopt
 import structopt.utilities
 from structopt.common.population import Population
+from structopt.tools.convert_time import convert_time
 
 class GeneticAlgorithm(object):
     """Defines methods to run a genetic algorithm optimization using the functions in the rest of the library."""
@@ -20,6 +22,13 @@ class GeneticAlgorithm(object):
         self.generation = 0
         self.converged = False
 
+        self.timing = {'step': [],
+                       'fitness': [],
+                       'relax': [],
+                       'selection': [],
+                       'crossover': [],
+                       'mutation': [],
+                       'predator': []}
 
     def run(self):
         if logging.parameters.rank == 0:
@@ -31,28 +40,53 @@ class GeneticAlgorithm(object):
 
 
     def step(self):
+        t_step_0 = time.time()
+
         if logging.parameters.rank == 0:
             print('')
             print("Starting generation {}".format(self.generation))
         sys.stdout.flush()
         if self.generation > 0:
             fits = [individual._fitness for individual in self.population]
+
+            t_selection_0 = time.time()
             parents = self.population.select(fits)
+            self.timing['selection'].append(time.time() - t_selection_0)
+
+            t_crossover_0 = time.time()
             children = self.population.crossover(parents)
-            self.population.extend(children)
+            self.population.extend(children)            
+            self.timing['crossover'].append(time.time() - t_crossover_0)
+
+            t_mutation_0 = time.time()
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
+            self.timing['mutation'].append(time.time() - t_mutation_0)
+        else:
+            self.timing['selection'].append(0)
+            self.timing['crossover'].append(0)
+            self.timing['mutation'].append(0)
 
+        t_relax_0 = time.time()
         self.population.relax()
+        self.timing['relax'].append(time.time() - t_relax_0)
+
+        t_fitness_0 = time.time()
         fits = self.population.fitness()
+        self.timing['fitness'].append(time.time() - t_fitness_0)
+
+        t_predator_0 = time.time()
         self.population.kill(fits)
+        self.timing['predator'].append(time.time() - t_predator_0)
+
+        self.timing['step'].append(time.time() - t_step_0)                
+
         self.check_convergence()
         if logging.parameters.rank == 0:
             self.post_processing_step()
         structopt.utilities.adapt(self.adaptation, self.population, self.generation)
         logging.parameters.generation += 1
         self.generation += 1
-
 
     def check_convergence(self):
         if self.generation >= self.convergence.max_generations:
@@ -76,7 +110,6 @@ class GeneticAlgorithm(object):
             path = os.path.join(path, 'generation{}'.format(self.generation))
             os.makedirs(path, exist_ok=True)
             individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.id)))
-
         structopt.utilities.clear_XYZs(self.post_processing.XYZs, self.generation, logging.parameters.path)
 
         # Save the genealogy
@@ -87,6 +120,16 @@ class GeneticAlgorithm(object):
             individual.mutation_tag = None
         genealogy_logger = logging.getLogger('genealogy')
         genealogy_logger.info(' '.join(tags))
+
+        # Save the times
+        timing_logger = logging.getLogger('timing')
+        timing_logger.info('')
+        timing_logger.info('Generation {} (cumulative) timing information'.format(self.generation))
+        for operation in ['selection', 'crossover', 'mutation',
+                          'relax', 'fitness', 'predator', 'step']:
+            t, t_unit = convert_time(self.timing[operation][-1])
+            t_cum, t_cum_unit = convert_time(sum(self.timing[operation]))
+            timing_logger.info('{:10s}: {:1.4f} {} ({:1.4f} {})'.format(operation, t, t_unit, t_cum, t_cum_unit))
 
     def __enter__(self):
         return self

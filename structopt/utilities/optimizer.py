@@ -98,7 +98,7 @@ class StructOpt(object):
 
         XYZs_dir = os.path.join(self.log_dir, 'XYZs/generation{}'.format(self.generations[-1]))
         fnames = [os.path.join(XYZs_dir, f) for f in os.listdir(XYZs_dir) if f.endswith('.xyz')]
-        new_generator = {'generators': {'read_xyz': {'number_of_individuals': len(fnames),
+        new_generator = {'generators': {'read_extxyz': {'number_of_individuals': len(fnames),
                                       'kwargs': fnames}}}
         self.parameters.update(new_generator)
         self.status = 'initialized'
@@ -273,6 +273,8 @@ class StructOpt(object):
             log_dirs_times = zip(log_dirs, log_times)
             log_dirs_times = sorted(log_dirs_times, key=itemgetter(1))
             log_dirs, log_times = zip(*log_dirs_times)
+            log_dirs = list(log_dirs)
+            log_times = list(log_times)
             for i, log_dir in reversed(list(enumerate(log_dirs))):
                 if 'fitnesses.log' not in os.listdir(log_dirs[i]):
                     log_dirs.pop(i)
@@ -437,6 +439,8 @@ class StructOpt(object):
         """Run to clear the stored data."""
 
         self.fitness = None
+        self.mutations = None
+        self.crossovers = None
 
         return
 

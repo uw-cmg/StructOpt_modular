@@ -29,6 +29,8 @@ def setup(parameter_file):
 
     genealogy_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'genealogy.log'), name="genealogy", level=logging_level)
 
+    timing_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'timing.log'), name="timing", level=logging_level)
+
     if logging_level <= logging.DEBUG:
         debug_logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'debug.log'), name="debug", level=logging_level)
         debug_logger_by_rank = initialize_logger(filename=os.path.join(path, 'debug-by-rank-{}.log'.format(rank)), name="debug-by-rank", level=logging_level)

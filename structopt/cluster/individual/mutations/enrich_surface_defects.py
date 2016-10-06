@@ -29,7 +29,7 @@ def enrich_surface_defects(individual, surf_CN=11, species=None):
     facet_CNs = [CNs[i] for i in facet_indices]
 
     if len(defect_indices) == 0 or len(facet_indices) == 0:
-        return    
+        return False
 
     unique_defect_CNs = np.unique(defect_CNs)
     defect_probs = 2.0 ** (surf_CN + 1 - unique_defect_CNs)

@@ -27,7 +27,7 @@ def enrich_bulk(individual, surf_CN=11, species=None):
     bulk_indices = [i for i, CN in enumerate(CNs) if CN > surf_CN and syms[i] != species]
 
     if len(surf_indices) == 0 or len(bulk_indices) == 0:
-        return
+        return False
 
     bulk_index = random.choice(bulk_indices)
     bulk_symbol = syms[bulk_index]    
