@@ -1,7 +1,7 @@
 import functools
-import structopt.common.individual.crossovers
+import structopt.common.population.crossovers
 
 
-class Crossovers(structopt.common.individual.crossovers.Crossovers):
+class Crossovers(structopt.common.population.crossovers.Crossovers):
     pass
 

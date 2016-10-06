@@ -6,8 +6,7 @@
 		"kwargs": {"atomlist": [["Au", 55]],
                            "orientation": "100",
 			   "cell": [20, 20, 20],
-                           "a": 4.08}}
-    },
+                           "a": 4.08}}},
     "fitnesses": {
         "LAMMPS": {"weight": 1.0, 
 	           "kwargs": {"use_mpi4py": false,
@@ -53,5 +52,5 @@
     },
     "selections": {
         "rank": {"probability": 1.0}
-    }
+    },
 }
