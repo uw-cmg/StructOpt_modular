@@ -4,7 +4,65 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from ase.cluster.octahedron import Octahedron
 from ase.visualize import view
+
 from structopt.cluster.individual.generators import fcc
+from structopt.tools.analysis import get_avg_radii
+
+def get_chi2(atoms1, atoms2, cutoff=0.8, r=2.0, HWHM=0.4):
+    """Calculates the chi2, which is the difference in positions
+    between atoms1 and atoms2"""
+
+    # Calculate the offset to apply to atoms1 to maximize matching
+    # to atoms2
+    offset = get_offset(atoms1, atoms2, r=r, HWHM=HWHM)
+    atoms1.translate(offset)
+
+    # Calculate the location difference of each atom1 atom with atom2 atom
+    cutoff *= get_avg_radii(atoms1) * 2
+    pos1 = np.expand_dims(atoms1.get_positions(), 0)
+    pos2 = np.expand_dims(atoms2.get_positions(), 0)
+    dists = np.linalg.norm(pos1 - np.transpose(pos2, (1, 0, 2)), axis=2)
+
+    nn_dists = np.min(dists, axis=1)
+    x_fp = np.sum(nn_dists > cutoff) / len(atoms2)
+    x_fn = np.sum(np.min(dists, axis=0) > cutoff) / len(atoms2)
+    chi2 = nn_dists[nn_dists <= cutoff]
+
+    return x_fp, x_fn, chi2
+
+
+def get_offset(atoms1, atoms2, r=5.0, HWHM=0.4):
+    """Gets the offset to apply to atoms1 to have its positions match atoms2"""
+
+    cell1 = atoms1.get_cell()
+    cell2 = atoms2.get_cell()
+
+    # Make sure the cell is a box and they are the same
+    assert (cell1.diagonal() * np.eye(3) == cell1).all()
+    assert (cell2.diagonal() * np.eye(3) == cell2).all()
+    assert (cell1 == cell2).all()
+
+    # Load the 3d point spread function (psf)
+    psf = get_3d_psf(cell1.diagonal(), r, HWHM)
+    ft_psf = np.fft.fftshift(psf)
+
+    # Get the gridded locations
+    V1 = get_gridded_locations(cell1.diagonal(), r, atoms1)
+    ft_V1 = np.fft.fftn(V1).T
+    image1 = np.fft.ifftn(ft_psf * ft_V1)
+
+    V2 = get_gridded_locations(cell2.diagonal(), r, atoms2)
+    ft_V2 = np.fft.fftn(V2).T
+    image2 = np.fft.ifftn(ft_psf * ft_V2)
+
+    # Use cross-correlation to calculate the ideal offset
+    correlation = fftconvolve(image2, image1[::-1, ::-1, ::-1], mode='full')
+    z_max, y_max, x_max = np.unravel_index(np.argmax(correlation), correlation.shape)
+    x_shift = (x_max - image1.shape[2] + 1) / r
+    y_shift = (y_max - image1.shape[1] + 1) / r
+    z_shift = (z_max - image1.shape[0] + 1) / r
+
+    return (x_shift, y_shift, z_shift)
 
 def get_3d_psf(dimensions, r, HWHM):
     """Generates a psf array built from a gaussian function. The relevant 
@@ -36,7 +94,7 @@ def get_3d_psf(dimensions, r, HWHM):
 
     return psf
 
-def get_linear_convolution(dimensions, r, individual):
+def get_gridded_locations(dimensions, r, individual):
     """Calculate linear convoluted potential of an individual"""
 
     xmax, ymax, zmax = dimensions

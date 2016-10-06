@@ -8,3 +8,4 @@ from .analysis import CoordinationNumbers
 from .analysis import NeighborList
 from .analysis import NeighborElements
 from .rotation_matrix import rotation_matrix
+from .similarity import get_chi2
