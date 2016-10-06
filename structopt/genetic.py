@@ -129,7 +129,7 @@ class GeneticAlgorithm(object):
                           'relax', 'fitness', 'predator', 'step']:
             t, t_unit = convert_time(self.timing[operation][-1])
             t_cum, t_cum_unit = convert_time(sum(self.timing[operation]))
-            timing_logger.info('{:10s}: {:1.4f} {} ({:1.4f} {})'.format(operation, t, t_unit, t_cum, t_cum_unit))
+            timing_logger.info('{:10s}: {:4.2f} {} ({:4.2f} {})'.format(operation, t, t_unit, t_cum, t_cum_unit))
 
     def __enter__(self):
         return self
