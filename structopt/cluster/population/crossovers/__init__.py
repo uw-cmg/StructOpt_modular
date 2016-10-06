@@ -9,5 +9,5 @@ class Crossovers(structopt.common.population.crossovers.Crossovers):
 
     @staticmethod
     @functools.wraps(rotate)
-    def rotate(individual, max_natoms=0.2, move_CN=8, surf_CN=11):
-        return rotate(individual, max_natoms, move_CN, surf_CN)
+    def rotate(individual1, individual2, center_at_atom=True, repair_composition=True):
+        return rotate(individual1, individual2, center_at_atom, repair_composition)

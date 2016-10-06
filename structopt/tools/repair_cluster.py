@@ -27,7 +27,7 @@ def repair_cluster(individual, target_atomlist, surf_CN=11):
     elif n_diff < 0:
         add_atoms(individual, n_diff, atomlist, target_atomlist, surf_CN)
 
-    repair_stoichiometry(individual, atomlist, target_atomlist)    
+    repair_stoichiometry(individual, target_atomlist)
         
 def delete_atoms(individual, n_diff, surf_CN):
     '''Function that deletes atoms to make the total atoms correct'''
