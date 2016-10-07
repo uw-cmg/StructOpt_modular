@@ -63,7 +63,10 @@ class Mutations(object):
             return individual
 
         kwargs = self.kwargs[self.selected_mutation]
-        if self.selected_mutation(individual, **kwargs) == False:
+        result = self.selected_mutation(individual, **kwargs)
+        
+        # If the mutation "failed" and therefore did not modify the individual, do not update the below attributes
+        if result is False:
             return individual
 
         individual._relaxed = False
