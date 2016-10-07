@@ -267,17 +267,13 @@ class Individual(ase.Atoms):
     @single_core
     def copy(self, include_atoms=True):
         """Return a copy."""
-        if include_atoms:
-            generator_parameters = self.generator_parameters
-        else:
-            generator_parameters = None
         new = self.__class__(id=None,
                              load_modules=True,
                              relaxation_parameters=self.relaxation_parameters,
                              fitness_parameters=self.fitness_parameters,
                              mutation_parameters=self.mutation_parameters,
                              pso_moves_parameters=self.pso_moves_parameters,
-                             generator_parameters=generator_parameters)
+                             generator_parameters=None)
         if include_atoms:
             new.arrays = {}
             for name, a in self.arrays.items():
