@@ -137,10 +137,10 @@ def rotate(individual1, individual2, conserve_composition=True):
     child2.translate(com2)
 
     full_child1 = individual1.copy()
-    full_child1.empty()
+    full_child1.clear()
     full_child1.extend(child1)
     full_child2 = individual2.copy()
-    full_child2.empty()
+    full_child2.clear()
     full_child2.extend(child2)
     return full_child1, full_child2
 

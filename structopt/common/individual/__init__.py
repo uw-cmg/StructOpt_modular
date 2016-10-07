@@ -279,7 +279,7 @@ class Individual(ase.Atoms):
             for name, a in self.arrays.items():
                 new.arrays[name] = a.copy()
         else:
-            new.empty()
+            new.clear()
         new.set_cell(self.get_cell())
         new.set_pbc(self.get_pbc())
         new.mutation_tag = self.mutation_tag
@@ -294,5 +294,5 @@ class Individual(ase.Atoms):
         return new
 
     @single_core
-    def empty(self):
+    def clear(self):
         del self[:]
