@@ -53,6 +53,9 @@ def permute_column_surface(individual, STEM_parameters, filter_size=0.5,
     dists = np.linalg.norm(column_xy - xys, axis=1)
     indices = np.arange(len(individual))[dists < column_cutoff]
 
+    if len(indices) < 2:
+        return False
+
     z_positions = individual.get_positions()[indices, 2]
     top_atom = indices[np.argmax(z_positions)]
     bot_atom = indices[np.argmin(z_positions)]
