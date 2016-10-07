@@ -1,7 +1,5 @@
 import numpy as np
 from scipy.signal import fftconvolve
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 from ase.cluster.octahedron import Octahedron
 from ase.visualize import view
 
