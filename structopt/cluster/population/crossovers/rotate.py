@@ -59,8 +59,8 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
     individual2.rotate(rot_vec, a=rot_angle, center=(0, 0, 0))
 
     # Create the children
-    child1 = Atoms()
-    child2 = Atoms()
+    child1 = Atoms(cell=individual1.get_cell())
+    child2 = Atoms(cell=individual2.get_cell())
     child1.extend(individual1[individual1.positions[:,2] >= 0])
     child1.extend(individual2[individual2.positions[:,2] < 0])
     child2.extend(individual2[individual2.positions[:,2] >= 0])

@@ -153,18 +153,26 @@ class Individual(ase.Atoms):
         if self.fitness_parameters is not None:
             fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
             self.fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
+        else:
+            self.fitnesses = None
 
         if self.mutation_parameters is not None:
             mutations = import_module('structopt.{}.individual.mutations'.format(cls_name))
             self.mutations = mutations.Mutations(parameters=self.mutation_parameters)
+        else:
+            self.mutations = None
 
         if self.relaxation_parameters is not None:
             relaxations = import_module('structopt.{}.individual.relaxations'.format(cls_name))
             self.relaxations = relaxations.Relaxations(parameters=self.relaxation_parameters)
+        else:
+            self.relaxations = None
 
         if self.pso_moves_parameters is not None:
             pso_moves = import_module('structopt.{}.individual.pso_moves'.format(cls_name))
             self.pso_moves = pso_moves.Pso_Moves(parameters=self.pso_moves_parameters)
+        else:
+            self.pos_moves = None
 
 
     @property
@@ -284,11 +292,11 @@ class Individual(ase.Atoms):
         new._relaxed = self._relaxed
         new._fitness = self._fitness
         new._Q_l = self._Q_l
-        for module_name in self.fitnesses.module_names:
-            setattr(new, module_name, getattr(self, module_name, None))
+        if self.fitnesses is not None:
+            for module_name in self.fitnesses.module_names:
+                setattr(new, module_name, getattr(self, module_name, None))
         return new
 
     @single_core
     def empty(self):
         del self[:]
-
