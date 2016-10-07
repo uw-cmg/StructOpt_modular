@@ -35,40 +35,42 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
     """
 
     # Translate individuals so COP is at (0, 0, 0)
-    cop1 = individual1.get_positions().mean(axis=0)
-    cop2 = individual2.get_positions().mean(axis=0)
+    ind1c = individual1.copy()
+    ind2c = individual2.copy()
+    cop1 = ind1c.get_positions().mean(axis=0)
+    cop2 = ind2c.get_positions().mean(axis=0)
 
     if center_at_atom:
-        pos1 = individual1.get_positions()
+        pos1 = ind1c.get_positions()
         dists1 = np.linalg.norm(pos1 - cop1, axis=1)
         cop1 = pos1[np.argmin(dists1)]
 
-        pos2 = individual2.get_positions()
+        pos2 = ind2c.get_positions()
         dists2 = np.linalg.norm(pos2 - cop2, axis=1)
         cop2 = pos2[np.argmin(dists2)]
 
-    individual1.translate(-cop1)
-    individual2.translate(-cop2)
+    ind1c.translate(-cop1)
+    ind2c.translate(-cop2)
 
     # Pick a random rotation angle and vector
     rot_vec = random_three_vector()
     rot_angle = random.uniform(0, 180) * np.pi / 180.0
 
     # Rotate both individuals
-    individual1.rotate(rot_vec, a=rot_angle, center=(0, 0, 0))
-    individual2.rotate(rot_vec, a=rot_angle, center=(0, 0, 0))
+    ind1c.rotate(rot_vec, a=rot_angle, center=(0, 0, 0))
+    ind2c.rotate(rot_vec, a=rot_angle, center=(0, 0, 0))
 
     # Create the children
-    child1 = Atoms(cell=individual1.get_cell())
-    child2 = Atoms(cell=individual2.get_cell())
-    child1.extend(individual1[individual1.positions[:,2] >= 0])
-    child1.extend(individual2[individual2.positions[:,2] < 0])
-    child2.extend(individual2[individual2.positions[:,2] >= 0])
-    child2.extend(individual1[individual1.positions[:,2] < 0])
+    child1 = Atoms(cell=ind1c.get_cell())
+    child2 = Atoms(cell=ind2c.get_cell())
+    child1.extend(ind1c[ind1c.positions[:,2] >= 0])
+    child1.extend(ind2c[ind2c.positions[:,2] < 0])
+    child2.extend(ind2c[ind2c.positions[:,2] >= 0])
+    child2.extend(ind1c[ind1c.positions[:,2] < 0])
 
     # Repair the children
     if repair_composition:
-        syms = individual1.get_chemical_symbols()
+        syms = ind1c.get_chemical_symbols()
         atomlist = [[sym, syms.count(sym)] for sym in set(syms)]
         repair_cluster(child1, atomlist)
         repair_cluster(child2, atomlist)
@@ -79,16 +81,11 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
     child2.rotate(rot_vec, a=-rot_angle, center=(0, 0, 0))
     child2.center()
 
-    # Reorient the parents
-    individual1.rotate(rot_vec, a=-rot_angle, center=(0, 0, 0))
-    individual1.translate(cop1)
-    individual2.rotate(rot_vec, a=-rot_angle, center=(0, 0, 0))
-    individual2.translate(cop2)
-
-    t0 = time.time()
-    full_child1 = individual1.copy(include_atoms=False)
+    # Convert the children to an Individual with the parent
+    # module parameters
+    full_child1 = ind1c.copy(include_atoms=False)
     full_child1.extend(child1)
-    full_child2 = individual2.copy(include_atoms=False)
+    full_child2 = ind2c.copy(include_atoms=False)
     full_child2.extend(child2)
     
     return full_child1, full_child2
