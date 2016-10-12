@@ -28,6 +28,78 @@ def get_chi2(atoms1, atoms2, cutoff=0.8, r=2.0, HWHM=0.4):
 
     return x_fp, x_fn, chi2
 
+def get_chi2_column(atoms1, atoms2, cutoff=0.2, r=2.0, HWHM=0.4):
+    """Calculates the error per column of atoms in the z-direction"""
+
+    cutoff *= get_avg_radii(atoms1) * 2
+
+    # Calculate the offset to apply to atoms1 to maximize matching
+    # to atoms2
+    offset = get_offset(atoms1, atoms2, r=r, HWHM=HWHM)
+    atoms1.translate(offset)
+
+    # Group each atom in both atoms1 and atoms2 into columns
+    xys1 = np.expand_dims(atoms1.get_positions()[:, :2], 0)
+    xys2 = np.expand_dims(atoms2.get_positions()[:, :2], 0)
+    dists1 = np.linalg.norm(xys1 - np.transpose(xys1, (1, 0, 2)), axis=2)
+    dists2 = np.linalg.norm(xys2 - np.transpose(xys2, (1, 0, 2)), axis=2)
+
+    NNs1 = np.sort(np.argwhere(dists1 < cutoff))
+    column_indices1 = []
+    atoms_to_be_sorted1 = list(range(len(atoms1)))
+    while len(atoms_to_be_sorted1) > 0:
+        i = atoms_to_be_sorted1[0]
+        same_column_indices = np.unique(NNs1[NNs1[:,0] == i])
+        column_indices1.append(same_column_indices)
+        for j in reversed(sorted(same_column_indices)):
+            i_del = atoms_to_be_sorted1.index(j)
+            atoms_to_be_sorted1.pop(i_del)
+            NNs1 = NNs1[NNs1[:,0] != j]
+            NNs1 = NNs1[NNs1[:,1] != j]
+
+    NNs2 = np.sort(np.argwhere(dists2 < cutoff))
+    column_indices2 = []
+    atoms_to_be_sorted2 = list(range(len(atoms2)))
+    while len(atoms_to_be_sorted2) > 0:
+        i = atoms_to_be_sorted2[0]
+        same_column_indices = np.unique(NNs2[NNs2[:,0] == i])
+        column_indices2.append(same_column_indices)
+        for j in reversed(sorted(same_column_indices)):
+            i_del = atoms_to_be_sorted2.index(j)
+            atoms_to_be_sorted2.pop(i_del)
+            NNs2 = NNs2[NNs2[:,0] != j]
+            NNs2 = NNs2[NNs2[:,1] != j]            
+
+    # Find the average xy coordinates of each column
+    column_xys1 = np.asarray([np.average(np.squeeze(xys1, axis=0)[i], axis=0) for i in column_indices1])
+    column_xys2 = np.asarray([np.average(np.squeeze(xys2, axis=0)[i], axis=0) for i in column_indices2])
+
+    # Find matching column locations in atoms1 and atoms2
+    dists = np.linalg.norm(np.expand_dims(column_xys1, 0) - np.transpose(np.expand_dims(column_xys2, 0), (1, 0, 2)), axis=2)
+    paired_atoms2 = [np.argmin(dist) if np.min(dist) < cutoff else False for dist in dists]
+    paired_atoms1 = [np.argmin(dist) if np.min(dist) < cutoff else False for dist in dists.T]
+
+    n_fn = np.count_nonzero(np.array(paired_atoms2) == False)
+    n_fp = np.count_nonzero(np.array(paired_atoms1) == False)
+    column_pairs = sorted([[j, i] for i, j in enumerate(paired_atoms2) if j is not False], key=lambda i: i[0])
+
+    syms1 = np.asarray(atoms1.get_chemical_symbols())
+    syms2 = np.asarray(atoms2.get_chemical_symbols())
+
+    unique_syms = np.unique(syms2)
+    chi2 = {sym: [] for sym in unique_syms}
+    chi2['n'] = []
+    
+    for pair in column_pairs:
+        col_indices1 = column_indices1[pair[0]]
+        col_indices2 = column_indices2[pair[1]]
+        col_syms1 = list(syms1[col_indices1])
+        col_syms2 = list(syms2[col_indices2])
+        chi2['n'].append(len(col_syms1) - len(col_syms2))
+        for sym in unique_syms:
+            chi2[sym].append(col_syms1.count(sym) - col_syms2.count(sym))
+
+    return n_fn, n_fp, chi2
 
 def get_offset(atoms1, atoms2, r=5.0, HWHM=0.4):
     """Gets the offset to apply to atoms1 to have its positions match atoms2"""
