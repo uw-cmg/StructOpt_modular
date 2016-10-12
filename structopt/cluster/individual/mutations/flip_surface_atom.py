@@ -81,7 +81,7 @@ def flip_surface_atom(individual, surf_CN=11, cutoff=0.5):
     flip_CN_diffs = [CNs[j] - CNs[i] for i, j in flip_indices]
 
     # Simple rank based selection based on coordination differences. Simply put
-    # A move is more likely if a surface atom with a low coordination number
+    # a move is more likely if a surface atom with a low coordination number
     # is moved on top of an atom with a high coordination number.
     min_CN_diff = np.min(flip_CN_diffs) - 1
     flip_CN_diffs -= min_CN_diff

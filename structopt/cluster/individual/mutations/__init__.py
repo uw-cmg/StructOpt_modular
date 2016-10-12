@@ -24,6 +24,7 @@ from .enrich_surface_column import enrich_surface_column
 from .enrich_bulk_column import enrich_bulk_column
 from .rich2poor_column import rich2poor_column
 from .poor2rich_column import poor2rich_column
+from .move_column_defect import move_column_defect
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -46,6 +47,7 @@ enrich_surface_column.tag = 'EnSuCo'
 enrich_bulk_column.tag = 'EnBuCo'
 rich2poor_column.tag = 'Ri2PoCo'
 poor2rich_column.tag = 'Po2RiCo'
+move_column_defect.tag = 'MoCoDe'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -169,3 +171,8 @@ class Mutations(structopt.common.individual.mutations.Mutations):
                          column_cutoff=0.5, species=None, surf_CN=11):
         return poor2rich_column(individual, STEM_parameters, filter_size,
                                 column_cutoff, species, surf_CN)
+
+    @staticmethod
+    @functools.wraps(move_column_defect)
+    def move_column_defect(individual, cutoff=0.2, CN_factor=1.1):
+        return move_column_defect(individual, cutoff=0.2, CN_factor=1.1)
