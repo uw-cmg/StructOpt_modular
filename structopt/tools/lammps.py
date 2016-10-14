@@ -60,6 +60,7 @@ class LAMMPS(object):
 
         self.parameters.setdefault('thermosteps', 0)
         self.parameters.setdefault('timeout', 60)
+        self.parameters.setdefault('relax_box', False)
 
         return
 
@@ -134,9 +135,10 @@ class LAMMPS(object):
 
         pbc = self.atoms.get_pbc()
         xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
+        xyzhis = [xhi, yhi, zhi]
         for index, axis in enumerate(['x','y','z']):
             if pbc[index]:    
-                f.write('0.0 {}  {}lo {}hi\n'.format(xhi, axis, axis))
+                f.write('0.0 {}  {}lo {}hi\n'.format(xyzhis[index], axis, axis))
             else:
                 xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
                 xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
@@ -190,6 +192,8 @@ class LAMMPS(object):
         # Relax the system
         f.write('\n### Relaxation \n')
         f.write('fix fix_nve all nve\n')
+        if parameters['relax_box']:
+            f.write('fix relax_box all box/relax iso 0.0 vmax 0.001\n')
         for param in ['min_style', 'min_modify', 'minimize']:
             if param in parameters:
                 f.write('{} {}\n'.format(param, parameters[param]))
