@@ -76,7 +76,6 @@ def move_column_defect(individual, cutoff=0.2, CN_factor=1.1):
     bot_to_top_CNs = top_new_CNs - bot_CNs
     move_CNs = list(np.append(top_to_bot_CNs, bot_to_top_CNs))
     move_CN_counts = {CN: move_CNs.count(CN) for CN in set(move_CNs)}
-    print(move_CN_counts)
     move_probs = [2.0 ** CN / move_CN_counts[CN] for CN in move_CNs]
     move_probs = np.array(move_probs) / sum(move_probs)
 

@@ -85,6 +85,7 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     minima = ((contrast == data_min) & (contrast < min_min * min_cutoff))
     if len(minima) == 0:
         return False
+
     min_coords = np.argwhere(minima)
     min_xys = (min_coords[:,::-1] - [x_shift, y_shift]) / resolution
     min_intensities = np.asarray([data_min[tuple(coord)] for coord in min_coords])
@@ -120,7 +121,7 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
     min_dists = np.linalg.norm(min_dists, axis=2)
     min_column_indices = [np.where(dists < move_cutoff)[0] for dists in min_dists]
 
-    if np.size(min_column_indices) == 0 or np.size(min_column_indices) == 0:
+    if np.size(min_column_indices) == 0 or np.size(max_column_indices) == 0:
         return False
 
     # Eliminate columns that cannot be "improved" by a permutation
@@ -132,18 +133,18 @@ def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
 
     for i, indices in reversed(list(enumerate(max_column_indices))):
         if all(syms[indices] == min_sym):
-            max_column_indices = np.delete(max_column_indices, i)
+            max_column_indices = np.delete(max_column_indices, i, axis=0)
             max_intensities = np.delete(max_intensities, i)
             max_intensities /= np.sum(max_intensities)
 
     for i, indices in reversed(list(enumerate(min_column_indices))):
         if all(syms[indices] == max_sym):
-            min_column_indices = np.delete(min_column_indices, i)
+            min_column_indices = np.delete(min_column_indices, i, axis=0)
             min_intensities = np.delete(min_intensities, i)
             min_intensities /= np.sum(min_intensities)
 
     # Pick a max column and min column based on their intensities 
-    if np.size(min_column_indices) == 0 or np.size(min_column_indices) == 0:
+    if np.size(min_column_indices) == 0 or np.size(max_column_indices) == 0:
         return False
 
     max_column_indices = max_column_indices[np.random.choice(np.arange(len(max_intensities)), p=max_intensities)]
