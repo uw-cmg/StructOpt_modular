@@ -1,3 +1,5 @@
+import numpy as np
+from scipy.interpolate import interp1d
 import os
 import logging
 
@@ -82,5 +84,19 @@ class LAMMPS(object):
 
         if 'natoms' in norms and norms['natoms'] is True:
             E /= len(individual)
+
+        if 'particle' in norms:
+            n = len(individual)
+            f = np.poly1d(norms['particle'])
+            E -= f(np.log(n))
+
+        if 'alloy' in norms:
+            element = norms['alloy']['element']
+            xs = norm['x']
+            Es = norm['E']
+            f = interp1d(xs, Es)
+
+            x = individual.get_chemical_symbols().count(element) / len(individual)
+            E -= f(x)
 
         return E

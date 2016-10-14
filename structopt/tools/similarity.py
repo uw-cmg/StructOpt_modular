@@ -22,8 +22,8 @@ def get_chi2(atoms1, atoms2, cutoff=0.8, r=2.0, HWHM=0.4):
     dists = np.linalg.norm(pos1 - np.transpose(pos2, (1, 0, 2)), axis=2)
 
     nn_dists = np.min(dists, axis=1)
-    x_fp = np.sum(nn_dists > cutoff) / len(atoms2)
-    x_fn = np.sum(np.min(dists, axis=0) > cutoff) / len(atoms2)
+    x_fp = np.sum(nn_dists > cutoff)
+    x_fn = np.sum(np.min(dists, axis=0) > cutoff)
     chi2 = nn_dists[nn_dists <= cutoff]
 
     return x_fp, x_fn, chi2
