@@ -92,8 +92,8 @@ class LAMMPS(object):
 
         if 'alloy' in norms:
             element = norms['alloy']['element']
-            xs = norm['x']
-            Es = norm['E']
+            xs = norms['alloy']['x']
+            Es = norms['alloy']['E']
             f = interp1d(xs, Es)
 
             x = individual.get_chemical_symbols().count(element) / len(individual)
