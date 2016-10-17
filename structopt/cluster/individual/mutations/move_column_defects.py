@@ -5,7 +5,7 @@ from ase.data import chemical_symbols
 from structopt.tools import CoordinationNumbers
 from structopt.tools import get_avg_radii
 
-def move_column_defect(individual, cutoff=0.2, CN_factor=1.1):
+def move_column_defects(individual, cutoff=0.2, CN_factor=1.1):
     """Calculates the error per column of atoms in the z-direction"""
 
     avg_radii = get_avg_radii(individual)
