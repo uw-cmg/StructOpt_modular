@@ -3,7 +3,7 @@
     "convergence": {"max_generations": 5},
     "seed": 0,
     "crossovers": {
-        "rotate": {"probability": 1.0}
+        "rotate": {"probability": 1.0},
     },
     "fitnesses": {
         "LAMMPS": {"weight": 1.0,
@@ -53,7 +53,7 @@
                               "use_mpi4py": false}}
     },
     "selections": {
-        "random_selection": {"probability": 0.0},
+        "random_selection": {"probability": 0.0}
         "rank": {"probability": 1.0,
                  "kwargs": {"unique_pairs": false,
                             "unique_parents": false}}

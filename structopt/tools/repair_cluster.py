@@ -72,10 +72,7 @@ def add_atoms(individual, n_diff, atomlist, target_atomlist, surf_CN):
     surf_probs = 2.0 ** CNs
     surf_probs /= surf_prob_factors
     surf_probs /= np.sum(surf_probs)
-    if len(individual) < -n_diff:
-        add_indices = np.random.choice(surf_indices, -n_diff, True, surf_probs)
-    else:
-        add_indices = np.random.choice(surf_indices, -n_diff, False, surf_probs)
+    add_indices = np.random.choice(surf_indices, -n_diff, False, surf_probs)
 
     # Get positions to add atoms to 
     surf_positions = individual.get_positions()[add_indices]
