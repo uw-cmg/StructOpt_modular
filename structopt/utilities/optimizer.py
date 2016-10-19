@@ -307,6 +307,7 @@ class StructOpt(object):
             self.clear_data()
 
         self.log_dir = new_log_dir
+        self.read_generations()
 
     def check_run(self):
         """Check the stdout to see if a run is complete. NOTE, only works

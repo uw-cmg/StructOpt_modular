@@ -94,6 +94,10 @@ class LAMMPS(object):
             element = norms['alloy']['element']
             xs = norms['alloy']['x']
             Es = norms['alloy']['E']
+
+            linear = np.poly1d(np.polyfit([xs[0], xs[-1]], [Es[0], Es[-1]], 1))
+            Es = np.array(Es) - linear(xs)
+
             f = interp1d(xs, Es)
 
             x = individual.get_chemical_symbols().count(element) / len(individual)
