@@ -25,6 +25,10 @@ from .enrich_bulk_column import enrich_bulk_column
 from .rich2poor_column import rich2poor_column
 from .poor2rich_column import poor2rich_column
 from .move_column_defects import move_column_defects
+from .add_atom_STEM import add_atom_STEM
+from .add_atom_defects import add_atom_defects
+from .remove_atom_STEM import remove_atom_STEM
+from .remove_atom_defects import remove_atom_defects
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -48,6 +52,10 @@ enrich_bulk_column.tag = 'EnBuCo'
 rich2poor_column.tag = 'Ri2PoCo'
 poor2rich_column.tag = 'Po2RiCo'
 move_column_defects.tag = 'MoCoDe'
+add_atom_STEM.tag = 'AdAtSTEM'
+add_atom_defects.tag = 'AdAtDe'
+remove_atom_STEM.tag = 'ReAtSTEM'
+remove_atom_defects.tag = 'ReAtDe'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -176,3 +184,27 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(move_column_defects)
     def move_column_defects(individual, cutoff=0.2, CN_factor=1.1):
         return move_column_defects(individual, cutoff=0.2, CN_factor=1.1)
+
+    @staticmethod
+    @functools.wraps(add_atom_STEM)
+    def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
+                      filter_size=1, surf_CN=11, surf_cutoff=0.5, min_cutoff=0.5):
+        return add_atom_STEM(individual, STEM_parameters, elements, p,
+                             filter_size, surf_CN, surf_cutoff, min_cutoff)
+
+    @staticmethod
+    @functools.wraps(add_atom_defects)
+    def add_atom_defects(individual, elements=None, p=None, cutoff=0.2, CN_factor=1.1):
+        return add_atom_defects(individual, elements, p, cutoff, CN_factor)
+
+    @staticmethod
+    @functools.wraps(remove_atom_STEM)
+    def remove_atom_STEM(individual, STEM_parameters,
+                         filter_size=1, remove_CN=11, remove_cutoff=0.5, max_cutoff=0.5):
+        return remove_atom_STEM(individual, STEM_parameters,
+                                filter_size, remove_CN, remove_cutoff, max_cutoff)
+
+    @staticmethod
+    @functools.wraps(remove_atom_defects)
+    def remove_atom_defects(individual, surf_CN=11):
+        return remove_atom_defects(individual, surf_CN)
