@@ -11,12 +11,16 @@ Running StructOpt
 StructOpt can be run on a single processor or in parallel. In a single score environment, the command is given below
 
 ::
+   
    python $STRUCTOPT_HOME/structopt/genetic.py structopt.in.json
+   
 
 In a parallel environment with N processors, StructOpt can be run with the following command
 
 ::
-   mpirun -n N $STRUCTOPT_HOME/structopt/genetic.py python $STRUCTOPT_HOME/structopt/genetic.py structopt.in.json
+   
+   mpirun -n N python $STRUCTOPT_HOME/structopt/genetic.py structopt.in.json
+   
 
 The output will exist in the folder the command was run from
 
