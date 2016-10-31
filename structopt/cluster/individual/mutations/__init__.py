@@ -49,6 +49,8 @@ enrich_bulk.tag = 'EnBu'
 enrich_surface_defects.tag = 'EnSuDe'
 enrich_surface_facets.tag = 'EnSuFa'
 permutation_STEM.tag ='PeSTEM'
+increase_Z_STEM.tag = 'InZSTEM'
+decrease_Z_STEM.tag = 'DeZSTEM'
 enrich_surface_column.tag = 'EnSuCo'
 enrich_bulk_column.tag = 'EnBuCo'
 rich2poor_column.tag = 'Ri2PoCo'
@@ -164,9 +166,9 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @staticmethod
     @functools.wraps(decrease_Z_STEM)
     def decrease_Z_STEM(individual, STEM_parameters, filter_size=0.5,
-                         move_cutoff=0.5, max_cutoff=0.5, min_cutoff=0.5):
+                         move_cutoff=0.5, max_cutoff=0.5):
         return decrease_Z_STEM(individual, STEM_parameters, filter_size,
-                                move_cutoff, max_cutoff, min_cutoff)
+                                move_cutoff, max_cutoff)
 
     @staticmethod
     @functools.wraps(enrich_surface_column)
