@@ -20,6 +20,8 @@ from .enrich_bulk import enrich_bulk
 from .enrich_surface_defects import enrich_surface_defects
 from .enrich_surface_facets import enrich_surface_facets
 from .permutation_STEM import permutation_STEM
+from .increase_Z_STEM import increase_Z_STEM
+from .decrease_Z_STEM import decrease_Z_STEM
 from .enrich_surface_column import enrich_surface_column
 from .enrich_bulk_column import enrich_bulk_column
 from .rich2poor_column import rich2poor_column
@@ -150,6 +152,20 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     def permutation_STEM(individual, STEM_parameters, filter_size=0.5,
                          move_cutoff=0.5, max_cutoff=0.5, min_cutoff=0.5):
         return permutation_STEM(individual, STEM_parameters, filter_size,
+                                move_cutoff, max_cutoff, min_cutoff)
+
+    @staticmethod
+    @functools.wraps(increase_Z_STEM)
+    def increase_Z_STEM(individual, STEM_parameters, filter_size=0.5,
+                         move_cutoff=0.5, min_cutoff=0.5):
+        return increase_Z_STEM(individual, STEM_parameters, filter_size,
+                                move_cutoff, min_cutoff)
+
+    @staticmethod
+    @functools.wraps(decrease_Z_STEM)
+    def decrease_Z_STEM(individual, STEM_parameters, filter_size=0.5,
+                         move_cutoff=0.5, max_cutoff=0.5, min_cutoff=0.5):
+        return decrease_Z_STEM(individual, STEM_parameters, filter_size,
                                 move_cutoff, max_cutoff, min_cutoff)
 
     @staticmethod
