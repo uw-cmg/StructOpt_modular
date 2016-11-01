@@ -7,12 +7,14 @@ import structopt
 import structopt.utilities
 from structopt.common.population import Population
 from structopt.tools.convert_time import convert_time
+from structopt.io.logger_utils import create_logging_generation
 
 class GeneticAlgorithm(object):
     """Defines methods to run a genetic algorithm optimization using the functions in the rest of the library."""
 
     def __init__(self, population, convergence, post_processing, adaptation):
         self.logger = logging.getLogger('default')
+        create_logging_generation(self)
 
         self.population = population
         self.convergence = convergence
@@ -85,7 +87,6 @@ class GeneticAlgorithm(object):
         if logging.parameters.rank == 0:
             self.post_processing_step()
         structopt.utilities.adapt(self.adaptation, self.population, self.generation)
-        logging.parameters.generation += 1
         self.generation += 1
 
     def check_convergence(self):
