@@ -1,4 +1,4 @@
-import logging
+import logging, os
 import subprocess
 import math
 import time
@@ -72,12 +72,12 @@ def fitness(population, parameters):
 
             # Collect the results for each chisq and return them
             for i, individual in enumerate(to_fit[j:j+individuals_per_iteration]):
-                while not individual.fitnesses.FEMSIM.has_finished():
-                    time.sleep(0.1)
-                time.sleep(0.1)
-                chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
-                individual.FEMSIM = chisq
-                logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
+                while True:
+                    vk = individual.fitnesses.FEMSIM.get_vk_data()
+                    if len(vk) != 0:
+                        break
+                individual.FEMSIM = individual.fitnesses.FEMSIM.chi2(vk)
+                logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, individual.FEMSIM))
 
     return [individual.FEMSIM for individual in population]
 

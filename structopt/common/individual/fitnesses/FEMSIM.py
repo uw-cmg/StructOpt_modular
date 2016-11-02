@@ -60,11 +60,6 @@ class FEMSIM(object):
         return {'command': femsim_command, 'args': args, 'info': info}
 
 
-    @single_core
-    def get_chisq(self, individual):
-        vk = self.get_vk_data()
-        return self.chi2(vk)
-
 
     @single_core
     def setup_individual_evaluation(self, individual):
@@ -109,19 +104,16 @@ class FEMSIM(object):
 
 
     @single_core
-    def has_finished(self):
-        return os.path.exists(os.path.join(self.folder, 'vk_initial_{base}.txt'.format(base=self.base)))
-
-
-    @single_core
     def get_vk_data(self):
         filename = os.path.join(self.folder, 'vk_initial_{base}.txt'.format(base=self.base))
-        data = open(filename).readlines()
-        os.remove(filename)
-        data = [line.strip().split()[:2] for line in data]
-        data = [[float(line[0]), float(line[1])] for line in data]
-        vk = np.array([vk for k, vk in data])
-        return vk
+        if os.path.exists(filename):
+            data = open(filename).readlines()
+            if len(self.vk) == len(data) and data[-1][-1] == '\n':
+                data = [line.strip().split()[:2] for line in data]
+                data = [[float(line[0]), float(line[1])] for line in data]
+                vk = np.array([vk for k, vk in data])
+                return vk
+        return []
 
 
     @single_core
