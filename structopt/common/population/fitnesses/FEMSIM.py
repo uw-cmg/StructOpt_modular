@@ -1,4 +1,4 @@
-import logging
+import logging, os
 import subprocess
 import math
 import time
@@ -64,20 +64,22 @@ def fitness(population, parameters):
         for i in range(num_iterations):
             j = i * individuals_per_iteration
             print("Spawning {} femsim processes, each with {} cores".format(individuals_per_iteration, cores_per_individual))
-            MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_per_iteration],
+            intercomm = MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_per_iteration],
                                          args=multiple_spawn_args['args'][j:j+individuals_per_iteration],
                                          maxprocs=[cores_per_individual]*individuals_per_iteration,
                                          info=infos[j:j+individuals_per_iteration]
                                          )
+            # Disconnect the child processes
+            intercomm.Disconnect()
 
             # Collect the results for each chisq and return them
             for i, individual in enumerate(to_fit[j:j+individuals_per_iteration]):
-                while not individual.fitnesses.FEMSIM.has_finished():
-                    time.sleep(0.1)
-                time.sleep(0.1)
-                chisq = individual.fitnesses.FEMSIM.get_chisq(individual)
-                individual.FEMSIM = chisq
-                logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, chisq))
+                while True:
+                    vk = individual.fitnesses.FEMSIM.get_vk_data()
+                    if len(vk) != 0:
+                        break
+                individual.FEMSIM = individual.fitnesses.FEMSIM.chi2(vk)
+                logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, individual.FEMSIM))
 
     return [individual.FEMSIM for individual in population]
 

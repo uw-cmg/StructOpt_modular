@@ -256,11 +256,11 @@ class LAMMPS(object):
             raise RuntimeError('Please set LAMMPS_COMMAND environment variable')
 
         input_file = open(self.input_file)
-
         p = Popen([lammps_cmd_line], stdin=input_file, stdout=PIPE, stderr=PIPE)
         try:
             output, error = p.communicate(timeout=self.parameters['timeout'])
         except TimeoutExpired:
+            print("Timed out!")    
             return True
 
         self.output = output.decode('utf-8').split('\n')[:-1]

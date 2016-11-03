@@ -5,6 +5,7 @@ import logging
 import os
 from structopt.tools.dictionaryobject import DictionaryObject
 import time
+import distutils.spawn
 
 MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'pso_moves']
 
@@ -38,11 +39,20 @@ def read(input):
 
     if use_mpi4py:
         try:
-            from mpi4py import MPI
+            import mpi4py
         except ImportError:
             raise ImportError("mpi4py must be installed to use StructOpt.")
+        mpiexec_path, _ = os.path.split(distutils.spawn.find_executable("mpiexec"))
+        for executable, path in mpi4py.get_config().items():
+            if mpiexec_path not in path:
+                raise ImportError("mpi4py may not be configured against the same version of 'mpiexec' that you are using. The 'mpiexec' path is {mpiexec_path} and mpi4py.get_config() returns:\n{mpi4py_config}\n".format(mpiexec_path=mpiexec_path, mpi4py_config=mpi4py.get_config()))
+        from mpi4py import MPI
         if 'Open MPI' not in MPI.get_vendor():
             raise ImportError("mpi4py must have been installed against Open MPI in order for StructOpt to function correctly.")
+        vendor_number = ".".join([str(x) for x in MPI.get_vendor()[1]])
+        if vendor_number not in mpiexec_path:
+            raise ImportError("The MPI version that mpi4py was compiled against does not match the version of 'mpiexec'. mpi4py's version number is {}, and mpiexec's path is {}".format(MPI.get_vendor(), mpiexec_path))
+
         parameters.logging.rank = MPI.COMM_WORLD.Get_rank()
         parameters.logging.ncores = MPI.COMM_WORLD.Get_size()
     else:
