@@ -14,7 +14,8 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        self.output_dir = logging.parameters.path
+        if hasattr(logging, 'parameters'):
+            self.output_dir = logging.parameters.path
 
         # Set default normalization to E = E/natoms
         if "normalize" not in self.parameters:
@@ -38,17 +39,19 @@ class LAMMPS(object):
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.id))
             if hasattr(logging, 'parameters'):
                 calcdir = os.path.join(self.output_dir, 'fitness/LAMMPS/generation{}/individual{}'.format(logging.parameters.generation, individual.id))
+                rank = logging.parameters.rank
             else:
                 calcdir = None
+                rank = 0
 
             calc = lammps(self.parameters, calcdir=calcdir)
             individual.set_calculator(calc)
             try:
                 E = individual.get_potential_energy()
-                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, logging.parameters.rank))
+                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, rank))
             except RuntimeError:
                 E = 0
-                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, logging.parameters.rank))
+                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         E = self.reference(E, individual)
         E = self.normalize(E, individual)
