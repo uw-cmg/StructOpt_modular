@@ -222,7 +222,7 @@ class Mutations(structopt.common.individual.mutations.Mutations):
                          max_cutoff=0.5, column_cutoff=0.2):
         return remove_atom_STEM(individual, STEM_parameters, permute, remove_prob,
                                 filter_size, remove_CN, remove_cutoff,
-                                max_cutoff, coumn_cutoff)
+                                max_cutoff, column_cutoff)
 
     @staticmethod
     @functools.wraps(remove_atom_defects)
