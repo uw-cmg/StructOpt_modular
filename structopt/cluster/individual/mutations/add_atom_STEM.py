@@ -8,7 +8,7 @@ from structopt.tools import CoordinationNumbers
 from structopt.tools import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
-def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
+def add_atom_STEM(individual, STEM_parameters, add_prob=None,
                   filter_size=1, surf_CN=11, surf_cutoff=0.5, min_cutoff=0.5):
 
     """Moves surface atoms around based on the difference in the target
@@ -153,13 +153,16 @@ def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
     new_position = surf_positions[surf_index]
 
     # Choose the element to add
-    if elements is None and p is None:
+    if add_prob is None:
         syms = individual.get_chemical_symbols()
         elements = np.unique(syms)
         n = len(syms)
         p = [syms.count(element) / n for element in elements]
-    element = np.random.choice(elements, p=p)
+    else:
+        elements = [key for key in add_prob]
+        p = [add_prob[key] for key in elements]
 
+    element = np.random.choice(elements, p=p)
     individual.append(Atom(element, new_position))
 
     return

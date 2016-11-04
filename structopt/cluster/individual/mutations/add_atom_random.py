@@ -3,7 +3,7 @@ import numpy as np
 
 from structopt.tools import get_avg_radii
 
-def add_atom_random(individual, elements=None, p=None, cutoff=0.2, CN_factor=1.1):
+def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     """Calculates the error per column of atoms in the z-direction"""
 
     avg_radii = get_avg_radii(individual)
@@ -55,13 +55,16 @@ def add_atom_random(individual, elements=None, p=None, cutoff=0.2, CN_factor=1.1
     add_pos = add_pos[np.random.choice(range(len(add_pos)))]
 
     # Choose the element to add
-    if elements is None and p is None:
+    if add_prob is None:
         syms = individual.get_chemical_symbols()
         elements = np.unique(syms)
         n = len(syms)
         p = [syms.count(element) / n for element in elements]
+    else:
+        elements = [key for key in add_prob]
+        p = [add_prob[key] for key in elements]
+
     element = np.random.choice(elements, p=p)
-    
-    individual.append(Atom(element, add_pos))
+    individual.append(Atom(element, new_position))
 
     return
