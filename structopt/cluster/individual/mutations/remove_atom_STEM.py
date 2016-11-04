@@ -115,7 +115,7 @@ def remove_atom_STEM(individual, STEM_parameters, permute=True, remove_prob=None
     else:
         remove_index = random.choice(indices_remove_xys)
 
-    remove_xy = positions[remove_index]
+    remove_xy = positions[remove_index][:2]
     syms = individual.get_chemical_symbols()
     remove_element = syms[remove_index]
 
@@ -134,7 +134,7 @@ def remove_atom_STEM(individual, STEM_parameters, permute=True, remove_prob=None
         p = [syms.count(element) / n for element in elements]
     else:
         elements = [key for key in remove_prob]
-        p = [add_prob[key] for key in elements]
+        p = [remove_prob[key] for key in elements]
 
     element = np.random.choice(elements, p=p)
     if element == remove_element:
