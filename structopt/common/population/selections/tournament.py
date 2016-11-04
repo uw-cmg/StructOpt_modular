@@ -2,6 +2,7 @@ import scipy
 import numpy as np
 from copy import deepcopy
 
+
 def tournament(population, fits, tournament_size=5,
                unique_pairs=False, unique_parents=False):
     """Selects pairs in seperate "tournaments", where a subset of the
@@ -40,7 +41,7 @@ def tournament(population, fits, tournament_size=5,
     ids_population = [individual.id for individual in population]
     id_to_rank = {id: rank for id, rank in zip(ids_population, ranks)}
     rank_to_id = {rank: id for id, rank in zip(ids_population, ranks)}
-    n_pairs = int(len(fits) / 2)    
+    n_pairs = int(len(fits) / 2)
     pairs_id = []
 
     for _ in range(n_pairs):
@@ -52,7 +53,7 @@ def tournament(population, fits, tournament_size=5,
 
         max_rank = min([id_to_rank[id] for id in tournament_father])
         id_father = rank_to_id[max_rank]
-        
+
         # Choose the second parent based on renormalized probabilities
         # First remove the father from the population and make a temporary
         # population for choosing the mother. If unique_parents

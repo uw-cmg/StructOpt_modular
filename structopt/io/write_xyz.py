@@ -1,6 +1,6 @@
 def write_xyz(fileobj, atoms, comment='', append=False):
     """Writes xyz files from an Individual object. Adapted from ase.io.xyz."""
-    
+
     if isinstance(fileobj, str) and append:
         fileobj = open(fileobj, 'a')
     else:

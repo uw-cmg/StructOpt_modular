@@ -1,23 +1,27 @@
-import time
 import logging
+import sys
 import os
 
-from .io.parameters import read as read_parameters
-from .io.parameters import write as write_parameters
-from .io.logger_utils import initialize_logger, initialize_logger_for_root
-from . import common
-from .tools import get_size, get_rank
+from structopt.dictionaryobject import DictionaryObject
+sys.modules['gparameters'] = DictionaryObject({})
+
+from structopt.io.parameters import read as read_parameters
+from structopt.io.parameters import write as write_parameters
+from structopt.io.logger_utils import initialize_logger, initialize_logger_for_root
+from structopt import common
+
 
 def setup(parameter_file):
     # Read in the parameters
     parameters = read_parameters(parameter_file)
+    sys.modules['gparameters'].update(parameters)
 
     # Setup all the loggers
-    logging_level = logging.parameters.get("logging_level", "info")
+    logging_level = parameters.logging.get("logging_level", "info")
     logging_level = getattr(logging, logging_level.upper())
 
-    rank = logging.parameters.rank
-    path = logging.parameters.path
+    rank = parameters.mpi.rank
+    path = parameters.logging.path
     os.makedirs(path, exist_ok=True)
 
     logger = initialize_logger_for_root(rank=rank, filename=os.path.join(path, 'output.log'), name="output", level=logging_level)
@@ -38,4 +42,3 @@ def setup(parameter_file):
     write_parameters(parameters)
     return parameters
 
-__all__ = ['parameters', 'cluster', 'crystal', 'defect', 'surface']

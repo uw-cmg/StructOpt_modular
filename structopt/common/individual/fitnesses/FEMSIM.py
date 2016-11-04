@@ -3,9 +3,9 @@ import logging
 import numpy as np
 import shutil
 
-import structopt
+import gparameters
 from structopt.io import write_xyz
-from structopt.tools import root, single_core, parallel
+from structopt.tools import single_core
 
 
 class FEMSIM(object):
@@ -17,7 +17,7 @@ class FEMSIM(object):
         self.k = None
         self.parameters = self.read_inputs(parameters)
         self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)  # Multiply the experimental data by the thickness scaling factor
-        self.parameters.path = logging.parameters.path
+        self.parameters.path = gparameters.logging.path
 
         # These parameteres do not need to exist between generations
         # They are used for before/after femsim processing
@@ -50,7 +50,7 @@ class FEMSIM(object):
     @single_core
     def get_spawn_args(self, individual):
         """Returns a dictionary of arguments to be passed to MPI.COMM_SELF.Spawn which will be collected for all
-        structures and concatenated into MPI.COMM_SELF.Spawn_multiple: 
+        structures and concatenated into MPI.COMM_SELF.Spawn_multiple:
         https://github.com/mpi4py/mpi4py/blob/2acfc552c42846628304e54a3b87e2bf3a59af07/src/mpi4py/MPI/Comm.pyx#L1555
         """
         self.setup_individual_evaluation(individual)
@@ -58,7 +58,6 @@ class FEMSIM(object):
         args = [self.base, self.paramfilename]
         info = {'wdir': self.folder}
         return {'command': femsim_command, 'args': args, 'info': info}
-
 
 
     @single_core
@@ -69,7 +68,7 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.id))
 
         # Make individual folder and copy files there
-        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/Individual{i}'.format(gen=logging.parameters.generation, i=individual.id)))
+        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/Individual{i}'.format(gen=gparameters.generation, i=individual.id)))
         os.makedirs(self.folder, exist_ok=True)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
             shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
@@ -85,9 +84,9 @@ class FEMSIM(object):
     @single_core
     def write_paramfile(self, individual):
         # Write structure file to disk so that the fortran femsim can read it in
-        individual.set_cell([[self.parameters.xsize,0.,0.], [0., self.parameters.ysize, 0.], [0., 0., self.parameters.zsize]])
+        individual.set_cell([[self.parameters.xsize, 0., 0.], [0., self.parameters.ysize, 0.], [0., 0., self.parameters.zsize]])
         individual.wrap()
-        for index in range(0,3):
+        for index in range(0, 3):
             lo = np.amin(individual.get_positions()[:, index])
             hi = np.amax(individual.get_positions()[:, index])
             assert lo >= 0
@@ -96,7 +95,7 @@ class FEMSIM(object):
         write_xyz(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id)), individual, comment=comment)
 
         with open(self.paramfilename, 'w') as f:
-            f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=logging.parameters.generation, i=individual.id))
+            f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=gparameters.generation, i=individual.id))
             f.write('{}\n'.format(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id))))
             f.write('{}\n'.format(self.parameters.vk_data_filename))
             f.write('{}\n'.format(self.parameters.Q))

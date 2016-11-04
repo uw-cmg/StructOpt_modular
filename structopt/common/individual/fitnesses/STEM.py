@@ -8,7 +8,7 @@ from scipy.ndimage import sobel
 from ase.io import read
 
 from structopt.tools import root, single_core, parallel
-from structopt.tools.dictionaryobject import DictionaryObject
+import gparameters
 
 class STEM(object):
     """Calculates the chi^2 difference between a simulated and experimental image.
@@ -27,7 +27,9 @@ class STEM(object):
     """
 
     @single_core
-    def __init__(self, parameters={}):
+    def __init__(self, parameters=None):
+        if parameters is None:
+            parameters = {}
         self.parameters = parameters
         self.parameters.setdefault('zed', 1)
         self.psf = None
@@ -42,13 +44,10 @@ class STEM(object):
 
         # If running within StructOpt, create directory for saving files
         # and faster loading of PSF and target data
-        if hasattr(logging, 'parameters'):
-            path = os.path.join(logging.parameters.path, 'fitness/STEM')
-            path = os.path.join(path, 'rank-{}'.format(logging.parameters.rank))
-            self.path = path
-            os.makedirs(self.path, exist_ok=True)
-        else:
-            self.path = None
+        path = os.path.join(parameters.logging.path, 'fitness/STEM')
+        path = os.path.join(path, 'rank-{}'.format(parameters.logging.rank))
+        self.path = path
+        os.makedirs(self.path, exist_ok=True)
 
     def fitness(self, individual):
         """Calculates the fitness of an individual with respect to a target

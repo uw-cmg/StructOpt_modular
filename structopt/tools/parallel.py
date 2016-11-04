@@ -1,8 +1,5 @@
 import sys
 import functools
-import numpy as np
-
-import structopt
 
 
 def get_rank():
@@ -58,7 +55,7 @@ def parallel(method):
     def wrapper(*args, **kwargs):
         return method(*args, **kwargs)
     wrapper.__doc__ += ("\n\n(@parallel) Designed to run code that runs differently on different cores.\n"
-                       "The MPI functionality should be implemented inside these functions.\n")
+                        "The MPI functionality should be implemented inside these functions.\n")
     return wrapper
 
 
@@ -112,7 +109,7 @@ def allgather(stuff, stuffs_per_core):
         raise TypeError('instance of {} has an `allgather` function that should be used instead'.format(stuff.__class__.__name__))
 
     from mpi4py import MPI
-    # The lists in stuffs_per_core all need to be of the same length 
+    # The lists in stuffs_per_core all need to be of the same length
     max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
     for rank, stuffs in stuffs_per_core.items():
         while len(stuffs) < max_stuffs_per_core:
@@ -151,7 +148,7 @@ def parse_MPMD_cores_per_structure(value):
             min_, max_ = value.split('-')
             return {'min': int(min_), 'max': int(max_)}
     else:
-        raise TyeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
+        raise TypeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
 
 
 class SingleCorePerIndividual(object):
@@ -172,21 +169,21 @@ class SingleCorePerIndividual(object):
                     individual.LAMMPS = individual.fitnesses.LAMMPS.fitness(individual)
             return [individual.LAMMPS for individual in population]
     """
-    def __init__(population, to_run, attr_name):
+    def __init__(self, population, to_run, attr_name):
+        import gparameters
         self.population = population
         self.to_run = to_run
-        import parameters
-        self.rank = parameters.rank
-        self.ncores = parameters.ncores
+        self.rank = gparameters.mpi.rank
+        self.ncores = gparameters.mpi.ncores
 
     def __enter__(self):
         self.individuals_per_core = {r: [] for r in range(self.ncores)}
         for i, individual in enumerate(self.to_run):
             self.individuals_per_core[i % self.ncores].append(individual)
-        return individuals_per_core[rank]
+        return self.individuals_per_core[self.rank]
 
     def __exit__(self, exception_type, exception_value, traceback):
         positions_per_core = {rank: [self.population.position(individual) for individual in individuals] for rank, individuals in self.individuals_per_core.items()}
         self.allgather([getattr(individual, self.attr_name) for individual in self.population])
-        allgather(results, positions_per_core)
+        allgather(self.results, positions_per_core)
 

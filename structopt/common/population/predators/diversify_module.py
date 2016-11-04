@@ -1,5 +1,6 @@
 import random
 
+
 def diversify_module(population, fits, nkeep, module, min_diff):
     """This predator eliminates individuals with similar module values"""
 

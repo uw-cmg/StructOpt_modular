@@ -32,7 +32,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         the rotation be. Tests indicate a gridsize of 10 is suitable.
     """
 
-    def __init__(self, parameters={}):
+    def __init__(self, parameters=None):
+        if parameters is None:
+            parameters = {}
         parameters.setdefault('rotation_grid', 10)
         parameters.setdefault('rotation_iterations', 2)
         parameters.setdefault('surface_moves', 10)
@@ -47,11 +49,8 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             self.generate_target()
 
         current_fitness = self.fitness(individual)
-        if hasattr(logging, 'parameters'):
-            rank = logging.parameters.rank
-            print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
-        else:
-            rank = 0
+        rank = gparameters.mpi.rank
+        print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
 
         # Relax the atom by rotating it
         steps = self.parameters['rotation_grid']

@@ -1,8 +1,7 @@
-import structopt
 from .FEMSIM import FEMSIM
 from .LAMMPS import LAMMPS
 from .STEM import STEM
-from structopt.tools import root, single_core, parallel
+from structopt.tools import single_core, parallel
 
 
 class Fitnesses(object):

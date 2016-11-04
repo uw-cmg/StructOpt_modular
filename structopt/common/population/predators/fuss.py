@@ -1,6 +1,7 @@
 import random
 import numpy as np
 
+
 def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
     """Fixed uniform selection scheme. Aimed at maintaining diversity
     in the population. In the case where low fit is the highest
@@ -17,7 +18,7 @@ def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
     nbest : int
         The top n individuals to always keep
     fusslimit : float
-        Individuals that have fitness fusslimit 
+        Individuals that have fitness fusslimit
         worse than the max fitness will not be considered
     """
 
@@ -30,7 +31,7 @@ def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
             maxf = minf + fusslimit
 
     # Select random point on fitness line
-    pt = random.uniform(minf,maxf)
+    pt = random.uniform(minf, maxf)
 
     # Calculate the distance of each individual's fitness from that point
     distances = np.absolute(np.array(fits) - pt)
@@ -55,5 +56,5 @@ def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
 
     new_population = [population[id] for id in ids_keep]
     population.replace(new_population)
-    
+
     return

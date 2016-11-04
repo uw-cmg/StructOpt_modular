@@ -1,8 +1,5 @@
-import logging
 import functools
-from collections import defaultdict
 
-import structopt
 from .update_particle import update_particle
 from structopt.tools import root, single_core, parallel
 
@@ -20,7 +17,6 @@ class Pso_Moves(object):
     @single_core
     def move(self, individual, best_swarm, best_particle):
         """ """
-        logger = logging.getLogger("default")        
         individual._relaxed = False
         individual._fitted = False
         return self.update_particle(individual, best_swarm, best_particle, self.kwargs.omega, self.kwargs.phi_p, self.kwargs.phi_g)

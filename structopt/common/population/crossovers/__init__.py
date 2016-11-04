@@ -3,7 +3,6 @@ import random
 from itertools import accumulate
 from bisect import bisect
 
-import structopt
 from structopt.tools import root, single_core, parallel
 
 from .rotate import rotate
@@ -21,7 +20,7 @@ class Crossovers(object):
         # self.crossovers is a dictionary containing {function: probability} pairs
         self.crossovers = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
 
-        #self.kwargs is a dictionary containing {function: kwargs} pairs
+        # self.kwargs is a dictionary containing {function: kwargs} pairs
         self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
 
         self.total_probability = sum(self.crossovers.values())

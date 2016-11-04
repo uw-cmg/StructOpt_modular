@@ -1,8 +1,6 @@
 import random
-import numpy
 from ase import Atoms
 
-from structopt.common.individual import Individual
 from structopt.tools import root, single_core, parallel
 
 
@@ -117,7 +115,7 @@ def rotate(individual1, individual2, conserve_composition=True):
 
     # Need to have at least one atom of each specie in atomlist to prevent LAMMPS from erroring
     if not conserve_composition:
-        for i in range(len(ind1)):
+        for i in range(len(individual1)):
             atoms1 = [atom for atom in child1 if atom.symbol == individual1[i]]
             atoms2 = [atom for atom in child2 if atom.symbol == individual1[i]]
             if len(atoms1) == 0 and len(atoms2) == 0:

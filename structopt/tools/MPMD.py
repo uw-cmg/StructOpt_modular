@@ -21,7 +21,7 @@ def fitness(population, parameters):
 
     if to_fit:
         spawn_args = [individual.fitnesses.FEMSIM.get_spawn_args(individual) for individual in to_fit]
-        MPMD(to_fit, spawn_args)
+        MPMD(to_fit, spawn_args, parameters)
 
         # Collect the results for each chisq and return them
         logger = logging.getLogger('output')
@@ -37,7 +37,7 @@ def fitness(population, parameters):
 
 
 @root(broadcast=False)
-def MPMD(self, to_run, spawn_args):
+def MPMD(self, to_run, spawn_args, parameters):
     """This is a function to run MPMD, with an example for FEMSIM above.
     I'm not confident we should use it yet, but only because I haven't tested it.
     I'm relatively confident it will work.

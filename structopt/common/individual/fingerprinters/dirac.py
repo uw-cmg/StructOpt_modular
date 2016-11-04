@@ -1,5 +1,6 @@
 import math
 
+
 def dirac(x, a=0., sig=None):
     """Simple calculation of the dirac function.
 
@@ -12,7 +13,7 @@ def dirac(x, a=0., sig=None):
         float: value of dirac function evaluated at x
     """
 
-    if sig == None:
+    if sig is None:
         if x != a:
             result = 0
         else:

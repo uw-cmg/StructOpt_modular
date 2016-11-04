@@ -9,4 +9,3 @@ from .analysis import NeighborList
 from .analysis import NeighborElements
 from .rotation_matrix import rotation_matrix
 from .repair_cluster import repair_cluster
-from .similarity import get_chi2

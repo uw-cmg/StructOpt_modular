@@ -3,7 +3,6 @@ import random
 from itertools import accumulate
 from bisect import bisect
 
-import structopt
 from .random_selection import random_selection
 from .rank import rank
 from .roulette import roulette

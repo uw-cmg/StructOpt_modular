@@ -1,11 +1,12 @@
 import os
+import sys
 import json
 import re
 import importlib
 from collections import defaultdict, Counter
 
 from structopt.io import read_xyz
-from structopt.tools.dictionaryobject import DictionaryObject
+from structopt.dictionaryobject import DictionaryObject
 
 
 def parse_gene(gene):
@@ -37,8 +38,7 @@ class DataExplorer(object):
                 break
         parameters = ''.join(parameters)
         self.parameters = DictionaryObject(json.loads(parameters))
-        import logging
-        logging.parameters = self.parameters.logging
+        sys.modules['gparameters'] = self.parameters
 
         self.generations = Generations(self.genealogy_file)
         for population in self.generations:
