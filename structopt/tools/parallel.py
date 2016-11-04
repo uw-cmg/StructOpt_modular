@@ -153,3 +153,40 @@ def parse_MPMD_cores_per_structure(value):
     else:
         raise TyeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
 
+
+class SingleCorePerIndividual(object):
+    """
+    This is an untested context manager for using the mpi4py parallelization technique.
+    I'm not sure we should use it, but I'm thinking on it.
+    The nice thing is that it is self-contained reasonably well.
+    The bad thing is that the user has to manually set fields on the individuals before
+    the context manager exits in order for it to work properly,
+    and there isn't a great way to error check whether they did that or not.
+
+    Example usage:
+
+        def calculate_energies(population):
+            to_fit = [individual for individual in population if individual.LAMMPS is None]
+            with SingleCorePerIndividual(population, to_run, "LAMMPS") as to_compute:
+                for individual in to_compute:
+                    individual.LAMMPS = individual.fitnesses.LAMMPS.fitness(individual)
+            return [individual.LAMMPS for individual in population]
+    """
+    def __init__(population, to_run, attr_name):
+        self.population = population
+        self.to_run = to_run
+        import parameters
+        self.rank = parameters.rank
+        self.ncores = parameters.ncores
+
+    def __enter__(self):
+        self.individuals_per_core = {r: [] for r in range(self.ncores)}
+        for i, individual in enumerate(self.to_run):
+            self.individuals_per_core[i % self.ncores].append(individual)
+        return individuals_per_core[rank]
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        positions_per_core = {rank: [self.population.position(individual) for individual in individuals] for rank, individuals in self.individuals_per_core.items()}
+        self.allgather([getattr(individual, self.attr_name) for individual in self.population])
+        allgather(results, positions_per_core)
+
