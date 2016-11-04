@@ -217,10 +217,12 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(remove_atom_STEM)
-    def remove_atom_STEM(individual, STEM_parameters,
-                         filter_size=1, remove_CN=11, remove_cutoff=0.5, max_cutoff=0.5):
-        return remove_atom_STEM(individual, STEM_parameters,
-                                filter_size, remove_CN, remove_cutoff, max_cutoff)
+    def remove_atom_STEM(individual, STEM_parameters, permute=True, remove_prob=None,
+                         filter_size=1, remove_CN=11, remove_cutoff=0.5,
+                         max_cutoff=0.5, column_cutoff=0.2):
+        return remove_atom_STEM(individual, STEM_parameters, permute, remove_prob,
+                                filter_size, remove_CN, remove_cutoff,
+                                max_cutoff, coumn_cutoff)
 
     @staticmethod
     @functools.wraps(remove_atom_defects)
