@@ -6,6 +6,7 @@ import time
 import structopt
 import gparameters
 import structopt.utilities
+import structopt.postprocessing
 from structopt.common.population import Population
 from structopt.tools.convert_time import convert_time
 
@@ -111,7 +112,7 @@ class GeneticAlgorithm(object):
             path = os.path.join(path, 'generation{}'.format(gparameters.generation))
             os.makedirs(path, exist_ok=True)
             individual.write(os.path.join(path, 'individual{}.xyz'.format(individual.id)))
-        structopt.utilities.clear_XYZs(self.post_processing.XYZs, gparameters.generation, gparameters.logging.path)
+        structopt.postprocessing.clear_XYZs(self.post_processing.XYZs, gparameters.generation, gparameters.logging.path)
 
         # Save the genealogy
         tags = ['' for _ in self.population]

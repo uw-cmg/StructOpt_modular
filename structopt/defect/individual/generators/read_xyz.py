@@ -1,1 +1,0 @@
-../../../common/individual/generators/read_xyz.py
