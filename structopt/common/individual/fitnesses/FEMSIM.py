@@ -5,7 +5,7 @@ import shutil
 
 import gparameters
 from structopt.io import write_xyz
-from structopt.tools import single_core
+from structopt.tools import root, single_core, parallel
 
 
 class FEMSIM(object):

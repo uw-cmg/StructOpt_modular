@@ -6,7 +6,7 @@ import os
 import time
 import distutils.spawn
 
-from structopt.dictionaryobject import DictionaryObject
+from structopt.tools.dictionaryobject import DictionaryObject
 
 MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'pso_moves']
 

@@ -3,8 +3,8 @@ import numpy as np
 
 from ase import Atoms
 
-from structopt.tools.analysis import CoordinationNumbers
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import CoordinationNumbers
+from structopt.common.crossmodule import get_avg_radii
 
 def repair_cluster(individual, target_atomlist, surf_CN=11):
     '''Function for repairing a cluster to the correct

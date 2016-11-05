@@ -2,7 +2,7 @@ import random
 import numpy as np
 from ase import Atom, Atoms
 
-from structopt.tools import NeighborList
+from structopt.common.crossmodule import NeighborList
 
 def rotate_cluster(individual, max_natoms=0.20):
     """Randomly moves atoms within a cluster.

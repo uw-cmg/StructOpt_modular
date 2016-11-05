@@ -5,9 +5,9 @@ from scipy.ndimage import center_of_mass
 from scipy.optimize import fmin, brute
 
 import structopt.common.individual.fitnesses
-from structopt.tools.analysis import NeighborList
 from structopt.tools import root, single_core, parallel
-from structopt.tools import get_avg_radii, rotation_matrix
+from structopt.tools import rotation_matrix
+from structopt.common.crossmodule import get_avg_radii, NeighborList
 
 class STEM(structopt.common.individual.fitnesses.STEM):
     """Rotates the individual to obtain a better match with STEM image.

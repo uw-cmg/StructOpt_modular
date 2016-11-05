@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-from structopt.tools import CoordinationNumbers
+from structopt.common.crossmodule import CoordinationNumbers
 
 def swap_core_shell(individual, surf_CN=11):
     """Swaps atoms on the surface with an atom in the core. Only does it

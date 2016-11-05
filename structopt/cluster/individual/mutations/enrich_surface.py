@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-from structopt.tools import CoordinationNumbers
+from structopt.common.crossmodule import CoordinationNumbers
 
 def enrich_surface(individual, surf_CN=11, species=None):
     """Mutation that selectively enriches the surface with a species

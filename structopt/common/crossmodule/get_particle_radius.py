@@ -1,4 +1,4 @@
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import get_avg_radii
 
 def get_particle_radius(atomlist, fill_factor=0.74):
     """Returns an estimated nanoparticle radius given a

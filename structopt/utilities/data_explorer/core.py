@@ -6,7 +6,7 @@ import importlib
 from collections import defaultdict, Counter
 
 from structopt.io import read_xyz
-from structopt.dictionaryobject import DictionaryObject
+from structopt.tools.dictionaryobject import DictionaryObject
 
 
 def parse_gene(gene):

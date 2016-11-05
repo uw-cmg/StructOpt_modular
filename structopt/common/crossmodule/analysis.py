@@ -1,5 +1,5 @@
 import numpy as np
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import get_avg_radii
 
 np.seterr(all='ignore')
 

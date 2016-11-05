@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-from structopt.tools.lammps import LAMMPS as lammps
+from structopt.common.crossmodule.lammps import LAMMPS as lammps
 from structopt.tools import root, single_core, parallel
 from structopt.cluster.individual.mutations.move_surface_atoms import move_surface_atoms
 import gparameters

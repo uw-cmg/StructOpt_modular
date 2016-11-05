@@ -2,7 +2,7 @@ import logging
 import sys
 import os
 
-from structopt.dictionaryobject import DictionaryObject
+from structopt.tools.dictionaryobject import DictionaryObject
 sys.modules['gparameters'] = DictionaryObject({})
 
 from structopt.io.parameters import read as read_parameters

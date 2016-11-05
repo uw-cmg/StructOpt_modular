@@ -2,8 +2,8 @@ import numpy as np
 from scipy.interpolate import interp1d
 import os
 
-from structopt.tools import single_core
-from structopt.tools.lammps import LAMMPS as lammps
+from structopt.common.crossmodule.lammps import LAMMPS as lammps
+from structopt.tools import root, single_core, parallel
 import gparameters
 
 

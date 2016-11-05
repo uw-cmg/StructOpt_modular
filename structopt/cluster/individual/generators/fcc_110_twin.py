@@ -5,7 +5,7 @@ np.seterr(all='ignore')
 
 from ase import Atoms
 from structopt.tools import random_three_vector
-from structopt.tools.analysis import CoordinationNumbers
+from structopt.common.crossmodule import CoordinationNumbers
 
 from .fcc import fcc
 
