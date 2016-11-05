@@ -64,7 +64,6 @@ def fitness(population, parameters):
             if i == len(to_fit) // individuals_per_iteration:  # The last iteration may not be exactly individuals_per_iteration
                 individuals_per_iteration = len(to_fit) % individuals_per_iteration
             print("Spawning {} femsim processes, each with {} cores".format(individuals_per_iteration, cores_per_individual))
-            print(multiple_spawn_args['args'])
             intercomm = MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_per_iteration],
                                                      args=multiple_spawn_args['args'][j:j+individuals_per_iteration],
                                                      maxprocs=[cores_per_individual]*individuals_per_iteration,
