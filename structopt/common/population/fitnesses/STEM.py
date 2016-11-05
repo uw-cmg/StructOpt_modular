@@ -2,6 +2,7 @@ import logging
 
 from structopt.tools import root, single_core, parallel
 from structopt.tools.parallel import allgather
+import gparameters
 
 @parallel
 def fitness(population, parameters):
@@ -16,12 +17,12 @@ def fitness(population, parameters):
 
     if parameters.use_mpi4py:
         logger = logging.getLogger('by-rank')
-        ncores = logging.parameters.ncores
+        ncores = gparameters.mpi.ncores
     else:
         logger = logging.getLogger('output')
         ncores = 1
 
-    rank = logging.parameters.rank
+    rank = gparameters.mpi.rank
 
     individuals_per_core = {r: [] for r in range(ncores)}
     for i, individual in enumerate(to_fit):
@@ -50,3 +51,4 @@ def fitness(population, parameters):
         population.get_by_position(i).STEM = fit
 
     return [individual.STEM for individual in population]    
+

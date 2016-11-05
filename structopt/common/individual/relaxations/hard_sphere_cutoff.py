@@ -1,11 +1,9 @@
-import logging
 from ase.calculators.neighborlist import NeighborList
 
-import structopt
 from structopt.tools import root, single_core, parallel
+import gparameters
 
 
-#class HardSphereCutoff(object):
 class hard_sphere_cutoff(object):
     """A relaxation module to ensure atoms in an individual are not too close together.
     This is often a preliminary relaxation before LAMMPS for VASP to ensure the models do not explode.
@@ -24,7 +22,7 @@ class hard_sphere_cutoff(object):
         Args:
             individual (Individual):  the individual to relax
         """
-        rank = logging.parameters.rank
+        rank = gparameters.mpi.rank
         print("Relaxing individual {} on rank {} with hard-sphere cutoff method".format(individual.id, rank))
         radii = [2.0 for atom in individual]
         nl = NeighborList(radii, bothways=True, self_interaction=False)

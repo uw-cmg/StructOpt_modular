@@ -2,6 +2,7 @@ import numpy as np
 
 from structopt.tools import root, single_core, parallel
 
+
 @single_core
 def roulette(population, fits, nkeep):
     """Select individuals with a probability proportional to their fitness.
@@ -28,7 +29,7 @@ def roulette(population, fits, nkeep):
         ids_zero_p_keep = np.random.choice(ids_zero_p, n_zero_p_to_add, replace=False)
         ids_keep = np.append(ids_nonzero_p, ids_zero_p_keep)
     else:
-        ids_keep = np.random.choice(ids, nkeep, replace=False, p=p)    
+        ids_keep = np.random.choice(ids, nkeep, replace=False, p=p)
 
     new_population = [population[i] for i in ids_keep]
     population.replace(new_population)

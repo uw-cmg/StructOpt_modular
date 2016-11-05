@@ -1,16 +1,17 @@
 import numpy as np
 from copy import deepcopy
 
+
 def roulette(population, fits, unique_pairs=False, unique_parents=False):
-    """Selection function that chooses pairs of structures 
+    """Selection function that chooses pairs of structures
     based on their fitness. Fitnesses are normalized from 0 to 1.
 
     See "Grefenstette and Baker 1989 Whitley 1989".
-    
+
     Parameters
     ----------
     population : StructOpt population object
-        An object inherited from list that contains 
+        An object inherited from list that contains
         StructOpt individual objects.
     fits : list
         A list of fitnesses of the population
@@ -30,7 +31,7 @@ def roulette(population, fits, unique_pairs=False, unique_parents=False):
 
     # Work with indexes of the population instead of the population
     ids_population = [individual.id for individual in population]
-    
+
     # Normalize fits from 0 (min fit) to 1 (max fit)
     fit_max = max(fits)
     fits = np.array([-(fit - fit_max) for fit in fits])

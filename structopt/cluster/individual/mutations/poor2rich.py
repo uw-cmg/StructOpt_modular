@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from structopt.tools import NeighborList
+from structopt.common.crossmodule import NeighborList
 
 def poor2rich(atoms, surf_CN=11):
     '''Moves an atom from a rich region to a poor region'''

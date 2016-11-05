@@ -205,22 +205,24 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(add_atom_STEM)
-    def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
+    def add_atom_STEM(individual, STEM_parameters, add_prob=None,
                       filter_size=1, surf_CN=11, surf_cutoff=0.5, min_cutoff=0.5):
-        return add_atom_STEM(individual, STEM_parameters, elements, p,
+        return add_atom_STEM(individual, STEM_parameters, add_prob,
                              filter_size, surf_CN, surf_cutoff, min_cutoff)
 
     @staticmethod
     @functools.wraps(add_atom_defects)
-    def add_atom_defects(individual, elements=None, p=None, cutoff=0.2, CN_factor=1.1):
-        return add_atom_defects(individual, elements, p, cutoff, CN_factor)
+    def add_atom_defects(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
+        return add_atom_defects(individual, add_prob, cutoff, CN_factor)
 
     @staticmethod
     @functools.wraps(remove_atom_STEM)
-    def remove_atom_STEM(individual, STEM_parameters,
-                         filter_size=1, remove_CN=11, remove_cutoff=0.5, max_cutoff=0.5):
-        return remove_atom_STEM(individual, STEM_parameters,
-                                filter_size, remove_CN, remove_cutoff, max_cutoff)
+    def remove_atom_STEM(individual, STEM_parameters, permute=True, remove_prob=None,
+                         filter_size=1, remove_CN=11, remove_cutoff=0.5,
+                         max_cutoff=0.5, column_cutoff=0.2):
+        return remove_atom_STEM(individual, STEM_parameters, permute, remove_prob,
+                                filter_size, remove_CN, remove_cutoff,
+                                max_cutoff, column_cutoff)
 
     @staticmethod
     @functools.wraps(remove_atom_defects)

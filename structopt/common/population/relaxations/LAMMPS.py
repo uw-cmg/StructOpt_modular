@@ -1,7 +1,5 @@
-import logging
-
-import structopt
 from structopt.tools import root, single_core, parallel
+import gparameters
 
 
 @parallel
@@ -13,8 +11,8 @@ def relax(population, parameters):
     """
 
     to_relax = [individual for individual in population if not individual._relaxed]
-    ncores = logging.parameters.ncores
-    rank = logging.parameters.rank
+    ncores = gparameters.mpi.ncores
+    rank = gparameters.mpi.rank
 
     individuals_per_core = {rank: [] for rank in range(ncores)}
     for i, individual in enumerate(to_relax):

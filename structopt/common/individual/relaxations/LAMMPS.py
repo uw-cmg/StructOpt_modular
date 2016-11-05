@@ -1,11 +1,11 @@
 import os
-import logging
-import structopt
 import numpy as np
 
-from structopt.tools.lammps import LAMMPS as lammps
+from structopt.common.crossmodule.lammps import LAMMPS as lammps
 from structopt.tools import root, single_core, parallel
 from structopt.cluster.individual.mutations.move_surface_atoms import move_surface_atoms
+import gparameters
+
 
 class LAMMPS(object):
     """ """
@@ -14,10 +14,7 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        if hasattr(logging, 'parameters'):
-            self.output_dir = logging.parameters.path
-        else:
-            self.output_dir = os.getcwd()
+        self.output_dir = gparameters.logging.path
 
 
     @single_core
@@ -33,13 +30,9 @@ class LAMMPS(object):
             individual (Individual): the individual to relax
         """
 
-        if hasattr(logging, 'parameters'):
-            calcdir = os.path.join(self.output_dir, 'relaxation/LAMMPS/generation{}/individual{}'.format(logging.parameters.generation, individual.id))
-            rank = logging.parameters.rank
-            print("Relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
-        else:
-            calcdir = None
-            rank = 0
+        calcdir = os.path.join(self.output_dir, 'relaxation/LAMMPS/generation{}/individual{}'.format(gparameters.generation, individual.id))
+        rank = gparameters.mpi.rank
+        print("Relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         calc = lammps(self.parameters, calcdir=calcdir)
         individual.set_calculator(calc)
@@ -53,7 +46,7 @@ class LAMMPS(object):
         individual.LAMMPS = E
 
         if 'repair' in self.parameters and self.parameters['repair']:
-            E = self.repair(individual, logging.parameters.generation)
+            E = self.repair(individual, gparameters.generation)
             if E is not None:
                 individual.LAMMPS = E
 
@@ -64,7 +57,7 @@ class LAMMPS(object):
         """Repairs an individual. Currently takes isolated atoms moves them next to
         a non-isolated atom"""
 
-        rank = logging.parameters.rank
+        rank = gparameters.mpi.rank
 
         n_moves = move_surface_atoms(individual, max_natoms=1.0, move_CN=3)
         if n_moves == 0:
@@ -87,3 +80,4 @@ class LAMMPS(object):
             print("Error repairing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         return E
+

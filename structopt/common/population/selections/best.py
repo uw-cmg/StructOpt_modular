@@ -1,5 +1,6 @@
 import scipy.stats
 
+
 def best(population, fits):
     """Deterministic selection function that chooses adjacently
     ranked individuals as pairs."""

@@ -1,8 +1,8 @@
 import random
 import numpy as np
 
-from structopt.tools import NeighborList
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import NeighborList
+from structopt.common.crossmodule import get_avg_radii
 
 from ase.io import write
 

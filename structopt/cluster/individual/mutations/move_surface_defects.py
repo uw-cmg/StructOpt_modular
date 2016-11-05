@@ -1,8 +1,8 @@
 import random
 import numpy as np
 
-from structopt.tools import CoordinationNumbers
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import CoordinationNumbers
+from structopt.common.crossmodule import get_avg_radii
 
 from ase.io import write
 

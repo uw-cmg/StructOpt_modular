@@ -1,8 +1,10 @@
-import sys, os
+import os
+import sys
 import random
 import logging
 
 import structopt
+import gparameters
 from structopt.common.population import Population
 
 
@@ -14,38 +16,30 @@ class ParticleSwarmOptimization(object):
 
         self.population = population
         self.convergence = convergence
-
-        self.generation = 0
-        nindiv = len(self.population)
-        natoms = len(self.population[0].positions)
-
-        
-        # Prep output monitoring
-
-        # Set starting convergence
+        gparameters.generation = 0
         self.converged = False
 
 
     def run(self):
-        if logging.parameters.rank == 0:
+        if gparameters.mpi.rank == 0:
             print("Starting main Opimizer loop!")
         while not self.converged:
             self.step()
-        if logging.parameters.rank == 0:
+        if gparameters.mpi.rank == 0:
             print("Finished!")
 
 
     def step(self):
-        if logging.parameters.rank == 0:
-            print("Starting generation {}".format(self.generation))
+        if gparameters.mpi.rank == 0:
+            print("Starting generation {}".format(gparameters.generation))
         sys.stdout.flush()
-        self._is_best_swarm_updated = False        
-        if self.generation == 0:
+        self._is_best_swarm_updated = False
+        if gparameters.generation == 0:
             for id in range(1, len(self.population)):
                 self.population[id] = self.population[0].copy()
                 self.population[id].id = id
-                self.population[id].rattle(stdev = 0.5, seed = id)
-            
+                self.population[id].rattle(stdev=0.5, seed=id)
+
             self.population.relax()
             fits = self.population.fitness()
             self.best_swarm = self.population[0].copy()
@@ -53,8 +47,8 @@ class ParticleSwarmOptimization(object):
 
         self.population.relax()
         fits = self.population.fitness()
-        
-        if self.generation > 0:
+
+        if gparameters.generation > 0:
             for i in range(len(self.population)):
                 if fits[i] < self.best_particles[i]._fitness:
                     self.best_particles[i] = self.population[i].copy()
@@ -66,12 +60,11 @@ class ParticleSwarmOptimization(object):
         self.population.replace(updated_population)
         self.check_convergence()
         self.post_processing_step()
-        logging.parameters.generation += 1
-        self.generation += 1
+        gparameters.generation += 1
 
 
     def check_convergence(self):
-        if self.generation >= self.convergence.max_generations:
+        if gparameters.generation >= self.convergence.max_generations:
             self.converged = True
         else:
             self.converged = False
@@ -79,9 +72,9 @@ class ParticleSwarmOptimization(object):
     def post_processing_step(self):
         if not self._is_best_swarm_updated:
             return
-        path = os.path.join(logging.parameters.path, 'BestXYZs')
+        path = os.path.join(gparameters.logging.path, 'BestXYZs')
         os.makedirs(path, exist_ok=True)
-        structopt.io.write_xyz(os.path.join(path, 'generation{}.xyz'.format(self.generation)), self.best_swarm, self.best_swarm._fitness)
+        structopt.io.write_xyz(os.path.join(path, 'generation{}.xyz'.format(gparameters.generation)), self.best_swarm, self.best_swarm._fitness)
 
     def __enter__(self):
         return self
@@ -92,10 +85,7 @@ class ParticleSwarmOptimization(object):
 
 
 if __name__ == "__main__":
-    import sys
-    import structopt
     import numpy as np
-    from pso import ParticleSwarmOptimization
 
     parameters = structopt.setup(sys.argv[1])
 
@@ -105,7 +95,7 @@ if __name__ == "__main__":
     population = Population(parameters=parameters)
 
     with ParticleSwarmOptimization(population=population,
-                                    convergence=parameters.convergence
-                                    ) as optimizer:
+                                   convergence=parameters.convergence
+                                   ) as optimizer:
         optimizer.run()
 

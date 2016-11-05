@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import re
 import importlib
@@ -37,8 +38,7 @@ class DataExplorer(object):
                 break
         parameters = ''.join(parameters)
         self.parameters = DictionaryObject(json.loads(parameters))
-        import logging
-        logging.parameters = self.parameters.logging
+        sys.modules['gparameters'] = self.parameters
 
         self.generations = Generations(self.genealogy_file)
         for population in self.generations:

@@ -1,7 +1,5 @@
-import structopt
 from .LAMMPS import LAMMPS
 from .STEM import STEM
-#from .hard_sphere_cutoff import HardSphereCutoff
 from .hard_sphere_cutoff import hard_sphere_cutoff
 from structopt.tools import root, single_core, parallel
 

@@ -3,12 +3,13 @@ import random
 import numpy as np
 from scipy.ndimage import filters
 
-from structopt.tools import CoordinationNumbers
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import CoordinationNumbers
+from structopt.common.crossmodule import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
-def remove_atom_STEM(individual, STEM_parameters,
-                     filter_size=1, remove_CN=11, remove_cutoff=0.5, max_cutoff=0.5):
+def remove_atom_STEM(individual, STEM_parameters, permute=True, remove_prob=None,
+                     filter_size=1, remove_CN=11, remove_cutoff=0.5, max_cutoff=0.5,
+                     column_cutoff=0.2):
 
     """Moves surface atoms around based on the difference in the target
     and individual STEM image
@@ -45,6 +46,7 @@ def remove_atom_STEM(individual, STEM_parameters,
     # Determine filter size for locating local minimum
     cutoff = get_avg_radii(individual) * 2 * 1.1
     remove_cutoff *= cutoff
+    column_cutoff *= cutoff
     resolution = module.parameters['resolution']
     size = cutoff * resolution * filter_size    
 
@@ -113,6 +115,44 @@ def remove_atom_STEM(individual, STEM_parameters,
     else:
         remove_index = random.choice(indices_remove_xys)
 
+    remove_xy = positions[remove_index][:2]
+    syms = individual.get_chemical_symbols()
+    remove_element = syms[remove_index]
+
+    # Sometimes the element at the surface isn't what we want to remove
+    # So flip a random element in the same column to the one that
+    if permute == False:
+        individual.pop(remove_index)
+        return
+
+    # Choose an element to remove. If its the same as the one
+    # we're already removing, just remove it and return
+    if remove_prob is None:
+        syms = individual.get_chemical_symbols()
+        elements = np.unique(syms)
+        n = len(syms)
+        p = [syms.count(element) / n for element in elements]
+    else:
+        elements = [key for key in remove_prob]
+        p = [remove_prob[key] for key in elements]
+
+    element = np.random.choice(elements, p=p)
+    if element == remove_element:
+        individual.pop(remove_index)
+        return
+
+    # If the element is not the same, permute the column so the surface
+    # atom to removed is the element chosen to be removed. If the column
+    # doesn't contain the element to remove, then just remove it
+    xys = positions[:,:2]
+    dists_xys = np.linalg.norm(xys - remove_xy, axis=1)
+    indices_to_switch = [i for i, d in enumerate(dists_xys) if d < column_cutoff and syms[i] == element]
+    if len(indices_to_switch) == 0:
+        individual.pop(remove_index)
+        return
+
+    index_to_switch = random.choice(indices_to_switch)
+    individual[index_to_switch].symbol = remove_element
     individual.pop(remove_index)
 
     return

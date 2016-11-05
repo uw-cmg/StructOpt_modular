@@ -4,11 +4,11 @@ import numpy as np
 from scipy.ndimage import filters
 from ase import Atom
 
-from structopt.tools import CoordinationNumbers
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import CoordinationNumbers
+from structopt.common.crossmodule import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
-def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
+def add_atom_STEM(individual, STEM_parameters, add_prob=None,
                   filter_size=1, surf_CN=11, surf_cutoff=0.5, min_cutoff=0.5):
 
     """Moves surface atoms around based on the difference in the target
@@ -44,21 +44,21 @@ def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
     cutoff = get_avg_radii(individual) * 2 * 1.1
     surf_cutoff *= cutoff
     resolution = module.parameters['resolution']
-    size = cutoff * resolution * filter_size    
+    size = cutoff * resolution * filter_size
 
     ###################################
-    ## Code for testing the max find ##
+    ## Code for testing the contrast ##
     ###################################
     # import matplotlib.pyplot as plt
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
-    # fig.colorbar(ax.pcolormesh(maxima, cmap=cm.viridis, linewidths=0))
+    # fig.colorbar(ax.pcolormesh(contrast, cmap=cm.viridis, linewidths=0))
     # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
     # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
     # plt.show()
-    # print(len(max_intensities))
     # import sys; sys.exit()
 
+    # Get xy coordinates of the minimum intensities
     data_min = filters.minimum_filter(contrast, size=size)
     minima = ((contrast == data_min) & (contrast < min_min * min_cutoff))
     if len(minima) == 0:
@@ -82,32 +82,55 @@ def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
     # print(len(min_intensities))
     # import sys; sys.exit()
 
-    # Get indices of atoms considered to be moved and sites to move too
-    CNs = CoordinationNumbers(individual)
-    positions = individual.get_positions()
-
-    surf_indices = [i for i, CN in enumerate(CNs) if CN <= surf_CN]
-    surf_positions = positions[list(surf_indices)]
-    COM = surf_positions.mean(axis=0)
-    vec = surf_positions - COM
-    vec /= np.array([np.linalg.norm(vec, axis=1)]).T
-    epsilon = np.array([np.random.random(len(surf_positions)) * 0.5 + 0.5]).T
-    surf_positions = surf_positions + vec * cutoff * epsilon
-    surf_xys = surf_positions[:, :2]
-
     # Randomly choose local maxima and minima locations from contrast weighted
     # by their intensity
     low_xy_index = np.random.choice(np.arange(len(min_xys)), p=min_intensities)
     low_xy = min_xys[low_xy_index]
 
-    ########################
-    ## Test atoms to move ##
-    ########################
-    # from ase.visualize import view
-    # for i in indices_move_xys:
-    #     individual[i].symbol = 'Mo'
-    # view(individual)
-    # import sys; sys.exit()
+    # Get indices of atoms considered to be moved and sites to move to
+    # Organize atoms into columns
+    pos = individual.get_positions()
+    xys = np.expand_dims(pos[:, :2], 0)
+    dists = np.linalg.norm(xys - np.transpose(xys, (1, 0, 2)), axis=2)
+
+    NNs = np.sort(np.argwhere(dists < cutoff))
+    column_indices = []
+    atoms_to_be_sorted = list(range(len(individual)))
+    while len(atoms_to_be_sorted) > 0:
+        i = atoms_to_be_sorted[0]
+        same_column_indices = np.unique(NNs[NNs[:,0] == i])
+        column_indices.append(same_column_indices)
+        for j in reversed(sorted(same_column_indices)):
+            i_del = atoms_to_be_sorted.index(j)
+            atoms_to_be_sorted.pop(i_del)
+            NNs = NNs[NNs[:,0] != j]
+            NNs = NNs[NNs[:,1] != j]
+
+    # Make a list of the top and bottom atom of each column as well
+    # the average bond length of atoms in the column
+    top_indices, bot_indices, avg_bond_lengths = [], [], []
+    for indices in column_indices:
+        zs = pos[indices][:,2]
+        top_indices.append(indices[np.argmax(zs)])
+        bot_indices.append(indices[np.argmin(zs)])
+
+        zs = np.sort(zs)
+        if len(zs) == 1:
+            avg_bond_lengths.append(np.nan)
+        else:
+            avg_bond_length = np.average([zs[i+1] - zs[i] for i in range(len(zs)-1)])
+            avg_bond_lengths.append(avg_bond_length)
+
+    avg_bond_lengths = np.array(avg_bond_lengths)
+    avg_bond_length = np.average(avg_bond_lengths[np.invert(np.isnan(avg_bond_lengths))])
+    avg_bond_lengths[np.isnan(avg_bond_lengths)] = avg_bond_length
+    avg_bond_lengths = np.append(np.zeros((len(avg_bond_lengths), 2)), np.expand_dims(avg_bond_lengths, 1),  axis=1)
+
+    # Create a list of new surface sites
+    bot_new_pos = pos[np.array(bot_indices)] - avg_bond_lengths * 0.95
+    top_new_pos = pos[np.array(top_indices)] + avg_bond_lengths * 0.95
+    surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
+    surf_xys = surf_positions[:,:2]
 
     dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)
     indices_surf_xys = [i for i, d in enumerate(dists_surf_xys) if d < surf_cutoff]
@@ -130,13 +153,16 @@ def add_atom_STEM(individual, STEM_parameters, elements=None, p=None,
     new_position = surf_positions[surf_index]
 
     # Choose the element to add
-    if elements is None and p is None:
+    if add_prob is None:
         syms = individual.get_chemical_symbols()
         elements = np.unique(syms)
         n = len(syms)
         p = [syms.count(element) / n for element in elements]
-    element = np.random.choice(elements, p=p)
+    else:
+        elements = [key for key in add_prob]
+        p = [add_prob[key] for key in elements]
 
+    element = np.random.choice(elements, p=p)
     individual.append(Atom(element, new_position))
 
     return

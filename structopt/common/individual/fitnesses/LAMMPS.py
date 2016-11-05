@@ -1,11 +1,11 @@
 import numpy as np
 from scipy.interpolate import interp1d
 import os
-import logging
 
+from structopt.common.crossmodule.lammps import LAMMPS as lammps
 from structopt.tools import root, single_core, parallel
-from structopt.tools.lammps import LAMMPS as lammps
-from structopt.tools.dictionaryobject import DictionaryObject
+import gparameters
+
 
 class LAMMPS(object):
     """ """
@@ -14,11 +14,11 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        self.output_dir = logging.parameters.path
+        self.output_dir = gparameters.logging.path
 
         # Set default normalization to E = E/natoms
         if "normalize" not in self.parameters:
-            self.parameters.setdefault("normalize", DictionaryObject({}))
+            self.parameters.setdefault("normalize", {})
         self.parameters.normalize.setdefault('natoms', True)
 
 
@@ -36,19 +36,17 @@ class LAMMPS(object):
             E = individual.LAMMPS
         else:
             print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.id))
-            if hasattr(logging, 'parameters'):
-                calcdir = os.path.join(self.output_dir, 'fitness/LAMMPS/generation{}/individual{}'.format(logging.parameters.generation, individual.id))
-            else:
-                calcdir = None
+            calcdir = os.path.join(self.output_dir, 'fitness/LAMMPS/generation{}/individual{}'.format(gparameters.generation, individual.id))
+            rank = gparameters.mpi.rank
 
             calc = lammps(self.parameters, calcdir=calcdir)
             individual.set_calculator(calc)
             try:
                 E = individual.get_potential_energy()
-                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, logging.parameters.rank))
+                print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, rank))
             except RuntimeError:
                 E = 0
-                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, logging.parameters.rank))
+                print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         E = self.reference(E, individual)
         E = self.normalize(E, individual)
@@ -67,7 +65,7 @@ class LAMMPS(object):
         if type(self.parameters.reference) is float:
             return E - self.parameters.reference
 
-        elif type(self.parameters.reference) in [dict, DictionaryObject]:
+        elif isinstance(self.parameters.reference, dict):
             symbols = individual.get_chemical_symbols()
             E_ref = [E_refs[symbol] for symbol in symbols]
             return E - sum(E_ref)

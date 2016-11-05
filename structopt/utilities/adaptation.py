@@ -1,6 +1,5 @@
 import numpy as np
 import logging
-from structopt.tools.dictionaryobject import DictionaryObject
 
 def adapt(adaptations, population, generation):
     """Function that modifies the Population parameters as is that depends on the status
@@ -36,7 +35,7 @@ def adapt(adaptations, population, generation):
 
             new_parameters = adaptation[move]
             for module in new_parameters:
-                if type(new_parameters[module]) in [dict, DictionaryObject]:
+                if isinstance(new_parameters[module], dict):
                     new_parameters[module].setdefault('kwargs', {})
 
             population.parameters.update(new_parameters)

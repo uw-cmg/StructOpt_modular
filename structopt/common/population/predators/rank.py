@@ -1,23 +1,24 @@
 import numpy as np
 import scipy
 
+
 def rank(population, fits, nkeep, p_min=None):
-    """Selection function that chooses pairs of structures 
+    """Selection function that chooses pairs of structures
     based on linear ranking.
 
     See "Grefenstette and Baker 1989 Whitley 1989".
-    
+
     Parameters
     ----------
     population : StructOpt population object
-        An object inherited from list that contains 
+        An object inherited from list that contains
         StructOpt individual objects.
     fits : list
         A list of fitnesses of the population
     p_min : float
         The probability of choosing the lowest ranked individual.
-        Given population of size N, this should be below 1/nindiv. 
-        The probability of selecting rank N (worst) to rank 1 (best) 
+        Given population of size N, this should be below 1/nindiv.
+        The probability of selecting rank N (worst) to rank 1 (best)
         increases from p_min to (2/N - p_min) in even, (1/N - p_min)
         increments. Defaults to (1/N)^2.
 
@@ -46,3 +47,4 @@ def rank(population, fits, nkeep, p_min=None):
     population.replace(new_population)
 
     return
+

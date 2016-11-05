@@ -1,6 +1,6 @@
-import random
 import scipy
 import numpy as np
+
 
 def tournament(population, fits, nkeep, tournament_size=5):
     """Selects individuals in seperate "tournaments", where a subset of the
@@ -35,7 +35,7 @@ def tournament(population, fits, nkeep, tournament_size=5):
     new_population = []
 
     fits_keep, ids_keep = [], []
-    
+
     # Run nkeep tournaments
     for _ in range(nkeep):
         if len(ids_population) > tournament_size:
