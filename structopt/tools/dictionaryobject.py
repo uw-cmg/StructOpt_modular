@@ -20,7 +20,7 @@ class DictionaryObject(dict):
             return DictionaryObject(obj)
         elif isinstance(obj, list):
             return [DictionaryObject._render(v) for v in obj]
-        raise Exception("Unknown type given to DictionaryObject._render: {}".format(type(obj)))
+        raise TypeError("Unknown type given to DictionaryObject._render: {}".format(type(obj)))
 
     def __getattr__(self, key):
         return super().__getitem__(key)

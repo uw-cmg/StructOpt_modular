@@ -2,10 +2,12 @@ import os
 import logging
 import numpy as np
 import shutil
+import time
 
 import gparameters
 from structopt.io import write_xyz
 from structopt.tools import root, single_core, parallel
+from structopt.common.crossmodule.exceptions import FEMSIMError
 
 
 class FEMSIM(object):
@@ -105,14 +107,21 @@ class FEMSIM(object):
     @single_core
     def get_vk_data(self):
         filename = os.path.join(self.folder, 'vk_initial_{base}.txt'.format(base=self.base))
-        if os.path.exists(filename):
-            data = open(filename).readlines()
-            if len(self.vk) == len(data) and data[-1][-1] == '\n':
-                data = [line.strip().split()[:2] for line in data]
-                data = [[float(line[0]), float(line[1])] for line in data]
-                vk = np.array([vk for k, vk in data])
-                return vk
-        return []
+        timeout = 10.  # seconds
+        interval = 0.3  # seconds
+        now = time.time()
+        while True:
+            if os.path.exists(filename):
+                data = open(filename).readlines()
+                if len(self.vk) == len(data) and data[-1][-1] == '\n':  # Then the file loaded with all the data
+                    data = [line.strip().split()[:2] for line in data]
+                    data = [[float(line[0]), float(line[1])] for line in data]
+                    vk = np.array([vk for k, vk in data])
+                    break
+            if time.time() - now > timeout:
+                raise FEMSIMError("V(k) could not be read after trying for {} seconds.".format(timeout))
+            time.sleep(interval)
+        return vk
 
 
     @single_core

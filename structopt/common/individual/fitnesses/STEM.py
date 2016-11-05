@@ -44,8 +44,8 @@ class STEM(object):
 
         # If running within StructOpt, create directory for saving files
         # and faster loading of PSF and target data
-        path = os.path.join(parameters.logging.path, 'fitness/STEM')
-        path = os.path.join(path, 'rank-{}'.format(parameters.logging.rank))
+        path = os.path.join(gparameters.logging.path, 'fitness/STEM')
+        path = os.path.join(path, 'rank-{}'.format(gparameters.mpi.rank))
         self.path = path
         os.makedirs(self.path, exist_ok=True)
 
