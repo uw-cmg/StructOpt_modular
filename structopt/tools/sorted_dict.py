@@ -1,7 +1,9 @@
+import sys as _sys
 from collections import _OrderedDictKeysView, _OrderedDictItemsView, _OrderedDictValuesView, _Link
-from _collections_abc import KeysView, ItemsView, ValuesView, MutableMapping
+from _collections_abc import MutableMapping
 from _weakref import proxy as _proxy
 from reprlib import recursive_repr as _recursive_repr
+from operator import eq as _eq
 
 
 class SortedDict(dict):

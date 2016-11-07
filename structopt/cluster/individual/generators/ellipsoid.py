@@ -1,7 +1,7 @@
 import random
 from ase import Atom, Atoms
 
-from structopt.tools import get_particle_radius
+from structopt.common.crossmodule import get_particle_radius
 
 def ellipsoid(atomlist, fill_factor=0.74, radii=None, ratio=[1, 1, 1], cell=None):
     """Generates a random ellipsoid by rejection sampling. Not the most efficient

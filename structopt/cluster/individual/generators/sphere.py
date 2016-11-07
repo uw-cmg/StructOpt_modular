@@ -6,7 +6,7 @@ from ase.visualize import view
 from ase.data import atomic_numbers, reference_states
 
 from structopt.tools import random_three_vector
-from structopt.tools import get_particle_radius
+from structopt.common.crossmodule import get_particle_radius
 
 def sphere(atomlist, fill_factor=0.74, radius=None, cell=None):
     """Generates a random sphere of particles given an

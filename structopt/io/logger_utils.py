@@ -2,7 +2,6 @@
 
 import os
 import logging
-from ..tools.dictionaryobject import DictionaryObject
 
 
 def initialize_logger(filename, name, level=logging.INFO, disable_output=False):
@@ -33,12 +32,4 @@ def initialize_logger_for_root(rank, filename="default.log", name="default", lev
     else:
         logger = initialize_logger(filename=filename, name=name, level=level, disable_output=True)
     return logger
-
-
-def create_logging_generation(optimizer):
-    class LoggingDictionaryObject(DictionaryObject):
-        @property
-        def generation(self):
-            return optimizer.generation
-    logging.parameters = LoggingDictionaryObject(logging.parameters)
 

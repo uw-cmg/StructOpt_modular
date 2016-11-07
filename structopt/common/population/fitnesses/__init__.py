@@ -1,11 +1,9 @@
-import functools
 import logging
-import importlib
 import numpy as np
 
-import structopt
 from . import LAMMPS, FEMSIM, STEM
 from structopt.tools import root, single_core, parallel
+import gparameters
 
 
 class Fitnesses(object):
@@ -32,7 +30,7 @@ class Fitnesses(object):
         for module, module_name in modules_module_names:
             module_parameters = self.parameters[module_name]
 
-            if logging.parameters.rank == 0:
+            if gparameters.mpi.rank == 0:
                 print("Running fitness {} on the entire population".format(module_name))
 
             parameters = getattr(module_parameters, 'kwargs')
@@ -49,5 +47,5 @@ class Fitnesses(object):
     @single_core
     def post_processing(self, fitnesses):
         logger = logging.getLogger("output")
-        logger.info("Total fitnesses for the population: \n{} (rank {})".format(fitnesses, logging.parameters.rank))
+        logger.info("Total fitnesses for the population: \n{} (rank {})".format(fitnesses, gparameters.mpi.rank))
 

@@ -1,12 +1,10 @@
 import logging
-import functools
-import importlib
 
-import structopt
 from . import LAMMPS
 from . import STEM
 from . import hard_sphere_cutoff
 from structopt.tools import root, single_core, parallel
+import gparameters
 
 
 class Relaxations(object):
@@ -32,10 +30,10 @@ class Relaxations(object):
         """
         logger = logging.getLogger("default")
         to_relax = [individual for individual in population if not individual._relaxed]
-        logger.info("Found {} individuals to relax on core {}: {}".format(len(to_relax), logging.parameters.rank, to_relax))
-        #print("Found {} individuals to relax on core {}: {}".format(len(to_relax), logging.parameters.rank, to_relax))
+        logger.info("Found {} individuals to relax on core {}: {}".format(len(to_relax), gparameters.mpi.rank, to_relax))
+        #print("Found {} individuals to relax on core {}: {}".format(len(to_relax), gparameters.mpi.rank, to_relax))
         for i, module in enumerate(self.modules):
-            if logging.parameters.rank == 0:
+            if gparameters.mpi.rank == 0:
                 print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
             parameters = getattr(self.parameters[module.__name__.split('.')[-1]], 'kwargs')
             module.relax(population, parameters=parameters)

@@ -19,8 +19,10 @@ from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued
 
 class StructOpt(object):
 
-    def __init__(self, calcdir=None, optimizer='genetic.py', parameters={},
+    def __init__(self, calcdir=None, optimizer='genetic.py', parameters=None,
                  submit_parameters={'system':'PBS'}):
+        if parameters is None:
+            parameters = {}
 
         # Initialize inputs
         if calcdir is None:

@@ -4,8 +4,8 @@ import numpy as np
 from scipy.ndimage import filters
 from ase import Atom
 
-from structopt.tools import CoordinationNumbers
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import CoordinationNumbers
+from structopt.common.crossmodule import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
 def add_atom_STEM(individual, STEM_parameters, add_prob=None,

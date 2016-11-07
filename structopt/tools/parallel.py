@@ -1,8 +1,5 @@
 import sys
 import functools
-import numpy as np
-
-import structopt
 
 
 def get_rank():
@@ -58,7 +55,7 @@ def parallel(method):
     def wrapper(*args, **kwargs):
         return method(*args, **kwargs)
     wrapper.__doc__ += ("\n\n(@parallel) Designed to run code that runs differently on different cores.\n"
-                       "The MPI functionality should be implemented inside these functions.\n")
+                        "The MPI functionality should be implemented inside these functions.\n")
     return wrapper
 
 
@@ -112,7 +109,7 @@ def allgather(stuff, stuffs_per_core):
         raise TypeError('instance of {} has an `allgather` function that should be used instead'.format(stuff.__class__.__name__))
 
     from mpi4py import MPI
-    # The lists in stuffs_per_core all need to be of the same length 
+    # The lists in stuffs_per_core all need to be of the same length
     max_stuffs_per_core = max(len(stuffs) for stuffs in stuffs_per_core.values())
     for rank, stuffs in stuffs_per_core.items():
         while len(stuffs) < max_stuffs_per_core:
@@ -151,7 +148,7 @@ def parse_MPMD_cores_per_structure(value):
             min_, max_ = value.split('-')
             return {'min': int(min_), 'max': int(max_)}
     else:
-        raise TyeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
+        raise TypeError("'MPMD_cores_per_structure' must be an 'int' or 'str'")
 
 
 class SingleCorePerIndividual(object):
@@ -172,21 +169,100 @@ class SingleCorePerIndividual(object):
                     individual.LAMMPS = individual.fitnesses.LAMMPS.fitness(individual)
             return [individual.LAMMPS for individual in population]
     """
-    def __init__(population, to_run, attr_name):
+    def __init__(self, population, to_run, attr_name):
+        import gparameters
         self.population = population
         self.to_run = to_run
-        import parameters
-        self.rank = parameters.rank
-        self.ncores = parameters.ncores
+        self.rank = gparameters.mpi.rank
+        self.ncores = gparameters.mpi.ncores
 
     def __enter__(self):
         self.individuals_per_core = {r: [] for r in range(self.ncores)}
         for i, individual in enumerate(self.to_run):
             self.individuals_per_core[i % self.ncores].append(individual)
-        return individuals_per_core[rank]
+        return self.individuals_per_core[self.rank]
 
     def __exit__(self, exception_type, exception_value, traceback):
         positions_per_core = {rank: [self.population.position(individual) for individual in individuals] for rank, individuals in self.individuals_per_core.items()}
         self.allgather([getattr(individual, self.attr_name) for individual in self.population])
-        allgather(results, positions_per_core)
+        allgather(self.results, positions_per_core)
+
+
+"""
+@root
+def fitness(population, parameters):
+    from mpi4py import MPI
+
+    to_fit = [individual for individual in population if not individual._fitted]
+
+    if to_fit:
+        spawn_args = [individual.fitnesses.FEMSIM.get_spawn_args(individual) for individual in to_fit]
+        MPMD(to_fit, spawn_args, parameters)
+
+        # Collect the results for each chisq and return them
+        logger = logging.getLogger('output')
+        for i, individual in enumerate(to_fit):
+            vk = individual.fitnesses.FEMSIM.get_vk_data()
+            individual.FEMSIM = individual.fitnesses.FEMSIM.chi2(vk)
+            logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, individual.FEMSIM))
+
+    return [individual.FEMSIM for individual in population]
+"""
+
+@root(broadcast=False)
+def MPMD(self, to_run, spawn_args, parameters):
+    """This is a function to run MPMD, with an example for FEMSIM above.
+    I'm not confident we should use it yet, but only because I haven't tested it; I'm relatively confident it will work.
+    """
+    ncores = parameters.ncores
+    cores_per_individual = ncores // len(to_run)
+    # Round cores_per_individual down to nearest power of 2
+    if cores_per_individual == 0:
+        # We have more individuals than cores, so each fitness scheme needs to be run multiple times
+        cores_per_individual = 1
+
+    pow(2.0, math.floor(math.log2(cores_per_individual)))
+    minmax = parse_MPMD_cores_per_structure(parameters.MPMD)
+    assert minmax['max'] >= minmax['min'] > 0
+    if cores_per_individual < minmax['min']:
+        cores_per_individual = minmax['min']
+    elif cores_per_individual > minmax['max']:
+        cores_per_individual = minmax['max']
+
+    # Setup each individual and get the inputs for each individual that need to be passed into the spawn
+    multiple_spawn_args = defaultdict(list)
+    for individual in to_run:
+        for arg_name, arg in spawn_args.items():
+            multiple_spawn_args[arg_name].append(arg)
+
+    # Make sure each key in `multiple_spawn_args` has the same number of elements and set `count` to that value
+    count = -1
+    for key, value in multiple_spawn_args.items():
+        if count != -1:
+            assert len(value) == count
+        count = len(value)
+
+    # Create MPI.Info objects from the kwargs dicts in multiple_spawn_args['info'] for each rank
+    infos = [MPI.Info.Create() for _ in multiple_spawn_args['info']]
+    for i, info in enumerate(infos):
+        for key, value in multiple_spawn_args['info'][i].items():
+            info.Set(key, value)
+
+    # Run the multiple spawn
+    individuals_per_iteration = ncores // cores_per_individual
+    individuals_per_iteration = min(individuals_per_iteration, len(to_run))
+    num_iterations = math.ceil(len(to_run) / individuals_per_iteration)
+    for i in range(num_iterations):
+        j = i * individuals_per_iteration
+        individuals_this_iteration = individuals_per_iteration
+        if i == num_iterations - 1 and len(to_run) % individuals_per_iteration != 0:  # The last iteration may not be exactly individuals_per_iteration
+            individuals_this_iteration = len(to_run) % individuals_per_iteration
+        print("Spawning {} femsim processes, each with {} cores".format(individuals_this_iteration, cores_per_individual))
+        intercomm = MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_this_iteration],
+                                                 args=multiple_spawn_args['args'][j:j+individuals_this_iteration],
+                                                 maxprocs=[cores_per_individual]*individuals_this_iteration,
+                                                 info=infos[j:j+individuals_this_iteration]
+                                                 )
+        # Disconnect the child processes
+        intercomm.Disconnect()
 

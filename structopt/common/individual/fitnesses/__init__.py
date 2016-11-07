@@ -1,4 +1,3 @@
-import structopt
 from .FEMSIM import FEMSIM
 from .LAMMPS import LAMMPS
 from .STEM import STEM

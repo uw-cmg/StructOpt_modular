@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-from structopt.tools import CoordinationNumbers
+from structopt.common.crossmodule import CoordinationNumbers
 
 def remove_atom_random(individual, surf_CN=11):
     """Moves atoms around on the surface based on coordination number

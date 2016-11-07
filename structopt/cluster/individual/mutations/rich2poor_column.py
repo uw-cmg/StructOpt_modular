@@ -3,8 +3,8 @@ import random
 import numpy as np
 from scipy.ndimage import filters, sobel
 
-from structopt.tools import NeighborList
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import NeighborList
+from structopt.common.crossmodule import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
 from ase.io import write

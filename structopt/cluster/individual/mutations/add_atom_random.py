@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import get_avg_radii
 
 def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     """Calculates the error per column of atoms in the z-direction"""

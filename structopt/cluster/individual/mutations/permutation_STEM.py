@@ -4,7 +4,7 @@ import numpy as np
 from scipy.ndimage import filters
 from ase.data import atomic_numbers
 
-from structopt.tools import get_avg_radii
+from structopt.common.crossmodule import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
 def permutation_STEM(individual, STEM_parameters, filter_size=0.5,

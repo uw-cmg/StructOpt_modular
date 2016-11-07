@@ -3,7 +3,6 @@ import random
 from itertools import accumulate
 from bisect import bisect
 
-import structopt
 from structopt.tools import root, single_core, parallel
 from .best import best
 from .roulette import roulette
@@ -11,6 +10,7 @@ from .tournament import tournament
 from .rank import rank
 from .fuss import fuss
 from .diversify_module import diversify_module
+
 
 class Predators(object):
     """ """

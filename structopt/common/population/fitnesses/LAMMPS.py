@@ -1,10 +1,8 @@
 import logging
-import subprocess
 
-import structopt
 from structopt.tools import root, single_core, parallel
 from structopt.tools.parallel import allgather
-import numpy as np
+import gparameters
 
 
 @parallel
@@ -14,7 +12,7 @@ def fitness(population, parameters):
     Args:
         population (Population): the population to evaluate
     """
-    rank = logging.parameters.rank
+    rank = gparameters.mpi.rank
     if parameters.use_mpi4py:
         logger = logging.getLogger('by-rank')
     else:
@@ -22,7 +20,7 @@ def fitness(population, parameters):
 
     to_fit = [individual for individual in population if not individual._fitted]
     if parameters.use_mpi4py:
-        ncores = logging.parameters.ncores
+        ncores = gparameters.mpi.ncores
     else:
         ncores = 1
 

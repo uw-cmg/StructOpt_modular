@@ -1,7 +1,3 @@
-import functools
-import random
-
-import structopt
 from structopt.tools import root, single_core, parallel
 
 

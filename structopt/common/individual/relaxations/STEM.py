@@ -5,9 +5,9 @@ from scipy.ndimage import center_of_mass
 from scipy.optimize import fmin, brute
 
 import structopt.common.individual.fitnesses
-from structopt.tools.analysis import NeighborList
 from structopt.tools import root, single_core, parallel
-from structopt.tools import get_avg_radii, rotation_matrix
+from structopt.tools import rotation_matrix
+from structopt.common.crossmodule import get_avg_radii, NeighborList
 
 class STEM(structopt.common.individual.fitnesses.STEM):
     """Rotates the individual to obtain a better match with STEM image.
@@ -32,7 +32,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         the rotation be. Tests indicate a gridsize of 10 is suitable.
     """
 
-    def __init__(self, parameters={}):
+    def __init__(self, parameters=None):
+        if parameters is None:
+            parameters = {}
         parameters.setdefault('rotation_grid', 10)
         parameters.setdefault('rotation_iterations', 2)
         parameters.setdefault('surface_moves', 10)
@@ -47,11 +49,8 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             self.generate_target()
 
         current_fitness = self.fitness(individual)
-        if hasattr(logging, 'parameters'):
-            rank = logging.parameters.rank
-            print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
-        else:
-            rank = 0
+        rank = gparameters.mpi.rank
+        print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
 
         # Relax the atom by rotating it
         steps = self.parameters['rotation_grid']

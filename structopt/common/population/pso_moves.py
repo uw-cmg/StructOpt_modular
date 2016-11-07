@@ -1,6 +1,3 @@
-import functools
-
-import structopt
 from structopt.tools import root, single_core, parallel
 
 
@@ -12,7 +9,7 @@ class Pso_Moves(object):
         self.parameters = parameters
 
 
-    @single_core    
+    @single_core
     def move(self, population, best_swarm, best_particles):
         """Update the entire population.
         Args:

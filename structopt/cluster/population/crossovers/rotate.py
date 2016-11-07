@@ -5,7 +5,7 @@ from ase import Atoms
 from structopt.common.individual import Individual
 from structopt.tools import root, single_core, parallel
 from structopt.tools import random_three_vector
-from structopt.tools import repair_cluster
+from structopt.common.crossmodule import repair_cluster
 
 import time
 

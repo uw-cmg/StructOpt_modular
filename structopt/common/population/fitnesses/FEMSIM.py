@@ -1,11 +1,9 @@
-import logging, os
-import subprocess
+import logging
 import math
-import time
 from collections import defaultdict
 
-import structopt
 from structopt.tools.parallel import root, single_core, parallel, parse_MPMD_cores_per_structure
+import gparameters
 
 
 @root
@@ -20,7 +18,7 @@ def fitness(population, parameters):
     to_fit = [individual for individual in population if not individual._fitted]
 
     if to_fit:
-        ncores = logging.parameters.ncores
+        ncores = gparameters.mpi.ncores
         cores_per_individual = ncores // len(to_fit)
         # Round cores_per_individual down to nearest power of 2
         if cores_per_individual == 0:
@@ -63,21 +61,21 @@ def fitness(population, parameters):
         num_iterations = math.ceil(len(to_fit) / individuals_per_iteration)
         for i in range(num_iterations):
             j = i * individuals_per_iteration
-            print("Spawning {} femsim processes, each with {} cores".format(individuals_per_iteration, cores_per_individual))
-            intercomm = MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_per_iteration],
-                                         args=multiple_spawn_args['args'][j:j+individuals_per_iteration],
-                                         maxprocs=[cores_per_individual]*individuals_per_iteration,
-                                         info=infos[j:j+individuals_per_iteration]
-                                         )
+            individuals_this_iteration = individuals_per_iteration
+            if i == num_iterations - 1 and len(to_fit) % individuals_per_iteration != 0:  # The last iteration may not be exactly individuals_per_iteration
+                individuals_this_iteration = len(to_fit) % individuals_per_iteration
+            print("Spawning {} femsim processes, each with {} cores".format(individuals_this_iteration, cores_per_individual))
+            intercomm = MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_this_iteration],
+                                                     args=multiple_spawn_args['args'][j:j+individuals_this_iteration],
+                                                     maxprocs=[cores_per_individual]*individuals_this_iteration,
+                                                     info=infos[j:j+individuals_this_iteration]
+                                                     )
             # Disconnect the child processes
             intercomm.Disconnect()
 
             # Collect the results for each chisq and return them
-            for i, individual in enumerate(to_fit[j:j+individuals_per_iteration]):
-                while True:
-                    vk = individual.fitnesses.FEMSIM.get_vk_data()
-                    if len(vk) != 0:
-                        break
+            for i, individual in enumerate(to_fit[j:j+individuals_this_iteration]):
+                vk = individual.fitnesses.FEMSIM.get_vk_data()
                 individual.FEMSIM = individual.fitnesses.FEMSIM.chi2(vk)
                 logger.info('Individual {0} for FEMSIM evaluation had chisq {1}'.format(i, individual.FEMSIM))
 
