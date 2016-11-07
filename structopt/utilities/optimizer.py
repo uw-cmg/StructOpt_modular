@@ -29,7 +29,7 @@ class StructOpt(object):
             self.calcdir = os.path.expandvars(calcdir)
 
         if not os.path.isfile(os.path.abspath(optimizer)):
-            optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/{}'.format(optimizer))
+            optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/optimizers/{}'.format(optimizer))
         else:
             optimizer = os.path.abspath(os.path.expandvars(optimizer))
 
