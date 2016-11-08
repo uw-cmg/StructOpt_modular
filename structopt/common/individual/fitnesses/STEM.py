@@ -8,6 +8,7 @@ from scipy.ndimage import sobel
 from ase.io import read
 
 from structopt.tools import root, single_core, parallel
+from structopt.tools.dictionaryobject import DictionaryObject
 import gparameters
 
 class STEM(object):
@@ -35,6 +36,11 @@ class STEM(object):
         self.psf = None
         self.target = None
         self.phantom = True
+
+        if 'logging' not in gparameters:
+            gparameters.logging = DictionaryObject({'path': '.'})
+            gparameters.generation = 0
+            gparameters.mpi = DictionaryObject({'rank': 0})
 
         # Set default normalization to E = E/nprotons
         if "normalize" not in self.parameters:

@@ -9,6 +9,8 @@ from structopt.tools import root, single_core, parallel
 from structopt.tools import rotation_matrix
 from structopt.common.crossmodule import get_avg_radii, NeighborList
 
+import gparameters
+
 class STEM(structopt.common.individual.fitnesses.STEM):
     """Rotates the individual to obtain a better match with STEM image.
     This is done by taking one bright column in the bulk region and reading

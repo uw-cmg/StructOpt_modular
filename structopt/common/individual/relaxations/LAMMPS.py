@@ -14,8 +14,10 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
-        self.output_dir = gparameters.logging.path
-
+        if hasattr(gparameters, 'logging'):
+            self.output_dir = gparameters.logging.path
+        else:
+            self.output_dir = '.'
 
     @single_core
     def get_command(self, individual):

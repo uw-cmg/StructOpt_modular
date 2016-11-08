@@ -4,7 +4,7 @@ from ase.cluster.octahedron import Octahedron
 from ase.visualize import view
 
 from structopt.cluster.individual.generators import fcc
-from structopt.tools.analysis import get_avg_radii
+from structopt.common.crossmodule.analysis import get_avg_radii
 
 def get_chi2(atoms1, atoms2, cutoff=0.8, r=2.0, HWHM=0.4):
     """Calculates the chi2, which is the difference in positions

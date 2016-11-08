@@ -486,7 +486,7 @@ class StructOpt(object):
             return
 
         # Get mutations, crossovers, and their tags
-        structures = ['common', 'cluster', 'crystal', 'surface', 'defect', 'surface']
+        structures = ['common', 'cluster', 'crystal']
 
         mutation_tags, mutations = {}, {}
         for structure in structures:

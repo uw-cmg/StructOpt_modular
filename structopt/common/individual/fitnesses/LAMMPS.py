@@ -4,6 +4,7 @@ import os
 
 from structopt.common.crossmodule.lammps import LAMMPS as lammps
 from structopt.tools import root, single_core, parallel
+from structopt.tools.dictionaryobject import DictionaryObject
 import gparameters
 
 
@@ -14,6 +15,11 @@ class LAMMPS(object):
     def __init__(self, parameters):
         # These variables never change
         self.parameters = parameters
+        if 'logging' not in gparameters:
+            gparameters.logging = DictionaryObject({'path': '.'})
+            gparameters.generation = 0
+            gparameters.mpi = DictionaryObject({'rank': 0})
+
         self.output_dir = gparameters.logging.path
 
         # Set default normalization to E = E/natoms
