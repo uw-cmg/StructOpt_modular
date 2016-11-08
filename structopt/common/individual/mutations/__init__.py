@@ -15,6 +15,7 @@ from .rotate_atoms import rotate_atoms
 from .rotate_cluster import rotate_cluster
 from .rotate_all import rotate_all
 from .permutation import permutation
+from .rattle import rattle
 
 swap_positions.tag = 'SwPo'
 swap_species.tag = 'SwSp'
@@ -23,6 +24,7 @@ rotate_atoms.tag = 'RoAt'
 rotate_cluster.tag = 'RoCl'
 rotate_all.tag = 'RoAl'
 permutation.tag = 'Pe'
+rattle.tag = 'Rat'
 
 class Mutations(object):
     """ """
@@ -120,4 +122,8 @@ class Mutations(object):
     @functools.wraps(permutation)
     def permutation(individual):
         return permutation(individual)
-    
+
+    @staticmethod
+    @functools.wraps(rattle)
+    def rattle(individual, stdev=0.5, x_avg_bond=True):
+        return rattle(individual, stdev, x_avg_bond)
