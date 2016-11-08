@@ -6,6 +6,7 @@ tests/
 XYZs/
 jobid
 *.o[0-9]*
+jobs/
 
 
 # This appears on apple computers

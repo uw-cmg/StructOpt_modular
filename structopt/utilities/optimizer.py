@@ -407,6 +407,22 @@ class StructOpt(object):
         self.read_population(generation)
         return self.populations[generation]
 
+    def get_population_links(self, generation=-1):
+        """Returns a list of strings of a population. Used for getting links
+        for reset runs"""
+
+        if generation < 0:
+            generation = max(self.generations) + generation + 1
+
+        if generation not in self.generations:
+            raise IOError('Generation {} not found'.format(generation))
+
+        # Get a list of individuals available in the generation
+        generation_dir = os.path.join(self.log_dir,
+                                      'XYZs/generation{}'.format(generation))
+
+        return [os.path.join(generation_dir, f) for f in os.listdir(generation_dir)]
+
     def get_individual(self, id=-1):
         """Returns an individual by its ID. If negative, in a list of all
         individual sorted by their ID, returns that index"""
