@@ -686,3 +686,26 @@ class StructOpt(object):
             self.fitness = {module: np.std(self.fitness[module], axis=1) for module in self.fitness}
 
         return [np.std(fits) for fits in self.fitness[module]]
+
+    def get_start_end_time(self):
+        """Returns the approximate start time of the job"""
+
+        if self.status not in ['running', 'done']:
+            return None
+
+        # Read only the first line of the fitness.log file
+        with open(os.path.join(self.log_dir, 'genealogy.log')) as fitness_file:
+            for i, line in enumerate(fitness_file):
+                if i == 0:
+                    first_line = line
+                last_line = line
+
+        pattern = '(.*),.* : INFO : .*'
+        match = re.match(pattern, first_line, re.I|re.M)
+        if match:
+            start_time = match.group(1)
+        match = re.match(pattern, last_line, re.I|re.M)
+        if match:
+            end_time = match.group(1)        
+
+        return start_time, end_time
