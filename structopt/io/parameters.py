@@ -90,7 +90,6 @@ def set_default(parameters):
     parameters.setdefault('seed', seed)
     parameters.setdefault('post_processing', DictionaryObject({}))
     parameters.post_processing.setdefault('XYZs', 0)
-    parameters.setdefault('adaptation', [])
     parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
     parameters.convergence.setdefault('max_generations', 10)
 
