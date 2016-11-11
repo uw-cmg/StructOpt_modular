@@ -62,8 +62,8 @@ class Selections(object):
 
     @staticmethod
     @functools.wraps(tournament)
-    def tournament(population, fits, tournament_size=5, unique_pairs=False, unique_parents=False):
-        return tournament(population, fits, tournament_size, unique_pairs, unique_parents)
+    def tournament(population, fits, tournament_size=5, unique_pairs=False, unique_parents=False, keep_best=False):
+        return tournament(population, fits, tournament_size, unique_pairs, unique_parents, keep_best)
 
     @staticmethod
     @functools.wraps(best)

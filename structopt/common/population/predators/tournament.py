@@ -2,7 +2,7 @@ import scipy
 import numpy as np
 
 
-def tournament(population, fits, nkeep, tournament_size=5):
+def tournament(population, fits, nkeep, tournament_size=5, keep_best=True):
     """Selects individuals in seperate "tournaments", where a subset of the
     population are randomly selected and the highest fitness allowed to pass.
     In addition to a population, their fits, and end population size, takes in
@@ -35,6 +35,16 @@ def tournament(population, fits, nkeep, tournament_size=5):
     new_population = []
 
     fits_keep, ids_keep = [], []
+
+    if keep_best:
+        best_rank = min(ranks)
+        best_id = ids_population[ranks.index(best_rank)]
+        fits_keep.append(best_rank)
+        ids_keep.append(best_id)
+        new_population.append(population[best_id])
+        del ranks[ids_population.index(best_id)]
+        del ids_population[ids_population.index(best_id)]
+        nkeep -= 1 
 
     # Run nkeep tournaments
     for _ in range(nkeep):

@@ -54,8 +54,8 @@ class Predators(object):
 
     @staticmethod
     @functools.wraps(tournament)
-    def tournament(population, fits, nkeep, tournament_size=5):
-        return tournament(population, fits, nkeep, tournament_size)
+    def tournament(population, fits, nkeep, tournament_size=5, keep_best=True):
+        return tournament(population, fits, nkeep, tournament_size, keep_best)
 
     @staticmethod
     @functools.wraps(rank)

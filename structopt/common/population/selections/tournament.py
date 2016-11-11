@@ -3,8 +3,8 @@ import numpy as np
 from copy import deepcopy
 
 
-def tournament(population, fits, tournament_size=5,
-               unique_pairs=False, unique_parents=False):
+def tournament(population, fits, tournament_size=5, unique_pairs=False,
+               unique_parents=False, keep_best=False):
     """Selects pairs in seperate "tournaments", where a subset of the
     population are randomly selected and the highest fitness allowed to pass.
     In addition to a population, their fits, and end population size, takes in
@@ -51,7 +51,10 @@ def tournament(population, fits, tournament_size=5,
         else:
             tournament_father = ids_population
 
-        max_rank = min([id_to_rank[id] for id in tournament_father])
+        if keep_best:
+            max_rank = min([id_to_rank[id] for id in ids_population])
+        else:
+            max_rank = min([id_to_rank[id] for id in tournament_father])
         id_father = rank_to_id[max_rank]
 
         # Choose the second parent based on renormalized probabilities
