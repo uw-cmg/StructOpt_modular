@@ -9,7 +9,7 @@ import distutils.spawn
 from structopt.tools.dictionaryobject import DictionaryObject
 
 MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'pso_moves']
-
+EXCEPTION_FUNCTIONS = ['preserve_best']
 
 def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""
@@ -106,7 +106,8 @@ def set_default(parameters):
         parameters.setdefault(operation, None)
         if parameters[operation] is not None:
             for operator in parameters[operation]:
-                parameters[operation][operator].setdefault('kwargs', {})
+                if operator not in EXCEPTION_FUNCTIONS:
+                    parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
 

@@ -26,6 +26,8 @@ rotate_all.tag = 'RoAl'
 permutation.tag = 'Pe'
 rattle.tag = 'Rat'
 
+not_mutations = ['preserve_best']
+
 class Mutations(object):
     """ """
 
@@ -35,10 +37,12 @@ class Mutations(object):
         self.parameters = parameters
 
         # self.mutations is a dictionary containing {function: probability} pairs
-        self.mutations = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
+        self.mutations = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters
+                          if name not in not_mutations}
 
         #self.kwargs is a dictionary containing {function: kwargs} pairs
-        self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
+        self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters
+                       if name not in not_mutations}
 
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
