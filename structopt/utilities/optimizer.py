@@ -552,6 +552,7 @@ class StructOpt(object):
         all_fitnesses = {'total': []}
         current_fitnesses = {'total': []}
         modules = list(self.parameters['fitnesses'].keys())
+        weights = [module['weight'] for key, module in self.parameters['fitnesses'].items()]
 
         pattern = '.* Generation (.*), Individual (.*):'
         for module in modules:
@@ -595,10 +596,10 @@ class StructOpt(object):
 
                 total_fit = 0
                 # Store data of current individual
-                for module in modules:
+                for weight, module in zip(weights, modules):
                     # Make sure the fitness list is big enough
                     current_fitnesses[module].append(fitness[module])
-                    total_fit += fitness[module]
+                    total_fit += weight * fitness[module]
 
                 current_fitnesses['total'].append(total_fit)
 
@@ -666,14 +667,14 @@ class StructOpt(object):
 
         return [np.amin(fits) for fits in self.fitness[module]]
 
-    def get_max_fitnesses(self):
+    def get_max_fitnesses(self, module='all'):
         """Returns a list of the minimum fitness of each generation
 
         Output
         ------
         out : N sized numpy.ndarray
             N = Number of generations
-            out[i] gives fitness of generation i
+            out[i] gives  fitness of generation i
         """
 
         if self.fitness is None:
@@ -683,7 +684,6 @@ class StructOpt(object):
             self.fitness = {module: np.amax(self.fitness[module], axis=1) for module in self.fitness}
 
         return [np.amax(fits) for fits in self.fitness[module]]
-
 
     def get_stdev_fitness(self):
         """Returns the fitness standard deviation of each generation
