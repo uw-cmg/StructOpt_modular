@@ -14,13 +14,12 @@ from structopt.tools.convert_time import convert_time
 class GeneticAlgorithm(object):
     """Defines methods to run a genetic algorithm optimization using the functions in the rest of the library."""
 
-    def __init__(self, population, convergence, post_processing, adaptation):
+    def __init__(self, population, convergence, post_processing):
         self.logger = logging.getLogger('default')
 
         self.population = population
         self.convergence = convergence
         self.post_processing = post_processing
-        self.adaptation = adaptation
 
         gparameters.generation = 0
         self.converged = False
@@ -87,7 +86,6 @@ class GeneticAlgorithm(object):
         self.check_convergence()
         if gparameters.mpi.rank == 0:
             self.post_processing_step()
-        structopt.utilities.adapt(self.adaptation, self.population, gparameters.generation)
         gparameters.generation += 1
 
     def check_convergence(self):
@@ -153,7 +151,6 @@ if __name__ == "__main__":
 
     with GeneticAlgorithm(population=population,
                           convergence=parameters.convergence,
-                          post_processing=parameters.post_processing,
-                          adaptation=parameters.adaptation) as optimizer:
+                          post_processing=parameters.post_processing) as optimizer:
         optimizer.run()
 

@@ -22,9 +22,11 @@ def read(input):
     else:
         raise IOError('Error in input or input file')
 
-    # Make sure we have a logging dictionary
-    parameters.setdefault('logging', {})
+    parameters = set_default(parameters)
+    return parameters
 
+
+def set_default_mpi_parameters(parameters):
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the parameters.mpi
     use_mpi4py = False
     for module in parameters.relaxations:
@@ -63,7 +65,6 @@ def read(input):
         parameters.mpi.rank = 0
         parameters.mpi.ncores = 1
 
-    parameters = set_default(parameters)
     return parameters
 
 
@@ -74,6 +75,9 @@ def write(parameters):
 
 
 def set_default(parameters):
+    paramters = set_default_mpi_parameters(parameters)
+
+    parameters.setdefault('logging', {})
     if "path" in parameters.logging:
         raise ValueError("'path' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
 
@@ -90,7 +94,6 @@ def set_default(parameters):
     parameters.setdefault('seed', seed)
     parameters.setdefault('post_processing', DictionaryObject({}))
     parameters.post_processing.setdefault('XYZs', 0)
-    parameters.setdefault('adaptation', [])
     parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
     parameters.convergence.setdefault('max_generations', 10)
 

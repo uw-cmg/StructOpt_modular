@@ -1,6 +1,5 @@
 2016-09-02 09:15:34,339 : INFO : Current parameters:
 2016-09-02 09:15:34,339 : INFO : {
-    "adaptation": [],
     "convergence": {
         "max_generations": 10
     },
