@@ -8,8 +8,8 @@ from structopt.common.crossmodule import CoordinationNumbers
 from structopt.common.crossmodule import get_avg_radii
 from structopt.common.individual.fitnesses import STEM
 
-def add_atom_STEM(individual, STEM_parameters, add_prob=None,
-                  filter_size=1, surf_CN=11, surf_cutoff=0.5, min_cutoff=0.5):
+def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5, 
+                  filter_size=1, column_cutoff=0.2, surf_cutoff=0.5, min_cutoff=0.5):
 
     """Moves surface atoms around based on the difference in the target
     and individual STEM image
@@ -43,6 +43,7 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None,
     # Determine filter size for locating local minimum
     cutoff = get_avg_radii(individual) * 2 * 1.1
     surf_cutoff *= cutoff
+    column_cutoff *= cutoff
     resolution = module.parameters['resolution']
     size = cutoff * resolution * filter_size
 
@@ -93,7 +94,7 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None,
     xys = np.expand_dims(pos[:, :2], 0)
     dists = np.linalg.norm(xys - np.transpose(xys, (1, 0, 2)), axis=2)
 
-    NNs = np.sort(np.argwhere(dists < cutoff))
+    NNs = np.sort(np.argwhere(dists < column_cutoff))
     column_indices = []
     atoms_to_be_sorted = list(range(len(individual)))
     while len(atoms_to_be_sorted) > 0:
@@ -151,6 +152,7 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None,
     else:
         surf_index = random.choice(indices_surf_xys)
     new_position = surf_positions[surf_index]
+    new_xy = new_position[:2]
 
     # Choose the element to add
     if add_prob is None:
@@ -163,6 +165,24 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None,
         p = [add_prob[key] for key in elements]
 
     element = np.random.choice(elements, p=p)
-    individual.append(Atom(element, new_position))
+
+    # Now maybe switch the surface element with a bulk element
+    if random.random() < permute:
+        individual.append(Atom(element, new_position))
+        return
+
+    xys = individual.get_positions()[:,:2]
+    syms = individual.get_chemical_symbols()
+    dists_xys = np.linalg.norm(xys - new_xy, axis=1)
+    indices_to_switch = [i for i, d in enumerate(dists_xys) if d < column_cutoff and syms[i] != element]
+
+    if len(indices_to_switch) == 0:
+        individual.append(Atom(element, new_position))
+        return
+
+    index_to_switch = random.choice(indices_to_switch)
+    element_to_switch = syms[index_to_switch]
+    individual[index_to_switch].symbol = element
+    individual.append(Atom(element_to_switch, new_position))
 
     return

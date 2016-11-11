@@ -205,10 +205,10 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(add_atom_STEM)
-    def add_atom_STEM(individual, STEM_parameters, add_prob=None,
-                      filter_size=1, surf_CN=11, surf_cutoff=0.5, min_cutoff=0.5):
-        return add_atom_STEM(individual, STEM_parameters, add_prob,
-                             filter_size, surf_CN, surf_cutoff, min_cutoff)
+    def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
+                      filter_size=1, column_cutoff=0.2, surf_cutoff=0.5, min_cutoff=0.5):
+        return add_atom_STEM(individual, STEM_parameters, add_prob, permute,
+                             filter_size, column_cutoff, surf_cutoff, min_cutoff)
 
     @staticmethod
     @functools.wraps(add_atom_defects)
