@@ -75,7 +75,7 @@ class STEM(object):
         return chi
 
     def align(self, atoms):
-        x, y = fmin(self.chi2, [0, 0], args=(atoms, self))
+        x, y = fmin(self.chi2, [0, 0], args=(atoms, self), disp=False)
         atoms.translate([x, y, 0])
         return
 
