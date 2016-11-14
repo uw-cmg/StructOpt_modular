@@ -54,8 +54,8 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
     # fig.colorbar(ax.pcolormesh(contrast, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0]*STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1]*STEM_parameters['resolution']))
     # plt.show()
     # import sys; sys.exit()
 
@@ -76,9 +76,9 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # import matplotlib.pyplot as plt
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
-    # fig.colorbar(ax.pcolormesh(data_min, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # fig.colorbar(ax.pcolormesh(minima, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0]*STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1]*STEM_parameters['resolution']))
     # plt.show()
     # print(len(min_intensities))
     # import sys; sys.exit()
