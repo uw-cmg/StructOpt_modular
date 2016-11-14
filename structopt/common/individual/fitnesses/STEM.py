@@ -4,7 +4,7 @@ import logging
 import numpy as np
 from scipy.signal import fftconvolve
 from scipy.ndimage import sobel
-from scipy.optimize import minimize
+from scipy.optimize import fmin
 
 from ase.io import read
 
@@ -75,8 +75,7 @@ class STEM(object):
         return chi
 
     def align(self, atoms):
-        alignment = minimize(self.chi2, [0, 0], method='Nelder-Mead', args=(atoms, self))
-        x, y = alignment.x
+        x, y = fmin(self.chi2, [0, 0], args=(atoms, self))
         atoms.translate([x, y, 0])
         return
 
