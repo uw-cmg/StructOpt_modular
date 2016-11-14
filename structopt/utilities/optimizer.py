@@ -428,8 +428,11 @@ class StructOpt(object):
         individual sorted by their ID, returns that index"""
 
         self.read_fitness()
-        for generation in self.generations:
-            self.read_population(generation)
+        for generation, ids in reversed(list(enumerate(self.ids['total']))):
+            if id in ids:
+                break
+
+        self.read_population(generation)
         sorted_keys = sorted(self.individuals.keys(), reverse=True)
         if id >= 0 and id not in sorted_keys:
             raise ValueError("Individual {} never calculated")
@@ -549,8 +552,8 @@ class StructOpt(object):
         """Reads fitness.log and stores the data. The fitness of each generation is
         stored in self.fitness"""
 
+        # Build the dictionaries to store fitnesses of different modules
         all_fitnesses = {'total': []}
-        current_fitnesses = {'total': []}
         modules = list(self.parameters['fitnesses'].keys())
         weights = [module['weight'] for key, module in self.parameters['fitnesses'].items()]
 
@@ -558,7 +561,9 @@ class StructOpt(object):
         for module in modules:
             pattern += ' (.*): (.*)'
             all_fitnesses.update({module: []})
-            current_fitnesses.update({module: []})
+
+        current_fitnesses = deepcopy(all_fitnesses)
+        all_ids = deepcopy(all_fitnesses)
 
         current_generation = 0
         ids = []
@@ -587,9 +592,11 @@ class StructOpt(object):
                 if generation > current_generation:
                     for module in modules + ['total']:
                         fitnesses_ids = list(zip(current_fitnesses[module], ids))
-                        fitnesses_ids = sorted(fitnesses_ids, key=lambda i: i[1])
-                        sorted_fitnesses = list(zip(*fitnesses_ids))[0]
+                        fitnesses_ids = sorted(fitnesses_ids, key=lambda i: i[0])
+                        sorted_fitnesses, sorted_ids = list(zip(*fitnesses_ids))
                         all_fitnesses[module].append(sorted_fitnesses)
+                        all_ids[module].append(sorted_ids)
+
                     current_fitnesses = {module: [] for module in current_fitnesses}
                     ids = []
                     current_generation = generation                    
@@ -604,13 +611,24 @@ class StructOpt(object):
                 current_fitnesses['total'].append(total_fit)
 
             # Append the last generation
-            all_fitnesses['total'].append(current_fitnesses['total'])
-            for module in modules:
-                all_fitnesses[module].append(current_fitnesses[module])
+            for module in modules + ['total']:
+                fitnesses_ids = list(zip(current_fitnesses[module], ids))
+                fitnesses_ids = sorted(fitnesses_ids, key=lambda i: i[1])
+                sorted_fitnesses, sorted_ids = list(zip(*fitnesses_ids))
+                all_fitnesses[module].append(sorted_fitnesses)
+                all_ids[module].append(sorted_ids)
 
         self.fitness = {module: np.array(all_fitnesses[module]) for module in all_fitnesses}
+        self.ids = all_ids
 
         return
+
+    def get_best_individual(self):
+        if self.fitness is None:
+            self.read_fitness()
+
+        best_id = self.ids['total'][-1][0]
+        return self.get_individual(best_id)
 
     def get_fitnesses(self, module='all'):
         """Returns a list of fitnesses of all individuals in all generations.
