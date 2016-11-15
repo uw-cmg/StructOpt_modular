@@ -65,7 +65,6 @@ class STEM(object):
         if self.target is None:
             self.generate_target()
 
-        self.align(individual)
         image = self.get_image(individual)
         image, x_shift, y_shift = self.cross_correlate(image)
 
@@ -73,11 +72,6 @@ class STEM(object):
         chi = self.normalize(chi, individual)
 
         return chi
-
-    def align(self, atoms):
-        x, y = fmin(self.chi2, [0, 0], args=(atoms, self), disp=False)
-        atoms.translate([x, y, 0])
-        return
 
     def cross_correlate(self, image):
         convolution = fftconvolve(self.target, image[::-1, ::-1], mode='full')
@@ -88,14 +82,6 @@ class STEM(object):
         image = np.roll(image, y_shift, axis=0)
 
         return image, x_shift, y_shift
-
-    @staticmethod
-    def chi2(shift, atoms, module):
-        x, y = shift
-        atoms = atoms.copy()
-        atoms.translate([x, y, 0])
-        image = module.get_image(atoms)
-        return np.sum(np.square(module.target - image)) ** 0.5
 
     def normalize(self, chi, individual):
         if 'normalize' not in self.parameters:
