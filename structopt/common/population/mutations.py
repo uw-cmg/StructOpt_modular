@@ -11,10 +11,13 @@ class Mutations(object):
         self.parameters = parameters
         self.preserve_best = False
         self.keep_original = False
+        self.keep_original_best = False
         if 'preserve_best' in parameters and parameters['preserve_best']:
             self.preserve_best = True
         if 'keep_original' in parameters and parameters['keep_original']:
             self.keep_original = True
+        if 'keep_original_best' in parameters and parameters['keep_original_best']:
+            self.keep_original_best = True
 
     @single_core
     def mutate(self, population):
@@ -25,7 +28,9 @@ class Mutations(object):
             if self.preserve_best and i == min_fit_index:
                 individual.mutations.selected_mutation = None
 
-            if self.keep_original and individual.mutations.selected_mutation is not None:
+            if ((self.keep_original and individual.mutations.selected_mutation is not None)
+                or (self.keep_original_best and i == min_fit_index)):
+
                 # Save and delete the original individual's mutation
                 selected_mutation = individual.mutations.selected_mutation
                 individual.mutations.selected_mutation = None
@@ -37,6 +42,7 @@ class Mutations(object):
 
             if individual.mutations.selected_mutation is not None:
                 individual.mutate()
+
         return population
 
 

@@ -9,7 +9,7 @@ import distutils.spawn
 from structopt.tools.dictionaryobject import DictionaryObject
 
 MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'pso_moves']
-EXCEPTION_FUNCTIONS = ['preserve_best', 'keep_original']
+EXCEPTION_FUNCTIONS = ['preserve_best', 'keep_original', 'keep_original_best']
 
 def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""

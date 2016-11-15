@@ -26,7 +26,7 @@ rotate_all.tag = 'RoAl'
 permutation.tag = 'Pe'
 rattle.tag = 'Rat'
 
-NOT_MUTATIONS = ['preserve_best', 'keep_original']
+NOT_MUTATIONS = ['preserve_best', 'keep_original', 'keep_original_best']
 
 class Mutations(object):
     """ """
