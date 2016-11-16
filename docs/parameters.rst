@@ -21,7 +21,25 @@ Selections
 Mutations
 =========
 
-Mutations are given as a dictionary entry defined by the ``mutations`` key in the input file. Each mutation is defined by the 
+Mutations are given as a dictionary entry defined by the ``mutations`` key in the input file. The structure of the mutations dictionary with *N* desired mutations is given below
+
+Example::
+
+    "mutations": {
+        mutation_1: {"probability": p_1,
+                     "kwargs": kwargs_1}
+        mutation_2: {"probability": p_2,
+                     "kwargs": kwargs_2}
+        mutation_3: {"probability": p_3,
+                     "kwargs": kwargs_3}
+        ...
+        mutation_N: {"probability": p_N,
+                     "kwargs": kwargs_N}
+    }
+
+The string for *mutation_i*,  is the name of the mutation one wants to use. The probability *p_i* is the probability of the mutation occuring on every individual in the population. *p_i* values should sum to any value between 0 and 1. *kwargs_i* are dictionaries that input the kwargs to the mutation function one is using. These will be specific to the function and can be found in their help function.
+
+The currently implemented mutations are shown below.
 
 Relaxations and Fitnesses
 =========================
