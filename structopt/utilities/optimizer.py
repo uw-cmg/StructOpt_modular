@@ -743,3 +743,6 @@ class StructOpt(object):
             end_time = match.group(1)        
 
         return start_time, end_time
+
+    def get_parameters(self):
+        return deepcopy(self.parameters)
