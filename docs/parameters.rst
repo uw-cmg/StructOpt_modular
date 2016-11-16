@@ -21,6 +21,8 @@ Selections
 Mutations
 =========
 
+Mutations are given as a dictionary entry defined by the ``mutations`` key in the input file. Each mutation is defined by the 
+
 Relaxations and Fitnesses
 =========================
 
