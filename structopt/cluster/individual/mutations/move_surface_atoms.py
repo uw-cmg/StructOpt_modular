@@ -11,22 +11,19 @@ def move_surface_atoms(individual, max_natoms=0.2, move_CN=11, surf_CN=11):
 
     Parameters
     ----------
-    individual : structopt.Individual object
+    individual : Individual
         The individual object to be modified in place
     max_natoms : float or int
         if float, the maximum number of atoms that will be moved is 
         max_natoms*len(individual)
         if int, the maximum number of atoms that will be moved is max_natoms
         default: 0.20
-    max_CN : int
-        The coordination number cutoff for determining which atoms are surface atoms
-        Any atoms with coordnation number at or above CN will not be considered as 
-        surface.
-
-    Output
-    ------
-    out : None
-        Modifies individual in-place
+    move_CN : int
+        The coordination number to determine which atoms can move moved. Any 
+        atom with coordination number above move_CN will not be moved
+    surf_CN : int
+        The coordination number to determine which atoms are considered surface
+        atoms. Surface atoms are used to estimating new surface sites
     """
 
     if len(individual) == 0:

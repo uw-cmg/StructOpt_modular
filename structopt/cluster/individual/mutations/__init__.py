@@ -108,13 +108,13 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(rich2poor)
-    def rich2poor(individual, surf_CN=11):
-        return rich2poor(individual, surf_CN)
+    def rich2poor(individual):
+        return rich2poor(individual)
 
     @staticmethod
     @functools.wraps(poor2rich)
-    def poor2rich(individual, surf_CN=11):
-        return poor2rich(individual, surf_CN)
+    def poor2rich(individual):
+        return poor2rich(individual)
 
     @staticmethod
     @functools.wraps(permute_column_surface)

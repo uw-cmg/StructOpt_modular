@@ -11,7 +11,7 @@ def rotate_all(atoms, vector=None, angle=None, center=None):
     Parameters
     ---------
     individual : Individual
-        StructOpt Individual or ase Atoms object to be rotated.
+        An individual.
     vector : string or list
         The list of axes in which to rotate the atoms around. If 
         None, is a randomly chosen direction. If 'random' in list,

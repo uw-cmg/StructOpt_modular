@@ -47,8 +47,6 @@ The currently implemented mutations are shown below. Note in all functions, the 
 
 .. autofunction:: structopt.common.individual.mutations.rotate_atoms
 
-.. autofunction:: structopt.common.individual.mutations.rotate_cluster
-
 .. autofunction:: structopt.common.individual.mutations.rotate_all
 
 .. autofunction:: structopt.common.individual.mutations.permutation
@@ -70,8 +68,6 @@ The currently implemented mutations are shown below. Note in all functions, the 
 .. autofunction:: structopt.cluster.individual.mutations.poor2rich
 
 .. autofunction:: structopt.cluster.individual.mutations.move_surface_defects
-
-.. autofunction:: structopt.cluster.individual.mutations.enrich_surface
 
 .. autofunction:: structopt.cluster.individual.mutations.enrich_surface
 
