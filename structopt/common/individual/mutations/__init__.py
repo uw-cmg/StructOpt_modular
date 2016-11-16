@@ -26,7 +26,7 @@ rotate_all.tag = 'RoAl'
 permutation.tag = 'Pe'
 rattle.tag = 'Rat'
 
-not_mutations = ['preserve_best']
+NOT_MUTATIONS = ['preserve_best', 'keep_original', 'keep_original_best']
 
 class Mutations(object):
     """ """
@@ -38,11 +38,11 @@ class Mutations(object):
 
         # self.mutations is a dictionary containing {function: probability} pairs
         self.mutations = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters
-                          if name not in not_mutations}
+                          if name not in NOT_MUTATIONS}
 
         #self.kwargs is a dictionary containing {function: kwargs} pairs
         self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters
-                       if name not in not_mutations}
+                       if name not in NOT_MUTATIONS}
 
         total_probability = sum(self.mutations.values())
         self.mutations[None] = 1.0 - total_probability
@@ -70,7 +70,7 @@ class Mutations(object):
 
         kwargs = self.kwargs[self.selected_mutation]
         result = self.selected_mutation(individual, **kwargs)
-        
+
         # If the mutation "failed" and therefore did not modify the individual, do not update the below attributes
         if result is False:
             return individual

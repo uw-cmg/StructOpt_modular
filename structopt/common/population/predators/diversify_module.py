@@ -6,12 +6,13 @@ def diversify_module(population, fits, nkeep, module, min_diff):
 
     module_fits = [getattr(individual, module) for individual in population]
     ids = [individual.id for individual in population]
+    best_id = ids[list(fits).index(min(fits))]
     module_fits, ids = zip(*sorted(list(zip(module_fits, ids))))
     diffs = [j - i for i, j in zip(module_fits[:-1], module_fits[1:])]
     ids_delete = []
-    best_id = ids[list(fits).index(min(fits))]
-    for i in range(len(diffs)):
-        if diffs[i] < min_diff:
+
+    for i, diff in enumerate(diffs):
+        if diff < min_diff:
             ids_delete.append(ids[i + 1])
 
     if best_id in ids_delete:
