@@ -39,7 +39,7 @@ Example::
 
 The string for *mutation_i*,  is the name of the mutation one wants to use. The probability *p_i* is the probability of the mutation occuring on every individual in the population. *p_i* values should sum to any value between 0 and 1. *kwargs_i* are dictionaries that input the kwargs to the mutation function one is using. These will be specific to the function and can be found in their help function.
 
-The currently implemented mutations are shown below.
+The currently implemented mutations are shown below. Note in all functions, the first argument is the atomic structure, which inserted by the optimizer. The user defines all of the other kwargs *after* the first input.
 
 .. autofunction:: structopt.common.individual.mutations.swap_positions
 
@@ -54,10 +54,6 @@ The currently implemented mutations are shown below.
 .. autofunction:: structopt.common.individual.mutations.permutation
 
 .. autofunction:: structopt.common.individual.mutations.rattle
-
-.. autofunction:: structopt.cluster.individual.mutations.add_atom_defects
-                  
-.. autofunction:: structopt.cluster.individual.mutations.add_atom_random
 
 .. autofunction:: structopt.cluster.individual.mutations.move_atoms
 
@@ -84,12 +80,6 @@ The currently implemented mutations are shown below.
 .. autofunction:: structopt.cluster.individual.mutations.enrich_surface_defects
 
 .. autofunction:: structopt.cluster.individual.mutations.enrich_surface_facets
-
-.. autofunction:: structopt.cluster.individual.mutations.add_atom_defects
-
-.. autofunction:: structopt.cluster.individual.mutations.add_atom_random
-
-.. autofunction:: structopt.cluster.individual.mutations.remove_atom_defects
 
 Relaxations and Fitnesses
 =========================
