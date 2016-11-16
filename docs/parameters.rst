@@ -39,7 +39,11 @@ Example::
 
 The string for *mutation_i*,  is the name of the mutation one wants to use. The probability *p_i* is the probability of the mutation occuring on every individual in the population. *p_i* values should sum to any value between 0 and 1. *kwargs_i* are dictionaries that input the kwargs to the mutation function one is using. These will be specific to the function and can be found in their help function.
 
-The currently implemented mutations are shown below.
+The currently implemented mutations are shown below. 
+
+.. autofunction:: structopt.common.individual.mutations
+
+.. autofunction:: structopt.cluster.individual.mutations
 
 Relaxations and Fitnesses
 =========================
