@@ -236,20 +236,55 @@ The currently implemented mutations are shown below. Note in all functions, the 
 
 .. autofunction:: structopt.cluster.individual.mutations.enrich_surface_facets
 
-Relaxations and Fitnesses
-=========================
+Relaxations
+===========
 
-LAMMPS (Relaxation and Fitness)
-+++++++++++++++++++++++++++++++
+Relaxations performs a local relaxation to the atomic structure before evaluating their fitness. This is typically done after crossover and mutation operators are applied.
 
-VASP (Relaxation and Fitness)
-+++++++++++++++++++++++++++++
+Relaxations differ than the previous operations in that they require varying amounts of resources. Hence, a subsequent section, Parallelization, will introduce ways to run your job with varying levels of parallel performance.
 
-FEMSIM (Fitness)
-++++++++++++++++
+Relaxations are given as a dictionary entry defined by the ``relaxations`` and ``fitnesses`` key in the input file. The structure of these dictionaries is shown below.
 
-STEM (Fitness)
-++++++++++++++
+Example::
+
+    "relaxations": {
+        relaxation_1: {"order": o_1,
+                       "kwargs": kwargs_1}
+        relaxation_2: {"order": o_2,
+                       "kwargs": kwargs_2}
+        relaxation_3: {"order": o_3,
+                       "kwargs": kwargs_3}
+        ...
+        relaxation_N: {"order": o_N,
+                       "kwargs": kwargs_N}
+    }
+
+The string for *relaxation_i*,  is the name of the relaxation one wants to use. The order *o_i* is the order of the relaxation occuring on every individual in the population. *kwargs_i* are dictionaries that input the kwargs to the relaxation function one is using. These will be specific to the function. More details of each relaxation module will be given in the following subsections
+
+LAMMPS
+++++++
+
+The LAMMPS relaxation module calls LAMMPS to relax according to some potential. Most of the kwargs can be found from the LAMMPS documentation. They are reprinted below for convenience.
+
+.. autoclass:: structopt.common.individual.relaxations.LAMMPS
+
+
+Fitnesses
+=========
+
+Example::
+
+    "fitnesses": {
+        fitness_1: {"weight": w_1,
+                     "kwargs": kwargs_1}
+        fitness_2: {"weight": w_2,
+                     "kwargs": kwargs_2}
+        fitness_3: {"weight": w_3,
+                     "kwargs": kwargs_3}
+        ...
+        fitness_N: {"weight": w_N,
+                     "kwargs": kwargs_N}
+    }
 
 Parallelization
 ===============
