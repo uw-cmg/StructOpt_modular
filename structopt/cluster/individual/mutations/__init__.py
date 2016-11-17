@@ -29,8 +29,10 @@ from .poor2rich_column import poor2rich_column
 from .move_column_defects import move_column_defects
 from .add_atom_STEM import add_atom_STEM
 from .add_atom_defects import add_atom_defects
+from .add_atom_random import add_atom_random
 from .remove_atom_STEM import remove_atom_STEM
 from .remove_atom_defects import remove_atom_defects
+from .remove_atom_random import remove_atom_random
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -58,8 +60,10 @@ poor2rich_column.tag = 'Po2RiCo'
 move_column_defects.tag = 'MoCoDe'
 add_atom_STEM.tag = 'AdAtSTEM'
 add_atom_defects.tag = 'AdAtDe'
+add_atom_random.tag = 'AdAtRa'
 remove_atom_STEM.tag = 'ReAtSTEM'
 remove_atom_defects.tag = 'ReAtDe'
+remove_atom_random.tag = 'ReAtRa'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -104,13 +108,13 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(rich2poor)
-    def rich2poor(individual, surf_CN=11):
-        return rich2poor(individual, surf_CN)
+    def rich2poor(individual):
+        return rich2poor(individual)
 
     @staticmethod
     @functools.wraps(poor2rich)
-    def poor2rich(individual, surf_CN=11):
-        return poor2rich(individual, surf_CN)
+    def poor2rich(individual):
+        return poor2rich(individual)
 
     @staticmethod
     @functools.wraps(permute_column_surface)
@@ -216,6 +220,11 @@ class Mutations(structopt.common.individual.mutations.Mutations):
         return add_atom_defects(individual, add_prob, cutoff, CN_factor)
 
     @staticmethod
+    @functools.wraps(add_atom_random)
+    def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
+        return add_atom_random(individual, add_prob, cutoff, CN_factor)
+
+    @staticmethod
     @functools.wraps(remove_atom_STEM)
     def remove_atom_STEM(individual, STEM_parameters, permute=True, remove_prob=None,
                          filter_size=1, remove_CN=11, remove_cutoff=0.5,
@@ -228,3 +237,9 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @functools.wraps(remove_atom_defects)
     def remove_atom_defects(individual, surf_CN=11):
         return remove_atom_defects(individual, surf_CN)
+
+    @staticmethod
+    @functools.wraps(remove_atom_random)
+    def remove_atom_random(individual, surf_CN=11):
+        return remove_atom_random(individual, surf_CN)
+    

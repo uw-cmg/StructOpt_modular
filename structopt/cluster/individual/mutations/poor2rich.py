@@ -2,11 +2,19 @@ import random
 import numpy as np
 from structopt.common.crossmodule import NeighborList
 
-def poor2rich(atoms, surf_CN=11):
-    '''Moves an atom from a rich region to a poor region'''
+def poor2rich(individual):
+    '''Used for multi-component systems. Swaps atoms A and B
+    so that atom A moves from a region with a low number of A-A
+    bonds to a high number of A-A bonds.
 
-    syms = np.asarray(atoms.get_chemical_symbols())
-    NN_list = NeighborList(atoms)
+    Parameters
+    ----------
+    individual : Individual
+        An individual
+    '''
+
+    syms = np.asarray(individual.get_chemical_symbols())
+    NN_list = NeighborList(individual)
     NNs = [list(syms[i]) for i in NN_list]
     max_CN = max([len(NN) for NN in NNs])
 
@@ -33,7 +41,7 @@ def poor2rich(atoms, surf_CN=11):
     index_rich = indices_other[index_rich]
     symbol_rich = syms[index_rich]
 
-    atoms[index_poor].symbol = symbol_rich
-    atoms[index_rich].symbol = symbol_poor
+    individual[index_poor].symbol = symbol_rich
+    individual[index_rich].symbol = symbol_poor
 
     return

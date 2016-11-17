@@ -762,3 +762,7 @@ class StructOpt(object):
         open(os.path.join(self.path, 'killed'), 'a').close()
 
         return
+
+    def get_parameters(self):
+        return deepcopy(self.parameters)
+

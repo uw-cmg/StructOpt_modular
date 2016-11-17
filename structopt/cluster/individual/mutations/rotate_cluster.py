@@ -5,13 +5,15 @@ from ase import Atom, Atoms
 from structopt.common.crossmodule import NeighborList
 
 def rotate_cluster(individual, max_natoms=0.20):
-    """Randomly moves atoms within a cluster.
-    
-    Args:
-        individual (Individual): an individual
-        max_natoms (float or int): if float, the maximum number of atoms that will be moved is max_natoms*len(individual)
-                                   if int, the maximum number of atoms that will be moved is max_natoms
-                                   default: 0.20
+    """Chooses a random number of atoms nearest to a random point in
+    the cluster. These atoms are then rotated randomly around this point
+
+    Parameters
+    ----------
+    individual : Individual
+        An individual object
+    max_natoms : float
+        The fraction of the total atoms to rotate
     """
 
     if not len(individual):

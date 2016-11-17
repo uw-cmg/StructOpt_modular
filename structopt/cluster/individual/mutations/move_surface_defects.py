@@ -12,15 +12,10 @@ def move_surface_defects(individual, surf_CN=11):
 
     Parameters
     ----------
-    individual : structopt.Individual object
+    individual : Individual
         The individual object to be modified in place
     surf_CN : int
         The maximum coordination number to considered a surface atom
-
-    Output
-    ------
-    out : None
-        Modifies individual in-place
     """
 
     if len(individual) == 0:

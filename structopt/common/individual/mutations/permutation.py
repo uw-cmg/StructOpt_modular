@@ -1,12 +1,12 @@
 import random
 
 def permutation(individual):
-    """Move function to perform Permutation of one atom based on atomlist
-    Inputs:
-        indiv = Individual class object to be altered
-        Optimizer = Optimizer class object with needed parameters
-    Outputs:
-        indiv = Altered Individual class object
+    """Swaps the chemical symbol between two elements
+
+    Parameters
+    ----------
+    individual : Individual
+        An individual or atoms object.
     """
 
     a1 = individual[random.randint(0, individual.get_number_of_atoms() - 1)]

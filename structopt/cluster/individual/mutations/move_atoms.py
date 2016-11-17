@@ -6,11 +6,14 @@ from structopt.common.crossmodule import NeighborList
 def move_atoms(individual, max_natoms=0.20):
     """Randomly moves atoms within a cluster.
     
-    Args:
-        individual (Individual): an individual
-        max_natoms (float or int): if float, the maximum number of atoms that will be moved is max_natoms*len(individual)
-                                   if int, the maximum number of atoms that will be moved is max_natoms
-                                   default: 0.20
+    Parameters
+    ----------
+    individual : Individual 
+        An individual
+    max_natoms : float or int
+        if float, the maximum number of atoms that will be moved is 
+        max_natoms*len(individual). if int, the maximum number of atoms 
+        that will be moved is max_natoms default: 0.20
     """
 
     if not len(individual):

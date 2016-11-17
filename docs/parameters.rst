@@ -21,6 +21,62 @@ Selections
 Mutations
 =========
 
+Mutations are given as a dictionary entry defined by the ``mutations`` key in the input file. The structure of the mutations dictionary with *N* desired mutations is given below
+
+Example::
+
+    "mutations": {
+        mutation_1: {"probability": p_1,
+                     "kwargs": kwargs_1}
+        mutation_2: {"probability": p_2,
+                     "kwargs": kwargs_2}
+        mutation_3: {"probability": p_3,
+                     "kwargs": kwargs_3}
+        ...
+        mutation_N: {"probability": p_N,
+                     "kwargs": kwargs_N}
+    }
+
+The string for *mutation_i*,  is the name of the mutation one wants to use. The probability *p_i* is the probability of the mutation occuring on every individual in the population. *p_i* values should sum to any value between 0 and 1. *kwargs_i* are dictionaries that input the kwargs to the mutation function one is using. These will be specific to the function and can be found in their help function.
+
+The currently implemented mutations are shown below. Note in all functions, the first argument is the atomic structure, which inserted by the optimizer. The user defines all of the other kwargs *after* the first input.
+
+.. autofunction:: structopt.common.individual.mutations.swap_positions
+
+.. autofunction:: structopt.common.individual.mutations.swap_species
+
+.. autofunction:: structopt.common.individual.mutations.rotate_atoms
+
+.. autofunction:: structopt.common.individual.mutations.rotate_all
+
+.. autofunction:: structopt.common.individual.mutations.permutation
+
+.. autofunction:: structopt.common.individual.mutations.rattle
+
+.. autofunction:: structopt.cluster.individual.mutations.move_atoms
+
+.. autofunction:: structopt.cluster.individual.mutations.move_surface_atoms
+
+.. autofunction:: structopt.cluster.individual.mutations.rotate_cluster
+                  
+.. autofunction:: structopt.cluster.individual.mutations.twist
+
+.. autofunction:: structopt.cluster.individual.mutations.swap_core_shell
+
+.. autofunction:: structopt.cluster.individual.mutations.rich2poor
+
+.. autofunction:: structopt.cluster.individual.mutations.poor2rich
+
+.. autofunction:: structopt.cluster.individual.mutations.move_surface_defects
+
+.. autofunction:: structopt.cluster.individual.mutations.enrich_surface
+
+.. autofunction:: structopt.cluster.individual.mutations.enrich_bulk
+
+.. autofunction:: structopt.cluster.individual.mutations.enrich_surface_defects
+
+.. autofunction:: structopt.cluster.individual.mutations.enrich_surface_facets
+
 Relaxations and Fitnesses
 =========================
 

@@ -4,7 +4,8 @@ import numpy as np
 from structopt.common.crossmodule import CoordinationNumbers
 
 def enrich_surface_facets(individual, surf_CN=11, species=None):
-    """Mutation that selectively enriches defects with a species
+    """Mutation that selectively enriches facets with a species. Facets
+    are defined as atoms atoms with higher coordination numbers.
 
     Parameters
     ----------
