@@ -13,7 +13,8 @@ import time
 def rotate(individual1, individual2, center_at_atom=True, repair_composition=True):
     """Rotates the two individuals around their centers of mass,
     splits them in half at the xy-plane, then splices them together.
-    Maintains number of atoms.
+    Maintains number of atoms. Note, both individuals are rotated
+    in the same way.
 
     Parameters
     ----------
@@ -21,17 +22,20 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
         The first parent
     individual2 : Individual 
         The second parent
-    conserve_composition : bool 
+    center_at_atom : bool
+        This centers the cut at an atom. This is particularly useful 
+        when one desires a crystalline solution. If both parents
+        are crystalline, the children will likely not have grain boundaries.
+    repair_composition : bool 
         If True, conserves composition. For crossovers that create children
         with more (less) atoms, atoms are taken from (added to) the surface
         of the particle. For incorrect atomic ratios, atomic symbols are
         randomly interchanged throughout the particle
 
-    Returns:
-        Individual: The first child
-        Individual: The second child
-
-    The children are returned without indicies.
+    Returns
+    -------
+    Individual: The first child
+    Individual: The second child
     """
 
     # Translate individuals so COP is at (0, 0, 0)

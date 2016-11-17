@@ -93,7 +93,7 @@ def set_default(parameters):
     parameters.logging.path = path
     parameters.setdefault('seed', seed)
     parameters.setdefault('post_processing', DictionaryObject({}))
-    parameters.post_processing.setdefault('XYZs', 0)
+    parameters.post_processing.setdefault('XYZs', -1)
     parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
     parameters.convergence.setdefault('max_generations', 10)
 
