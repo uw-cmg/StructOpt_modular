@@ -7,6 +7,7 @@ def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
     in the population. In the case where low fit is the highest
     fitness, selects a fitness between min(fits) and min(fits) + fusslimit,
     if the difference between the min(fit) and max(fit) is larger than fusslimit.
+
     Parameters
     ----------
     population : Population
