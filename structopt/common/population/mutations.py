@@ -23,8 +23,15 @@ class Mutations(object):
     def mutate(self, population):
         fits = [ind._fitness if ind._fitted else np.inf for ind in population]
         min_fit_index = fits.index(np.amin(fits))
+        original_ids = [individual.id for individual in population]
         for i, individual in enumerate(population):
+            # Skip individuals that were added in previous mutations and
+            # have already been mutated
+            if individual.id not in original_ids:
+                continue
+
             individual.mutations.select_mutation()
+
             if self.preserve_best and i == min_fit_index:
                 individual.mutations.selected_mutation = None
 
