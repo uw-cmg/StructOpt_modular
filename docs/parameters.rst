@@ -2,12 +2,81 @@
 
 Input Parameters
 ################
+The input parameters is a JSON file, which holds a single dictionary. Due to the modular nature of StructOpt, the input file is a dictionary of embedded dictionary, where dictionary key and values often determine the function name and kwargs, respectively. An example Au nanoparticle input file is given below. Each part will be discussed in the following sections.
 
+Example::
+
+  {
+    "seed": 0,
+    "structure_type": "cluster",
+    "generators": {
+	"fcc": {"number_of_individuals": 5,
+		"kwargs": {"atomlist": [["Au", 55]],
+                           "orientation": "100",
+			   "cell": [20, 20, 20],
+                           "a": 4.08}}
+    },
+    "fitnesses": {
+        "LAMMPS": {"weight": 1.0, 
+	           "kwargs": {"use_mpi4py": false,
+	                      "MPMD": 0,
+	                      "keep_files": true,
+	                      "min_style": "cg",
+                              "min_modify": "line quadratic",
+	                      "minimize": "1e-8 1e-8 5000 10000",
+	                      "pair_style": "eam",
+	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	                      "thermo_steps": 0,
+                              "reference": {"Au": -3.930}}}
+    },
+    "relaxations": {
+        "LAMMPS": {"order": 0,
+                   "kwargs": {"use_mpi4py": false,
+	                      "MPMD": 0,
+	                      "keep_files": true,
+	                      "min_style": "cg",
+                              "min_modify": "line quadratic",
+	                      "minimize": "1e-8 1e-8 5000 10000",
+	                      "pair_style": "eam",
+	                      "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	                      "thermo_steps": 0}}
+    },
+    "convergence": {
+        "max_generations": 10
+    },
+    "mutations": {
+	"move_surface_atoms": {"probability": 0.0},
+        "move_atoms": {"probability": 0.0},
+        "move_atoms_group": {"probability": 0.0},
+	"rotate_atoms": {"probability": 0.0},
+	"rotate_cluster": {"probability": 0.0},
+        "rotate_all": {"probability": 0.0},
+        "move_surface_defects": {"probability": 1.0}
+    },
+    "crossovers": {
+        "rotate": {"probability": 0.7,
+                   "kwargs": {"repair_composition": true}}
+    },
+    "predators": {
+        "fuss": {"probability": 0.9},
+        "diversify_module": {"probability": 0.1,
+                             "kwargs": {"module": "LAMMPS",
+                                        "min_diff": 0.01}}
+    },
+    "selections": {
+        "rank": {"probability": 1.0}
+    }
+  }
 
 Global Parameters
 =================
 
 Global parameters are those that determine how the optimizer should run.
+
+structure_type
+++++++++++++++
+
+``structure_type`` (str) is a key parameter for determining operations will be run. Currently, only cluster is supported, but StructOpt is written in a way that *how* the operations are carried out is seperated from the operations themselves. Hence, one can easily write new crossover, mutation, selection, and predator operations that are unique to their structure, test them, and incorporate them inside StructOpt seamlessly.
 
 seed
 ++++
@@ -243,7 +312,7 @@ Relaxations performs a local relaxation to the atomic structure before evaluatin
 
 Relaxations differ than the previous operations in that they require varying amounts of resources. Hence, a subsequent section, Parallelization, will introduce ways to run your job with varying levels of parallel performance.
 
-Relaxations are given as a dictionary entry defined by the ``relaxations`` and ``fitnesses`` key in the input file. The structure of these dictionaries is shown below.
+Relaxations are given as a dictionary entry defined by the ``relaxations`` key in the input file. The structure of these dictionaries is shown below.
 
 Example::
 
@@ -264,13 +333,24 @@ The string for *relaxation_i*,  is the name of the relaxation one wants to use. 
 LAMMPS
 ++++++
 
-The LAMMPS relaxation module calls LAMMPS to relax according to some potential. Most of the kwargs can be found from the LAMMPS documentation. They are reprinted below for convenience.
+The LAMMPS relaxation module calls LAMMPS to relax according to some potential. Most of the kwargs can be found from the LAMMPS documentation.
 
 .. autoclass:: structopt.common.individual.relaxations.LAMMPS
 
+The potential files available to use are listed below and are from the default potentials included from LAMMPS. Given a potential, enter in the ``potential_file`` kwarg as "$STRUCTOPT_HOME/potentials/<name>". Note also that different potentials will have different lines of the ``pair_style`` kwarg. If the user would like to use an unavailable potential file, please submit an email to zxu39@wisc.edu, and the potential will be added.
+
+`AlCu.eam.alloy`: Aluminum and copper alloy EAM (Cai and Ye, Phys Rev B, 54, 8398-8410 (1996))
+`Au_u3.eam`: Gold EAM (SM Foiles et al, PRB, 33, 7983 (1986))
+`ZrCuAl2011.eam.alloy`: Zirconium, copper, and aluminum glass (Howard Sheng at GMU. (hsheng@gmu.edu))
 
 Fitnesses
 =========
+
+Fitness evaluates how closely the individual satisfies the minimization criteria. One typical minimization criteria is the stability of a structure, and the formation energy is the fitness. Note, all fitness modules operate so that the *lower* the fitness value the *more* fit it is.
+
+Fitnesses differ than the previous operations in that they require varying amounts of resources. Hence, a subsequent section, Parallelization, will introduce ways to run your job with varying levels of parallel performance.
+
+Fitnesses are given as a dictionary entry defined by ``fitnesses`` key in the input file. The structure of these dictionaries is shown below.
 
 Example::
 
@@ -285,6 +365,22 @@ Example::
         fitness_N: {"weight": w_N,
                      "kwargs": kwargs_N}
     }
+
+
+The string for *fitness_i*,  is the name of the fitness one wants to use. The weight *w_i* is the constant to multiply the fitness value returned by the *fitness_i* module. Not that all selections and predators operate on the **total** fitness, which is a sum of each fitness and their weight.  *kwargs_i* are dictionaries that input the kwargs to the fitness function one is using. These will be specific to the function. More details of each fitness module will be given in the following subsections
+
+LAMMPS
+++++++
+
+The LAMMPS fitness module calls LAMMPS to calculate the potential energy of the structure. Most of the kwargs can be found from the LAMMPS documentation. In addition, most of the *kwargs* are the same as relaxations, except the fitness module of LAMMPS has a number of normalization options for returning the potential energy. These are described below.
+
+.. autoclass:: structopt.common.individual.fitnesses.LAMMPS
+
+The potential files available to use are listed below and are from the default potentials included from LAMMPS. Given a potential, enter in the ``potential_file`` kwarg as "$STRUCTOPT_HOME/potentials/<name>". Note also that different potentials will have different lines of the ``pair_style`` kwarg. If the user would like to use an unavailable potential file, please submit an email to zxu39@wisc.edu, and the potential will be added.
+
+`AlCu.eam.alloy`: Aluminum and copper alloy EAM (Cai and Ye, Phys Rev B, 54, 8398-8410 (1996))
+`Au_u3.eam`: Gold EAM (SM Foiles et al, PRB, 33, 7983 (1986))
+`ZrCuAl2011.eam.alloy`: Zirconium, copper, and aluminum glass (Howard Sheng at GMU. (hsheng@gmu.edu))
 
 Parallelization
 ===============
@@ -306,8 +402,4 @@ Example::
                               "potential_file": "$STRUCTOPT_HOME/potentials/ZrCuAl2011.eam.alloy",
                               "thermo_steps": 1000}}
     }
-
-
-Fingerprinters
-==============
 

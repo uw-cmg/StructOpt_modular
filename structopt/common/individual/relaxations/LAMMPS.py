@@ -27,6 +27,9 @@ class LAMMPS(object):
     thermo_steps : int
         How much output to print of thermodynamic information.
         If set to 0, only the last step is printed.See LAMMPS doc.
+    keep_file : bool
+        Will keep all of the LAMMPS input and output files for each
+        individual. Use with caution.
     repair : bool
         Determines whether to run an algorithm to make sure no atoms
         are in "space". Atoms can be in space due to a mutation or
