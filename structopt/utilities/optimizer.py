@@ -101,7 +101,7 @@ class StructOpt(object):
         XYZs_dir = os.path.join(self.log_dir, 'XYZs/generation{}'.format(self.generations[-1]))
         fnames = [os.path.join(XYZs_dir, f) for f in os.listdir(XYZs_dir) if f.endswith('.xyz')]
         new_generator = {'generators': {'read_extxyz': {'number_of_individuals': len(fnames),
-                                      'kwargs': fnames}}}
+                                                        'kwargs': fnames}}}
         self.parameters.update(new_generator)
         self.status = 'initialized'
 
@@ -611,12 +611,15 @@ class StructOpt(object):
                 current_fitnesses['total'].append(total_fit)
 
             # Append the last generation
-            for module in modules + ['total']:
-                fitnesses_ids = list(zip(current_fitnesses[module], ids))
-                fitnesses_ids = sorted(fitnesses_ids, key=lambda i: i[1])
-                sorted_fitnesses, sorted_ids = list(zip(*fitnesses_ids))
-                all_fitnesses[module].append(sorted_fitnesses)
-                all_ids[module].append(sorted_ids)
+            try:
+                for module in modules + ['total']:
+                    fitnesses_ids = list(zip(current_fitnesses[module], ids))
+                    fitnesses_ids = sorted(fitnesses_ids, key=lambda i: i[1])
+                    sorted_fitnesses, sorted_ids = list(zip(*fitnesses_ids))
+                    all_fitnesses[module].append(sorted_fitnesses)
+                    all_ids[module].append(sorted_ids)
+            except:
+                pass
 
         self.fitness = {module: np.array(all_fitnesses[module]) for module in all_fitnesses}
         self.ids = all_ids
@@ -743,3 +746,19 @@ class StructOpt(object):
             end_time = match.group(1)        
 
         return start_time, end_time
+
+    def kill(self):
+        """Attempts to kill a job"""
+
+        if not os.path.exists(os.path.join(self.path, 'jobid')):
+            return False
+
+        with open(os.path.join(self.path, 'jobid')) as f:
+            jobid = f.readline().split()[-1]
+
+        if self.job_in_queue(os.path.join(self.path, 'jobid')):
+            subprocess.call(['qdel', jobid])
+
+        open(os.path.join(self.path, 'killed'), 'a').close()
+
+        return
