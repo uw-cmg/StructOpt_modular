@@ -10,21 +10,20 @@ def tournament(population, fits, nkeep, tournament_size=5, keep_best=True):
 
     Parameters
     ----------
-    population : StructOpt.Population object
+    population : Population
         The population of individuals needed to be trimmed
     fits : list
         List of fitnesses that correspond to the population.
     nkeep : int
-        The number of individuals in the next popoulation
+        The number of individuals to keep. In a GA run, corresponds
+        to the sum of each generators number_of_individuals
     tournament_size : int
         The number of individuals in each tournament. If 1,
         tournament is the same as random selection. If
         len(population), corresponds to the "best" selection process
-
-    Output
-    ------
-    out : None
-        Population modified in place.
+    keep_best : bool
+        If set to True, the best individual is always included in the
+        following generation.
     """
 
     # Get ranks determined by their fitness

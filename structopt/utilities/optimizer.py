@@ -728,7 +728,7 @@ class StructOpt(object):
         """Returns the approximate start time of the job"""
 
         if self.status not in ['running', 'done']:
-            return None
+            return None, None
 
         # Read only the first line of the fitness.log file
         with open(os.path.join(self.log_dir, 'genealogy.log')) as fitness_file:

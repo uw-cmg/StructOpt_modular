@@ -21,12 +21,6 @@ def roulette(population, fits, unique_pairs=False, unique_parents=False):
     unique_parents : bool
         If True, all parents can only mate with on other individual.
         True increases the diversity of the population.
-
-    Returns
-    -------
-    out : list
-        A list of pairs of crossover pairs. Is always at most half the size
-        of the population.
     """
 
     # Work with indexes of the population instead of the population

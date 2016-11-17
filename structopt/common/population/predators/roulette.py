@@ -8,6 +8,16 @@ def roulette(population, fits, nkeep):
     """Select individuals with a probability proportional to their fitness.
     Fitnesses are renormalized from 0 - 1, which means minimum fitness
     individual is never included in in the new population.
+
+    Parameters
+    ----------
+    population : Population
+        A population of individuals
+    fits : list
+        Fitnesses that corresponds to population
+    nkeep : int
+        The number of individuals to keep. In a GA run, corresponds
+        to the sum of each generators number_of_individuals
     """
 
     ids = [individual.id for individual in population]

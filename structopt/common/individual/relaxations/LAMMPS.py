@@ -8,7 +8,34 @@ import gparameters
 
 
 class LAMMPS(object):
-    """ """
+    """LAMMPS class for running LAMMPS on a single individual. Takes
+    a dictionary, where the key: value are the parameters for running LAMMPs.
+
+    Parameters
+    ----------
+    min_style : str
+        The minimization scheme for running LAMMPS. See LAMMPS doc.
+    min_modify : str
+        Parameters for min_style energy minimization algorithm.
+        See LAMMPS doc.
+    minimize : str
+        Convergence criteria for minimization algorithm. See LAMMPS doc.
+    pair_style : str
+        Type of potential used. See LAMMPS doc.
+    potential_file : str
+        The path to the potential_file. Should be absolute.
+    thermo_steps : int
+        How much output to print of thermodynamic information.
+        If set to 0, only the last step is printed.See LAMMPS doc.
+    keep_file : bool
+        Will keep all of the LAMMPS input and output files for each
+        individual. Use with caution.
+    repair : bool
+        Determines whether to run an algorithm to make sure no atoms
+        are in "space". Atoms can be in space due to a mutation or
+        crossover that results in a large force that shoots the atom
+        outside of the particle.
+    """
 
     @single_core
     def __init__(self, parameters):

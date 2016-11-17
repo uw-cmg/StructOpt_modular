@@ -9,7 +9,40 @@ import gparameters
 
 
 class LAMMPS(object):
-    """ """
+    """LAMMPS class for running LAMMPS on a single individual. Takes
+    a dictionary, where the key: value are the parameters for running LAMMPs.
+
+    Parameters
+    ----------
+    min_style : str
+        The minimization scheme for running LAMMPS. See LAMMPS doc.
+    min_modify : str
+        Parameters for min_style energy minimization algorithm.
+        See LAMMPS doc.
+    minimize : str
+        Convergence criteria for minimization algorithm. Note for 
+        fitness values, the last two values are set to 0, so no
+        relaxation is done. See LAMMPS doc.
+    pair_style : str
+        Type of potential used. See LAMMPS doc.
+    potential_file : str
+        The path to the potential_file. Should be absolute.
+    thermo_steps : int
+        How much output to print of thermodynamic information.
+        If set to 0, only the last step is printed.See LAMMPS doc.
+    keep_file : bool
+        Will keep all of the LAMMPS input and output files for each
+        individual. Use with caution.
+    reference : dict
+        Reference energies of the particle. These are values to subtract
+        from the values returned by LAMMPS. Given as a dictionary of
+        {sym : E} pairs, where sym is a str denoating the
+        the element, while E is the value to be subtracted per sym. This is
+        typically the pure component formation energy calculated with LAMMPS.
+        Note since this is merely a fixed subtraction, should not change the
+        performance in constant composition runs.
+    """
+
 
     @single_core
     def __init__(self, parameters):
