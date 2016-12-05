@@ -340,7 +340,9 @@ The LAMMPS relaxation module calls LAMMPS to relax according to some potential. 
 The potential files available to use are listed below and are from the default potentials included from LAMMPS. Given a potential, enter in the ``potential_file`` kwarg as "$STRUCTOPT_HOME/potentials/<name>". Note also that different potentials will have different lines of the ``pair_style`` kwarg. If the user would like to use an unavailable potential file, please submit an email to zxu39@wisc.edu, and the potential will be added.
 
 `AlCu.eam.alloy`: Aluminum and copper alloy EAM (Cai and Ye, Phys Rev B, 54, 8398-8410 (1996))
+
 `Au_u3.eam`: Gold EAM (SM Foiles et al, PRB, 33, 7983 (1986))
+
 `ZrCuAl2011.eam.alloy`: Zirconium, copper, and aluminum glass (Howard Sheng at GMU. (hsheng@gmu.edu))
 
 Fitnesses
@@ -379,7 +381,9 @@ The LAMMPS fitness module calls LAMMPS to calculate the potential energy of the 
 The potential files available to use are listed below and are from the default potentials included from LAMMPS. Given a potential, enter in the ``potential_file`` kwarg as "$STRUCTOPT_HOME/potentials/<name>". Note also that different potentials will have different lines of the ``pair_style`` kwarg. If the user would like to use an unavailable potential file, please submit an email to zxu39@wisc.edu, and the potential will be added.
 
 `AlCu.eam.alloy`: Aluminum and copper alloy EAM (Cai and Ye, Phys Rev B, 54, 8398-8410 (1996))
+
 `Au_u3.eam`: Gold EAM (SM Foiles et al, PRB, 33, 7983 (1986))
+
 `ZrCuAl2011.eam.alloy`: Zirconium, copper, and aluminum glass (Howard Sheng at GMU. (hsheng@gmu.edu))
 
 Parallelization
