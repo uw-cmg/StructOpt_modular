@@ -49,8 +49,8 @@ class Predators(object):
 
     @staticmethod
     @functools.wraps(roulette)
-    def roulette(population, fits, nkeep):
-        return roulette(population, fits, nkeep)
+    def roulette(population, fits, nkeep, keep_best=True, T=None):
+        return roulette(population, fits, nkeep, keep_best, T)
 
     @staticmethod
     @functools.wraps(tournament)
