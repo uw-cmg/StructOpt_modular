@@ -50,6 +50,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         if self.target is None:
             self.generate_target()
 
+        # Align the atom to produce optimum matching with STEM
+        self.align(individual)
+
         current_fitness = self.fitness(individual)
         rank = gparameters.mpi.rank
         print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
