@@ -6,6 +6,7 @@ from structopt.common.individual import Individual
 from structopt.tools import root, single_core, parallel
 from structopt.tools import random_three_vector
 from structopt.common.crossmodule import repair_cluster
+from structopt.common.crossmodule.similarity import get_offset
 
 import time
 
@@ -45,16 +46,15 @@ def rotate(individual1, individual2, center_at_atom=True, repair_composition=Tru
     cop2 = ind2c.get_positions().mean(axis=0)
 
     if center_at_atom:
-        pos1 = ind1c.get_positions()
-        dists1 = np.linalg.norm(pos1 - cop1, axis=1)
-        cop1 = pos1[np.argmin(dists1)]
+        offset = get_offset(ind1c, ind2c, r=1.0, HWHM=0.4)
+        ind1c.translate(offset)
+        cop = ind1c.get_positions().mean(axis=0)
 
-        pos2 = ind2c.get_positions()
-        dists2 = np.linalg.norm(pos2 - cop2, axis=1)
-        cop2 = pos2[np.argmin(dists2)]
-
-    ind1c.translate(-cop1)
-    ind2c.translate(-cop2)
+        ind1c.translate(-cop)
+        ind2c.translate(-cop)
+    else:
+        ind1c.translate(ind1c.get_positions().mean(axis=0))
+        ind2c.translate(ind2c.get_positions().mean(axis=0))
 
     # Pick a random rotation angle and vector
     rot_vec = random_three_vector()
