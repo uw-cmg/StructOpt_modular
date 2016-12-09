@@ -125,7 +125,7 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
         else:
             avg_length = np.average([zs[i+1] - zs[i] for i in range(len(zs)-1)
                                      if zs[i+1] - zs[i] < avg_bond_length * 1.7])
-            avg_bond_lengths.append(avg_bond_length)
+            avg_bond_lengths.append(avg_length)
 
         # Check for vacancies in the column
         for i, z in enumerate(zs[:-1]):

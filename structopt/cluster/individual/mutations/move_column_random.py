@@ -1,13 +1,14 @@
 import random
 import numpy as np
 
+from ase.data import chemical_symbols
+from structopt.common.crossmodule import CoordinationNumbers
 from structopt.common.crossmodule import get_avg_radii
 
-def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
+def move_column_random(individual, cutoff=0.2):
     """Calculates the error per column of atoms in the z-direction"""
 
     avg_radii = get_avg_radii(individual)
-    avg_bond_length = avg_radii * 2
     cutoff *= avg_radii * 2
 
     # Organize atoms into columns
@@ -31,7 +32,6 @@ def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     # Make a list of the top and bottom atom of each column as well
     # the average bond length of atoms in the column
     top_indices, bot_indices, avg_bond_lengths = [], [], []
-    vac_new_pos = []
     for indices in column_indices:
         zs = pos[indices][:,2]
         top_indices.append(indices[np.argmax(zs)])
@@ -40,20 +40,9 @@ def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
         zs = np.sort(zs)
         if len(zs) == 1:
             avg_bond_lengths.append(np.nan)
-            continue
         else:
-            avg_length = np.average([zs[i+1] - zs[i] for i in range(len(zs)-1)
-                                          if zs[i+1] - zs[i] < avg_bond_length * 1.7])
-            avg_bond_lengths.append(avg_length)
-
-        # Check for vacancies in the column
-        for i, z in enumerate(zs[:-1]):
-            diff = zs[i+1] - z
-            if diff < avg_length * 1.5:
-                continue
-            z += avg_bond_length
-            xy = pos[indices][:,:2].mean(axis=0)
-            vac_new_pos.append(np.append(xy, z))
+            avg_bond_length = np.average([zs[i+1] - zs[i] for i in range(len(zs)-1)])
+            avg_bond_lengths.append(avg_bond_length)
 
     avg_bond_lengths = np.array(avg_bond_lengths)
     avg_bond_length = np.average(avg_bond_lengths[np.invert(np.isnan(avg_bond_lengths))])
@@ -63,21 +52,15 @@ def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     # Create a list of new surface sites
     bot_new_pos = pos[np.array(bot_indices)] - avg_bond_lengths * 0.95
     top_new_pos = pos[np.array(top_indices)] + avg_bond_lengths * 0.95
-    add_pos = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
 
-    add_pos = add_pos[np.random.choice(range(len(add_pos)))]
+    # Choose moves based on difference in coordination numbers
+    move_indices = top_indices + bot_indices
+    move_new_pos = np.append(bot_new_pos, top_new_pos, axis=0)
 
-    # Choose the element to add
-    if add_prob is None:
-        syms = individual.get_chemical_symbols()
-        elements = np.unique(syms)
-        n = len(syms)
-        p = [syms.count(element) / n for element in elements]
-    else:
-        elements = [key for key in add_prob]
-        p = [add_prob[key] for key in elements]
-
-    element = np.random.choice(elements, p=p)
-    individual.append(Atom(element, new_position))
+    move_indices_i = np.random.choice(range(len(move_indices)))
+    move_index = move_indices[move_indices_i]
+    move_new_pos = move_new_pos[move_indices_i]
+    
+    individual.positions[move_index] = move_new_pos
 
     return

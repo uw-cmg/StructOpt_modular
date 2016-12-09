@@ -27,12 +27,14 @@ from .enrich_bulk_column import enrich_bulk_column
 from .rich2poor_column import rich2poor_column
 from .poor2rich_column import poor2rich_column
 from .move_column_defects import move_column_defects
+from .move_column_random import move_column_random
 from .add_atom_STEM import add_atom_STEM
 from .add_atom_defects import add_atom_defects
 from .add_atom_random import add_atom_random
 from .remove_atom_STEM import remove_atom_STEM
 from .remove_atom_defects import remove_atom_defects
 from .remove_atom_random import remove_atom_random
+from .move_surface_SCSA import move_surface_SCSA
 
 move_surface_atoms.tag = 'MoSuAt'
 move_surface_STEM.tag = 'MoSuSTEM'
@@ -58,12 +60,14 @@ enrich_bulk_column.tag = 'EnBuCo'
 rich2poor_column.tag = 'Ri2PoCo'
 poor2rich_column.tag = 'Po2RiCo'
 move_column_defects.tag = 'MoCoDe'
+move_column_random.tag = 'MoCoRa'
 add_atom_STEM.tag = 'AdAtSTEM'
 add_atom_defects.tag = 'AdAtDe'
 add_atom_random.tag = 'AdAtRa'
 remove_atom_STEM.tag = 'ReAtSTEM'
 remove_atom_defects.tag = 'ReAtDe'
 remove_atom_random.tag = 'ReAtRa'
+move_surface_SCSA.tag = 'MoSuSCSA'
 
 class Mutations(structopt.common.individual.mutations.Mutations):
 
@@ -205,7 +209,12 @@ class Mutations(structopt.common.individual.mutations.Mutations):
     @staticmethod
     @functools.wraps(move_column_defects)
     def move_column_defects(individual, cutoff=0.2, CN_factor=1.1):
-        return move_column_defects(individual, cutoff=0.2, CN_factor=1.1)
+        return move_column_defects(individual, cutoff, CN_factor)
+
+    @staticmethod
+    @functools.wraps(move_column_random)
+    def move_column_random(individual, cutoff=0.2):
+        return move_column_random(individual, cutoff)
 
     @staticmethod
     @functools.wraps(add_atom_STEM)
