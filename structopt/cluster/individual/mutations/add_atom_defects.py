@@ -64,7 +64,10 @@ def add_atom_defects(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     # Create a list of new surface sites
     bot_new_pos = pos[np.array(bot_indices)] - avg_bond_lengths * 0.95
     top_new_pos = pos[np.array(top_indices)] + avg_bond_lengths * 0.95
-    add_pos = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
+    if np.size(vac_new_pos) > 0:
+        surf_positions = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
+    else:
+        surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
 
     # Calculate CNs of old sites and potential new sites
     CN_cutoff = avg_radii * 2 * CN_factor
