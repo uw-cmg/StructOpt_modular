@@ -71,7 +71,7 @@ def add_atom_defects(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
 
     # Calculate CNs of old sites and potential new sites
     CN_cutoff = avg_radii * 2 * CN_factor
-    add_vecs = np.transpose(np.expand_dims(add_pos, 0), [1, 0, 2]) - np.expand_dims(pos, 0)
+    add_vecs = np.transpose(np.expand_dims(surf_positions, 0), [1, 0, 2]) - np.expand_dims(pos, 0)
     add_dists = np.linalg.norm(add_vecs, axis=2)
     add_bonds = (add_dists < CN_cutoff).astype(int)
     add_CNs = list(np.sum(add_bonds, axis=1))
@@ -81,7 +81,7 @@ def add_atom_defects(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     add_probs = [2.0 ** CN / add_CN_counts[CN] for CN in add_CNs]
     add_probs = np.array(add_probs) / sum(add_probs)
 
-    new_position = add_pos[np.random.choice(range(len(add_pos)), p=add_probs)]
+    new_position = surf_positions[np.random.choice(range(len(surf_positions)), p=add_probs)]
 
     # Choose the element to add
     if add_prob is None:

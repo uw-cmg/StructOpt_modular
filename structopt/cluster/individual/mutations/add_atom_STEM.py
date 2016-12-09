@@ -148,8 +148,7 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
         surf_positions = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
     else:
         surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
-    
-    surf_positions = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
+
     surf_xys = surf_positions[:,:2]
 
     dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)
