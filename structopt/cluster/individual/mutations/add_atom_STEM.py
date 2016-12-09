@@ -144,7 +144,10 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # Create a list of new surface sites
     bot_new_pos = pos[np.array(bot_indices)] - avg_bond_lengths * 0.95
     top_new_pos = pos[np.array(top_indices)] + avg_bond_lengths * 0.95
-    surf_positions = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
+    if np.size(vac_new_pos) > 0:
+        surf_positions = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
+    else:
+        surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
     surf_xys = surf_positions[:,:2]
 
     dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)

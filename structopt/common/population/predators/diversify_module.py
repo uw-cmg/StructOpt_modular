@@ -46,4 +46,8 @@ def diversify_module(population, fits, nkeep, module='LAMMPS', min_diff=0.0001):
         new_population = [individual for individual in population if individual.id not in ids_delete]
         new_module_fits = [individual._fitness for individual in new_population]
         sorted_module_fits, sorted_population = zip(*sorted(zip(new_module_fits, new_population), key=lambda pair: pair[0]))
-        population.replace(list(sorted_population[:nkeep]))
+        sorted_population = list(sorted_population)
+        new_population = [sorted_population.pop(0)]
+        random.shuffle(sorted_population)
+        new_population += sorted_population[:nkeep-1]
+        population.replace(new_population)
