@@ -68,7 +68,7 @@ def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
     else:
         surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
 
-    add_pos = add_pos[np.random.choice(range(len(add_pos)))]
+    new_position = surf_positions[np.random.choice(range(len(surf_positions)))]
 
     # Choose the element to add
     if add_prob is None:
