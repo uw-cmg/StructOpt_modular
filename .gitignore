@@ -2,7 +2,6 @@
 *by-rank.out
 Output*
 log.lammps
-tests/
 XYZs/
 jobid
 *.o[0-9]*
