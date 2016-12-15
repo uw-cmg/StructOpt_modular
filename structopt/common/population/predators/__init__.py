@@ -9,7 +9,6 @@ from .roulette import roulette
 from .tournament import tournament
 from .rank import rank
 from .fuss import fuss
-from .diversify_module import diversify_module
 
 
 class Predators(object):
@@ -65,9 +64,4 @@ class Predators(object):
     @functools.wraps(fuss)
     def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
         return fuss(population, fits, nkeep, nbest=1, fusslimit=10)
-
-    @staticmethod
-    @functools.wraps(diversify_module)
-    def diversify_module(population, fits, nkeep, module, min_diff):
-        return diversify_module(population, fits, nkeep, module, min_diff)
 
