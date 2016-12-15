@@ -6,6 +6,7 @@ import random
 
 from structopt.tools import root, single_core, parallel, disjoint_set_merge
 from .all_close_atom_positions import all_close_atom_positions
+from .diversify_module import diversify_module
 
 
 class Fingerprinters(object):
@@ -67,4 +68,9 @@ class Fingerprinters(object):
     @functools.wraps(all_close_atom_positions)
     def all_close_atom_positions(individual1, individual2, **kwargs):
         return all_close_atom_positions(individual1, individual2, **kwargs)
+
+    @staticmethod
+    @functools.wraps(diversify_module)
+    def diversify_module(individual1, individual2, **kwargs):
+        return diversify_module(individual1, individual2, **kwargs)
 
