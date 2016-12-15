@@ -52,6 +52,25 @@ class DataExplorer(object):
         sys.modules['gparameters'] = parameters
         return parameters
 
+    @lazyproperty
+    def _fitnesses(self):
+        fitnesses = {}
+        for line in open(self.fitnesses_file):
+            firsthalf = re.compile(".+ : INFO : Generation (\d+), Individual (\d+):(.*)")
+            secondhalf = re.compile("([\w]+): (\d+.\d+)")
+            generation, id, fitness_str = firsthalf.findall(line)[0]
+            fitnesses[(int(generation), int(id))] = {fit: float(value) for fit, value in secondhalf.findall(fitness_str)}
+        return fitnesses
+
+    def _get_fitness(self, id, generation):
+        fits = self._fitnesses[(generation, id)]
+        weights = {name: module.weight for name, module in self.parameters.fitnesses.items()}
+        fitness = sum(fits[module]*weights[module] for module in fits)
+        return fitness
+
+    def _get_module_fitness(self, id, generation, module):
+        return self._fitnesses[(generation, id)][module]
+
     def __getitem__(self, index):
         return self.generations[index]
 
@@ -234,7 +253,8 @@ class Individual(object):
             self.crossover_tag = tag
 
     def __hash__(self):
-        return (self.id, self.generation)
+        return id(self)
+        #return (self.id, self.generation)
 
     @property
     def id(self):
@@ -246,6 +266,22 @@ class Individual(object):
     @property
     def history(self):
         return self._history
+
+    @lazyproperty
+    def fitness(self):
+        return self._dataexplorer()._get_fitness(self.id, self.generation)
+
+    @lazyproperty
+    def LAMMPS(self):
+        return self._dataexplorer()._get_module_fitness(self.id, self.generation, "LAMMPS")
+
+    @lazyproperty
+    def STEM(self):
+        return self._dataexplorer()._get_module_fitness(self.id, self.generation, "STEM")
+
+    @lazyproperty
+    def FEMSIM(self):
+        return self._dataexplorer()._get_module_fitness(self.id, self.generation, "FEMSIM")
 
     def __repr__(self):
         return "<Individual {} @{}>".format(self.id, self.generation)

@@ -16,6 +16,10 @@ GENERATION = 5
 # Access via generation-population-id
 indiv = de[GENERATION][ID]
 print(id(indiv))
+print(indiv)
+print(indiv.LAMMPS)
+print(indiv.STEM)
+print(indiv.fitness)
 
 # Access history via id
 ih = de.get_historical_individual(ID)
