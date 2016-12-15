@@ -9,7 +9,7 @@ import distutils.spawn
 from structopt.tools.dictionaryobject import DictionaryObject
 
 MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'fingerprinters', 'pso_moves']
-EXCEPTION_FUNCTIONS = ['preserve_best', 'keep_original', 'keep_original_best']
+EXCEPTION_FUNCTIONS = ['preserve_best', 'keep_original', 'keep_original_best', 'keep_best']
 
 def read(input):
     """Sets StructOpt parameters from a dictionary or filename"""
@@ -100,6 +100,8 @@ def set_default(parameters):
     parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
     if 'convergence' in parameters:
         parameters.convergence.setdefault('max_generations', 10)
+    if 'fingerprinters' in parameters:
+        parameters.fingerprinters.setdefault('keep_best', False)
 
     # Make sure every operation is defined, and that every operation has a
     # kwargs

@@ -17,6 +17,10 @@ parameters = structopt.setup(DictionaryObject({
 
 
 def test_all_close_atom_postions():
+    parameters.fingerprinters = {
+        "keep_best": True,
+        "all_close_atom_positions": {"probability": 1.0, "kwargs": {}}
+    }
     pop = Population(parameters=parameters)
     pop.initial_number_of_individuals = 1  # Need to override this because this is the value of nkeep that gets passed to the fingerprinter
 
@@ -29,6 +33,7 @@ def test_all_close_atom_postions():
 
 def test_diversify_module():
     parameters.fingerprinters = {
+        "keep_best": True,
         "diversify_module": {"probability": 1.0,
             "kwargs": {"module": "LAMMPS"}
         }
