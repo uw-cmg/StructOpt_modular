@@ -2,7 +2,7 @@ import numpy as np
 import scipy.cluster.vq
 
 
-def all_close_atom_positions(individual1, individual2, rtol=None, atol=None):
+def all_close_atom_positions(individual1, individual2, rtol=None, atol=0.001):
     """Identifies whether the individuals have the same atom positions within a given tolderance.
     Args:
         individual1 (structopt.common.Individual): The first individual to be compared.

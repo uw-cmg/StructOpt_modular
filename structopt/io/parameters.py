@@ -8,7 +8,7 @@ import distutils.spawn
 
 from structopt.tools.dictionaryobject import DictionaryObject
 
-MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'pso_moves']
+MODULES = ['relaxations', 'fitnesses', 'mutations', 'generators', 'crossovers', 'selections', 'predators', 'fingerprinters', 'pso_moves']
 EXCEPTION_FUNCTIONS = ['preserve_best', 'keep_original', 'keep_original_best']
 
 def read(input):
@@ -29,16 +29,18 @@ def read(input):
 def set_default_mpi_parameters(parameters):
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the parameters.mpi
     use_mpi4py = False
-    for module in parameters.relaxations:
-        parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
-        parameters.relaxations[module].kwargs.setdefault('MPMD', 0)
-        if parameters.relaxations[module].kwargs.use_mpi4py:
-            use_mpi4py = True
-    for module in parameters.fitnesses:
-        parameters.fitnesses[module].kwargs.setdefault('use_mpi4py', False)
-        parameters.fitnesses[module].kwargs.setdefault('MPMD', 0)
-        if parameters.fitnesses[module].kwargs.use_mpi4py:
-            use_mpi4py = True
+    if 'relaxations' in parameters:
+        for module in parameters.relaxations:
+            parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
+            parameters.relaxations[module].kwargs.setdefault('MPMD', 0)
+            if parameters.relaxations[module].kwargs.use_mpi4py:
+                use_mpi4py = True
+    if 'fitnesses' in parameters:
+        for module in parameters.fitnesses:
+            parameters.fitnesses[module].kwargs.setdefault('use_mpi4py', False)
+            parameters.fitnesses[module].kwargs.setdefault('MPMD', 0)
+            if parameters.fitnesses[module].kwargs.use_mpi4py:
+                use_mpi4py = True
 
     parameters.setdefault('mpi', {})
     if use_mpi4py:
@@ -93,15 +95,11 @@ def set_default(parameters):
     parameters.logging.path = path
     parameters.setdefault('seed', seed)
     parameters.setdefault('post_processing', DictionaryObject({}))
-    parameters.post_processing.setdefault('XYZs', -1)
+    if 'post_processing' in parameters:
+        parameters.post_processing.setdefault('XYZs', -1)
     parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
-    parameters.convergence.setdefault('max_generations', 10)
-
-    if 'relaxations' not in parameters or not parameters['relaxations']:
-        raise ValueError('Relaxations must be specified in the parameter file.')
-
-    if 'fitnesses' not in parameters or not parameters['fitnesses']:
-        raise ValueError('Fitnesses must be specified in the parameter file.')
+    if 'convergence' in parameters:
+        parameters.convergence.setdefault('max_generations', 10)
 
     # Make sure every operation is defined, and that every operation has a
     # kwargs

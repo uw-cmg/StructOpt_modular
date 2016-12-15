@@ -24,7 +24,6 @@ class Predators(object):
         self.predators[None] = 1.0 - total_probability
         self.selected_predator = None
 
-
     @single_core
     def select_predator(self):
         # Implementation from https://docs.python.org/3/library/random.html -- Ctrl+F "weights"
@@ -71,3 +70,4 @@ class Predators(object):
     @functools.wraps(diversify_module)
     def diversify_module(population, fits, nkeep, module, min_diff):
         return diversify_module(population, fits, nkeep, module, min_diff)
+

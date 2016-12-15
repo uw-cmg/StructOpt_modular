@@ -77,6 +77,8 @@ class GeneticAlgorithm(object):
         fits = self.population.fitness()
         self.timing['fitness'].append(time.time() - t_fitness_0)
 
+        self.population.apply_fingerprinters()
+
         t_predator_0 = time.time()
         self.population.kill(fits)
         self.timing['predator'].append(time.time() - t_predator_0)
