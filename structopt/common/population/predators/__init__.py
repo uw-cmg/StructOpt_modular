@@ -33,8 +33,9 @@ class Predators(object):
 
     @single_core
     def kill(self, population, fits, nkeep):
-        kwargs = self.kwargs[self.selected_predator]
-        self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
+        if self.selected_predator is not None:
+            kwargs = self.kwargs[self.selected_predator]
+            self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
 
     @single_core
     def post_processing(self):
