@@ -42,8 +42,6 @@ class GeneticAlgorithm(object):
 
 
     def step(self):
-        t_step_0 = time.time()
-
         if gparameters.mpi.rank == 0:
             print('')
             print("Starting generation {}".format(gparameters.generation))
@@ -51,39 +49,22 @@ class GeneticAlgorithm(object):
         if gparameters.generation > 0:
             fits = [individual._fitness for individual in self.population]
 
-            t_selection_0 = time.time()
             parents = self.population.select(fits)
-            self.timing['selection'].append(time.time() - t_selection_0)
 
-            t_crossover_0 = time.time()
             children = self.population.crossover(parents)
             self.population.extend(children)
-            self.timing['crossover'].append(time.time() - t_crossover_0)
 
-            t_mutation_0 = time.time()
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
-            self.timing['mutation'].append(time.time() - t_mutation_0)
-        else:
-            self.timing['selection'].append(0)
-            self.timing['crossover'].append(0)
-            self.timing['mutation'].append(0)
 
-        t_relax_0 = time.time()
         self.population.relax()
-        self.timing['relax'].append(time.time() - t_relax_0)
 
-        t_fitness_0 = time.time()
         fits = self.population.fitness()
-        self.timing['fitness'].append(time.time() - t_fitness_0)
 
         self.population.apply_fingerprinters()
 
-        t_predator_0 = time.time()
         self.population.kill(fits)
-        self.timing['predator'].append(time.time() - t_predator_0)
 
-        self.timing['step'].append(time.time() - t_step_0)
 
         self.check_convergence()
         if gparameters.mpi.rank == 0:
@@ -123,16 +104,6 @@ class GeneticAlgorithm(object):
         genealogy_logger = logging.getLogger('genealogy')
         genealogy_logger.info(' '.join(tags))
 
-        # Save the times
-        timing_logger = logging.getLogger('timing')
-        timing_logger.info('')
-        timing_logger.info('Generation {} (cumulative) timing information'.format(gparameters.generation))
-        for operation in ['selection', 'crossover', 'mutation',
-                          'relax', 'fitness', 'predator', 'step']:
-            t, t_unit = convert_time(self.timing[operation][-1])
-            t_cum, t_cum_unit = convert_time(sum(self.timing[operation]))
-            timing_logger.info('{:10s}: {:4.2f} {} ({:4.2f} {})'.format(operation, t, t_unit, t_cum, t_cum_unit))
-
     def __enter__(self):
         return self
 
@@ -154,5 +125,8 @@ if __name__ == "__main__":
     with GeneticAlgorithm(population=population,
                           convergence=parameters.convergence,
                           post_processing=parameters.post_processing) as optimizer:
+        start = time.time()
         optimizer.run()
+        stop = time.time()
+        print("Time:", stop-start)
 

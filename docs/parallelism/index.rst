@@ -1,6 +1,5 @@
 Parallelism
 ###########
-
 In general, the only parallelized parts of StructOpt are the fitness and relaxation modules that can be plugged in.
 
 StructOpt has two parallelization mechanisms. The first is the simplest case where each structure is assigned to a single core. The core does the significant processing for one structure by processing the module's code. This is optimal when the module does not implement MPI, or the code is relatively fast.
@@ -61,4 +60,10 @@ MPMD: Multiple cores per structure
 ==================================
 
 Multiple program, multiple data (MPMD) is a form of MPI parallelization where multiple MPI communicators are used synchonously to run multiple MPI processes at the same time. MPMD can be used within ``mpiexec`` by separating each command by colons. Each command is preceded by the ``-n`` option whcih specifies the number of cores to be used for that executable. MPMD can also be used from another MPI master process which calls ``MPI_Comm_spawn_multiple``. This is how StructOpt implements its advanced parallelization techniques to integrate MPI relaxation and fitness programs into its framework. The executable needs to implement MPMD by disconnecting a parent process if it exists (see `here <https://github.com/jjmaldonis/mpi-parallelization/blob/master/spawn_multiple_loop.py>`_ and `here <https://github.com/paul-voyles/femsim-hrmc/blob/master/src/hrmc.f90>`_ for an example parent/child implementation).
+
+
+
+TODO
+====
+Discuss this somewhere: Ideally all fitness operations could be run in parallel. The best scaling (ie the best use of cores) would be to optimize the settings of all fitness functions to take the same amount of time (or allocate jobs on each core so that each core will spend the same amount of time computing).
 

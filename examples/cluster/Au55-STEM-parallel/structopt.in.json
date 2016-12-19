@@ -43,7 +43,7 @@
 	                      "thermo_steps": 0}}
     },
     "convergence": {
-        "max_generations": 5
+        "max_generations": 10
     },
     "mutations": {
         "move_atoms": {"probability": 0.1},
@@ -54,7 +54,7 @@
         "rotate_all": {"probability": 0.0}
     },
     "fingerprinters": {
-        "options": []
+        "all_close_atom_positions": {"probability": 1.0}
     },
     "crossovers": {
         "rotate": {"probability": 0.7}
