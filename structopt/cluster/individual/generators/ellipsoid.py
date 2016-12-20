@@ -4,23 +4,26 @@ from ase import Atom, Atoms
 from structopt.common.crossmodule import get_particle_radius
 
 def ellipsoid(atomlist, fill_factor=0.74, radii=None, ratio=[1, 1, 1], cell=None):
-    """Generates a random ellipsoid by rejection sampling. Not the most efficient
-    code but good at garaunteeing an even distribution inside the ellipsoid.
+    """Generates a random ellipsoid by rejection sampling.
 
     Parameters
     ----------
+    atomlist : list
+        A list of [sym, n] pairs where sym is the chemical symbol
+        and n is the number of of sym's to include in the individual
     fill_factor : float
         Determines how "close" the atoms are packed. 
         See structopt.tools.get_particle_radius for description
-    radii : list (3 elements)
+    radii : list
         The size, in angstroms, of the ellipsoid in the x, y and z
-        direction
-    ratio : list (3 elements)
+        direction. If None, with ratio parameters and the average
+        atomic radii, radii is automatically calculated.
+    ratio : list
         The ratio of the dimensions of the ellipsoid in the x, y
         and z direction.
-    cell : list (3  elements)
+    cell : list
         The size, in angstroms, of the dimensions that holds the
-        atoms object
+        atoms object. Must be an orthogonal box.
     """
     
 

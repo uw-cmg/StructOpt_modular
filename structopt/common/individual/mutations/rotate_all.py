@@ -10,27 +10,22 @@ def rotate_all(atoms, vector=None, angle=None, center=None):
 
     Parameters
     ---------
-    individual : StructOpt individual object or ase atoms
-        StructOpt Individual or ase Atoms object to be rotated.
-    angle : string or list
-        A list of angles that will be chosen to rotate. If None,
-        is randomly generated. Angle must be given in radians.
-        If 'random' in list, a random angle is included.
+    individual : Individual
+        An individual.
     vector : string or list
         The list of axes in which to rotate the atoms around. If 
         None, is a randomly chosen direction. If 'random' in list,
         a random vector can be chosen.
-    center : str or xyz iterable
+    angle : string or list
+        A list of angles that will be chosen to rotate. If None,
+        is randomly generated. Angle must be given in radians.
+        If 'random' in list, a random angle is included.
+    center : string or xyz iterable
         The center in which to rotate the atoms around. If None,
         defaults to center of mass. Acceptable strings are
         COM = center of mass
         COP = center of positions
         COU = center of cell
-
-    Returns
-    -------
-    out: None
-        Modifies the individual in place
     """
 
     # Initialize variables for ase.Atoms.rotate

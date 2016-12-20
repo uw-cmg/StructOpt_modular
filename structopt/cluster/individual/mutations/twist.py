@@ -8,7 +8,7 @@ from structopt.common.crossmodule import NeighborList
 from structopt.tools import random_three_vector
 
 def twist(individual, max_radius=0.90):
-    """Twists a random section of the particle.
+    """Splits the particle randomly in half and rotates one half.
     
     Parameters
     ----------

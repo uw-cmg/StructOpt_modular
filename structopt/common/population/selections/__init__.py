@@ -34,6 +34,8 @@ class Selections(object):
 
     @single_core
     def select(self, population, fits):
+        if self.selected_selection is None:
+            return []
         kwargs = self.kwargs[self.selected_selection]
         pairs = self.selected_selection(population=population, fits=fits, **kwargs)
         self.post_processing(pairs)

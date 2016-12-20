@@ -4,14 +4,17 @@ import numpy as np
 from structopt.common.crossmodule import CoordinationNumbers
 
 def enrich_surface(individual, surf_CN=11, species=None):
-    """Mutation that selectively enriches the surface with a species
+    """Mutation that selectively enriches the surface with a species.
 
     Parameters
     ----------
+    individual : Individual
+        An individual
     surf_CN : int
         The maximum coordination number of an atom to be considered surface
     species : str
         The surface to enrich with. If None, takes the lowest concentration
+        species
     """
 
     syms = individual.get_chemical_symbols()

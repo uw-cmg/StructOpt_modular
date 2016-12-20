@@ -4,6 +4,7 @@ import logging
 import numpy as np
 from scipy.signal import fftconvolve
 from scipy.ndimage import sobel
+from scipy.optimize import fmin
 
 from ase.io import read
 
@@ -79,10 +80,6 @@ class STEM(object):
         y_shift = y_max - image.shape[0] + 1
         image = np.roll(image, x_shift, axis=1)
         image = np.roll(image, y_shift, axis=0)
-
-        # Return the x_shift and y_shift in real space
-        #x_shift /= self.parameters['resolution']
-        #y_shift /= self.parameters['resolution']
 
         return image, x_shift, y_shift
 

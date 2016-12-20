@@ -7,14 +7,16 @@ def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
     in the population. In the case where low fit is the highest
     fitness, selects a fitness between min(fits) and min(fits) + fusslimit,
     if the difference between the min(fit) and max(fit) is larger than fusslimit.
+
     Parameters
     ----------
-    population : structopt.Population object
-        The population to be shortened
+    population : Population
+        A population of individuals
     fits : list
-        A list of the fitnesses
+        Fitnesses that corresponds to population
     nkeep : int
-        The number of individuals to keep
+        The number of individuals to keep. In a GA run, corresponds
+        to the sum of each generators number_of_individuals
     nbest : int
         The top n individuals to always keep
     fusslimit : float

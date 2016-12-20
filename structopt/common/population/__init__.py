@@ -8,7 +8,7 @@ from ..individual import Individual
 from structopt.tools import root, single_core, parallel, allgather
 from structopt.tools import SortedDict
 
-POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
+POPULATION_MODULES = ['crossovers', 'selections', 'predators', 'fingerprinters', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']
 
 class Population(SortedDict):
     """A list-like class that contains the Individuals and the operations to be run on them."""
@@ -87,7 +87,7 @@ class Population(SortedDict):
         # method to avoid modifying the original state.
         state = self.__dict__.copy()
         # Remove the unpicklable entries.
-        for name in ['crossovers', 'predators', 'selections', 'fitnesses', 'relaxations', 'mutations', 'pso_moves']:
+        for name in POPULATION_MODULES:
              if name in state:
                 del state[name]
         return state
@@ -148,7 +148,7 @@ class Population(SortedDict):
 
     @single_core
     def add(self, individual):
-        """Adds the Individual to the population."""
+        """Adds an Individual to the population."""
         assert isinstance(individual, Individual)
         assert individual.id not in [_individual.id for _individual in self]
         self.update([individual])
@@ -221,6 +221,15 @@ class Population(SortedDict):
     def relax(self):
         """Relax the entire population."""
         self.relaxations.relax(self)
+
+
+    @root
+    def apply_fingerprinters(self):
+        """
+        """
+        self.fingerprinters.select_fingerprinter()
+        if self.fingerprinters.selected_fingerprinter is not None:
+            self.fingerprinters.remove_duplicates(self, nkeep=self.initial_number_of_individuals, keep_best=self.parameters.fingerprinters.keep_best)
 
 
     @root

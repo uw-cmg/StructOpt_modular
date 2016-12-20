@@ -10,23 +10,19 @@ def rank(population, fits, nkeep, p_min=None):
 
     Parameters
     ----------
-    population : StructOpt population object
-        An object inherited from list that contains
-        StructOpt individual objects.
+    population : Population
+        A population of individuals
     fits : list
-        A list of fitnesses of the population
+        Fitnesses that corresponds to population
+    nkeep : int
+        The number of individuals to keep. In a GA run, corresponds
+        to the sum of each generators number_of_individuals
     p_min : float
         The probability of choosing the lowest ranked individual.
         Given population of size N, this should be below 1/nindiv.
         The probability of selecting rank N (worst) to rank 1 (best)
         increases from p_min to (2/N - p_min) in even, (1/N - p_min)
         increments. Defaults to (1/N)^2.
-
-    Returns
-    -------
-    out : list
-        A list of pairs of crossover pairs. Is always at most half the size
-        of the population.
     """
 
     # Get ranks of each population value based on its fitness

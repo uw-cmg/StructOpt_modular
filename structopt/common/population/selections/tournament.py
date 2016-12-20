@@ -12,28 +12,21 @@ def tournament(population, fits, tournament_size=5, unique_pairs=False,
 
     Parameters
     ----------
-    population : StructOpt.Population object
+    population : Population
         The population of individuals needed to be trimmed
     fits : list
         List of fitnesses that correspond to the population.
-    nkeep : int
-        The number of individuals in the next popoulation
     tournament_size : int
         The number of individuals in each tournament. If 1,
         tournament is the same as random selection. If
         len(population), corresponds to the "best" selection process
     unique_pairs : bool
-        If True, all combinations of parents are unique.
-        True increases the diveristy of the population.
+        If True, all combinations of parents are unique, though parents
+        can show up in different pairs. True increases the diversity of 
+        the population.
     unique_parents : bool
         If True, all parents can only mate with on other individual.
         True increases the diversity of the population.
-
-
-    Output
-    ------
-    out : None
-        Population modified in place.
     """
 
     # Get ranks of each population value based on its fitness

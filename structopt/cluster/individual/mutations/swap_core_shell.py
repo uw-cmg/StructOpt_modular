@@ -5,7 +5,15 @@ from structopt.common.crossmodule import CoordinationNumbers
 
 def swap_core_shell(individual, surf_CN=11):
     """Swaps atoms on the surface with an atom in the core. Only does it
-    for different element types"""
+    for different element types.
+    
+    Parameters
+    ----------
+    individual : Individual
+        An individual
+    surf_CN : int
+        The maximum coordination number of an atom to be considered surface
+    """
 
     if not len(individual):
         return None

@@ -41,7 +41,8 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     min_min = np.min(contrast)
 
     # Determine filter size for locating local minimum
-    cutoff = get_avg_radii(individual) * 2 * 1.1
+    avg_bond_length = get_avg_radii(individual) * 2
+    cutoff = avg_bond_length * 1.1
     surf_cutoff *= cutoff
     column_cutoff *= cutoff
     resolution = module.parameters['resolution']
@@ -54,8 +55,8 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
     # fig.colorbar(ax.pcolormesh(contrast, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0]*STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1]*STEM_parameters['resolution']))
     # plt.show()
     # import sys; sys.exit()
 
@@ -76,9 +77,9 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # import matplotlib.pyplot as plt
     # import matplotlib.cm as cm
     # fig, ax = plt.subplots()
-    # fig.colorbar(ax.pcolormesh(data_min, cmap=cm.viridis, linewidths=0))
-    # ax.set_xlim((0, STEM_parameters['dimensions'][0] * 10))
-    # ax.set_ylim((0, STEM_parameters['dimensions'][1] * 10))
+    # fig.colorbar(ax.pcolormesh(minima, cmap=cm.viridis, linewidths=0))
+    # ax.set_xlim((0, STEM_parameters['dimensions'][0]*STEM_parameters['resolution']))
+    # ax.set_ylim((0, STEM_parameters['dimensions'][1]*STEM_parameters['resolution']))
     # plt.show()
     # print(len(min_intensities))
     # import sys; sys.exit()
@@ -110,17 +111,30 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # Make a list of the top and bottom atom of each column as well
     # the average bond length of atoms in the column
     top_indices, bot_indices, avg_bond_lengths = [], [], []
+    vac_new_pos = []
     for indices in column_indices:
         zs = pos[indices][:,2]
         top_indices.append(indices[np.argmax(zs)])
         bot_indices.append(indices[np.argmin(zs)])
 
+        # Get the average bond length of each column for adding
         zs = np.sort(zs)
         if len(zs) == 1:
             avg_bond_lengths.append(np.nan)
+            continue
         else:
-            avg_bond_length = np.average([zs[i+1] - zs[i] for i in range(len(zs)-1)])
-            avg_bond_lengths.append(avg_bond_length)
+            avg_length = np.average([zs[i+1] - zs[i] for i in range(len(zs)-1)
+                                     if zs[i+1] - zs[i] < avg_bond_length * 1.7])
+            avg_bond_lengths.append(avg_length)
+
+        # Check for vacancies in the column
+        for i, z in enumerate(zs[:-1]):
+            diff = zs[i+1] - z
+            if diff < avg_length * 1.5:
+                continue
+            z += avg_bond_length
+            xy = pos[indices][:,:2].mean(axis=0)
+            vac_new_pos.append(np.append(xy, z))
 
     avg_bond_lengths = np.array(avg_bond_lengths)
     avg_bond_length = np.average(avg_bond_lengths[np.invert(np.isnan(avg_bond_lengths))])
@@ -130,7 +144,11 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     # Create a list of new surface sites
     bot_new_pos = pos[np.array(bot_indices)] - avg_bond_lengths * 0.95
     top_new_pos = pos[np.array(top_indices)] + avg_bond_lengths * 0.95
-    surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
+    if np.size(vac_new_pos) > 0:
+        surf_positions = np.concatenate((bot_new_pos, top_new_pos, vac_new_pos), axis=0)
+    else:
+        surf_positions = np.concatenate((bot_new_pos, top_new_pos), axis=0)
+
     surf_xys = surf_positions[:,:2]
 
     dists_surf_xys = np.linalg.norm(surf_xys - low_xy, axis=1)

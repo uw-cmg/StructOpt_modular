@@ -8,6 +8,46 @@ from structopt.tools import random_three_vector
 
 def fcc(atomlist, cell, a, shape=[1, 1, 1], orientation=None, size=21,
         roundness=0.5, alpha=10, v=None, angle=None):
+    """Generates a fcc nanoparticle of varying shape and orientation.
+    For multi-component particles, elements are randomly distributed.
+    
+    Parameters
+    ----------
+    atomlist : list
+        A list of [sym, n] pairs where sym is the chemical symbol
+        and n is the number of of sym's to include in the individual
+    cell : list
+        A 3 element list that defines the x, y, and z dimensions of the
+        simulation box
+    a : float
+        fcc lattice constant
+    shape : list
+        The ratio of the x, y, and z dimensions of the particle.
+    orientation : str
+        The facet that is parallel to the xy plane. This is useful for
+        LAMMPS+STEM calculations where one already knows the orientation.
+        If None, a random orientation is chosen.
+    size : int
+        Size of the fcc grid for building the nanoparticle. For example,
+        a size of 21 means 21 x 21 x 21 supercell of fcc primitive cells
+        will be used. Note, if the size is too small, the function will
+        automatically expand the cell to fit the particle.
+    roundness : float
+        Determines the "roundness" of the particle. A more round particle
+        will have a smaller surface area to volume ratio, but more
+        undercoordinated surface sites. A less round particle will take 
+        more and more the form of an octahedron.
+    alpha : float
+        Parameter for determining how defective the particle will be. 
+        Higher alpha means less defective particle.
+    v : list
+        Used for a custom orientation. V is the vector in which to rotate
+        the particle. Requires angle parameters to be entered. All rotations
+        are done with respect to the 100 plane.
+    angle : float
+        Angle, in radians, to rotate atoms around vector v. All rotations are 
+        done with respect to the 100 plane.
+    """
 
     grid = np.zeros((size, size, size), dtype=np.int)
 

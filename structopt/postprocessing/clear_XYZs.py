@@ -10,6 +10,7 @@ def clear_XYZs(n, generation, path):
     n : int
         if n < 0 : Only generation up to current generation - n are kept
         if n > 0 : Every n generation is kept
+        if n == 0: Every generation is kept (use with caution...)
 
     generation : int
         The generation currently on. This function always keeps this generation file.

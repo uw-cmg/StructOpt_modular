@@ -63,6 +63,7 @@ Contents
     outputs
     examples
     calculators/index
+    why_python
     future
     troubleshooting
     API Reference <structopt/index>

@@ -50,6 +50,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         if self.target is None:
             self.generate_target()
 
+        # Align the atom to produce optimum matching with STEM
+        self.align(individual)
+
         current_fitness = self.fitness(individual)
         rank = gparameters.mpi.rank
         print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
@@ -80,6 +83,9 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             else:
                 self.iterations = i
                 break
+
+        # Align the atom to produce optimum matching with STEM
+        self.align(individual)
 
         if hasattr(individual, 'id'):
             print("Finished relaxing individual {} on rank {} with STEM".format(individual.id, rank))
@@ -191,3 +197,16 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             plt.show()
 
         return vecs
+
+    def align(self, atoms):
+        x, y = fmin(self.chi2, [0, 0], args=(atoms, self), disp=False)
+        atoms.translate([x, y, 0])
+        return
+
+    @staticmethod
+    def chi2(shift, atoms, module):
+        x, y = shift
+        atoms = atoms.copy()
+        atoms.translate([x, y, 0])
+        image = module.get_image(atoms)
+        return np.sum(np.square(module.target - image)) ** 0.5

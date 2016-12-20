@@ -4,10 +4,13 @@ import numpy as np
 from structopt.common.crossmodule import CoordinationNumbers
 
 def enrich_surface_defects(individual, surf_CN=11, species=None):
-    """Mutation that selectively enriches defects with a species
+    """Mutation that selectively enriches defects with a species. Defects
+    are defined as atoms atoms with lower coordination numbers
 
     Parameters
     ----------
+    individual : Individual
+        An individual
     surf_CN : int
         The maximum coordination number of an atom to be considered surface
     species : str

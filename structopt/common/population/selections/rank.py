@@ -11,7 +11,7 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
 
     Parameters
     ----------
-    population : StructOpt population object
+    population : Population
         An object inherited from list that contains
         StructOpt individual objects.
     fits : list
@@ -28,12 +28,6 @@ def rank(population, fits, p_min=None, unique_pairs=False, unique_parents=False)
     unique_parents : bool
         If True, all parents can only mate with on other individual.
         True increases the diversity of the population.
-
-    Returns
-    -------
-    out : list
-        A list of pairs of crossover pairs. Is always at most half the size
-        of the population.
     """
 
     # Get ranks of each population value based on its fitness

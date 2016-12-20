@@ -9,7 +9,6 @@ from .roulette import roulette
 from .tournament import tournament
 from .rank import rank
 from .fuss import fuss
-from .diversify_module import diversify_module
 
 
 class Predators(object):
@@ -24,7 +23,6 @@ class Predators(object):
         self.predators[None] = 1.0 - total_probability
         self.selected_predator = None
 
-
     @single_core
     def select_predator(self):
         # Implementation from https://docs.python.org/3/library/random.html -- Ctrl+F "weights"
@@ -35,8 +33,9 @@ class Predators(object):
 
     @single_core
     def kill(self, population, fits, nkeep):
-        kwargs = self.kwargs[self.selected_predator]
-        self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
+        if self.selected_predator is not None:
+            kwargs = self.kwargs[self.selected_predator]
+            self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
 
     @single_core
     def post_processing(self):
@@ -49,8 +48,8 @@ class Predators(object):
 
     @staticmethod
     @functools.wraps(roulette)
-    def roulette(population, fits, nkeep):
-        return roulette(population, fits, nkeep)
+    def roulette(population, fits, nkeep, keep_best=True, T=None):
+        return roulette(population, fits, nkeep, keep_best, T)
 
     @staticmethod
     @functools.wraps(tournament)
@@ -67,7 +66,3 @@ class Predators(object):
     def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
         return fuss(population, fits, nkeep, nbest=1, fusslimit=10)
 
-    @staticmethod
-    @functools.wraps(diversify_module)
-    def diversify_module(population, fits, nkeep, module, min_diff):
-        return diversify_module(population, fits, nkeep, module, min_diff)

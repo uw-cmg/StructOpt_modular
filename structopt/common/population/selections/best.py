@@ -3,7 +3,15 @@ import scipy.stats
 
 def best(population, fits):
     """Deterministic selection function that chooses adjacently
-    ranked individuals as pairs."""
+    ranked individuals as pairs.
+
+    Parameters
+    ----------
+    population : Population
+        An population of individuals
+    fits : list
+        Fitnesses that corresponds to population
+    """
 
     # Get ranks of each population value based on its fitness
     ranks = list(scipy.stats.rankdata(fits, method='ordinal'))
