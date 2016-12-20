@@ -255,8 +255,9 @@ def MPMD(self, to_run, spawn_args, parameters):
     for i in range(num_iterations):
         j = i * individuals_per_iteration
         individuals_this_iteration = individuals_per_iteration
-        if i == num_iterations - 1 and len(to_run) % individuals_per_iteration != 0:  # The last iteration may not be exactly individuals_per_iteration
+        if i == len(to_run) // individuals_per_iteration:  # The last iteration may not be exactly individuals_per_iteration
             individuals_this_iteration = len(to_run) % individuals_per_iteration
+            cores_per_individual = ncores // individuals_this_iteration # All the cores available should be used
         print("Spawning {} femsim processes, each with {} cores".format(individuals_this_iteration, cores_per_individual))
         intercomm = MPI.COMM_SELF.Spawn_multiple(command=multiple_spawn_args['command'][j:j+individuals_this_iteration],
                                                  args=multiple_spawn_args['args'][j:j+individuals_this_iteration],
