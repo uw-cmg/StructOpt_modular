@@ -71,10 +71,10 @@ class LAMMPS(object):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation
-        if individual._relaxed and hasattr(individual, 'LAMMPS') and individual.LAMMPS is not None:
+        if individual._relaxed and 'LAMMPS' in individual.relaxations.parameters and individual.LAMMPS is not None:
             E = individual.LAMMPS
         else:
-            print("Individual {} did not have an value for .LAMMPS or it was modified".format(individual.id))
+            print("Individual {} did not have a value for .LAMMPS or it was modified".format(individual.id))
             calcdir = os.path.join(self.output_dir, 'fitness/LAMMPS/generation{}/individual{}'.format(gparameters.generation, individual.id))
             rank = gparameters.mpi.rank
 
