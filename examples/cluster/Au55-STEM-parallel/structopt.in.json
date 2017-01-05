@@ -53,9 +53,7 @@
         "rotate_cluster": {"probability": 0.1},
         "rotate_all": {"probability": 0.0}
     },
-    "fingerprinters": {
-        "options": []
-    },
+    "fingerprinters": {},
     "crossovers": {
         "rotate": {"probability": 0.7}
     },

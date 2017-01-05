@@ -153,6 +153,9 @@ class Individual(ase.Atoms):
         if self.fitness_parameters is not None:
             fitnesses = import_module('structopt.{}.individual.fitnesses'.format(cls_name))
             self.fitnesses = fitnesses.Fitnesses(parameters=self.fitness_parameters)
+            for name in self.fitnesses.module_names:
+                if not hasattr(self, name):
+                    setattr(self, name, None)
         else:
             self.fitnesses = None
 
@@ -173,10 +176,6 @@ class Individual(ase.Atoms):
             self.pso_moves = pso_moves.Pso_Moves(parameters=self.pso_moves_parameters)
         else:
             self.pos_moves = None
-
-        for name in self.fitnesses.module_names:
-            if not hasattr(self, name):
-                setattr(self, name, None)
 
 
     @property
@@ -224,15 +223,20 @@ class Individual(ase.Atoms):
 
 
     @parallel
-    def fitness(self):
+    def calculate_fitness(self):
         """Perform the fitness calculations on an individual.
 
         Args:
             individual (Individual): the individual to evaluate
         """
-        fits = self.fitnesses.fitness(self)
-        self._fitted = True
-        return fits
+        return self.fitnesses.calculate_fitness(self)
+
+
+    @property
+    def fitness(self):
+        """The total fitness of the individual."""
+        return self._fitness
+
 
     @single_core
     def generate(self):

@@ -43,7 +43,7 @@ class Crossovers(object):
         for individual1, individual2 in pairs:
             self.select_crossover()  # Choose a new crossover to perform for every pair
             if self.selected_crossover is not None:
-                print("Performing crossover {} on individuals {} and {}".format(self.selected_crossover, individual1, individual2))
+                print("Performing crossover {} on individuals {} and {}".format(self.selected_crossover.__name__, individual1, individual2))
                 kwargs = self.kwargs[self.selected_crossover]
                 child1, child2 = self.selected_crossover(individual1, individual2, **kwargs)
                 if child1 is not None:

@@ -67,7 +67,7 @@ class LAMMPS(object):
 
 
     @single_core
-    def fitness(self, individual):
+    def calculate_fitness(self, individual):
         # Don't rerun lammps if:
         # 1) the individual is unmodified
         # 2) the energy has already been calculated via the relaxation

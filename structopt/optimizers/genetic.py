@@ -49,10 +49,8 @@ class GeneticAlgorithm(object):
             print("Starting generation {}".format(gparameters.generation))
         sys.stdout.flush()
         if gparameters.generation > 0:
-            fits = [individual._fitness for individual in self.population]
-
             t_selection_0 = time.time()
-            parents = self.population.select(fits)
+            parents = self.population.select()
             self.timing['selection'].append(time.time() - t_selection_0)
 
             t_crossover_0 = time.time()
@@ -74,13 +72,13 @@ class GeneticAlgorithm(object):
         self.timing['relax'].append(time.time() - t_relax_0)
 
         t_fitness_0 = time.time()
-        fits = self.population.fitness()
+        fits = self.population.calculate_fitnesses()
         self.timing['fitness'].append(time.time() - t_fitness_0)
 
         self.population.apply_fingerprinters()
 
         t_predator_0 = time.time()
-        self.population.kill(fits)
+        self.population.kill()
         self.timing['predator'].append(time.time() - t_predator_0)
 
         self.timing['step'].append(time.time() - t_step_0)

@@ -1,8 +1,9 @@
 """Contains functionality for reading, writing, and parsing StrcutOpt parameters."""
 
+import sys
+import os
 import json
 import logging
-import os
 import time
 import distutils.spawn
 

@@ -201,20 +201,10 @@ class Population(SortedDict):
 
 
     @parallel
-    def fitness(self):
+    def calculate_fitnesses(self):
         """Perform the fitness evaluations on the entire population."""
 
-        fits = self.fitnesses.fitness(self)
-
-        # Store the individuals total fitness for each individual
-        for i, individual in enumerate(self):
-            individual._fitness = fits[i]
-
-        # Set each individual to unmodified so that the fitnesses wont't be recalculated
-        for individual in self:
-            individual._fitted = True
-
-        return fits
+        return self.fitnesses.calculate_fitnesses(self)
 
 
     @parallel
@@ -233,26 +223,19 @@ class Population(SortedDict):
 
 
     @root
-    def kill(self, fits):
-        """Remove individuals from the population whose fingerprints are very similar.
-        The goal of this selection-like scheme is to encourage diversity in the population.
-
-        Args:
-            fits (list<float>): the fitnesses of each individual in the population
+    def kill(self):
+        """Remove individuals from the population based on a predator scheme.
         """
         self.predators.select_predator()
-        self.predators.kill(self, fits, nkeep=self.initial_number_of_individuals)
+        self.predators.kill(self, nkeep=self.initial_number_of_individuals)
         return self
 
 
     @root
-    def select(self, fits):
+    def select(self):
         """Select the individuals in the population to perform crossovers on.
-
-        Args:
-            fits (list<float>): the fitnesses of each individual in the population
         """
         self.selections.select_selection()
-        pairs = self.selections.select(self, fits)
+        pairs = self.selections.select(self)
         return pairs
 

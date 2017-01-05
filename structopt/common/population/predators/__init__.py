@@ -32,7 +32,8 @@ class Predators(object):
         self.selected_predator = choices[bisect(cumdist, x)]
 
     @single_core
-    def kill(self, population, fits, nkeep):
+    def kill(self, population, nkeep):
+        fits = [individual.fitness for individual in population]
         if self.selected_predator is not None:
             kwargs = self.kwargs[self.selected_predator]
             self.selected_predator(population=population, fits=fits, nkeep=nkeep, **kwargs)
