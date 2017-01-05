@@ -1,0 +1,52 @@
+{
+    "seed": 0,
+    "logging": { },
+    "structure_type": "cluster",
+    "generators": {
+    "sphere": {"number_of_individuals": 4,
+           "kwargs": {"atomlist": [["Au", 5000]],
+                  "cell": [90.0, 90.0, 90.0]}}
+    },
+    "fitnesses": {
+        "FEMSIM": {
+            "order": 0,
+            "weight": 1.0,
+            "kwargs": {
+                "use_mpi4py": false,
+                "MPMD": "1-20",
+                "parameter_filename": "$HOME/femsim-hrmc/parameters/femsim.in",
+                "vk_data_filename": "$HOME/femsim-hrmc/data/fem_exp_Zr50Cu35Al15_t3.txt",
+                "xsize": 28.2842712474619,
+                "ysize": 28.2842712474619,
+                "zsize": 28.2842712474619,
+                "Q": 0.0305,
+                "nphi": 1,
+                "npsi": 40,
+                "ntheta": 20,
+                "thickness_scaling_factor": 28.6378
+            }
+        }
+    },
+    "relaxations": {
+    },
+    "convergence": {
+        "max_generations": 100
+    },
+    "mutations": {
+        "move_atoms": {"probability": 0.0}
+    },
+    "fingerprinters": {
+    },
+    "crossovers": {
+        "rotate": {"probability": 0.0}
+    },
+    "predators": {
+        "rank": {"probability": 0.0}
+    },
+    "selections": {
+        "best": {"probability": 1.0}
+    },
+    "fileio": {},
+    "post_processing": {"XYZs": 0},
+    "tools": {}
+}
