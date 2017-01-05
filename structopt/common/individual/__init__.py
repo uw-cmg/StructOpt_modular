@@ -174,6 +174,10 @@ class Individual(ase.Atoms):
         else:
             self.pos_moves = None
 
+        for name in self.fitnesses.module_names:
+            if not hasattr(self, name):
+                setattr(self, name, 0.0)
+
 
     @property
     @single_core

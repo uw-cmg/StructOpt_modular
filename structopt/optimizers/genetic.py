@@ -24,21 +24,20 @@ class GeneticAlgorithm(object):
         gparameters.generation = 0
         self.converged = False
 
-        self.timing = {'step': [],
-                       'fitness': [],
-                       'relax': [],
-                       'selection': [],
-                       'crossover': [],
-                       'mutation': [],
-                       'predator': []}
-
     def run(self):
         if gparameters.mpi.rank == 0:
+            time_logger = logging.getLogger('timing')
+            print("Logging directory:", gparameters.logging.path)
             print("Starting main Opimizer loop!")
         while not self.converged:
+            if gparameters.mpi.rank == 0:
+                start = time.time()
             self.step()
-        if gparameters.mpi.rank == 0:
-            print("Finished running GA!")
+            if gparameters.mpi.rank == 0:
+                stop = time.time()
+                time_logger.info(stop-start)
+        #if gparameters.mpi.rank == 0:
+        #    print("Finished running GA!")
 
 
     def step(self):
@@ -57,9 +56,15 @@ class GeneticAlgorithm(object):
             mutated_population = self.population.mutate()
             self.population.replace(mutated_population)
 
+        for individual in self.population:
+            individual._fitted = False
+            individual._relaxed = False
         self.population.relax()
 
+        #start = time.time()
         fits = self.population.fitness()
+        #stop = time.time()
+        #print("Fitnesses took {}".format(stop-start))
 
         self.population.apply_fingerprinters()
 
@@ -67,8 +72,8 @@ class GeneticAlgorithm(object):
 
 
         self.check_convergence()
-        if gparameters.mpi.rank == 0:
-            self.post_processing_step()
+        #if gparameters.mpi.rank == 0:
+        #    self.post_processing_step()
         gparameters.generation += 1
 
     def check_convergence(self):

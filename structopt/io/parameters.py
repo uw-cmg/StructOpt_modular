@@ -2,6 +2,7 @@
 
 import json
 import logging
+import sys
 import os
 import time
 import distutils.spawn
@@ -28,7 +29,7 @@ def read(input):
 
 def set_default_mpi_parameters(parameters):
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the parameters.mpi
-    use_mpi4py = False
+    use_mpi4py = True
     if 'relaxations' in parameters:
         for module in parameters.relaxations:
             parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
@@ -87,7 +88,11 @@ def set_default(parameters):
     if parameters.mpi.ncores > 1:
         from mpi4py import MPI
         seed = MPI.COMM_WORLD.bcast(int(time.time()), root=0)
-        path = MPI.COMM_WORLD.bcast(os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S"))), root=0)
+        path_extension = time.strftime("%Y%m%d%H%M%S")
+        if len(sys.argv) > 2:
+            path_extension += '_' + sys.argv[2]
+        path_extension = MPI.COMM_WORLD.bcast(path_extension, root=0)
+        path = MPI.COMM_WORLD.bcast(os.path.join(os.getcwd(), "logs{}".format(path_extension)), root=0)
     else:
         seed = None
         path = os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S")))

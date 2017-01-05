@@ -28,11 +28,15 @@ def fitness(population, parameters):
     for i, individual in enumerate(to_fit):
         individuals_per_core[i % ncores].append(individual)
 
+    import time
+    start = time.time()
     for individual in individuals_per_core[rank]:
-        print("Running LAMMPS fitness evaluation on individual {}".format(individual.id))
+        #print("Running LAMMPS fitness evaluation on individual {}".format(individual.id))
         energy = individual.fitnesses.LAMMPS.fitness(individual)
         individual.LAMMPS = energy
         logger.info('Individual {0} after LAMMPS evaluation has energy {1}'.format(individual.id, energy))
+    stop = time.time()
+    print("Lammps took {} for {} calculations".format(stop-start, individuals_per_core[rank]))
 
     fits = [individual.LAMMPS for individual in population]
     positions_per_core = {rank: [population.position(individual) for individual in individuals] for rank, individuals in individuals_per_core.items()}
