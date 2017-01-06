@@ -22,7 +22,7 @@ class Mutations(object):
     @single_core
     def mutate(self, population):
         fits = [ind._fitness if ind._fitted else np.inf for ind in population]
-        min_fit_index = fits.index(np.amin(fits))
+        min_fit_index = fits.index(min(fits))
         original_ids = [individual.id for individual in population]
         for i, individual in enumerate(population):
             # Skip individuals that were added in previous mutations and

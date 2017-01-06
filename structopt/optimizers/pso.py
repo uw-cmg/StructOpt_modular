@@ -22,7 +22,7 @@ class ParticleSwarmOptimization(object):
 
     def run(self):
         if gparameters.mpi.rank == 0:
-            print("Starting main Opimizer loop!")
+            print("Starting main Optimizer loop!")
         while not self.converged:
             self.step()
         if gparameters.mpi.rank == 0:
