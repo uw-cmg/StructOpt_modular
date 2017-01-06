@@ -56,7 +56,7 @@ class STEM(object):
         self.path = path
         os.makedirs(self.path, exist_ok=True)
 
-    def fitness(self, individual):
+    def calculate_fitness(self, individual):
         """Calculates the fitness of an individual with respect to a target
         image. Normalize this fitness by the number of atoms."""
 

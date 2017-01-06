@@ -30,7 +30,7 @@ def fitness(population, parameters):
 
     for individual in individuals_per_core[rank]:
         print("Evaluating fitness of individual {} on rank {} with STEM".format(individual.id, rank))
-        chi2 = individual.fitnesses.STEM.fitness(individual)
+        chi2 = individual.fitnesses.STEM.calculate_fitness(individual)
         individual.STEM = chi2
         logger.info('Individual {0} after STEM evaluation has chi^2 {1}'.format(individual.id, chi2))
 

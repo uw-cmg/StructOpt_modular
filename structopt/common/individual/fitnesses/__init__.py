@@ -22,15 +22,23 @@ class Fitnesses(object):
 
 
     @parallel
-    def fitness(self, individual):
+    def calculate_fitness(self, individual):
         """Perform the fitness calculations on an individual.
 
         Args:
             individual (Individual): the individual to evaluate
         """
         fit = 0.0
-        for i, module in enumerate(self.modules):
-            fit += module.fitness(individual) * self.parameters.weights[i]
+        # Run each fitness module on the population. Create sorted
+        # module list so all cores run modules in the same order
+        modules_module_names = [[module, module.__name__.split('.')[-1]] for module in self.modules]
+        modules_module_names.sort(key=lambda i: i[1])
+        for module, module_name in modules_module_names:
+            module_parameters = self.parameters[module_name]
+            weight = getattr(module_parameters, 'weight')
+            fit += module.calculate_fitness(individual) * weight
+        individual._fitness = fit
+        self._fitted = True
         return fit
 
 

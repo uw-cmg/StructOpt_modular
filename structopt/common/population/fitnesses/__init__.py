@@ -16,7 +16,7 @@ class Fitnesses(object):
 
 
     @parallel
-    def fitness(self, population):
+    def calculate_fitnesses(self, population):
         """Perform the fitness calculations on an entire population.
 
         Args:
@@ -40,6 +40,12 @@ class Fitnesses(object):
             weight = getattr(module_parameters, 'weight')
             fits = np.multiply(fits, weight)
             fitnesses = np.add(fitnesses, fits)
+
+        # Store the individuals total fitness for each individual and set each individual to
+        # unmodified so that the fitnesses won't be recalculated
+        for i, individual in enumerate(population):
+            individual._fitness = fitnesses[i]
+            individual._fitted = True
 
         self.post_processing(fitnesses)
         return fitnesses

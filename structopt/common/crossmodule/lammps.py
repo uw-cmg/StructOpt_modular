@@ -83,10 +83,6 @@ class LAMMPS(object):
         if errors:
             self.process_error()
 
-        # Read the thermodynamic and atom data
-        self.read_log_file()
-        self.read_trj_file()
-
         os.chdir(self.cwd)
         
         if self.parameters['keep_files'] == True:
@@ -95,6 +91,10 @@ class LAMMPS(object):
             for f in os.listdir(self.tmp_dir):
                 f = os.path.join(self.tmp_dir, f)
                 shutil.copy(f, self.calcdir)
+
+        # Read the thermodynamic and atom data
+        self.read_log_file()
+        self.read_trj_file()
 
         shutil.rmtree(self.tmp_dir)
 
@@ -192,18 +192,19 @@ class LAMMPS(object):
         # Relax the system
         f.write('\n### Relaxation \n')
         f.write('fix fix_nve all nve\n')
+        f.write('compute pea all pe/atom\n')
         if parameters['relax_box']:
             f.write('fix relax_box all box/relax iso 0.0 vmax 0.001\n')
         for param in ['min_style', 'min_modify', 'minimize']:
             if param in parameters:
                 f.write('{} {}\n'.format(param, parameters[param]))
-        f.write('compute pea all pe/atom\n')
-                
+
         # Generate the thermodynamic and structural information
-        dump_line = 'dump dump_all all custom 2 {} id type x y z c_pea\n'
+        dump_line = 'write_dump all custom {} id type x y z c_pea\n'
         f.write(dump_line.format(self.trj_file))
-        f.write('run 1\n')
         f.write('print {}'.format(CALCULATION_END_MARK))
+
+        f.close()
         
         return
 
@@ -316,15 +317,14 @@ class LAMMPS(object):
             with open('trj.lammps') as f:
                 lines = f.readlines()
         elif self.parameters['keep_files'] == True:
-            with open('{}/log.lammps'.format(self.calcdir)) as f:
+            with open('{}/trj.lammps'.format(self.calcdir)) as f:
                 lines = f.readlines()
         else:
             raise RuntimeError('No trajectory file detected. '
                                'Calculation not run or output not saved')
 
         # Get a list referencing atoms to lammps types
-        atoms = self.atoms
-        species = sorted(set(atoms.get_chemical_symbols()))
+        species = sorted(set(self.atoms.get_chemical_symbols()))
 
         for i, line in enumerate(lines):
 
@@ -376,7 +376,7 @@ class LAMMPS(object):
         zhilo = (hi[2] - lo[2])
 
         cell = [[xhilo,0,0],[xy,yhilo,0],[xz,yz,zhilo]]
-        if all(atoms.get_pbc()):
+        if all(self.atoms.get_pbc()):
             self.atoms.set_cell(cell)
                 
         return

@@ -1,8 +1,9 @@
 """Contains functionality for reading, writing, and parsing StrcutOpt parameters."""
 
+import sys
+import os
 import json
 import logging
-import os
 import time
 import distutils.spawn
 
@@ -84,13 +85,17 @@ def set_default(parameters):
         raise ValueError("'path' should not be defined in the parameter file currently. If you think you want to define it, talk to the developers about why.")
 
     # If parallel and no seed, all nodes need the same seed and same path
+    path_extension = time.strftime("%Y%m%d%H%M%S")
+    if len(sys.argv) > 2:
+        path_extension += '_' + sys.argv[2]
     if parameters.mpi.ncores > 1:
         from mpi4py import MPI
         seed = MPI.COMM_WORLD.bcast(int(time.time()), root=0)
-        path = MPI.COMM_WORLD.bcast(os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S"))), root=0)
+        path_extension = MPI.COMM_WORLD.bcast(path_extension, root=0)
+        path = MPI.COMM_WORLD.bcast(os.path.join(os.getcwd(), "logs{}".format(path_extension)), root=0)
     else:
         seed = None
-        path = os.path.join(os.getcwd(), "logs{}".format(time.strftime("%Y%m%d%H%M%S")))
+        path = os.path.join(os.getcwd(), "logs{}".format(path_extension))
 
     parameters.logging.path = path
     parameters.setdefault('seed', seed)

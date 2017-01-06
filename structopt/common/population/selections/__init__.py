@@ -33,7 +33,8 @@ class Selections(object):
 
 
     @single_core
-    def select(self, population, fits):
+    def select(self, population):
+        fits = [individual.fitness for individual in population]
         if self.selected_selection is None:
             return []
         kwargs = self.kwargs[self.selected_selection]

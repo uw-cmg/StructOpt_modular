@@ -41,12 +41,12 @@ class ParticleSwarmOptimization(object):
                 self.population[id].rattle(stdev=0.5, seed=id)
 
             self.population.relax()
-            fits = self.population.fitness()
+            fits = self.population.calcualte_fitnesses()
             self.best_swarm = self.population[0].copy()
             self.best_particles = [individual.copy() for individual in self.population]
 
         self.population.relax()
-        fits = self.population.fitness()
+        fits = self.population.calculate_fitnesses()
 
         if gparameters.generation > 0:
             for i in range(len(self.population)):

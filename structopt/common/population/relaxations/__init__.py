@@ -19,7 +19,10 @@ class Relaxations(object):
         orders = [self.parameters[module]['order'] for module in self.parameters]
         modules_orders = list(zip(modules, orders))
         modules_orders = sorted(modules_orders, key=lambda modules_orders: modules_orders[1])
-        self.modules = list(zip(*modules_orders))[0]
+        try:
+            self.modules = list(zip(*modules_orders))[0]
+        except IndexError:
+            self.modules = []
 
     @parallel
     def relax(self, population):
