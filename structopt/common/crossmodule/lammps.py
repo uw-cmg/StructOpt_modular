@@ -84,8 +84,8 @@ class LAMMPS(object):
             self.process_error()
 
         os.chdir(self.cwd)
-        
-        if self.parameters['keep_files'] == True:
+
+        if self.parameters['keep_files']:
             if not os.path.isdir(self.calcdir):
                 os.makedirs(self.calcdir)
             for f in os.listdir(self.tmp_dir):
@@ -121,41 +121,38 @@ class LAMMPS(object):
         prism = self.prism
 
         self.data_file = os.path.join(self.tmp_dir, 'data.lammps')
-        f = open(self.data_file, 'w')
+        with open(self.data_file, 'w') as f:
+            f.write('{} (written by ASE) \n\n'.format(f.name))
+            atoms.wrap()
+            atoms.center()
+            symbols = atoms.get_chemical_symbols()
+            n_atoms = len(symbols)
+            f.write('{} \t atoms \n'.format(n_atoms))
+            species = sorted(set(symbols))
+            n_atom_types = len(species)
+            f.write('{}  atom types\n'.format(n_atom_types))
 
-        f.write('{} (written by ASE) \n\n'.format(f.name))
-        atoms.wrap()
-        atoms.center()
-        symbols = atoms.get_chemical_symbols()
-        n_atoms = len(symbols)
-        f.write('{} \t atoms \n'.format(n_atoms))
-        species = sorted(set(symbols))
-        n_atom_types = len(species)
-        f.write('{}  atom types\n'.format(n_atom_types))
+            pbc = self.atoms.get_pbc()
+            xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
+            xyzhis = [xhi, yhi, zhi]
+            for index, axis in enumerate(['x','y','z']):
+                if pbc[index]:    
+                    f.write('0.0 {}  {}lo {}hi\n'.format(xyzhis[index], axis, axis))
+                else:
+                    xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
+                    xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
+                    f.write('{} {}  {}lo {}hi\n'.format(xlo, xhi, axis, axis))
+            
+            if prism.is_skewed():
+                f.write('{} {} {}  xy xz yz\n'.format(xy, xz, yz))
+            
+            f.write('\n\n')
 
-        pbc = self.atoms.get_pbc()
-        xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
-        xyzhis = [xhi, yhi, zhi]
-        for index, axis in enumerate(['x','y','z']):
-            if pbc[index]:    
-                f.write('0.0 {}  {}lo {}hi\n'.format(xyzhis[index], axis, axis))
-            else:
-                xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
-                xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
-                f.write('{} {}  {}lo {}hi\n'.format(xlo, xhi, axis, axis))
-        
-        if prism.is_skewed():
-            f.write('{} {} {}  xy xz yz\n'.format(xy, xz, yz))
-        
-        f.write('\n\n')
-
-        f.write('Atoms \n\n')
-        for i, r in enumerate(map(prism.pos_to_lammps_str, atoms.get_positions())):
-            s = species.index(symbols[i]) + 1
-            line = '{:>6} {:>3} {} {} {}\n'
-            f.write(line.format(*(i+1, s)+tuple(r)))
-
-        f.close()
+            f.write('Atoms \n\n')
+            for i, r in enumerate(map(prism.pos_to_lammps_str, atoms.get_positions())):
+                s = species.index(symbols[i]) + 1
+                line = '{:>6} {:>3} {} {} {}\n'
+                f.write(line.format(*(i+1, s)+tuple(r)))
         return
 
     def write_input(self):
@@ -313,15 +310,8 @@ class LAMMPS(object):
         """Method which reads the LAMMPS trj file. This is read primarily
         to get the atoms final relaxed structure"""
 
-        if os.path.basename(os.getcwd()) == os.path.basename(self.tmp_dir):
-            with open('trj.lammps') as f:
-                lines = f.readlines()
-        elif self.parameters['keep_files'] == True:
-            with open('{}/trj.lammps'.format(self.calcdir)) as f:
-                lines = f.readlines()
-        else:
-            raise RuntimeError('No trajectory file detected. '
-                               'Calculation not run or output not saved')
+        with open(self.trj_file) as f:
+            lines = f.readlines()
 
         # Get a list referencing atoms to lammps types
         species = sorted(set(self.atoms.get_chemical_symbols()))
