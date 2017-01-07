@@ -83,18 +83,18 @@ class LAMMPS(object):
         if errors:
             self.process_error()
 
-        os.chdir(self.cwd)
+        # Read the thermodynamic and atom data
+        self.read_log_file()
+        self.read_trj_file()
 
-        if self.parameters['keep_files']:
+        os.chdir(self.cwd)
+        
+        if self.parameters['keep_files'] == True:
             if not os.path.isdir(self.calcdir):
                 os.makedirs(self.calcdir)
             for f in os.listdir(self.tmp_dir):
                 f = os.path.join(self.tmp_dir, f)
                 shutil.copy(f, self.calcdir)
-
-        # Read the thermodynamic and atom data
-        self.read_log_file()
-        self.read_trj_file()
 
         shutil.rmtree(self.tmp_dir)
 
@@ -121,38 +121,41 @@ class LAMMPS(object):
         prism = self.prism
 
         self.data_file = os.path.join(self.tmp_dir, 'data.lammps')
-        with open(self.data_file, 'w') as f:
-            f.write('{} (written by ASE) \n\n'.format(f.name))
-            atoms.wrap()
-            atoms.center()
-            symbols = atoms.get_chemical_symbols()
-            n_atoms = len(symbols)
-            f.write('{} \t atoms \n'.format(n_atoms))
-            species = sorted(set(symbols))
-            n_atom_types = len(species)
-            f.write('{}  atom types\n'.format(n_atom_types))
+        f = open(self.data_file, 'w')
 
-            pbc = self.atoms.get_pbc()
-            xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
-            xyzhis = [xhi, yhi, zhi]
-            for index, axis in enumerate(['x','y','z']):
-                if pbc[index]:    
-                    f.write('0.0 {}  {}lo {}hi\n'.format(xyzhis[index], axis, axis))
-                else:
-                    xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
-                    xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
-                    f.write('{} {}  {}lo {}hi\n'.format(xlo, xhi, axis, axis))
-            
-            if prism.is_skewed():
-                f.write('{} {} {}  xy xz yz\n'.format(xy, xz, yz))
-            
-            f.write('\n\n')
+        f.write('{} (written by ASE) \n\n'.format(f.name))
+        atoms.wrap()
+        atoms.center()
+        symbols = atoms.get_chemical_symbols()
+        n_atoms = len(symbols)
+        f.write('{} \t atoms \n'.format(n_atoms))
+        species = sorted(set(symbols))
+        n_atom_types = len(species)
+        f.write('{}  atom types\n'.format(n_atom_types))
 
-            f.write('Atoms \n\n')
-            for i, r in enumerate(map(prism.pos_to_lammps_str, atoms.get_positions())):
-                s = species.index(symbols[i]) + 1
-                line = '{:>6} {:>3} {} {} {}\n'
-                f.write(line.format(*(i+1, s)+tuple(r)))
+        pbc = self.atoms.get_pbc()
+        xhi, yhi, zhi, xy, xz, yz = prism.get_lammps_prism_str()
+        xyzhis = [xhi, yhi, zhi]
+        for index, axis in enumerate(['x','y','z']):
+            if pbc[index]:    
+                f.write('0.0 {}  {}lo {}hi\n'.format(xyzhis[index], axis, axis))
+            else:
+                xlo = min([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
+                xhi = max([ self.atoms.get_positions()[id][index] for id in range(len(self.atoms.get_positions())) ])
+                f.write('{} {}  {}lo {}hi\n'.format(xlo, xhi, axis, axis))
+        
+        if prism.is_skewed():
+            f.write('{} {} {}  xy xz yz\n'.format(xy, xz, yz))
+        
+        f.write('\n\n')
+
+        f.write('Atoms \n\n')
+        for i, r in enumerate(map(prism.pos_to_lammps_str, atoms.get_positions())):
+            s = species.index(symbols[i]) + 1
+            line = '{:>6} {:>3} {} {} {}\n'
+            f.write(line.format(*(i+1, s)+tuple(r)))
+
+        f.close()
         return
 
     def write_input(self):
@@ -189,16 +192,17 @@ class LAMMPS(object):
         # Relax the system
         f.write('\n### Relaxation \n')
         f.write('fix fix_nve all nve\n')
-        f.write('compute pea all pe/atom\n')
         if parameters['relax_box']:
             f.write('fix relax_box all box/relax iso 0.0 vmax 0.001\n')
         for param in ['min_style', 'min_modify', 'minimize']:
             if param in parameters:
                 f.write('{} {}\n'.format(param, parameters[param]))
+        f.write('compute pea all pe/atom\n')
 
         # Generate the thermodynamic and structural information
-        dump_line = 'write_dump all custom {} id type x y z c_pea\n'
+        dump_line = 'dump dump_all all custom 2 {} id type x y z c_pea\n'
         f.write(dump_line.format(self.trj_file))
+        f.write('run 1\n')
         f.write('print {}'.format(CALCULATION_END_MARK))
 
         f.close()
@@ -310,11 +314,19 @@ class LAMMPS(object):
         """Method which reads the LAMMPS trj file. This is read primarily
         to get the atoms final relaxed structure"""
 
-        with open(self.trj_file) as f:
-            lines = f.readlines()
+        if os.path.basename(os.getcwd()) == os.path.basename(self.tmp_dir):
+            with open('trj.lammps') as f:
+                lines = f.readlines()
+        elif self.parameters['keep_files'] == True:
+            with open('{}/log.lammps'.format(self.calcdir)) as f:
+                lines = f.readlines()
+        else:
+            raise RuntimeError('No trajectory file detected. '
+                               'Calculation not run or output not saved')
 
         # Get a list referencing atoms to lammps types
-        species = sorted(set(self.atoms.get_chemical_symbols()))
+        atoms = self.atoms
+        species = sorted(set(atoms.get_chemical_symbols()))
 
         for i, line in enumerate(lines):
 
@@ -366,7 +378,7 @@ class LAMMPS(object):
         zhilo = (hi[2] - lo[2])
 
         cell = [[xhilo,0,0],[xy,yhilo,0],[xz,yz,zhilo]]
-        if all(self.atoms.get_pbc()):
+        if all(atoms.get_pbc()):
             self.atoms.set_cell(cell)
                 
         return
