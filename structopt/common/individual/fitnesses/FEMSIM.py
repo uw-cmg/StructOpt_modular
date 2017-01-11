@@ -16,9 +16,10 @@ class FEMSIM(object):
     @single_core
     def __init__(self, parameters):
         # These variables never change
-        self.k = None
         self.parameters = self.read_inputs(parameters)
-        self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)  # Multiply the experimental data by the thickness scaling factor
+        # Multiply the experimental data by the thickness scaling factor
+        self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)
+        self.vk_err = np.multiply(self.parameters.thickness_scaling_factor, self.vk_err)
         self.parameters.path = gparameters.logging.path
 
         # These parameteres do not need to exist between generations
@@ -34,12 +35,13 @@ class FEMSIM(object):
     def read_inputs(self, parameters):
         data = open(parameters.vk_data_filename).readlines()
         data.pop(0)  # Comment line
-        data = [line.strip().split()[:2] for line in data]
-        data = [[float(line[0]), float(line[1])] for line in data]
-        k, vk = zip(*data)
+        data = [line.strip().split()[:3] for line in data]
+        data = [[float(line[0]), float(line[1]), float(line[2])] for line in data]
+        k, vk, vk_err = zip(*data)
         # Set k and vk data for chi2 comparison
         self.k = np.array(k)
         self.vk = np.array(vk)
+        self.vk_err = np.array(vk_err)
         return parameters
 
 
@@ -126,5 +128,5 @@ class FEMSIM(object):
 
     @single_core
     def chi2(self, vk):
-        return np.sum(((self.vk - vk) / self.vk)**2) / len(self.k)
+        return np.sum(((self.vk - vk) / self.vk_err)**2) / len(self.k)
 
