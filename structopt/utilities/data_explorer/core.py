@@ -7,7 +7,7 @@ import weakref
 from collections import defaultdict, Counter
 import numpy as np
 
-from common import lazy, lazyproperty
+from .common import lazy, lazyproperty
 
 from structopt.io import read_xyz
 from structopt.tools.dictionaryobject import DictionaryObject
