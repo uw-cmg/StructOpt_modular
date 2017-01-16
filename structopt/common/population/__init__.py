@@ -32,7 +32,7 @@ class Population(SortedDict):
 
             # Generate/load initial structures
             starting_id = 0
-            for generator in self.parameters.generators:
+            for generator in sorted(self.parameters.generators.keys()):
                 n = self.parameters.generators[generator].number_of_individuals
                 for j in range(n):
                     kwargs = self.parameters.generators[generator].kwargs

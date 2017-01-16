@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-from ase import Atom
+from ase import Atom, Atoms
 from structopt.common.crossmodule import get_avg_radii
 
 def add_atom_defects(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
@@ -94,6 +94,6 @@ def add_atom_defects(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
         p = [add_prob[key] for key in elements]
 
     element = np.random.choice(elements, p=p)
-    individual.append(Atom(element, new_position))
+    individual.extend(Atoms([Atom(element, new_position)]))
 
     return

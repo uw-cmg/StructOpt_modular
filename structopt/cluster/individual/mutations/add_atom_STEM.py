@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 from scipy.ndimage import filters
-from ase import Atom
+from ase import Atom, Atoms
 
 from structopt.common.crossmodule import CoordinationNumbers
 from structopt.common.crossmodule import get_avg_radii
@@ -186,7 +186,7 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
 
     # Now maybe switch the surface element with a bulk element
     if random.random() < permute:
-        individual.append(Atom(element, new_position))
+        individual.extend(Atoms([Atom(element, new_position)]))
         return
 
     xys = individual.get_positions()[:,:2]
@@ -195,12 +195,12 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     indices_to_switch = [i for i, d in enumerate(dists_xys) if d < column_cutoff and syms[i] != element]
 
     if len(indices_to_switch) == 0:
-        individual.append(Atom(element, new_position))
+        individual.extend(Atoms([Atom(element, new_position)]))
         return
 
     index_to_switch = random.choice(indices_to_switch)
     element_to_switch = syms[index_to_switch]
     individual[index_to_switch].symbol = element
-    individual.append(Atom(element_to_switch, new_position))
+    individual.extend(Atoms([Atom(element_to_switch, new_position)]))
 
     return
