@@ -20,7 +20,11 @@ from .exceptions import StructOptUnknownState, StructOptRunning, StructOptQueued
 class StructOpt(object):
 
     def __init__(self, calcdir=None, optimizer='genetic.py', parameters=None,
-                 submit_parameters={'system':'PBS'}):
+                 submit_parameters={'system':'PBS'}, dev=False):
+
+        # Initialize development variable
+        self.dev = dev
+
         if parameters is None:
             parameters = {}
 
@@ -31,7 +35,10 @@ class StructOpt(object):
             self.calcdir = os.path.expandvars(calcdir)
 
         if not os.path.isfile(os.path.abspath(optimizer)):
-            optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/optimizers/{}'.format(optimizer))
+            if self.dev:
+                optimizer = os.path.expandvars('${STRUCTOPT_HOME}-dev/structopt/optimizers/' + optimizer)
+            else:
+                optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/optimizers/{}'.format(optimizer))
         else:
             optimizer = os.path.abspath(os.path.expandvars(optimizer))
 
@@ -94,7 +101,7 @@ class StructOpt(object):
 
         self.parameters.update(parameters)
 
-    def restart(self): # TODO
+    def restart(self):
         """Loads up the last generation of a previous run and modifies 
         the self.parameters to load up those structures on the next run"""
 
@@ -242,6 +249,9 @@ class StructOpt(object):
         script += '{prefix} {misc}\n\n'.format(**locals())
 
         script += '{custom_lines}\n\n'.format(**locals())
+        if self.dev:
+            from .rc import DEVELOPMENT_LINES as development_lines
+            script +='{development_lines}\n\n'.format(**locals())
 
         script += 'cd {}\n\n'.format(self.path)
 

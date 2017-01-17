@@ -13,3 +13,5 @@ CUSTOM_LINES = '''source activate py35
 export PYTHONPATH=$HOME/research/StructOpt_modular/:$PYTHONPATH
 export PATH=/share/apps/openmpi-1.10.0_no_ib/bin/:$PATH\n'''
 
+DEVELOPMENT_LINES = 'export PYTHONPATH=$HOME/research/StructOpt_modular-dev:$PYTHONPATH'
+
