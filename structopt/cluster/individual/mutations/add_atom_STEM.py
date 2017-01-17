@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 from scipy.ndimage import filters
-from ase import Atom
+from ase import Atom, Atoms
 
 from structopt.common.crossmodule import CoordinationNumbers
 from structopt.common.crossmodule import get_avg_radii
@@ -201,6 +201,6 @@ def add_atom_STEM(individual, STEM_parameters, add_prob=None, permute=0.5,
     index_to_switch = random.choice(indices_to_switch)
     element_to_switch = syms[index_to_switch]
     individual[index_to_switch].symbol = element
-    individual.append(Atom(element_to_switch, new_position))
+    individual.extend(Atoms([Atom(element_to_switch, new_position)]))
 
     return
