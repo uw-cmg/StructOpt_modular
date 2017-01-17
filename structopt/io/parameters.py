@@ -102,7 +102,7 @@ def set_default(parameters):
     parameters.setdefault('post_processing', DictionaryObject({}))
     if 'post_processing' in parameters:
         parameters.post_processing.setdefault('XYZs', -1)
-    parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
+    parameters.setdefault('fingerprinters', DictionaryObject({}))
     if 'convergence' in parameters:
         parameters.convergence.setdefault('max_generations', 10)
     if 'fingerprinters' in parameters:
@@ -118,4 +118,3 @@ def set_default(parameters):
                     parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
-
