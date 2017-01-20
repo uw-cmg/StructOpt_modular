@@ -1,0 +1,192 @@
+2017-01-20 12:39:08,616 : INFO : Current parameters:
+2017-01-20 12:39:08,617 : INFO : {
+    "convergence": {
+        "max_generations": 10
+    },
+    "crossovers": {
+        "rotate": {
+            "kwargs": {},
+            "probability": 0.7
+        }
+    },
+    "fingerprinters": {
+        "diversify_module": {
+            "kwargs": {
+                "min_diff": 0.001,
+                "module": "LAMMPS"
+            },
+            "probability": 1.0
+        },
+        "keep_best": true
+    },
+    "fitnesses": {
+        "LAMMPS": {
+            "kwargs": {
+                "MPMD": 0,
+                "keep_files": false,
+                "min_modify": "line quadratic",
+                "min_style": "cg",
+                "minimize": "1e-8 1e-8 5000 10000",
+                "pair_style": "eam",
+                "potential_file": "/home/zxu/research/StructOpt_modular/potentials/Au_u3.eam",
+                "thermo_steps": 0,
+                "use_mpi4py": true
+            },
+            "weight": 1.0
+        }
+    },
+    "generators": {
+        "read_extxyz": {
+            "kwargs": [
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual38.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual110.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual99.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual57.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual86.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual143.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual133.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual111.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual91.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual131.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual118.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual88.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual152.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual47.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual122.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual18.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual30.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual49.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual136.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual121.xyz"
+            ],
+            "number_of_individuals": 20
+        }
+    },
+    "logging": {
+        "path": "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120123908"
+    },
+    "mpi": {
+        "ncores": 12,
+        "rank": 0
+    },
+    "mutations": {
+        "move_atoms": {
+            "kwargs": {},
+            "probability": 0.1
+        },
+        "rotate_cluster": {
+            "kwargs": {},
+            "probability": 0.1
+        }
+    },
+    "post_processing": {
+        "XYZs": -1
+    },
+    "predators": {
+        "best": {
+            "kwargs": {},
+            "probability": 1.0
+        }
+    },
+    "pso_moves": null,
+    "relaxations": {
+        "LAMMPS": {
+            "kwargs": {
+                "MPMD": 0,
+                "keep_files": false,
+                "min_modify": "line quadratic",
+                "min_style": "cg",
+                "minimize": "1e-8 1e-8 5000 10000",
+                "pair_style": "eam",
+                "potential_file": "/home/zxu/research/StructOpt_modular/potentials/Au_u3.eam",
+                "thermo_steps": 0,
+                "use_mpi4py": true
+            },
+            "order": 0
+        }
+    },
+    "seed": 0,
+    "selections": {
+        "rank": {
+            "kwargs": {
+                "unique_pairs": false,
+                "unique_parents": false
+            },
+            "probability": 1.0
+        }
+    },
+    "structure_type": "cluster"
+}
+2017-01-20 12:39:10,664 : INFO : Total fitnesses for the population: 
+[-3.43486418 -3.44448109 -3.43521036 -3.43517291 -3.43556727 -3.43920527
+ -3.43623309 -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.43432273
+ -3.44644745 -3.43725291 -3.43629255 -3.43420091 -3.43630145 -3.43679036
+ -3.43496945 -3.43687091] (rank 0)
+2017-01-20 12:39:11,505 : INFO : Total fitnesses for the population: 
+[-3.43486418 -3.44448109 -3.43521036 -3.43517291 -3.43556727 -3.43920527
+ -3.43623309 -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.43432273
+ -3.44644745 -3.43725291 -3.43629255 -3.43420091 -3.43630145 -3.43679036
+ -3.43496945 -3.43687091 -3.43294582 -3.40352018 -3.43291873 -3.42465127
+ -3.42971091 -3.40886055 -3.43221673 -3.42878982 -3.42756691 -3.41912945
+ -3.38588291 -3.43712491 -3.43261091 -3.43125255] (rank 0)
+2017-01-20 12:39:12,304 : INFO : Total fitnesses for the population: 
+[-3.43486418 -3.44448109 -3.43521036 -3.43517291 -3.43556727 -3.43920527
+ -3.43623309 -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.43432273
+ -3.44644745 -3.43725291 -3.43629255 -3.43630145 -3.43679036 -3.43496945
+ -3.43687091 -3.43712509 -3.43839255 -3.43430018 -3.42401727 -3.41157818
+ -3.42855127 -3.41828145 -3.42694055 -3.41472055 -3.42501455 -3.42915964
+ -3.43007564 -3.42217873 -3.40789709 -3.41893618] (rank 0)
+2017-01-20 12:39:13,119 : INFO : Total fitnesses for the population: 
+[-3.43486418 -3.44448109 -3.43521036 -3.43517291 -3.43556727 -3.43920527
+ -3.43623309 -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.44644745
+ -3.43725291 -3.43629255 -3.43630145 -3.43679036 -3.43129509 -3.43687091
+ -3.43712509 -3.42823855 -3.41937527 -3.42625345 -3.42602782 -3.43256836
+ -3.40880873 -3.42025636 -3.42160127 -3.429746   -3.42685527 -3.43313364
+ -3.43368836 -3.42862655 -3.42742873 -3.41343836] (rank 0)
+2017-01-20 12:39:14,179 : INFO : Total fitnesses for the population: 
+[-3.43486418 -3.44448109 -3.43521055 -3.43517291 -3.43556727 -3.43920527
+ -3.43623309 -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.44644745
+ -3.43725291 -3.43629255 -3.43630145 -3.43679036 -3.43687091 -3.43712509
+ -3.43313364 -3.43368836 -3.42626927 -3.42621418 -3.42075055 -3.410714
+ -3.43658018 -3.418448   -3.42646618 -3.42353091 -3.41226618 -3.42607582
+ -3.427584   -3.42535927 -3.43086727 -3.42249618 -3.41953164 -3.42543145] (rank 0)
+2017-01-20 12:39:14,934 : INFO : Total fitnesses for the population: 
+[-3.43486418 -3.44448109 -3.43521055 -3.43517291 -3.43556727 -3.43920527
+ -3.43623309 -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.44644745
+ -3.43725291 -3.43629255 -3.43630145 -3.43679036 -3.43687091 -3.43712509
+ -3.43368836 -3.43658018 -3.42766218 -3.43731236 -3.431436   -3.43200236
+ -3.42229836 -3.44118036 -3.424068   -3.42390455 -3.41881273 -3.41200745
+ -3.41571673 -3.42809309] (rank 0)
+2017-01-20 12:39:15,664 : INFO : Total fitnesses for the population: 
+[-3.44448109 -3.43521055 -3.43517291 -3.43556727 -3.43920527 -3.43623309
+ -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.44644745 -3.43725291
+ -3.43440745 -3.43630145 -3.43679036 -3.43687091 -3.43712509 -3.43658018
+ -3.43731236 -3.44118036 -3.42733655 -3.429506   -3.42166455 -3.42151691
+ -3.422086   -3.41956327 -3.42083673 -3.38006364 -3.42768309 -3.43345564] (rank 0)
+2017-01-20 12:39:16,763 : INFO : Total fitnesses for the population: 
+[-3.44448109 -3.43521055 -3.43517291 -3.43556727 -3.43920527 -3.43623309
+ -3.43897109 -3.43524473 -3.43555418 -3.44118491 -3.44644745 -3.43725291
+ -3.43440745 -3.43630145 -3.43679036 -3.43687091 -3.43712509 -3.43658018
+ -3.43731236 -3.44118036 -3.42272782 -3.42763036 -3.43524327 -3.43290564
+ -3.43349873 -3.42917545 -3.41535873 -3.43113455 -3.44132109 -3.43776818
+ -3.40711691 -3.42279818 -3.43014418 -3.427806   -3.437374   -3.42853745] (rank 0)
+2017-01-20 12:39:17,575 : INFO : Total fitnesses for the population: 
+[-3.44448109 -3.43556727 -3.43920527 -3.43623309 -3.43897109 -3.43524473
+ -3.43555418 -3.44118491 -3.44644745 -3.43725291 -3.43630145 -3.43147982
+ -3.42497018 -3.43712509 -3.43658036 -3.43731236 -3.44118036 -3.44132109
+ -3.43776818 -3.437374   -3.427754   -3.43727364 -3.42487182 -3.42669909
+ -3.42303327 -3.43048745 -3.42935218 -3.43013564 -3.41790764 -3.4172
+ -3.427022   -3.42517964] (rank 0)
+2017-01-20 12:39:18,533 : INFO : Total fitnesses for the population: 
+[-3.44448109 -3.43556727 -3.43920527 -3.43623309 -3.43897109 -3.43524473
+ -3.43555418 -3.44118491 -3.44644745 -3.43725291 -3.43630145 -3.43147982
+ -3.43712509 -3.43658036 -3.43731236 -3.44118036 -3.44132109 -3.43776818
+ -3.437374   -3.43727364 -3.43251964 -3.41997782 -3.43513836 -3.42210509
+ -3.41322418 -3.40175782 -3.42559418 -3.42490236 -3.42722    -3.43328545
+ -3.43713127 -3.43574745 -3.41846836 -3.42742127 -3.43013491 -3.42297655] (rank 0)
+2017-01-20 12:39:19,526 : INFO : Total fitnesses for the population: 
+[-3.44448109 -3.43556727 -3.429968   -3.43623309 -3.43897109 -3.43555418
+ -3.44118491 -3.44644745 -3.43725291 -3.43630145 -3.43712509 -3.43658036
+ -3.43731236 -3.44118036 -3.44132109 -3.43776818 -3.437374   -3.43727345
+ -3.42162382 -3.43574745 -3.43716727 -3.43627618 -3.41700745 -3.41481836
+ -3.43382436 -3.41835945 -3.40258782 -3.41533618 -3.425482   -3.43229727] (rank 0)
