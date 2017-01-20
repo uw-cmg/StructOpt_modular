@@ -1,4 +1,4 @@
-#+TITLE:     Tutorial for analyzing jobs using the data_explorer
+#+TITLE:     Tutorial for analyzing jobs using the DataExplorer
 #+AUTHOR:    Zhongnan Xu
 #+EMAIL:     zhongnanxu@cmu.edu
 #+DATE:      2013-02-05 Tue
@@ -10,3 +10,9 @@
 #+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
+
+* Introduction
+The purpose of this is to work through some examples in using the DataExplorer to analyze optimization runs done by StructOpt
+
+* Example calculations
+The example calculations we will be working with are held in the *job_manager_examples* folder. These jobs were submitted by the ~JobManager~ wrapper. All examples were of the optimization of a Au55 nanocluster.
