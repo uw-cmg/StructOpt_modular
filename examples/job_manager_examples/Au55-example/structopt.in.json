@@ -34,20 +34,29 @@
         }
     },
     "generators": {
-        "sphere": {
-            "kwargs": {
-                "atomlist": [
-                    [
-                        "Au",
-                        55
-                    ]
-                ],
-                "cell": [
-                    20,
-                    20,
-                    20
-                ]
-            },
+        "read_extxyz": {
+            "kwargs": [
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual38.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual110.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual99.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual57.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual86.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual143.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual133.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual111.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual91.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual131.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual118.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual88.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual152.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual47.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual122.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual18.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual30.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual49.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual136.xyz",
+                "/home/zxu/research/StructOpt_modular-dev/examples/job_manager_examples/Au55-example/logs20170120035711/XYZs/generation10/individual121.xyz"
+            ],
             "number_of_individuals": 20
         }
     },

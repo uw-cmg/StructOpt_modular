@@ -31,6 +31,8 @@ class Job(object):
         else:
             self.calcdir = os.path.expandvars(calcdir)
 
+        self.log_dir = None
+
         if not os.path.isfile(os.path.abspath(optimizer)):
             optimizer = os.path.expandvars('$STRUCTOPT_HOME/structopt/optimizers/{}'.format(optimizer))
         else:
@@ -303,8 +305,6 @@ class Job(object):
             self.read_runs()
 
         new_log_dir = self.log_dirs[run_number]
-        if new_log_dir != self.log_dir:
-            self.clear_data()
 
         self.log_dir = new_log_dir
         self.read_generations()
