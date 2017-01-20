@@ -1,0 +1,77 @@
+2017-01-20 03:58:07,727 : INFO : Found 20 individuals to relax on core 0: [<Individual 0>, <Individual 1>, <Individual 2>, <Individual 3>, <Individual 4>, <Individual 5>, <Individual 6>, <Individual 7>, <Individual 8>, <Individual 9>, <Individual 10>, <Individual 11>, <Individual 12>, <Individual 13>, <Individual 14>, <Individual 15>, <Individual 16>, <Individual 17>, <Individual 18>, <Individual 19>]
+2017-01-20 03:58:09,093 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 3
+2017-01-20 03:58:09,096 : INFO : Performing mutation None on individual 7
+2017-01-20 03:58:09,096 : INFO : Performing mutation None on individual 23
+2017-01-20 03:58:09,157 : INFO : Found 17 individuals to relax on core 0: [<Individual 3>, <Individual 20>, <Individual 21>, <Individual 22>, <Individual 23>, <Individual 24>, <Individual 25>, <Individual 26>, <Individual 27>, <Individual 28>, <Individual 29>, <Individual 30>, <Individual 31>, <Individual 32>, <Individual 33>, <Individual 34>, <Individual 35>]
+2017-01-20 03:58:09,980 : INFO : Performing mutation None on individual 3
+2017-01-20 03:58:09,980 : INFO : Performing mutation <function rotate_cluster at 0x2aaabd72fc80> on individual 21
+2017-01-20 03:58:09,984 : INFO : Performing mutation None on individual 22
+2017-01-20 03:58:09,984 : INFO : Performing mutation None on individual 27
+2017-01-20 03:58:09,984 : INFO : Performing mutation None on individual 41
+2017-01-20 03:58:09,984 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 42
+2017-01-20 03:58:10,019 : INFO : Found 15 individuals to relax on core 0: [<Individual 21>, <Individual 36>, <Individual 37>, <Individual 38>, <Individual 39>, <Individual 40>, <Individual 41>, <Individual 42>, <Individual 43>, <Individual 44>, <Individual 45>, <Individual 46>, <Individual 47>, <Individual 48>, <Individual 49>]
+2017-01-20 03:58:10,799 : INFO : Performing mutation None on individual 0
+2017-01-20 03:58:10,800 : INFO : Performing mutation None on individual 54
+2017-01-20 03:58:10,830 : INFO : Found 12 individuals to relax on core 0: [<Individual 50>, <Individual 51>, <Individual 52>, <Individual 53>, <Individual 54>, <Individual 55>, <Individual 56>, <Individual 57>, <Individual 58>, <Individual 59>, <Individual 60>, <Individual 61>]
+2017-01-20 03:58:11,483 : INFO : Performing mutation None on individual 5
+2017-01-20 03:58:11,483 : INFO : Performing mutation None on individual 22
+2017-01-20 03:58:11,483 : INFO : Performing mutation None on individual 34
+2017-01-20 03:58:11,484 : INFO : Performing mutation <function rotate_cluster at 0x2aaabd72fc80> on individual 40
+2017-01-20 03:58:11,487 : INFO : Performing mutation None on individual 44
+2017-01-20 03:58:11,487 : INFO : Performing mutation None on individual 47
+2017-01-20 03:58:11,487 : INFO : Performing mutation None on individual 68
+2017-01-20 03:58:11,488 : INFO : Performing mutation None on individual 69
+2017-01-20 03:58:11,521 : INFO : Found 9 individuals to relax on core 0: [<Individual 40>, <Individual 62>, <Individual 63>, <Individual 64>, <Individual 65>, <Individual 66>, <Individual 67>, <Individual 68>, <Individual 69>]
+2017-01-20 03:58:12,459 : INFO : Performing mutation None on individual 46
+2017-01-20 03:58:12,459 : INFO : Performing mutation None on individual 67
+2017-01-20 03:58:12,460 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 71
+2017-01-20 03:58:12,462 : INFO : Performing mutation None on individual 72
+2017-01-20 03:58:12,462 : INFO : Performing mutation None on individual 74
+2017-01-20 03:58:12,462 : INFO : Performing mutation None on individual 75
+2017-01-20 03:58:12,462 : INFO : Performing mutation <function rotate_cluster at 0x2aaabd72fc80> on individual 79
+2017-01-20 03:58:12,466 : INFO : Performing mutation None on individual 82
+2017-01-20 03:58:12,466 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 85
+2017-01-20 03:58:12,504 : INFO : Found 16 individuals to relax on core 0: [<Individual 70>, <Individual 71>, <Individual 72>, <Individual 73>, <Individual 74>, <Individual 75>, <Individual 76>, <Individual 77>, <Individual 78>, <Individual 79>, <Individual 80>, <Individual 81>, <Individual 82>, <Individual 83>, <Individual 84>, <Individual 85>]
+2017-01-20 03:58:13,304 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 3
+2017-01-20 03:58:13,306 : INFO : Performing mutation None on individual 41
+2017-01-20 03:58:13,307 : INFO : Performing mutation None on individual 64
+2017-01-20 03:58:13,307 : INFO : Performing mutation None on individual 73
+2017-01-20 03:58:13,307 : INFO : Performing mutation None on individual 76
+2017-01-20 03:58:13,307 : INFO : Performing mutation None on individual 87
+2017-01-20 03:58:13,307 : INFO : Performing mutation None on individual 88
+2017-01-20 03:58:13,307 : INFO : Performing mutation None on individual 94
+2017-01-20 03:58:13,342 : INFO : Found 11 individuals to relax on core 0: [<Individual 3>, <Individual 86>, <Individual 87>, <Individual 88>, <Individual 89>, <Individual 90>, <Individual 91>, <Individual 92>, <Individual 93>, <Individual 94>, <Individual 95>]
+2017-01-20 03:58:14,933 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 1
+2017-01-20 03:58:14,936 : INFO : Performing mutation None on individual 41
+2017-01-20 03:58:14,936 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 51
+2017-01-20 03:58:14,938 : INFO : Performing mutation None on individual 52
+2017-01-20 03:58:14,938 : INFO : Performing mutation None on individual 60
+2017-01-20 03:58:14,939 : INFO : Performing mutation None on individual 97
+2017-01-20 03:58:14,939 : INFO : Performing mutation None on individual 102
+2017-01-20 03:58:14,939 : INFO : Performing mutation None on individual 112
+2017-01-20 03:58:14,980 : INFO : Found 20 individuals to relax on core 0: [<Individual 1>, <Individual 51>, <Individual 96>, <Individual 97>, <Individual 98>, <Individual 99>, <Individual 100>, <Individual 101>, <Individual 102>, <Individual 103>, <Individual 104>, <Individual 105>, <Individual 106>, <Individual 107>, <Individual 108>, <Individual 109>, <Individual 110>, <Individual 111>, <Individual 112>, <Individual 113>]
+2017-01-20 03:58:16,093 : INFO : Performing mutation None on individual 64
+2017-01-20 03:58:16,093 : INFO : Performing mutation None on individual 100
+2017-01-20 03:58:16,094 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 109
+2017-01-20 03:58:16,096 : INFO : Performing mutation None on individual 120
+2017-01-20 03:58:16,096 : INFO : Performing mutation None on individual 121
+2017-01-20 03:58:16,096 : INFO : Performing mutation None on individual 125
+2017-01-20 03:58:16,131 : INFO : Found 15 individuals to relax on core 0: [<Individual 109>, <Individual 114>, <Individual 115>, <Individual 116>, <Individual 117>, <Individual 118>, <Individual 119>, <Individual 120>, <Individual 121>, <Individual 122>, <Individual 123>, <Individual 124>, <Individual 125>, <Individual 126>, <Individual 127>]
+2017-01-20 03:58:17,093 : INFO : Performing mutation None on individual 27
+2017-01-20 03:58:17,093 : INFO : Performing mutation None on individual 47
+2017-01-20 03:58:17,093 : INFO : Performing mutation None on individual 51
+2017-01-20 03:58:17,094 : INFO : Performing mutation <function rotate_cluster at 0x2aaabd72fc80> on individual 128
+2017-01-20 03:58:17,097 : INFO : Performing mutation None on individual 132
+2017-01-20 03:58:17,097 : INFO : Performing mutation <function move_atoms at 0x2aaabd71f7b8> on individual 133
+2017-01-20 03:58:17,100 : INFO : Performing mutation None on individual 147
+2017-01-20 03:58:17,138 : INFO : Found 20 individuals to relax on core 0: [<Individual 128>, <Individual 129>, <Individual 130>, <Individual 131>, <Individual 132>, <Individual 133>, <Individual 134>, <Individual 135>, <Individual 136>, <Individual 137>, <Individual 138>, <Individual 139>, <Individual 140>, <Individual 141>, <Individual 142>, <Individual 143>, <Individual 144>, <Individual 145>, <Individual 146>, <Individual 147>]
+2017-01-20 03:58:18,293 : INFO : Performing mutation None on individual 46
+2017-01-20 03:58:18,293 : INFO : Performing mutation None on individual 106
+2017-01-20 03:58:18,294 : INFO : Performing mutation None on individual 114
+2017-01-20 03:58:18,294 : INFO : Performing mutation None on individual 151
+2017-01-20 03:58:18,294 : INFO : Performing mutation None on individual 154
+2017-01-20 03:58:18,294 : INFO : Performing mutation None on individual 157
+2017-01-20 03:58:18,294 : INFO : Performing mutation None on individual 158
+2017-01-20 03:58:18,295 : INFO : Performing mutation None on individual 165
+2017-01-20 03:58:18,295 : INFO : Performing mutation None on individual 166
+2017-01-20 03:58:18,336 : INFO : Found 20 individuals to relax on core 0: [<Individual 148>, <Individual 149>, <Individual 150>, <Individual 151>, <Individual 152>, <Individual 153>, <Individual 154>, <Individual 155>, <Individual 156>, <Individual 157>, <Individual 158>, <Individual 159>, <Individual 160>, <Individual 161>, <Individual 162>, <Individual 163>, <Individual 164>, <Individual 165>, <Individual 166>, <Individual 167>]
