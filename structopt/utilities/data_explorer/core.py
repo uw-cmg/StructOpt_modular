@@ -57,7 +57,7 @@ class DataExplorer(object):
         fitnesses = {}
         for line in open(self.fitnesses_file):
             firsthalf = re.compile(".+ : INFO : Generation (\d+), Individual (\d+):(.*)")
-            secondhalf = re.compile("([\w]+): (\d+.\d+)")
+            secondhalf = re.compile("([\w]+): ([-\d]+.\d+)")
             generation, id, fitness_str = firsthalf.findall(line)[0]
             fitnesses[(int(generation), int(id))] = {fit: float(value) for fit, value in secondhalf.findall(fitness_str)}
         return fitnesses
@@ -297,14 +297,15 @@ class Individual(object):
             #return '({p1}+{p2}){ctag}{id}{mtag} @{created_on}'.format(p1=self.parent1, p2=self.parent2, ctag=self.crossover_tag or '', id=self.id, mtag=mtag, created_on=self.created_on)
     __str__ = __repr__
 
-    def load_structure(self):
+    def load_structure(self, filename=None):
         parameters = self._dataexplorer().parameters
         if "generators" in parameters:
             parameters.pop("generators")
         self.structure_type = parameters.structure_type.lower()
         module = importlib.import_module('structopt.{}'.format(self.structure_type))
         Structure = getattr(module, self.structure_type.title())
-        filename = os.path.join(self._dataexplorer().XYZs, 'generation{}'.format(self.generation), 'individual{}.xyz'.format(self.id))
+        if filename is None:
+            filename = os.path.join(self._dataexplorer().XYZs, 'generation{}'.format(self.generation), 'individual{}.xyz'.format(self.id))
         generator_parameters = {"read_xyz": {"filename": filename}}
         self._structure = Structure(id=self.id,
                               relaxation_parameters=parameters.relaxations,
@@ -319,6 +320,9 @@ class Individual(object):
         if not self._loaded:
             raise AttributeError("'{}' has no attribute '{}'".format(self.__class__.__name__, key))
         return getattr(self._structure, key)
+
+    def __len__(self):
+        return len(self._structure)
 
     def get_parents(self, dataexplorer):
         mparent = None
