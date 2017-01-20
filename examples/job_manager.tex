@@ -1,4 +1,4 @@
-% Created 2017-01-19 Thu 15:54
+% Created 2017-01-20 Fri 15:13
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -32,16 +32,15 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue]{hyperref}
 \title{Tutorial for submitting jobs using the JobManager}
 \begin{document}
 
-\doublespace
 \maketitle
 \tableofcontents
 
 \section{Introduction}
-\label{sec:orgheadline1}
+\label{sec-introduction}
 The purpose of the \texttt{JobManager} module is to provide a python wrapper for submitting and tracking jobs in a queue environment.
 
 \section{Configuration}
-\label{sec:orgheadline2}
+\label{sec-configuration}
 The \texttt{JobManager} is initially built for a PBS queue environment, so many of the commands will have to be modified for usage in a different queue environment. These customizations will likely take place in the following files.
 
 \begin{enumerate}
@@ -51,10 +50,10 @@ The \texttt{JobManager} is initially built for a PBS queue environment, so many 
 \end{enumerate}
 
 \section{Submitting jobs}
-\label{sec:orgheadline5}
+\label{sec-submit}
 \subsection{Single job}
-\label{sec:orgheadline3}
-The script below is an example script of submitting a single job to a queue using the \textbf{job\(_{\text{manager.py}}\)}. The optimization run is a short run of a Au55 nanoparticle using only LAMMPS. A large part of the script is defining the input, which goes into the \texttt{Job} class. These inputs are given below.
+\label{sec-submit-single}
+The script below is an example script of submitting a single job to a queue using the job\(_{\text{manager}}\). The optimization run is a short run of a Au55 nanoparticle using only LAMMPS. A large part of the script is defining the input, which goes into the \texttt{Job} class. These inputs are given below.
 
 \begin{enumerate}
 \item \texttt{calcdir}: This is a string that tells where the calculation is run. Note that the calculation itself is run within the \textbf{calcdir/logs\{time\}} directory, which is created when the job starts to run on the queue. Unless an absolute path, the \textbf{calcdir} directory is always given with respect to directory that the job script is run from
@@ -67,7 +66,7 @@ The script below is an example script of submitting a single job to a queue usin
 \end{enumerate}
 
 \begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
-from structopt.utilities.job_manager import Job
+from structopt.utilities.job_manager import JobManager
 from structopt.utilities.exceptions import Running, Submitted, Queued
 
 calcdir = 'job_manager_examples/Au55-example'
@@ -115,20 +114,20 @@ submit_parameters = {'system': 'PBS',
 
 optimizer = 'genetic.py'
 
-job = Job(calcdir, optimizer, StructOpt_parameters, submit_parameters)
+job = JobManager(calcdir, optimizer, StructOpt_parameters, submit_parameters)
 job.optimize()
 \end{minted}
 
 Upon running this script, the user should get back an exception called \texttt{structopt.utilities.exceptions.Submitted} with the jobid. This is normal behavior and communicates that the job has successfully been submitted.
 
 \subsection{Multiple jobs}
-\label{sec:orgheadline4}
+\label{sec-submit-multiple}
 One advantage of the job manager is that it allows one to submit multiple jobs to the queue. This is often useful for tuning the optimizer against different inputs. The script below is an example of submitting the same job at different seeds.
 
 In the previous script, submitting a single job successfully with \texttt{Job.optimizer} method resulted in an exception. We can catch this exception with a \textbf{try} and \textbf{except} statement. This is shown below in the script where upon a successful submission, the script prints out the jobid to the user.
 
 \begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
-from structopt.utilities.job_manager import Job
+from structopt.utilities.job_manager import JobManager
 from structopt.utilities.exceptions import Running, Submitted, Queued
 
 LAMMPS_parameters = {"use_mpi4py": True,
@@ -179,7 +178,7 @@ for seed in seeds:
     StructOpt_parameters['seed'] = seed
     calcdir = 'job_manager_examples/Au55-seed-{}'.format(seed)
 
-    job = Job(calcdir, optimizer, StructOpt_parameters, submit_parameters)
+    job = JobManager(calcdir, optimizer, StructOpt_parameters, submit_parameters)
 
     try:
         job.optimize()
@@ -188,7 +187,7 @@ for seed in seeds:
 \end{minted}
 
 \section{Tracking jobs}
-\label{sec:orgheadline6}
+\label{sec-track}
 In the previous section, we covered how to submit a new job from an empty directory. This is done by first initializing an instance of the \texttt{StructOpt.utilities.job\_manager.Job} class with a calculation directory along with some input files and then submitting the job with the \texttt{Job.optimize} method. The \texttt{Job.optimize} method knows what to do because upon initialization, it detected an empty directory. If the directory was not empty and contained a StructOpt job, the job\(_{\text{manager}}\) knows what to do with it if \texttt{Job.optimize} was run again. This is all done with exceptions.
 
 The three primary exceptions that are returned upon executing the \texttt{Job.optimize} method are below along with their reasoning.
@@ -208,7 +207,7 @@ Note that if no exception is returned, it means the job is done and is ready to 
 One way of using these three exceptions is below. If the job is submitted or Queued, we want the script to stop and not submit the job. If it is running, additional commands can be used to track the progress of the job. This is done through the \texttt{DataExplorer} module.
 
 \begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
-from structopt.utilities.job_manager import Job
+from structopt.utilities.job_manager import JobManager
 from structopt.utilities.exceptions import Running, Submitted, Queued
 
 calcdir = 'job_manager_examples/Au55-example'
@@ -256,7 +255,7 @@ submit_parameters = {'system': 'PBS',
 
 optimizer = 'genetic.py'
 
-job = Job(calcdir, optimizer, StructOpt_parameters, submit_parameters)
+job = JobManager(calcdir, optimizer, StructOpt_parameters, submit_parameters)
 try:
     job.optimize()
 except (Submitted, Queued):
@@ -264,6 +263,60 @@ except (Submitted, Queued):
 except Running:
     pass
 \end{minted}
-\section{{\bfseries\sffamily TODO} Integration with the \texttt{DataExplorer}}
-\label{sec:orgheadline7}
+\section{Restarting jobs}
+\label{sec-restart}
+Sometimes jobs need to be restarted or continued from the last generation. The \textbf{JobManager} does this by submitting a new job from the same \texttt{calcdir} folder the previous job was run in. Because calculations take place in unique \textbf{log\{time\}} directories, the job will run in a new updated \textbf{log\{time\}} directory. Furthermore, the \textbf{JobManager} modifies the \textbf{structopt.in.json} file so the initial population of the new job are the XYZ files of the last generation of the previous run. Finally, a new input file is based on the \texttt{StructOpt\_parameters} variable given to the optimizer. The code below is an example of restarting the first run of this example. The only difference between this code and the one presented in \ref{sec-submit-single} is that a \texttt{restart=True} kwarg has been added to the \texttt{Job.optimize} command.
+
+\begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
+from structopt.utilities.job_manager import JobManager
+from structopt.utilities.exceptions import Running, Submitted, Queued
+
+calcdir = 'job_manager_examples/Au55-example'
+
+LAMMPS_parameters = {"use_mpi4py": True,
+	             "MPMD": 0,
+	             "keep_files": False,
+	             "min_style": "cg",
+                    "min_modify": "line quadratic",
+	             "minimize": "1e-8 1e-8 5000 10000",
+	             "pair_style": "eam",
+	             "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
+	             "thermo_steps": 0}
+
+StructOpt_parameters = {
+    "seed": 0,
+    "structure_type": "cluster",
+    "generators": {"sphere": {"number_of_individuals": 20,
+		              "kwargs": {"atomlist": [["Au", 55]],
+			                 "cell": [20, 20, 20]}}},
+    "fitnesses": {"LAMMPS": {"weight": 1.0,
+	           "kwargs": LAMMPS_parameters}},
+    "relaxations": {"LAMMPS": {"order": 0,
+                               "kwargs": LAMMPS_parameters}},
+    "convergence": {"max_generations": 10},
+    "mutations": {"move_atoms": {"probability": 0.1},
+	          "rotate_cluster": {"probability": 0.1}},
+    "crossovers": {"rotate": {"probability": 0.7}},
+    "predators": {"best": {"probability": 1.0}},
+    "selections": {"rank": {"probability": 1.0,
+                            "kwargs": {"unique_pairs": False,
+                                       "unique_parents": False}}},
+    "fingerprinters": {"keep_best": True,
+                       "diversify_module": {"probability": 1.0,
+                                            "kwargs": {"module": "LAMMPS",
+                                                       "min_diff": 0.001}}},
+    "post_processing": {"XYZs": -1},
+}
+
+submit_parameters = {'system': 'PBS',
+                     'queue': 'morgan2',
+                     'nodes': 1,
+                     'cores': 12,
+                     'walltime': 12}
+
+optimizer = 'genetic.py'
+
+job = JobManager(calcdir, optimizer, StructOpt_parameters, submit_parameters)
+job.optimize(restart=True)
+\end{minted}
 \end{document}
