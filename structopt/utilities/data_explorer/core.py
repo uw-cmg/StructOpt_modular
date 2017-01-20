@@ -57,7 +57,7 @@ class DataExplorer(object):
         fitnesses = {}
         for line in open(self.fitnesses_file):
             firsthalf = re.compile(".+ : INFO : Generation (\d+), Individual (\d+):(.*)")
-            secondhalf = re.compile("([\w]+): (\d+.\d+)")
+            secondhalf = re.compile("([\w]+): ([-\d]+.\d+)")
             generation, id, fitness_str = firsthalf.findall(line)[0]
             fitnesses[(int(generation), int(id))] = {fit: float(value) for fit, value in secondhalf.findall(fitness_str)}
         return fitnesses
