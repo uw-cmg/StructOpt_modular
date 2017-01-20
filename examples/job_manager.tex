@@ -1,45 +1,72 @@
-#+TITLE:     Tutorial for submitting jobs using the JobManager
-#+AUTHOR:    Zhongnan Xu
-#+EMAIL:     zhongnanxu@cmu.edu
-#+DATE:      2013-02-05 Tue
-#+DESCRIPTION: Project file for running MAST/structopt on PtMo clusters
-#+FILETAGS: :PtMo_nanoparticles::research:
-#+LANGUAGE:  en
-#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
-#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
-#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-#+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport
-
-#+LATEX_HEADER: \usepackage[top=1in, bottom=1.in, left=1in, right=1in]{geometry}
+% Created 2017-01-19 Thu 15:54
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[version=3]{mhchem}
+\usepackage[numbers,super,sort&compress]{natbib}
+\usepackage{natmove}
+\usepackage{url}
+\usepackage{minted}
+\usepackage{underscore}
+\usepackage[linktocpage,pdfstartview=FitH,colorlinks,
+linkcolor=blue,anchorcolor=blue,
+citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue]{hyperref}
+\usepackage{attachfile}
+\usepackage[top=1in, bottom=1.in, left=1in, right=1in]{geometry}
+\author{Zhongnan Xu}
+\date{2013-02-05 Tue}
+\title{Tutorial for submitting jobs using the JobManager}
+\begin{document}
 
 \doublespace
 \maketitle
 \tableofcontents
 
-* Introduction
-The purpose of the ~JobManager~ module is to provide a python wrapper for submitting and tracking jobs in a queue environment.
+\section{Introduction}
+\label{sec:orgheadline1}
+The purpose of the \texttt{JobManager} module is to provide a python wrapper for submitting and tracking jobs in a queue environment.
 
-* Configuration
-The ~JobManager~ is initially built for a PBS queue environment, so many of the commands will have to be modified for usage in a different queue environment. These customizations will likely take place in the following files.
+\section{Configuration}
+\label{sec:orgheadline2}
+The \texttt{JobManager} is initially built for a PBS queue environment, so many of the commands will have to be modified for usage in a different queue environment. These customizations will likely take place in the following files.
 
-1. The ~submit~ and ~write_submit~ function in the ~structopt/utilities/job_manager.py~ file will likely need to be updated to reflect your specific queue environment.
+\begin{enumerate}
+\item The \texttt{submit} and \texttt{write\_submit} function in the \texttt{structopt/utilities/job\_manager.py} file will likely need to be updated to reflect your specific queue environment.
 
-2. The dictionaries held in ~structopt.utilities/rc.py~ is the first attempt to store some dictionaries specific to the queue environment. Many queue specific variables are drawn from here.
+\item The dictionaries held in \texttt{structopt.utilities/rc.py} is the first attempt to store some dictionaries specific to the queue environment. Many queue specific variables are drawn from here.
+\end{enumerate}
 
-* Submitting jobs
-** Single job
-  The script below is an example script of submitting a single job to a queue using the *job_manager.py*. The optimization run is a short run of a Au55 nanoparticle using only LAMMPS. A large part of the script is defining the input, which goes into the ~Job~ class. These inputs are given below.
+\section{Submitting jobs}
+\label{sec:orgheadline5}
+\subsection{Single job}
+\label{sec:orgheadline3}
+The script below is an example script of submitting a single job to a queue using the \textbf{job\(_{\text{manager.py}}\)}. The optimization run is a short run of a Au55 nanoparticle using only LAMMPS. A large part of the script is defining the input, which goes into the \texttt{Job} class. These inputs are given below.
 
-1. ~calcdir~: This is a string that tells where the calculation is run. Note that the calculation itself is run within the *calcdir/logs{time}* directory, which is created when the job starts to run on the queue. Unless an absolute path, the *calcdir* directory is always given with respect to directory that the job script is run from
+\begin{enumerate}
+\item \texttt{calcdir}: This is a string that tells where the calculation is run. Note that the calculation itself is run within the \textbf{calcdir/logs\{time\}} directory, which is created when the job starts to run on the queue. Unless an absolute path, the \textbf{calcdir} directory is always given with respect to directory that the job script is run from
 
-2. ~optimizer~: This is a string of the optimizer file used for the calculation. These files can be found in the *structopt/optimizers* folder. Upon run, a copy of this script is placed insde of the *calcdir* directory and run from there.
+\item \texttt{optimizer}: This is a string of the optimizer file used for the calculation. These files can be found in the \textbf{structopt/optimizers} folder. Upon run, a copy of this script is placed insde of the \textbf{calcdir} directory and run from there.
 
-3. ~StructOpt_parameters~: This is a dictionary object that should mirror the input file you are trying to submit
+\item \texttt{StructOpt\_parameters}: This is a dictionary object that should mirror the input file you are trying to submit
 
-4. ~submit_parameters~: This dictionary holds the submit parameters. These will be specific to the queue system in use. In this example, we specify the the submission system, queue, number of nodes, number of cores, and walltime.
+\item \texttt{submit\_parameters}: This dictionary holds the submit parameters. These will be specific to the queue system in use. In this example, we specify the the submission system, queue, number of nodes, number of cores, and walltime.
+\end{enumerate}
 
-#+BEGIN_SRC python :results output org drawer
+\begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
 from structopt.utilities.job_manager import Job
 from structopt.utilities.exceptions import Running, Submitted, Queued
 
@@ -90,25 +117,17 @@ optimizer = 'genetic.py'
 
 job = Job(calcdir, optimizer, StructOpt_parameters, submit_parameters)
 job.optimize()
+\end{minted}
 
-#+END_SRC
+Upon running this script, the user should get back an exception called \texttt{structopt.utilities.exceptions.Submitted} with the jobid. This is normal behavior and communicates that the job has successfully been submitted.
 
-#+RESULTS:
-:RESULTS:
-:END:
-
-Upon running this script, the user should get back an exception called =structopt.utilities.exceptions.Submitted= with the jobid. This is normal behavior and communicates that the job has successfully been submitted.
-
-#+RESULTS:
-:RESULTS:
-:END:
-
-** Multiple jobs
+\subsection{Multiple jobs}
+\label{sec:orgheadline4}
 One advantage of the job manager is that it allows one to submit multiple jobs to the queue. This is often useful for tuning the optimizer against different inputs. The script below is an example of submitting the same job at different seeds.
 
-In the previous script, submitting a single job successfully with =Job.optimizer= method resulted in an exception. We can catch this exception with a *try* and *except* statement. This is shown below in the script where upon a successful submission, the script prints out the jobid to the user.
+In the previous script, submitting a single job successfully with \texttt{Job.optimizer} method resulted in an exception. We can catch this exception with a \textbf{try} and \textbf{except} statement. This is shown below in the script where upon a successful submission, the script prints out the jobid to the user.
 
-#+BEGIN_SRC python :results output org drawer
+\begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
 from structopt.utilities.job_manager import Job
 from structopt.utilities.exceptions import Running, Submitted, Queued
 
@@ -166,35 +185,29 @@ for seed in seeds:
         job.optimize()
     except Submitted:
         print(calcdir, job.get_jobid(), 'submitted')
-#+END_SRC
+\end{minted}
 
-#+RESULTS:
-:RESULTS:
-job_manager_examples/Au55-seed-0 936454.bardeen.msae.wisc.edu submitted
-job_manager_examples/Au55-seed-1 936455.bardeen.msae.wisc.edu submitted
-job_manager_examples/Au55-seed-2 936456.bardeen.msae.wisc.edu submitted
-job_manager_examples/Au55-seed-3 936457.bardeen.msae.wisc.edu submitted
-job_manager_examples/Au55-seed-4 936458.bardeen.msae.wisc.edu submitted
-:END:
+\section{Tracking jobs}
+\label{sec:orgheadline6}
+In the previous section, we covered how to submit a new job from an empty directory. This is done by first initializing an instance of the \texttt{StructOpt.utilities.job\_manager.Job} class with a calculation directory along with some input files and then submitting the job with the \texttt{Job.optimize} method. The \texttt{Job.optimize} method knows what to do because upon initialization, it detected an empty directory. If the directory was not empty and contained a StructOpt job, the job\(_{\text{manager}}\) knows what to do with it if \texttt{Job.optimize} was run again. This is all done with exceptions.
 
-* Tracking jobs
-In the previous section, we covered how to submit a new job from an empty directory. This is done by first initializing an instance of the =StructOpt.utilities.job_manager.Job= class with a calculation directory along with some input files and then submitting the job with the =Job.optimize= method. The =Job.optimize= method knows what to do because upon initialization, it detected an empty directory. If the directory was not empty and contained a StructOpt job, the job_manager knows what to do with it if =Job.optimize= was run again. This is all done with exceptions.
+The three primary exceptions that are returned upon executing the \texttt{Job.optimize} method are below along with their reasoning.
 
-The three primary exceptions that are returned upon executing the ~Job.optimize~ method are below along with their reasoning.
+\begin{enumerate}
+\item \texttt{Submitted}: This exception is returned if a job is submitted from the directory. This is done when \texttt{Job.optimize} is called in an empty directory or \texttt{Job.optimize} is called with the kwarg \texttt{restart=True} in a directory that is not \texttt{Queued} or \texttt{Running}.
 
-1. ~Submitted~: This exception is returned if a job is submitted from the directory. This is done when ~Job.optimize~ is called in an empty directory or ~Job.optimize~ is called with the kwarg ~restart=True~ in a directory that is not ~Queued~ or ~Running~.
+\item \texttt{Queued}: The job is queued and has not started running. There should be no output files to be analyzed.
 
-2. ~Queued~: The job is queued and has not started running. There should be no output files to be analyzed.
+\item \texttt{Running}: The job is running and output files should be continously be updated. These output files can be used for analysis before the job has finished running.
 
-3. ~Running~: The job is running and output files should be continously be updated. These output files can be used for analysis before the job has finished running.
+\item \texttt{UnknownState}: This is returned if the \texttt{calcdir} is not an empty directory doesn't detect it as a StructOpt run.
+\end{enumerate}
 
-4. ~UnknownState~: This is returned if the =calcdir= is not an empty directory doesn't detect it as a StructOpt run.
+Note that if no exception is returned, it means the job is done and is ready to be analyzed. \texttt{Job.optimize} does nothing in this case.
 
-Note that if no exception is returned, it means the job is done and is ready to be analyzed. ~Job.optimize~ does nothing in this case.
+One way of using these three exceptions is below. If the job is submitted or Queued, we want the script to stop and not submit the job. If it is running, additional commands can be used to track the progress of the job. This is done through the \texttt{DataExplorer} module.
 
-One way of using these three exceptions is below. If the job is submitted or Queued, we want the script to stop and not submit the job. If it is running, additional commands can be used to track the progress of the job. This is done through the =DataExplorer= module.
-
-#+BEGIN_SRC python :results output org drawer
+\begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{python}
 from structopt.utilities.job_manager import Job
 from structopt.utilities.exceptions import Running, Submitted, Queued
 
@@ -250,9 +263,7 @@ except (Submitted, Queued):
     print(calcdir, job.get_jobid(), 'submitted or queued')
 except Running:
     pass
-#+END_SRC
-
-#+RESULTS:
-:RESULTS:
-job_manager_examples/Au55-example 936453.bardeen.msae.wisc.edu submitted or queued
-:END:
+\end{minted}
+\section{{\bfseries\sffamily TODO} Integration with the \texttt{DataExplorer}}
+\label{sec:orgheadline7}
+\end{document}
