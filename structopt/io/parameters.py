@@ -29,7 +29,7 @@ def read(input):
 
 def set_default_mpi_parameters(parameters):
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the parameters.mpi
-    use_mpi4py = False
+    use_mpi4py = True
     if 'relaxations' in parameters:
         for module in parameters.relaxations:
             parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
@@ -102,7 +102,7 @@ def set_default(parameters):
     parameters.setdefault('post_processing', DictionaryObject({}))
     if 'post_processing' in parameters:
         parameters.post_processing.setdefault('XYZs', -1)
-    parameters.setdefault('fingerprinters', DictionaryObject({'options': []}))
+    parameters.setdefault('fingerprinters', DictionaryObject({}))
     if 'convergence' in parameters:
         parameters.convergence.setdefault('max_generations', 10)
     if 'fingerprinters' in parameters:

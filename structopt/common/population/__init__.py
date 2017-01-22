@@ -179,7 +179,7 @@ class Population(SortedDict):
     extend = update
 
 
-    @root
+    @parallel
     def crossover(self, pairs):
         """Perform crossovers on the population."""
         children = self.crossovers.crossover(pairs)

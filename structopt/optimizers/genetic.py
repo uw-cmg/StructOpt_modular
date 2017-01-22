@@ -73,6 +73,8 @@ class GeneticAlgorithm(object):
 
         t_fitness_0 = time.time()
         fits = self.population.calculate_fitnesses()
+        if gparameters.mpi.rank == 0:
+            print("Fitnesses:\n{}".format(fits))
         self.timing['fitness'].append(time.time() - t_fitness_0)
 
         self.population.apply_fingerprinters()
