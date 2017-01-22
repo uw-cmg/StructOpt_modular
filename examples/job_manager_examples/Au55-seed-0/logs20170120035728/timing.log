@@ -1,0 +1,99 @@
+2017-01-20 03:57:31,221 : INFO : 
+2017-01-20 03:57:31,221 : INFO : Generation 0 (cumulative) timing information
+2017-01-20 03:57:31,221 : INFO : selection : 0.00 s (0.00 s)
+2017-01-20 03:57:31,221 : INFO : crossover : 0.00 s (0.00 s)
+2017-01-20 03:57:31,221 : INFO : mutation  : 0.00 s (0.00 s)
+2017-01-20 03:57:31,221 : INFO : relax     : 1.42 s (1.42 s)
+2017-01-20 03:57:31,221 : INFO : fitness   : 0.01 s (0.01 s)
+2017-01-20 03:57:31,221 : INFO : predator  : 0.02 s (0.02 s)
+2017-01-20 03:57:31,222 : INFO : step      : 1.44 s (1.44 s)
+2017-01-20 03:57:32,012 : INFO : 
+2017-01-20 03:57:32,012 : INFO : Generation 1 (cumulative) timing information
+2017-01-20 03:57:32,012 : INFO : selection : 0.01 s (0.01 s)
+2017-01-20 03:57:32,012 : INFO : crossover : 0.25 s (0.25 s)
+2017-01-20 03:57:32,012 : INFO : mutation  : 0.03 s (0.03 s)
+2017-01-20 03:57:32,012 : INFO : relax     : 0.39 s (1.81 s)
+2017-01-20 03:57:32,012 : INFO : fitness   : 0.02 s (0.02 s)
+2017-01-20 03:57:32,012 : INFO : predator  : 0.02 s (0.04 s)
+2017-01-20 03:57:32,013 : INFO : step      : 0.73 s (2.17 s)
+2017-01-20 03:57:32,916 : INFO : 
+2017-01-20 03:57:32,916 : INFO : Generation 2 (cumulative) timing information
+2017-01-20 03:57:32,916 : INFO : selection : 0.02 s (0.03 s)
+2017-01-20 03:57:32,916 : INFO : crossover : 0.29 s (0.54 s)
+2017-01-20 03:57:32,916 : INFO : mutation  : 0.04 s (0.07 s)
+2017-01-20 03:57:32,916 : INFO : relax     : 0.45 s (2.26 s)
+2017-01-20 03:57:32,916 : INFO : fitness   : 0.01 s (0.04 s)
+2017-01-20 03:57:32,917 : INFO : predator  : 0.02 s (0.07 s)
+2017-01-20 03:57:32,917 : INFO : step      : 0.83 s (3.00 s)
+2017-01-20 03:57:35,088 : INFO : 
+2017-01-20 03:57:35,088 : INFO : Generation 3 (cumulative) timing information
+2017-01-20 03:57:35,088 : INFO : selection : 0.02 s (0.05 s)
+2017-01-20 03:57:35,088 : INFO : crossover : 0.25 s (0.79 s)
+2017-01-20 03:57:35,088 : INFO : mutation  : 0.04 s (0.11 s)
+2017-01-20 03:57:35,088 : INFO : relax     : 1.72 s (3.98 s)
+2017-01-20 03:57:35,088 : INFO : fitness   : 0.01 s (0.05 s)
+2017-01-20 03:57:35,088 : INFO : predator  : 0.02 s (0.09 s)
+2017-01-20 03:57:35,088 : INFO : step      : 2.07 s (5.08 s)
+2017-01-20 03:57:35,863 : INFO : 
+2017-01-20 03:57:35,863 : INFO : Generation 4 (cumulative) timing information
+2017-01-20 03:57:35,863 : INFO : selection : 0.02 s (0.07 s)
+2017-01-20 03:57:35,863 : INFO : crossover : 0.11 s (0.91 s)
+2017-01-20 03:57:35,863 : INFO : mutation  : 0.03 s (0.14 s)
+2017-01-20 03:57:35,863 : INFO : relax     : 0.51 s (4.49 s)
+2017-01-20 03:57:35,863 : INFO : fitness   : 0.01 s (0.06 s)
+2017-01-20 03:57:35,863 : INFO : predator  : 0.02 s (0.12 s)
+2017-01-20 03:57:35,863 : INFO : step      : 0.71 s (5.78 s)
+2017-01-20 03:57:36,838 : INFO : 
+2017-01-20 03:57:36,838 : INFO : Generation 5 (cumulative) timing information
+2017-01-20 03:57:36,838 : INFO : selection : 0.02 s (0.08 s)
+2017-01-20 03:57:36,838 : INFO : crossover : 0.32 s (1.23 s)
+2017-01-20 03:57:36,838 : INFO : mutation  : 0.04 s (0.18 s)
+2017-01-20 03:57:36,838 : INFO : relax     : 0.48 s (4.96 s)
+2017-01-20 03:57:36,838 : INFO : fitness   : 0.02 s (0.08 s)
+2017-01-20 03:57:36,838 : INFO : predator  : 0.03 s (0.14 s)
+2017-01-20 03:57:36,839 : INFO : step      : 0.90 s (6.68 s)
+2017-01-20 03:57:37,737 : INFO : 
+2017-01-20 03:57:37,737 : INFO : Generation 6 (cumulative) timing information
+2017-01-20 03:57:37,737 : INFO : selection : 0.02 s (0.10 s)
+2017-01-20 03:57:37,737 : INFO : crossover : 0.26 s (1.49 s)
+2017-01-20 03:57:37,737 : INFO : mutation  : 0.04 s (0.22 s)
+2017-01-20 03:57:37,737 : INFO : relax     : 0.47 s (5.44 s)
+2017-01-20 03:57:37,737 : INFO : fitness   : 0.02 s (0.10 s)
+2017-01-20 03:57:37,737 : INFO : predator  : 0.02 s (0.17 s)
+2017-01-20 03:57:37,738 : INFO : step      : 0.83 s (7.51 s)
+2017-01-20 03:57:38,850 : INFO : 
+2017-01-20 03:57:38,851 : INFO : Generation 7 (cumulative) timing information
+2017-01-20 03:57:38,851 : INFO : selection : 0.02 s (0.12 s)
+2017-01-20 03:57:38,851 : INFO : crossover : 0.26 s (1.74 s)
+2017-01-20 03:57:38,851 : INFO : mutation  : 0.05 s (0.27 s)
+2017-01-20 03:57:38,851 : INFO : relax     : 0.64 s (6.07 s)
+2017-01-20 03:57:38,851 : INFO : fitness   : 0.02 s (0.11 s)
+2017-01-20 03:57:38,851 : INFO : predator  : 0.03 s (0.19 s)
+2017-01-20 03:57:38,851 : INFO : step      : 1.00 s (8.51 s)
+2017-01-20 03:57:39,636 : INFO : 
+2017-01-20 03:57:39,636 : INFO : Generation 8 (cumulative) timing information
+2017-01-20 03:57:39,636 : INFO : selection : 0.01 s (0.13 s)
+2017-01-20 03:57:39,636 : INFO : crossover : 0.22 s (1.96 s)
+2017-01-20 03:57:39,636 : INFO : mutation  : 0.04 s (0.30 s)
+2017-01-20 03:57:39,637 : INFO : relax     : 0.39 s (6.47 s)
+2017-01-20 03:57:39,637 : INFO : fitness   : 0.02 s (0.14 s)
+2017-01-20 03:57:39,637 : INFO : predator  : 0.03 s (0.22 s)
+2017-01-20 03:57:39,637 : INFO : step      : 0.71 s (9.22 s)
+2017-01-20 03:57:40,654 : INFO : 
+2017-01-20 03:57:40,654 : INFO : Generation 9 (cumulative) timing information
+2017-01-20 03:57:40,654 : INFO : selection : 0.02 s (0.15 s)
+2017-01-20 03:57:40,655 : INFO : crossover : 0.32 s (2.28 s)
+2017-01-20 03:57:40,655 : INFO : mutation  : 0.04 s (0.35 s)
+2017-01-20 03:57:40,655 : INFO : relax     : 0.51 s (6.98 s)
+2017-01-20 03:57:40,655 : INFO : fitness   : 0.02 s (0.15 s)
+2017-01-20 03:57:40,655 : INFO : predator  : 0.03 s (0.25 s)
+2017-01-20 03:57:40,655 : INFO : step      : 0.94 s (10.16 s)
+2017-01-20 03:57:41,653 : INFO : 
+2017-01-20 03:57:41,653 : INFO : Generation 10 (cumulative) timing information
+2017-01-20 03:57:41,653 : INFO : selection : 0.02 s (0.17 s)
+2017-01-20 03:57:41,653 : INFO : crossover : 0.22 s (2.50 s)
+2017-01-20 03:57:41,653 : INFO : mutation  : 0.04 s (0.39 s)
+2017-01-20 03:57:41,653 : INFO : relax     : 0.60 s (7.57 s)
+2017-01-20 03:57:41,653 : INFO : fitness   : 0.02 s (0.18 s)
+2017-01-20 03:57:41,653 : INFO : predator  : 0.02 s (0.27 s)
+2017-01-20 03:57:41,654 : INFO : step      : 0.92 s (11.08 s)

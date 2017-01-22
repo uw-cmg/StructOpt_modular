@@ -53,7 +53,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
         # Align the atom to produce optimum matching with STEM
         self.align(individual)
 
-        current_fitness = self.fitness(individual)
+        current_fitness = self.calculate_fitness(individual)
         rank = gparameters.mpi.rank
         print("Relaxing individual {} on rank {} with STEM".format(individual.id, rank))
 
@@ -77,7 +77,7 @@ class STEM(structopt.common.individual.fitnesses.STEM):
             z = np.cos(theta)
 
             individual.rotate([x, y, z], a, center='COP')
-            new_fitness = self.fitness(individual)
+            new_fitness = self.calculate_fitness(individual)
             if new_fitness > current_fitness:
                 individual.rotate([x, y, z], -a, center='COP')
             else:

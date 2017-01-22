@@ -1,1 +1,1 @@
-from .optimizer import StructOpt
+from .job_manager import JobManager

@@ -230,8 +230,8 @@ class Mutations(structopt.common.individual.mutations.Mutations):
 
     @staticmethod
     @functools.wraps(add_atom_random)
-    def add_atom_random(individual, add_prob=None, cutoff=0.2, CN_factor=1.1):
-        return add_atom_random(individual, add_prob, cutoff, CN_factor)
+    def add_atom_random(individual, add_prob=None, cutoff=0.2):
+        return add_atom_random(individual, add_prob, cutoff)
 
     @staticmethod
     @functools.wraps(remove_atom_STEM)

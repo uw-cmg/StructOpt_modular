@@ -1,13 +1,13 @@
-class StructOptUnknownState(Exception):
+class UnknownState(Exception):
     pass
 
-class StructOptRunning(Exception):
+class Running(Exception):
     pass
 
-class StructOptQueued(Exception):
+class Queued(Exception):
     pass
 
-class StructOptSubmitted(Exception):
+class Submitted(Exception):
     def __init__(self, jobdir):
         self.jobdir = jobdir
     def __str__(self):

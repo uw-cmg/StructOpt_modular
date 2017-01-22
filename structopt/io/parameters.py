@@ -118,4 +118,3 @@ def set_default(parameters):
                     parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
-
