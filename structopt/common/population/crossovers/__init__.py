@@ -76,7 +76,7 @@ class Crossovers(object):
         if gparameters.mpi.ncores > 1:
             all_children = allgather(all_children, children_per_core)
 
-        count_nones = len([None for child in all_children if child is None])
+        count_nones = all_children.count(None)
         all_children = [child for child in all_children if child is not None]
 
         assert len(all_children) == len(pairs)*2 - count_nones
