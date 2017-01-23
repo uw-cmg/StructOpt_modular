@@ -3,21 +3,20 @@ JobManager
 ==========
 
     :Author: Zhongnan Xu
-    :Date: 2013-02-05 Tue
 
 
 
 .. _sec-introduction:
 
-1 Introduction
---------------
+Introduction
+------------
 
 The purpose of the ``JobManager`` module is to provide a python wrapper for submitting and tracking jobs in a queue environment.
 
 .. _sec-configuration:
 
-2 Configuration
----------------
+Configuration
+-------------
 
 The ``JobManager`` is initially built for a PBS queue environment, so many of the commands will have to be modified for usage in a different queue environment. These customizations will likely take place in the following files.
 
@@ -27,13 +26,13 @@ The ``JobManager`` is initially built for a PBS queue environment, so many of th
 
 .. _sec-submit:
 
-3 Submitting jobs
------------------
+Submitting jobs
+---------------
 
 .. _sec-submit-single:
 
-3.1 Single job
-~~~~~~~~~~~~~~
+Single job
+~~~~~~~~~~
 
 The script below is an example script of submitting a single job to a queue using the job\ :sub:`manager`\. The optimization run is a short run of a Au55 nanoparticle using only LAMMPS. A large part of the script is defining the input, which goes into the ``Job`` class. These inputs are given below.
 
@@ -102,8 +101,8 @@ Upon running this script, the user should get back an exception called ``structo
 
 .. _sec-submit-multiple:
 
-3.2 Multiple jobs
-~~~~~~~~~~~~~~~~~
+Multiple jobs
+~~~~~~~~~~~~~
 
 One advantage of the job manager is that it allows one to submit multiple jobs to the queue. This is often useful for tuning the optimizer against different inputs. The script below is an example of submitting the same job at different seeds.
 
@@ -171,8 +170,8 @@ In the previous script, submitting a single job successfully with ``Job.optimize
 
 .. _sec-track:
 
-4 Tracking jobs
----------------
+Tracking jobs
+-------------
 
 In the previous section, we covered how to submit a new job from an empty directory. This is done by first initializing an instance of the ``StructOpt.utilities.job_manager.Job`` class with a calculation directory along with some input files and then submitting the job with the ``Job.optimize`` method. The ``Job.optimize`` method knows what to do because upon initialization, it detected an empty directory. If the directory was not empty and contained a StructOpt job, the job\ :sub:`manager`\ knows what to do with it if ``Job.optimize`` was run again. This is all done with exceptions.
 
@@ -250,8 +249,8 @@ One way of using these three exceptions is below. If the job is submitted or Que
 
 .. _sec-restart:
 
-5 Restarting jobs
------------------
+Restarting jobs
+---------------
 
 Sometimes jobs need to be restarted or continued from the last generation. The **JobManager** does this by submitting a new job from the same ``calcdir`` folder the previous job was run in. Because calculations take place in unique **log{time}** directories, the job will run in a new updated **log{time}** directory. Furthermore, the **JobManager** modifies the **structopt.in.json** file so the initial population of the new job are the XYZ files of the last generation of the previous run. Finally, a new input file is based on the ``StructOpt_parameters`` variable given to the optimizer. The code below is an example of restarting the first run of this example. The only difference between this code and the one presented in `sec-submit-single <sec-submit-single>`_ is that a ``restart=True`` kwarg has been added to the ``Job.optimize`` command.
 
