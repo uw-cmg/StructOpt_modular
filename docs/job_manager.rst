@@ -111,7 +111,6 @@ One advantage of the job manager is that it allows one to submit multiple jobs t
 In the previous script, submitting a single job successfully with ``Job.optimizer`` method resulted in an exception. We can catch this exception with a **try** and **except** statement. This is shown below in the script where upon a successful submission, the script prints out the jobid to the user.
 
 .. code-block:: python
-    :number-lines: 1
 
     from structopt.utilities.job_manager import JobManager
     from structopt.utilities.exceptions import Running, Submitted, Queued
