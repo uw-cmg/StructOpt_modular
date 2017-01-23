@@ -1,4 +1,4 @@
-#+TITLE:     Tutorial for submitting jobs using the JobManager
+#+TITLE:     JobManager
 #+AUTHOR:    Zhongnan Xu
 #+EMAIL:     zhongnanxu@cmu.edu
 #+DATE:      2013-02-05 Tue

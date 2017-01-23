@@ -1,6 +1,6 @@
-=================================================
-Tutorial for submitting jobs using the JobManager
-=================================================
+==========
+JobManager
+==========
 
     :Author: Zhongnan Xu
     :Date: 2013-02-05 Tue
@@ -46,7 +46,6 @@ The script below is an example script of submitting a single job to a queue usin
 4. ``submit_parameters``: This dictionary holds the submit parameters. These will be specific to the queue system in use. In this example, we specify the the submission system, queue, number of nodes, number of cores, and walltime.
 
 .. code-block:: python
-    :number-lines: 1
 
     from structopt.utilities.job_manager import JobManager
     from structopt.utilities.exceptions import Running, Submitted, Queued
@@ -111,7 +110,6 @@ One advantage of the job manager is that it allows one to submit multiple jobs t
 In the previous script, submitting a single job successfully with ``Job.optimizer`` method resulted in an exception. We can catch this exception with a **try** and **except** statement. This is shown below in the script where upon a successful submission, the script prints out the jobid to the user.
 
 .. code-block:: python
-    :number-lines: 1
 
     from structopt.utilities.job_manager import JobManager
     from structopt.utilities.exceptions import Running, Submitted, Queued
@@ -193,7 +191,6 @@ Note that if no exception is returned, it means the job is done and is ready to 
 One way of using these three exceptions is below. If the job is submitted or Queued, we want the script to stop and not submit the job. If it is running, additional commands can be used to track the progress of the job. This is done through the ``DataExplorer`` module.
 
 .. code-block:: python
-    :number-lines: 1
 
     from structopt.utilities.job_manager import JobManager
     from structopt.utilities.exceptions import Running, Submitted, Queued
@@ -259,7 +256,6 @@ One way of using these three exceptions is below. If the job is submitted or Que
 Sometimes jobs need to be restarted or continued from the last generation. The **JobManager** does this by submitting a new job from the same ``calcdir`` folder the previous job was run in. Because calculations take place in unique **log{time}** directories, the job will run in a new updated **log{time}** directory. Furthermore, the **JobManager** modifies the **structopt.in.json** file so the initial population of the new job are the XYZ files of the last generation of the previous run. Finally, a new input file is based on the ``StructOpt_parameters`` variable given to the optimizer. The code below is an example of restarting the first run of this example. The only difference between this code and the one presented in `sec-submit-single <sec-submit-single>`_ is that a ``restart=True`` kwarg has been added to the ``Job.optimize`` command.
 
 .. code-block:: python
-    :number-lines: 1
 
     from structopt.utilities.job_manager import JobManager
     from structopt.utilities.exceptions import Running, Submitted, Queued
