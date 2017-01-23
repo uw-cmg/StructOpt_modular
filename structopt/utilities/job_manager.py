@@ -16,8 +16,9 @@ import ase
 import structopt.utilities
 from ..common.individual import Individual
 from .exceptions import UnknownState, Running, Queued, Submitted
+from .data_explorer.core import DataExplorer
 
-class Job(object):
+class JobManager(object):
     '''This class is responsible for the submission and tracking of jobs'''
 
     def __init__(self, calcdir=None, optimizer='genetic.py', parameters=None,
@@ -124,8 +125,8 @@ class Job(object):
             try:
                 jobids_in_queue = subprocess.check_output('qselect')
             except FileNotFoundError:
-                self.status = 'running'
-                return True
+                self.status = 'done'
+                return False
             jobids_in_queue = [job.decode('utf-8') for job in jobids_in_queue.split()]
         else:
             raise NotImplemented(self.submit_parameters['system'], 'not implemented yet')
@@ -368,3 +369,9 @@ class Job(object):
         self.parameters.update(parameters)
 
         return
+
+    def get_data_explorer(self, run_number=-1):
+        """Returns a DataExplorer instance for analysis of a specific run"""
+
+        log_dir = self.log_dirs[run_number]
+        return DataExplorer(log_dir)

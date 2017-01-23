@@ -1,1 +1,1 @@
-from .job_manager import Job
+from .job_manager import JobManager
