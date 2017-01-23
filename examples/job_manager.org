@@ -311,4 +311,3 @@ job.optimize(restart=True)
 :RESULTS:
 :END:
 
-* TODO Integration with the =DataExplorer=
