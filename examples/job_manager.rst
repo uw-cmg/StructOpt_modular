@@ -2,7 +2,6 @@
 JobManager
 ==========
 
-    :Author: Zhongnan Xu
 
 
 
