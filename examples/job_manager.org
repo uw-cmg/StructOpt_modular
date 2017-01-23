@@ -10,7 +10,7 @@
 #+INFOJS_OPT: view:nil toc:t ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
-
+#+SETUPFILE: theme-readtheorg.setup
 #+LATEX_HEADER: \usepackage[top=1in, bottom=1.in, left=1in, right=1in]{geometry}
 
 * Introduction
@@ -58,7 +58,7 @@ LAMMPS_parameters = {"use_mpi4py": True,
 	             "MPMD": 0,
 	             "keep_files": False,
 	             "min_style": "cg",
-                    "min_modify": "line quadratic",
+                     "min_modify": "line quadratic",
 	             "minimize": "1e-8 1e-8 5000 10000",
 	             "pair_style": "eam",
 	             "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
@@ -129,7 +129,7 @@ LAMMPS_parameters = {"use_mpi4py": True,
 	             "MPMD": 0,
 	             "keep_files": False,
 	             "min_style": "cg",
-                    "min_modify": "line quadratic",
+                     "min_modify": "line quadratic",
 	             "minimize": "1e-8 1e-8 5000 10000",
 	             "pair_style": "eam",
 	             "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
@@ -221,7 +221,7 @@ LAMMPS_parameters = {"use_mpi4py": True,
 	             "MPMD": 0,
 	             "keep_files": False,
 	             "min_style": "cg",
-                    "min_modify": "line quadratic",
+                     "min_modify": "line quadratic",
 	             "minimize": "1e-8 1e-8 5000 10000",
 	             "pair_style": "eam",
 	             "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
@@ -290,7 +290,7 @@ LAMMPS_parameters = {"use_mpi4py": True,
 	             "MPMD": 0,
 	             "keep_files": False,
 	             "min_style": "cg",
-                    "min_modify": "line quadratic",
+                     "min_modify": "line quadratic",
 	             "minimize": "1e-8 1e-8 5000 10000",
 	             "pair_style": "eam",
 	             "potential_file": "$STRUCTOPT_HOME/potentials/Au_u3.eam",
