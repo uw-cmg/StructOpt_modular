@@ -29,7 +29,7 @@ def read(input):
 
 def set_default_mpi_parameters(parameters):
     # If mpi4py is used, make sure we can import it and set the rank/size for all cores in the parameters.mpi
-    use_mpi4py = False
+    use_mpi4py = True
     if 'relaxations' in parameters:
         for module in parameters.relaxations:
             parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
