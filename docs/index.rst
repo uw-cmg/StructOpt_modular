@@ -62,6 +62,7 @@ Contents
     parameters
     outputs
     examples
+    job_manager
     calculators/index
     why_python
     future
