@@ -31,7 +31,7 @@ class Fingerprinters(object):
         self.selected_fingerprinter = choices[bisect(cumdist, x)]
 
     @single_core
-    def remove_duplicates(self, population, nkeep, keep_best=False):
+    def remove_duplicates(self, population, nkeep, keep_best=True):
         assert nkeep <= len(population)
         if nkeep == len(population):
             return
@@ -52,11 +52,12 @@ class Fingerprinters(object):
             equivalent_pairs = [(a.id, b.id) for a, b in equivalent_pairs]
             equivalent_individuals = disjoint_set_merge(ids, equivalent_pairs)
             to_keep = set()
-            for individuals in equivalent_individuals:
-                if keep_best and best in individuals:
+            for equivalent in equivalent_individuals:
+                if keep_best and best in equivalent:
                     to_keep.add(best)
                 else:
-                    to_keep.add(random.choice(tuple(individuals)))
+                    equivalent = sorted(equivalent, key=lambda id: population[id].fitness)
+                    to_keep.add(equivalent[0])
 
             while len(to_keep) < nkeep:
                 to_keep.add(

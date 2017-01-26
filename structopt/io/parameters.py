@@ -21,7 +21,7 @@ def read(input):
     elif isinstance(input, str) and os.path.exists(input):
         parameters = DictionaryObject(json.load(open(input)))
     else:
-        raise IOError('Error in input or input file')
+        raise IOError("Error in input or input file. Got:\n{}\nas input.".format(input))
 
     parameters = set_default(parameters)
     return parameters
