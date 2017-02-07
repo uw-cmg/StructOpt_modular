@@ -2,7 +2,7 @@ import numpy as np
 import scipy
 
 
-def rank(population, fits, nkeep, p_min=None):
+def rank(fits, nkeep, p_min=None):
     """Selection function that chooses pairs of structures
     based on linear ranking.
 
@@ -10,10 +10,8 @@ def rank(population, fits, nkeep, p_min=None):
 
     Parameters
     ----------
-    population : Population
-        A population of individuals
-    fits : list
-        Fitnesses that corresponds to population
+    fits : dict<int, float>
+        Dictionary of <individual.id, fitness> pairs.
     nkeep : int
         The number of individuals to keep. In a GA run, corresponds
         to the sum of each generators number_of_individuals
@@ -25,22 +23,22 @@ def rank(population, fits, nkeep, p_min=None):
         increments. Defaults to (1/N)^2.
     """
 
-    # Get ranks of each population value based on its fitness
-    ranks = scipy.stats.rankdata(fits, method='ordinal')
-    ids = [individual.id for individual in population]
-
-    # Get probabilities based on linear ranking
     if p_min is None:
         p_min = 1.0 / len(population) ** 2
+
+    # Get ranks of each population value based on its fitness
+    ids, fits = fits.items()
+    ids = list(ids)
+    fits = list(fits)
+    ranks = scipy.stats.rankdata(fits, method='ordinal')
+
+    # Get probabilities based on linear ranking
     N = len(fits)
     eta_min = p_min * N
     eta_max = 2 - eta_min
     p_max = eta_max / N
-    p = p_min + (p_max - p_min)*(N - ranks)/(N - 1)
+    p = p_min + (p_max - p_min)*(N - ranks)/(N - 1)  # `ranks` is a numpy array, so p is too
 
-    indexes_keep = np.random.choice(ids, nkeep, replace=False, p=p)
-    new_population = [population[i] for i in indexes_keep]
-    population.replace(new_population)
-
-    return
+    # Randomly choose `nkeep` values from the list `ids` given probability `p` for each value in `ids` (no duplicates)
+    return  np.random.choice(ids, nkeep, replace=False, p=p)
 

@@ -2,7 +2,7 @@ import random
 import numpy as np
 
 
-def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
+def fuss(fits, nkeep, nbest=0, fusslimit=10):
     """Fixed uniform selection scheme. Aimed at maintaining diversity
     in the population. In the case where low fit is the highest
     fitness, selects a fitness between min(fits) and min(fits) + fusslimit,
@@ -10,53 +10,41 @@ def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
 
     Parameters
     ----------
-    population : Population
-        A population of individuals
-    fits : list
-        Fitnesses that corresponds to population
+    fits : dict<int, float>
+        Dictionary of <individual.id, fitness> pairs.
     nkeep : int
         The number of individuals to keep. In a GA run, corresponds
         to the sum of each generators number_of_individuals
     nbest : int
-        The top n individuals to always keep
+        The top n individuals to always keep (default 0)
     fusslimit : float
         Individuals that have fitness fusslimit
         worse than the max fitness will not be considered
     """
 
-    ids = [individual.id for individual in population]
-
     # Find min and max fitness
-    minf = min(fits)
-    maxf = max(fits)
+    minf = min(fits.values())
+    maxf = max(fits.values())
     if abs(maxf-minf) > fusslimit:
             maxf = minf + fusslimit
 
     # Select random point on fitness line
     pt = random.uniform(minf, maxf)
 
-    # Calculate the distance of each individual's fitness from that point
-    distances = np.absolute(np.array(fits) - pt)
-
-    # Sort distances from min to max
-    distances_ids = list(zip(distances, ids))
-    distances_ids = sorted(distances_ids, key=lambda i: i[0])
-
-    # Select individuals with lowest distance
-    ids_keep = list(list(zip(*distances_ids))[1][:nkeep])
-
+    to_keep = []
     # Always keep the top nbest individuals
-    fits_ids = list(zip(fits, ids))
-    fits_ids = sorted(fits_ids, key=lambda i: i[0])
-    best_ids = []
-    for fit, id in fits_ids[:nbest]:
-        if id not in ids_keep:
-            best_ids.append(id)
-            ids_keep = list(np.random.choice(ids_keep, size=len(ids_keep) - 1))
+    if nbest > 0:
+        fits = sorted(fits.items(), key=lambda pair: pair[1])
+        sorted_ids, sorted_fits = zip(*fits)
+        to_keep.extend(sorted_ids[:nbest])
 
-    ids_keep.extend(best_ids)
+    # Calculate the distance of each individual's fitness from that point
+    distances = {id: np.absolute(fit - pt) for id, fit in fits.items()}
 
-    new_population = [population[id] for id in ids_keep]
-    population.replace(new_population)
+    # Select individuals with lowest distance (ie closest to the selected point)
+    distances = sorted(distances.items(), key=lambda pair: pair[1])
+    sorted_ids, sorted_distances = zip(*distances)
+    to_keep.extend(sorted_ids[:nkeep - nbest])
 
-    return
+    return to_keep
+

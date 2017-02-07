@@ -36,6 +36,7 @@ class Fingerprinters(object):
         if nkeep == len(population):
             return
 
+        # Apply the selected fingerprinter to all pairs of individuals
         kwargs = self.function_kwargs[self.selected_fingerprinter]
         equivalent_pairs = []
         for pair in combinations(population, 2):
@@ -52,12 +53,18 @@ class Fingerprinters(object):
             equivalent_pairs = [(a.id, b.id) for a, b in equivalent_pairs]
             equivalent_individuals = disjoint_set_merge(ids, equivalent_pairs)
             to_keep = set()
+            killed = set()
             for equivalent in equivalent_individuals:
                 if keep_best and best in equivalent:
                     to_keep.add(best)
+                    for x in equivalent:
+                        if x is not best:
+                            killed.add(x)
                 else:
                     equivalent = sorted(equivalent, key=lambda id: population[id].fitness)
                     to_keep.add(equivalent[0])
+                    for x in equivalent[1:]:
+                        killed.add(x)
 
             while len(to_keep) < nkeep:
                 to_keep.add(
@@ -66,8 +73,13 @@ class Fingerprinters(object):
                     )
                 )
 
+            killed = [population[id] for id in killed]
             new_population = [population[id] for id in to_keep]
             population.replace(new_population)
+
+            return killed
+        else:
+            return []
 
     @single_core
     def post_processing(self):
