@@ -40,5 +40,8 @@ def setup(parameter_file):
         debug_logger_by_rank = initialize_logger(filename=os.path.join(path, 'debug-by-rank-{}.log'.format(rank)), name="debug-by-rank", level=logging_level)
 
     write_parameters(parameters)
+    if parameters.logging.path is not None and os.path.isdir(parameters.logging.path):
+        with open(os.path.join(parameters.logging.path, "parameters.json"), "w") as f:
+            f.write(json.dumps(parameters, sort_keys=True, indent=4))
     return parameters
 
