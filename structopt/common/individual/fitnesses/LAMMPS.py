@@ -2,7 +2,8 @@ import numpy as np
 from scipy.interpolate import interp1d
 import os
 
-from structopt.common.crossmodule.lammps import LAMMPS as lammps
+from ase.calculators.lammpsrun import LAMMPS as lammps
+
 from structopt.tools import root, single_core, parallel
 from structopt.tools.dictionaryobject import DictionaryObject
 import gparameters
@@ -81,10 +82,17 @@ class LAMMPS(object):
             calc = lammps(self.parameters, calcdir=calcdir)
             individual.set_calculator(calc)
             try:
+                # We will manually run the lammps calculator's calculate.
+                #  Normally calc.calculate would get run with default arguments via:
+                #  ase.get_potential_energy -> lammps.get_potential_energy -> lammps.update -> lammps.calculate
+                #  but we want to run it with a custom trajectory file output location, so we manually call calculate.
+                #  Then, when ase calls calculate, it won't run because it's already been finished.
+                trj_file = os.path.join(gparameters.logging.path, "modelfiles", "individual{}.trj".format(individual.id))
+                calc.calculate(individual, trj_file=trj_file)
                 E = individual.get_potential_energy()
                 print("Finished calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, rank))
             except RuntimeError:
-                E = 0
+                E = np.inf
                 print("Error calculating fitness of individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         E = self.reference(E, individual)

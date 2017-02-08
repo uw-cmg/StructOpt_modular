@@ -106,7 +106,7 @@ class Crossovers(object):
         child1, child2 = child_pair
         for child in child_pair:
             if child is not None:
-                child.crossover_tag = '({parent1}+{parent2}){tag}'.format(parent1=parent1.id, parent2=parent2.id, tag=self.selected_crossover.tag)
+                child.crossover_tag = 'c{tag}({parent1}+{parent2})'.format(parent1=parent1.id, parent2=parent2.id, tag=self.selected_crossover.tag)
 
 
     @staticmethod

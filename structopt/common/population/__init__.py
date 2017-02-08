@@ -155,6 +155,12 @@ class Population(SortedDict):
 
 
     @single_core
+    def remove(self, individual):
+        """Removes `individual` form the population."""
+        del self[individual.id]
+
+
+    @single_core
     def replace(self, a_list):
         """Deletes the current list of individuals and replaces them with the ones in a_list."""
         if self is a_list:
@@ -169,14 +175,19 @@ class Population(SortedDict):
         Assigns an id to an individual if it doesn't already have one."""
         for individual in individuals:
             if individual.id is None:
-                individual.id = self._max_individual_id + 1
-                self._max_individual_id += 1
+                individual.id = self.get_new_id()
             if individual.id > self._max_individual_id:
                 self._max_individual_id = individual.id
         super().update((individual.id, individual) for individual in individuals)
 
 
     extend = update
+
+
+    @single_core
+    def get_new_id(self):
+        self._max_individual_id += 1
+        return self._max_individual_id
 
 
     @parallel

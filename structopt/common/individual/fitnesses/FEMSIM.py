@@ -72,7 +72,7 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.id))
 
         # Make individual folder and copy files there
-        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/Individual{i}'.format(gen=gparameters.generation, i=individual.id)))
+        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/individual{i}'.format(gen=gparameters.generation, i=individual.id)))
         os.makedirs(self.folder, exist_ok=True)
         if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
             shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
@@ -81,8 +81,7 @@ class FEMSIM(object):
         shutil.copy(self.parameters.parameter_filename, self.paramfilename)
         self.write_paramfile(individual)
 
-        base = 'indiv{i}'.format(i=individual.id)
-        self.base = base
+        self.base = 'indiv{i}'.format(i=individual.id)
 
 
     @single_core
@@ -96,11 +95,12 @@ class FEMSIM(object):
             assert lo >= 0
             assert hi <= self.parameters.xsize
         comment = "{} {} {}".format(self.parameters.xsize, self.parameters.ysize, self.parameters.zsize)
-        write_xyz(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id)), individual, comment=comment)
+        filename = os.path.join(gparameters.logging.path, 'modelfiles', 'individual{id}.xyz'.format(id=individual.id))
+        write_xyz(filename, individual, comment=comment)
 
         with open(self.paramfilename, 'w') as f:
             f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=gparameters.generation, i=individual.id))
-            f.write('{}\n'.format(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id))))
+            f.write('{}\n'.format(filename))
             f.write('{}\n'.format(self.parameters.vk_data_filename))
             f.write('{}\n'.format(self.parameters.Q))
             f.write('{} {} {}\n'.format(self.parameters.nphi, self.parameters.npsi, self.parameters.ntheta))

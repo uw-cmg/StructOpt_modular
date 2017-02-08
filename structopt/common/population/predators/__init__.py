@@ -1,4 +1,5 @@
 import functools
+import logging
 import random
 from itertools import accumulate
 from bisect import bisect
@@ -10,6 +11,7 @@ from .roulette import roulette
 from .tournament import tournament
 from .rank import rank
 from .fuss import fuss
+import gparameters
 
 
 class Predators(object):
@@ -48,11 +50,8 @@ class Predators(object):
         -------
             The individuals that were removed from the population.
         """
-        if self.selected_predator is None:
-            return
-        assert nkeep <= len(population)
-        if nkeep <= len(population)
-            return
+        if self.selected_predator is None or len(population) <= nkeep:
+            return []
 
         fits = {individual.id: individual.fitness for individual in population}
         if keep_best:
@@ -72,34 +71,37 @@ class Predators(object):
         new_population = [population[id] for id in to_keep]
         population.replace(new_population)
 
+        self.post_processing(killed)
         return killed
 
     @single_core
-    def post_processing(self):
-        pass
+    def post_processing(self, killed):
+        logger = logging.getLogger("output")
+        logger.info("Generation {}: Killed: {}".format(gparameters.generation, killed))
+        print("Killed: {}".format(killed))
 
     @staticmethod
     @functools.wraps(best)
-    def best(population, fits, nkeep):
-        return best(population, fits, nkeep)
+    def best(fits, nkeep):
+        return best(fits, nkeep)
 
     @staticmethod
     @functools.wraps(roulette)
-    def roulette(population, fits, nkeep, keep_best=True, T=None):
-        return roulette(population, fits, nkeep, keep_best, T)
+    def roulette(fits, nkeep, T=None):
+        return roulette(fits, nkeep, T)
 
     @staticmethod
     @functools.wraps(tournament)
-    def tournament(population, fits, nkeep, tournament_size=5, keep_best=True):
-        return tournament(population, fits, nkeep, tournament_size, keep_best)
+    def tournament(fits, nkeep, tournament_size=5):
+        return tournament(fits, nkeep, tournament_size)
 
     @staticmethod
     @functools.wraps(rank)
-    def rank(population, fits, nkeep, p_min=None):
-        return rank(population, fits, nkeep, p_min)
+    def rank(fits, nkeep, p_min=None):
+        return rank(fits, nkeep, p_min)
 
     @staticmethod
     @functools.wraps(fuss)
-    def fuss(population, fits, nkeep, nbest=1, fusslimit=10):
-        return fuss(population, fits, nkeep, nbest=1, fusslimit=10)
+    def fuss(fits, nkeep, nbest=1, fusslimit=10):
+        return fuss(fits, nkeep, nbest=1, fusslimit=10)
 

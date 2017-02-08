@@ -63,11 +63,11 @@ class Mutations(object):
     @single_core
     def mutate(self, individual):
         if self.selected_mutation is None:
-            return individual
+            return
 
         logger = logging.getLogger("default")
-        logger.info("Performing mutation {} on individual {}".format(self.selected_mutation.__name__, individual.id))
-        print("Performing mutation {} on individual {}".format(self.selected_mutation.__name__, individual.id))
+        logger.info("Performing mutation {} on individual {}".format(self.selected_mutation.__name__, individual.id or getattr(individual, "mutated_from", None)))
+        print("Performing mutation {} on individual {}".format(self.selected_mutation.__name__, individual.id or getattr(individual, "mutated_from", None)))
 
         kwargs = self.kwargs[self.selected_mutation]
         result = self.selected_mutation(individual, **kwargs)
@@ -84,7 +84,7 @@ class Mutations(object):
 
     @single_core
     def post_processing(self, individual):
-        individual.mutation_tag = 'm{tag}'.format(tag=self.selected_mutation.tag)
+        individual.mutation_tag = 'm{tag}({id})'.format(tag=self.selected_mutation.tag, id=getattr(individual, "mutated_from", "?"))
 
 
     @staticmethod

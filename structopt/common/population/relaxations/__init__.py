@@ -34,7 +34,9 @@ class Relaxations(object):
         logger = logging.getLogger("default")
         to_relax = [individual for individual in population if not individual._relaxed]
         logger.info("Found {} individuals to relax on core {}: {}".format(len(to_relax), gparameters.mpi.rank, to_relax))
-        #print("Found {} individuals to relax on core {}: {}".format(len(to_relax), gparameters.mpi.rank, to_relax))
+        if not to_relax:
+            return
+
         for i, module in enumerate(self.modules):
             if gparameters.mpi.rank == 0:
                 print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
@@ -44,7 +46,7 @@ class Relaxations(object):
         for individual in population:
             individual._relaxed = True
 
-        return None
+        return
 
 
     @single_core
