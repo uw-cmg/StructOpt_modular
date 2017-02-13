@@ -92,8 +92,10 @@ class FEMSIM(object):
         for index in range(0, 3):
             lo = np.amin(individual.get_positions()[:, index])
             hi = np.amax(individual.get_positions()[:, index])
-            assert lo >= 0
-            assert hi <= self.parameters.xsize
+            if lo < 0 or hi > self.parameters.xsize:
+                print("BAD STRUCTURE!")
+                print("ID: %d, Energy: %s"%(individual.id, individual.fitness))
+                return
         comment = "{} {} {}".format(self.parameters.xsize, self.parameters.ysize, self.parameters.zsize)
         filename = os.path.join(gparameters.logging.path, 'modelfiles', 'individual{id}.xyz'.format(id=individual.id))
         write_xyz(filename, individual, comment=comment)
