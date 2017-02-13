@@ -14,8 +14,11 @@ def fitness(population, parameters):
         population (Population): the population to evaluate
     """
     from mpi4py import MPI
-
-    to_fit = [individual for individual in population if not individual._fitted]
+    for individual in population:
+        if individual.fits['LAMMPS'] >= 0:
+            individual.FEMSIM = math.inf
+            print(individual)
+    to_fit = [individual for individual in population if not individual._fitted and individual.fits['LAMMPS'] < 0 ]
 
     if to_fit:
         ncores = gparameters.mpi.ncores
@@ -56,8 +59,7 @@ def fitness(population, parameters):
                 info.Set(key, value)
 
         # Run the multiple spawn
-        individuals_per_iteration = ncores // cores_per_individual
-        individuals_per_iteration = min(individuals_per_iteration, len(to_fit))
+        individuals_per_iteration = min(max(1, ncores // cores_per_individual), len(to_fit))
         num_iterations = math.ceil(len(to_fit) / individuals_per_iteration)
         for i in range(num_iterations):
             j = i * individuals_per_iteration
