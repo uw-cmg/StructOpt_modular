@@ -17,7 +17,7 @@ def fitness(population, parameters):
     for individual in population:
         if individual.fits['LAMMPS'] >= 0:
             individual.FEMSIM = math.inf
-            print(individual)
+            print("Skipped FEMSIM evaluation of {} due to its high energy of {}".format(individual, individual.fits['LAMMPS']))
     to_fit = [individual for individual in population if not individual._fitted and individual.fits['LAMMPS'] < 0 ]
 
     if to_fit:
