@@ -97,7 +97,8 @@ class Crossovers(object):
                 child2._fitted = False
                 child2._relaxed = False
             self.post_processing((individual1, individual2), (child1, child2))
-        return child1, child2
+            return child1, child2
+        return individual1, individual2
 
 
     @single_core

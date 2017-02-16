@@ -19,7 +19,6 @@ def fitness(population, parameters):
             individual.FEMSIM = math.inf
             print("Skipped FEMSIM evaluation of {} due to its high energy of {}".format(individual, individual.fits['LAMMPS']))
     to_fit = [individual for individual in population if not individual._fitted and individual.fits['LAMMPS'] < 0 ]
-
     if to_fit:
         ncores = gparameters.mpi.ncores
         cores_per_individual = ncores // len(to_fit)

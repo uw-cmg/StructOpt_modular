@@ -1,10 +1,11 @@
 import functools
-import random
+import random, time
 from itertools import accumulate, combinations
 from bisect import bisect
-import random
-
+from mpi4py import MPI
 from structopt.tools import root, single_core, parallel, disjoint_set_merge
+from structopt.tools.parallel import allgather
+import gparameters
 from .all_close_atom_positions import all_close_atom_positions
 from .diversify_module import diversify_module
 
@@ -21,6 +22,7 @@ class Fingerprinters(object):
         total_probability = sum(self.fingerprinters.values())
         self.fingerprinters[None] = 1.0 - total_probability
         self.selected_fingerprinter = None
+        self.equivalent_pairs = []
 
     @single_core
     def select_fingerprinter(self):
@@ -37,21 +39,16 @@ class Fingerprinters(object):
             return
 
         # Apply the selected fingerprinter to all pairs of individuals
-        kwargs = self.function_kwargs[self.selected_fingerprinter]
-        equivalent_pairs = []
-        for pair in combinations(population, 2):
-            are_the_same = self.selected_fingerprinter(*pair, **kwargs)
-            if are_the_same:
-                equivalent_pairs.append(pair)
+        self.get_equivalent_pairs(population)
 
-        if equivalent_pairs:
+        if self.equivalent_pairs and gparameters.mpi.rank == 0:
             if keep_best:
                 fits = [(individual.fitness, individual.id) for individual in population]
                 best = sorted(fits)[0][1]
 
             ids = [i.id for i in population]
-            equivalent_pairs = [(a.id, b.id) for a, b in equivalent_pairs]
-            equivalent_individuals = disjoint_set_merge(ids, equivalent_pairs)
+            self.equivalent_pairs = [(a.id, b.id) for a, b in self.equivalent_pairs]
+            equivalent_individuals = disjoint_set_merge(ids, self.equivalent_pairs)
             to_keep = set()
             killed = set()
             for equivalent in equivalent_individuals:
@@ -76,11 +73,32 @@ class Fingerprinters(object):
             killed = [population[id] for id in killed]
             new_population = [population[id] for id in to_keep]
             population.replace(new_population)
-
+            print('Finished killing in {}s'.format(time.time() - t0))
             return killed
         else:
             return []
 
+    @parallel
+    def get_equivalent_pairs(self, population):
+        """Get equivalent pairs in parallel
+
+        Args:
+            population (Population): the population
+        """
+        kwargs = self.function_kwargs[self.selected_fingerprinter]
+        rank = gparameters.mpi.rank
+
+        ncores = gparameters.mpi.ncores
+        pairs_per_core = {r: [] for r in range(ncores)}
+        for i, pair in enumerate(combinations(population, 2)):
+            pairs_per_core[i % ncores].append(pair)
+        for pair in pairs_per_core[rank]: 
+            are_the_same = self.selected_fingerprinter(*pair, **kwargs)
+            if are_the_same:
+                self.equivalent_pairs.append(pair)
+        print("Finished running {} pairs on rank {}".format(len(pairs_per_core[rank]), rank))
+        return None
+    
     @single_core
     def post_processing(self):
         pass

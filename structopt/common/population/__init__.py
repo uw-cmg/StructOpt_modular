@@ -224,10 +224,10 @@ class Population(SortedDict):
         self.relaxations.relax(self)
 
 
-    @root
+    @parallel
     def apply_fingerprinters(self):
-        """
-        """
+        """Apply fingerprinters on the entire population."""
+
         self.fingerprinters.select_fingerprinter()
         if self.fingerprinters.selected_fingerprinter is not None:
             self.fingerprinters.remove_duplicates(self, nkeep=self.initial_number_of_individuals, keep_best=self.parameters.fingerprinters.keep_best)
