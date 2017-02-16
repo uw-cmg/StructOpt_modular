@@ -1,5 +1,5 @@
 import functools
-import random, time
+import random
 from itertools import accumulate, combinations
 from bisect import bisect
 from mpi4py import MPI
@@ -22,7 +22,6 @@ class Fingerprinters(object):
         total_probability = sum(self.fingerprinters.values())
         self.fingerprinters[None] = 1.0 - total_probability
         self.selected_fingerprinter = None
-        self.equivalent_pairs = []
 
     @single_core
     def select_fingerprinter(self):
@@ -39,16 +38,16 @@ class Fingerprinters(object):
             return
 
         # Apply the selected fingerprinter to all pairs of individuals
-        self.get_equivalent_pairs(population)
-
-        if self.equivalent_pairs and gparameters.mpi.rank == 0:
+        equivalent_pairs = self.get_equivalent_pairs(population)
+        
+        if equivalent_pairs and gparameters.mpi.rank == 0:
             if keep_best:
                 fits = [(individual.fitness, individual.id) for individual in population]
                 best = sorted(fits)[0][1]
 
             ids = [i.id for i in population]
-            self.equivalent_pairs = [(a.id, b.id) for a, b in self.equivalent_pairs]
-            equivalent_individuals = disjoint_set_merge(ids, self.equivalent_pairs)
+            equivalent_pairs = [(a.id, b.id) for a, b in equivalent_pairs]
+            equivalent_individuals = disjoint_set_merge(ids, equivalent_pairs)
             to_keep = set()
             killed = set()
             for equivalent in equivalent_individuals:
@@ -73,7 +72,6 @@ class Fingerprinters(object):
             killed = [population[id] for id in killed]
             new_population = [population[id] for id in to_keep]
             population.replace(new_population)
-            print('Finished killing in {}s'.format(time.time() - t0))
             return killed
         else:
             return []
@@ -87,18 +85,26 @@ class Fingerprinters(object):
         """
         kwargs = self.function_kwargs[self.selected_fingerprinter]
         rank = gparameters.mpi.rank
-
         ncores = gparameters.mpi.ncores
         pairs_per_core = {r: [] for r in range(ncores)}
         for i, pair in enumerate(combinations(population, 2)):
             pairs_per_core[i % ncores].append(pair)
+        
+        count = []
+        equivalent_pairs = []
+        equivalent_pairs_per_core = []
         for pair in pairs_per_core[rank]: 
             are_the_same = self.selected_fingerprinter(*pair, **kwargs)
             if are_the_same:
-                self.equivalent_pairs.append(pair)
-        print("Finished running {} pairs on rank {}".format(len(pairs_per_core[rank]), rank))
-        return None
-    
+                equivalent_pairs_per_core.append(pair)
+        print("Found {} equivalent pairs on rank {}".format(len(equivalent_pairs_per_core), rank))
+        count = MPI.COMM_WORLD.allgather(len(equivalent_pairs_per_core))
+        equivalent_pairs = MPI.COMM_WORLD.allgather(equivalent_pairs_per_core)
+        equivalent_pairs = [pair for pairs in equivalent_pairs for pair in pairs]
+        assert sum(count) == len(equivalent_pairs)
+
+        return equivalent_pairs
+
     @single_core
     def post_processing(self):
         pass
