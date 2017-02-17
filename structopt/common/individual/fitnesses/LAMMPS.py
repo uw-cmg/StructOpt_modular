@@ -69,7 +69,7 @@ class LAMMPS(object):
             calcdir = os.path.join(self.output_dir, 'fitness/LAMMPS/generation{}/individual{}'.format(gparameters.generation, individual.id))
             rank = gparameters.mpi.rank
 
-            calc = lammps(self.parameters, calcdir=calcdir)
+            calc = lammps(self.parameters.kwargs, calcdir=calcdir)
             individual.set_calculator(calc)
             try:
                 # We will manually run the lammps calculator's calculate.

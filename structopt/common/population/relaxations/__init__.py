@@ -40,7 +40,7 @@ class Relaxations(object):
         for i, module in enumerate(self.modules):
             if gparameters.mpi.rank == 0:
                 print("Running relaxation {} on the entire population".format(module.__name__.split('.')[-1]))
-            parameters = getattr(self.parameters[module.__name__.split('.')[-1]], 'kwargs')
+            parameters = self.parameters[module.__name__.split('.')[-1]]
             module.relax(population, parameters=parameters)
 
         for individual in population:
