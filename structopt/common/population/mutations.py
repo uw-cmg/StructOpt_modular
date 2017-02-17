@@ -40,7 +40,7 @@ class Mutations(object):
                 mutated.mutate(select_new=False)
 
                 # Replace the individual with the mutated one
-                if not self.keep_original or not (self.keep_original_best and individual.id == min_fit_id):
+                if not self.keep_original and not (self.keep_original_best and individual.id == min_fit_id):
                     to_remove.append(individual)
                 to_add.append(mutated)
 

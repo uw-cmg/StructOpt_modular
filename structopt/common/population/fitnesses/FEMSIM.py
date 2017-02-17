@@ -58,8 +58,7 @@ def fitness(population, parameters):
                 info.Set(key, value)
 
         # Run the multiple spawn
-        individuals_per_iteration = ncores // cores_per_individual
-        individuals_per_iteration = min(individuals_per_iteration, len(to_fit))
+        individuals_per_iteration = min(max(1, ncores // cores_per_individual), len(to_fit))
         num_iterations = math.ceil(len(to_fit) / individuals_per_iteration)
         for i in range(num_iterations):
             j = i * individuals_per_iteration

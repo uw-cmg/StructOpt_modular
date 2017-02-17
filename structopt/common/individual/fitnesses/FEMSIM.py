@@ -88,11 +88,13 @@ class FEMSIM(object):
         # Write structure file to disk so that the fortran femsim can read it in
         individual.set_cell([[self.parameters.xsize, 0., 0.], [0., self.parameters.ysize, 0.], [0., 0., self.parameters.zsize]])
         individual.wrap()
+        '''
         for index in range(0, 3):
             lo = np.amin(individual.get_positions()[:, index])
             hi = np.amax(individual.get_positions()[:, index])
             assert lo >= 0
             assert hi <= self.parameters.xsize
+        '''
         comment = "{} {} {}".format(self.parameters.xsize, self.parameters.ysize, self.parameters.zsize)
         filename = os.path.join(gparameters.logging.path, 'modelfiles', 'individual{id}.xyz'.format(id=individual.id))
         write_xyz(filename, individual, comment=comment)

@@ -2,9 +2,10 @@ import functools
 import random
 from itertools import accumulate, combinations
 from bisect import bisect
-import random
-
+from mpi4py import MPI
 from structopt.tools import root, single_core, parallel, disjoint_set_merge
+from structopt.tools.parallel import allgather
+import gparameters
 from .all_close_atom_positions import all_close_atom_positions
 from .diversify_module import diversify_module
 
@@ -37,14 +38,9 @@ class Fingerprinters(object):
             return
 
         # Apply the selected fingerprinter to all pairs of individuals
-        kwargs = self.function_kwargs[self.selected_fingerprinter]
-        equivalent_pairs = []
-        for pair in combinations(population, 2):
-            are_the_same = self.selected_fingerprinter(*pair, **kwargs)
-            if are_the_same:
-                equivalent_pairs.append(pair)
-
-        if equivalent_pairs:
+        equivalent_pairs = self.get_equivalent_pairs(population)
+        
+        if equivalent_pairs and gparameters.mpi.rank == 0:
             if keep_best:
                 fits = [(individual.fitness, individual.id) for individual in population]
                 best = sorted(fits)[0][1]
@@ -76,10 +72,38 @@ class Fingerprinters(object):
             killed = [population[id] for id in killed]
             new_population = [population[id] for id in to_keep]
             population.replace(new_population)
-
             return killed
         else:
             return []
+
+    @parallel
+    def get_equivalent_pairs(self, population):
+        """Get equivalent pairs in parallel
+
+        Args:
+            population (Population): the population
+        """
+        kwargs = self.function_kwargs[self.selected_fingerprinter]
+        rank = gparameters.mpi.rank
+        ncores = gparameters.mpi.ncores
+        pairs_per_core = {r: [] for r in range(ncores)}
+        for i, pair in enumerate(combinations(population, 2)):
+            pairs_per_core[i % ncores].append(pair)
+        
+        count = []
+        equivalent_pairs = []
+        equivalent_pairs_per_core = []
+        for pair in pairs_per_core[rank]: 
+            are_the_same = self.selected_fingerprinter(*pair, **kwargs)
+            if are_the_same:
+                equivalent_pairs_per_core.append(pair)
+        print("Found {} equivalent pairs on rank {}".format(len(equivalent_pairs_per_core), rank))
+        count = MPI.COMM_WORLD.allgather(len(equivalent_pairs_per_core))
+        equivalent_pairs = MPI.COMM_WORLD.allgather(equivalent_pairs_per_core)
+        equivalent_pairs = [pair for pairs in equivalent_pairs for pair in pairs]
+        assert sum(count) == len(equivalent_pairs)
+
+        return equivalent_pairs
 
     @single_core
     def post_processing(self):
