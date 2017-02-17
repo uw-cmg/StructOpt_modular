@@ -58,7 +58,8 @@ def fitness(population, parameters):
                 info.Set(key, value)
 
         # Run the multiple spawn
-        individuals_per_iteration = min(max(1, ncores // cores_per_individual), len(to_fit))
+        individuals_per_iteration = max(1, ncores // cores_per_individual)  # Error correction if the user allowed more cores for MPMD than they are running on
+        individuals_per_iteration = min(individuals_per_iteration, len(to_fit))
         num_iterations = math.ceil(len(to_fit) / individuals_per_iteration)
         for i in range(num_iterations):
             j = i * individuals_per_iteration
