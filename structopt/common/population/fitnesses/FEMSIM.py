@@ -16,6 +16,8 @@ def fitness(population, parameters):
     from mpi4py import MPI
 
     to_fit = [individual for individual in population if not individual._fitted]
+    for individual in to_fit:
+        individual.fitnesses.FEMSIM.setup_individual_evaluation(individual)
 
     if to_fit:
         ncores = gparameters.mpi.ncores
