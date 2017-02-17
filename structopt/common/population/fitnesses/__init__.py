@@ -37,8 +37,7 @@ class Fitnesses(object):
             if gparameters.mpi.rank == 0:
                 print("Running fitness {} on the entire population".format(module_name))
 
-            parameters = getattr(module_parameters, 'kwargs')
-            fits = module.fitness(population, parameters=parameters)
+            fits = module.fitness(population, parameters=module_parameters)
 
             # Calculate the full objective function with weights
             weight = getattr(module_parameters, 'weight')

@@ -108,6 +108,18 @@ def set_default(parameters):
     if 'fingerprinters' in parameters:
         parameters.fingerprinters.setdefault('keep_best', False)
 
+    try:
+        parameters.fitnesses.FEMSIM.skip_bad_lammps = False
+    except:
+        pass
+    try:
+        # Set default LAMMPS normalization to E = E/natoms
+        parameters.fitnesses.LAMMPS.setdefault("normalize", {})
+        parameters.fitnesses.LAMMPS.normalize.setdefault('natoms', True)
+    except:
+        pass
+
+
     # Make sure every operation is defined, and that every operation has a
     # kwargs
     for operation in MODULES:
