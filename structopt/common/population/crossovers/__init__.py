@@ -49,9 +49,12 @@ class Crossovers(object):
 
         children = []
         for individual1, individual2 in pairs_per_core[rank]:
-            child1, child2 = self._crossover(individual1, individual2)
-            children.append(child1)
-            children.append(child2)
+            self.select_crossover()  # Choose a new crossover to perform for every pair
+            if self.selected_crossover is not None:
+                kwargs = self.kwargs[self.selected_crossover]
+                child1, child2 = self._crossover(individual1, individual2, self.selected_crossover, kwargs)
+                children.append(child1)
+                children.append(child2)
 
         children_per_core = {r: [] for r in range(ncores)}
         all_children = []
@@ -84,21 +87,19 @@ class Crossovers(object):
         return all_children
 
     @single_core
-    def _crossover(self, individual1, individual2):
-        self.select_crossover()  # Choose a new crossover to perform for every pair
-        if self.selected_crossover is not None:
-            print("Performing crossover {} on individuals {} and {}".format(self.selected_crossover.__name__, individual1, individual2))
-            kwargs = self.kwargs[self.selected_crossover]
-            child1, child2 = self.selected_crossover(individual1, individual2, **kwargs)
-            if child1 is not None:
-                child1._fitted = False
-                child1._relaxed = False
-            if child2 is not None:
-                child2._fitted = False
-                child2._relaxed = False
-            self.post_processing((individual1, individual2), (child1, child2))
-            return child1, child2
-        return None, None
+    def _crossover(self, individual1, individual2, crossfunction, crosskwargs):
+        if crossfunction is None:
+            raise ValueError("Tried to perform a crossover but the selected crossover was `None`.")
+        print("Performing crossover {} on individuals {} and {}".format(crossfunction.__name__, individual1, individual2))
+        child1, child2 = crossfunction(individual1, individual2, **crosskwargs)
+        if child1 is not None:
+            child1._fitted = False
+            child1._relaxed = False
+        if child2 is not None:
+            child2._fitted = False
+            child2._relaxed = False
+        self.post_processing((individual1, individual2), (child1, child2))
+        return child1, child2
 
 
     @single_core
