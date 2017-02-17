@@ -61,10 +61,7 @@ def parallel(method):
 
 def single_core(method):
     """A place holder decorator that does nothing except document that the function is designed to be run on a single core."""
-    @functools.wraps(method)
-    def wrapper(*args, **kwargs):
-        return method(*args, **kwargs)
-    return wrapper
+    return method
 
 
 def allgather(stuff, stuffs_per_core):
