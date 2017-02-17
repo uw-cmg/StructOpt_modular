@@ -57,7 +57,6 @@ class FEMSIM(object):
         structures and concatenated into MPI.COMM_SELF.Spawn_multiple:
         https://github.com/mpi4py/mpi4py/blob/2acfc552c42846628304e54a3b87e2bf3a59af07/src/mpi4py/MPI/Comm.pyx#L1555
         """
-        self.setup_individual_evaluation(individual)
         femsim_command = os.environ['FEMSIM_COMMAND']
         args = [self.base, self.paramfilename]
         info = {'wdir': self.folder}
