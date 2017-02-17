@@ -43,10 +43,12 @@ class Crossovers(object):
         ncores = gparameters.mpi.ncores
         rank = gparameters.mpi.rank
 
+        # Assign which pairs to mate on which cores
         pairs_per_core = {rank: [] for rank in range(ncores)}
         for i, pair in enumerate(pairs):
             pairs_per_core[i % ncores].append(pair)
 
+        # Perform the designated crossovers by rank
         children = []
         for individual1, individual2 in pairs_per_core[rank]:
             self.select_crossover()  # Choose a new crossover to perform for every pair
@@ -55,6 +57,9 @@ class Crossovers(object):
                 child1, child2 = self._crossover(individual1, individual2, self.selected_crossover, kwargs)
                 children.append(child1)
                 children.append(child2)
+            else:
+                children.append(None)
+                children.append(None)
 
         children_per_core = {r: [] for r in range(ncores)}
         all_children = []
@@ -73,8 +78,6 @@ class Crossovers(object):
                     all_children.append(None)
                     children_per_core[i].append(count)
                     count += 1
-        for i in children_per_core[rank]:
-            assert all_children[i] is not None
 
         if gparameters.mpi.ncores > 1:
             all_children = allgather(all_children, children_per_core)
