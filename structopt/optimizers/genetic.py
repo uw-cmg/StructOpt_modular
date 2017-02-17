@@ -1,6 +1,5 @@
 import os
 import sys
-import shutil
 import logging
 import time
 
@@ -53,7 +52,7 @@ class GeneticAlgorithm(object):
             t_selection_0 = time.time()
             parents = self.population.select()
             self.timing['selection'].append(time.time() - t_selection_0)
-            
+
             t_crossover_0 = time.time()
             children = self.population.crossover(parents)
             self.population.extend(children)
@@ -71,6 +70,7 @@ class GeneticAlgorithm(object):
         t_relax_0 = time.time()
         self.population.relax()
         self.timing['relax'].append(time.time() - t_relax_0)
+
         t_fitness_0 = time.time()
         fits = self.population.calculate_fitnesses()
         if gparameters.mpi.rank == 0:
@@ -90,9 +90,6 @@ class GeneticAlgorithm(object):
 
         self.check_convergence()
 
-        if gparameters.mpi.rank == 0:
-            shutil.rmtree(os.path.join(gparameters.logging.path, 'modelfiles'))
-        
         self.timing['step'].append(time.time() - t_step_0)
         if gparameters.mpi.rank == 0:
             self.post_processing_step()
