@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 import logging
 import time
 
@@ -87,8 +88,12 @@ class GeneticAlgorithm(object):
         if gparameters.mpi.rank == 0:
             print(self.population)
 
-        self.timing['step'].append(time.time() - t_step_0)
         self.check_convergence()
+
+        if gparameters.mpi.rank == 0:
+            shutil.rmtree(os.path.join(gparameters.logging.path, 'modelfiles'))
+        
+        self.timing['step'].append(time.time() - t_step_0)
         if gparameters.mpi.rank == 0:
             self.post_processing_step()
         gparameters.generation += 1
