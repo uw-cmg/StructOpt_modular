@@ -20,6 +20,7 @@ class Fingerprinters(object):
         self.fingerprinters = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters if name not in self.kwargs}
         self.function_kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters if name not in self.kwargs}
         total_probability = sum(self.fingerprinters.values())
+        assert total_probability <= 1.0
         self.fingerprinters[None] = 1.0 - total_probability
         self.selected_fingerprinter = None
 

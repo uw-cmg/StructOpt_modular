@@ -45,9 +45,8 @@ class Mutations(object):
                        if name not in NOT_MUTATIONS}
 
         total_probability = sum(self.mutations.values())
+        assert total_probability <= 1.0
         self.mutations[None] = 1.0 - total_probability
-
-        # This parameter does not need to exist between generations
         self.selected_mutation = None
 
 
