@@ -24,10 +24,10 @@ def rank(fits, nkeep, p_min=None):
     """
 
     if p_min is None:
-        p_min = 1.0 / len(population) ** 2
+        p_min = 1.0 / len(fits) ** 2
 
-    # Get ranks of each population value based on its fitness
-    ids, fits = fits.items()
+    # Get ranks of each individual value based on its fitness
+    ids, fits = zip(*fits.items())
     ids = list(ids)
     fits = list(fits)
     ranks = scipy.stats.rankdata(fits, method='ordinal')

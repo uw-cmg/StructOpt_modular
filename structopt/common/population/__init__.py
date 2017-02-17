@@ -229,18 +229,26 @@ class Population(SortedDict):
         """Apply fingerprinters on the entire population."""
 
         self.fingerprinters.select_fingerprinter()
+        killed = []
         if self.fingerprinters.selected_fingerprinter is not None:
-            self.fingerprinters.remove_duplicates(self, nkeep=self.initial_number_of_individuals, keep_best=self.parameters.fingerprinters.keep_best)
+            killed = self.fingerprinters.remove_duplicates(self, nkeep=self.initial_number_of_individuals, keep_best=self.parameters.fingerprinters.keep_best)
+        return killed
 
+
+    @parallel
+    def kill(self):
+        """Remove individuals from the population based on a predator scheme."""
+        killed = self.__kill()  # Create a new population on the root core
+        self.bcast()  # Broadcast the new population
+        return killed  # Return the killed individuals on all core
 
     @root
-    def kill(self):
-        """Remove individuals from the population based on a predator scheme.
-        """
+    def __kill(self):
+        """A private method that guarantees the predator is run only on the root but
+        allows `self` to be broadcast without returning `self`."""
         self.predators.select_predator()
-        self.predators.kill(self, nkeep=self.initial_number_of_individuals)
-        return self
-
+        killed = self.predators.kill(self, nkeep=self.initial_number_of_individuals)
+        return killed
 
     @root
     def select(self):

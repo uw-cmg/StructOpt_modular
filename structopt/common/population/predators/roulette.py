@@ -21,7 +21,7 @@ def roulette(fits, nkeep, T=None):
         to all fitness values with T.
     """
 
-    ids, fits = fits.items()
+    ids, fits = zip(*fits.items())
     ids = list(ids)
     fits = list(fits)
 

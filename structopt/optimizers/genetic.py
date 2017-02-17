@@ -78,14 +78,16 @@ class GeneticAlgorithm(object):
         self.timing['fitness'].append(time.time() - t_fitness_0)
         
         t_fingerprinter_0 = time.time()
-        self.population.apply_fingerprinters()
+        killed_by_fingerprinters = self.population.apply_fingerprinters()
         self.timing['fingerprinter'].append(time.time() - t_fingerprinter_0)
         
         t_predator_0 = time.time()
-        self.population.kill()
+        killed_by_predators = self.population.kill()
         self.timing['predator'].append(time.time() - t_predator_0)
 
         if gparameters.mpi.rank == 0:
+            print("Killed by fingerprinters:", killed_by_fingerprinters)
+            print("Killed by predators:", killed_by_predators)
             print(self.population)
 
         self.check_convergence()

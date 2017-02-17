@@ -78,7 +78,6 @@ class Predators(object):
     def post_processing(self, killed):
         logger = logging.getLogger("output")
         logger.info("Generation {}: Killed: {}".format(gparameters.generation, killed))
-        print("Killed: {}".format(killed))
 
     @staticmethod
     @functools.wraps(best)
