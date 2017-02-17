@@ -189,12 +189,6 @@ class Individual(ase.Atoms):
     def positions(self):
         return self.get_positions()
 
-    '''
-    def wrap(self, *args, **kwargs):
-        super().wrap(*args, **kwargs)
-        self.set_scaled_positions(self.get_scaled_positions() % [1, 1, 1])
-    '''
-    
     def wrap(self, center=(0.5, 0.5, 0.5), pbc=None, eps=1e-7):
         if pbc is None:
             pbc = self.pbc
