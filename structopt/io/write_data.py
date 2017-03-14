@@ -1,4 +1,4 @@
-from ase.calculators.lammpsrun import Prism
+from ase.calculators.lammpsrun import prism as Prism
 
 
 def write_data(filename, individual):
