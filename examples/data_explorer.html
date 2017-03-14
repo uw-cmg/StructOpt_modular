@@ -3,14 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-01-23 Mon 11:03 -->
+<!-- 2017-01-23 Mon 16:46 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutorial for analyzing jobs using the DataExplorer</title>
+<title>DataExplorer</title>
 <meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Zhongnan Xu" />
-<meta  name="description" content="Project file for running MAST/structopt on PtMo clusters"
- />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -151,22 +148,42 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Tutorial for analyzing jobs using the DataExplorer</h1>
+<h1 class="title">DataExplorer</h1>
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><span class="section-number-2">1</span> Introduction</h2>
-<div class="outline-text-2" id="text-1">
+<h2 id="orgheadline1">Introduction</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
-The purpose of this is to work through some examples in using the DataExplorer to analyze optimization runs done by StructOpt. The example calculations we will be working with are held in the <b>job<sub>manager</sub><sub>examples</sub></b> folder. These jobs were submitted by the <code>JobManager</code> wrapper. All examples were of the optimization of a Au55 nanocluster.
+The purpose of this is to work through some examples in using the <code>DataExplorer</code> to analyze optimization runs done by StructOpt. The example calculations we will be working with are held in the <code>job_manager_examples</code> folder. These jobs were submitted by the <code>JobManager</code> wrapper. All examples were of the optimization of a Au<sub>55</sub> nanocluster.
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2"><span class="section-number-2">2</span> Initialization</h2>
-<div class="outline-text-2" id="text-2">
+<h2 id="orgheadline2">Example: Pt<sub>561</sub> LAMMPS+STEM optimization</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
-The initialization of the DataExplorer is done by specifying the <b>log{time}</b> directory where the calculation has been performed. If the directory name is known, initialization is simple. In contrast, if the user submitted the job using the <b>JobManager</b>, the directory which holds the <b>log{time}</b> directory can be used to locate a specific <b>logfr{time}</b> based on the order of which it was run.
+The scripts below are tutorial scripts of how to read data out of an example calculation. The specific example optimization run used in the following scripts is the optimization of a Pt nanoparticle against a simulated Pt<sub>561</sub> STEM image. The nanoparticle and corresponding STEM image is shown below.
+</p>
+
+
+<div class="figure">
+<p><img src="./images/Pt561.png" alt="Pt561.png" width="450" />
+</p>
+<p><span class="figure-number">Figure 1:</span> Structural model (left) and linear convolution simulated STEM image (right) of the Pt<sub>561</sub> nanoparticle in the (100) orientation. The simulated STEM image is used on the STEM fitness function in the following example.</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">Initialization</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+The initialization of the DataExplorer is done by specifying the <code>log{time}</code> directory where the calculation has been performed. If the directory name is known, initialization is simple. In contrast, if the user submitted the job using the <code>JobManager</code>, the directory which holds the <code>log{time}</code> directory can be used to locate a specific <code>log{time}</code> based on the order of which it was run.
+</p>
+
+<p>
+Both examples of this usage is shown below.
 </p>
 
 <div class="org-src-container">
@@ -175,11 +192,11 @@ The initialization of the DataExplorer is done by specifying the <b>log{time}</b
 <span style="color: #0000FF;">from</span> structopt.utilities.data_explorer.core <span style="color: #0000FF;">import</span> DataExplorer
 
 <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Initialization if the logdir is known</span>
-<span style="color: #BA36A5;">logdir</span> = <span style="color: #008000;">'job_manager_examples/Au55-example/logs20170120035711'</span>
+<span style="color: #BA36A5;">logdir</span> = <span style="color: #008000;">'job_manager_examples/Pt561-LAMMPS-STEM/logs20160909134206'</span>
 <span style="color: #BA36A5;">DE</span> = DataExplorer(logdir)
 
 <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Initialization through the JobManager</span>
-<span style="color: #BA36A5;">calcdir</span> = <span style="color: #008000;">'job_manager_examples/Au55-example'</span>
+<span style="color: #BA36A5;">calcdir</span> = <span style="color: #008000;">'job_manager_examples/Pt561-LAMMPS-STEM'</span>
 <span style="color: #BA36A5;">job</span> = JobManager(calcdir)
 <span style="color: #BA36A5;">DE</span> = job.get_data_explorer()
 </pre>
@@ -188,19 +205,11 @@ The initialization of the DataExplorer is done by specifying the <b>log{time}</b
 </div>
 
 <div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7"><span class="section-number-2">3</span> Analysis</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-The scripts below are examples of how to read data out of calculations.
-</p>
-</div>
-
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4"><span class="section-number-3">3.1</span> Fitnesses</h3>
-<div class="outline-text-3" id="text-3-1">
-</div><div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3"><span class="section-number-4">3.1.1</span> Long example</h4>
-<div class="outline-text-4" id="text-3-1-1">
+<h2 id="orgheadline7">Fitnesses</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+</div><div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">Long example</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 The example below shows how one reads the fitness of the most fit individual in each generation. This first script is a long example that shows the structure of the DataExplorer once it is loaded. 
 </p>
@@ -212,13 +221,14 @@ The example below shows how one reads the fitness of the most fit individual in 
 <span style="color: #0000FF;">from</span> structopt.utilities.job_manager <span style="color: #0000FF;">import</span> JobManager
 
 <span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Initialization through the JobManager</span>
-<span style="color: #BA36A5;">calcdir</span> = <span style="color: #008000;">'job_manager_examples/Au55-example'</span>
+<span style="color: #BA36A5;">calcdir</span> = <span style="color: #008000;">'job_manager_examples/Pt561-LAMMPS-STEM'</span>
 <span style="color: #BA36A5;">job</span> = JobManager(calcdir)
-<span style="color: #BA36A5;">data</span> = job.get_data_explorer()
+<span style="color: #BA36A5;">DE</span> = job.get_data_explorer()
 
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Get the average fitnesses</span>
 <span style="color: #BA36A5;">average_fitnesses</span> = []
 
-<span style="color: #0000FF;">for</span> population <span style="color: #0000FF;">in</span> data:
+<span style="color: #0000FF;">for</span> population <span style="color: #0000FF;">in</span> DE:
 <span style="color: #9B9B9B; background-color: #EDEDED;"> </span>   <span style="color: #BA36A5;">population_fitnesses</span> = []
 <span style="color: #9B9B9B; background-color: #EDEDED;"> </span>   <span style="color: #0000FF;">for</span> individual_id <span style="color: #0000FF;">in</span> population:
 <span style="color: #9B9B9B; background-color: #EDEDED;"> </span>   <span style="color: #9B9B9B; background-color: #EDEDED;"> </span>   <span style="color: #BA36A5;">individual</span> = population[individual_id]
@@ -230,36 +240,112 @@ plt.plot(<span style="color: #006FE0;">range</span>(<span style="color: #006FE0;
 plt.xlabel(<span style="color: #008000;">'Generation'</span>)
 plt.ylabel(<span style="color: #008000;">'Fitness'</span>)
 plt.tight_layout()
-plt.savefig(<span style="color: #008000;">'images/average-fitness.png'</span>, dpi=300)
+plt.savefig(<span style="color: #008000;">'images/average-fitness.png'</span>)
 </pre>
 </div>
 
 
 <div class="figure">
-<p><img src="./images/average-fitness.png" alt="average-fitness.png" />
+<p><img src="./images/average-fitness.png" alt="average-fitness.png" width="400" />
 </p>
-<p><span class="figure-number">Figure 1:</span> The evolution of the average fitness (total energy) of a Au55 nanoparticle</p>
+<p><span class="figure-number">Figure 2:</span> The evolution of the average fitness (total energy) of a Au<sub>55</sub> nanoparticle</p>
 </div>
 
 <p>
-The <b>DataExplorer</b> object functions like a list of populations, so with index <i>i</i> returns a <b>Population</b> object. The <b>Population</b> object functions like an dictionary, where the <b>id</b> of each individual is each key of the <b>Population</b>, and the value is an <b>Individual</b> object. When loaded through the <b>DataExplorer</b>, the <b>Individual</b> comes preloaded with a number of properties that provide information of it.
+The <code>DataExplorer</code> object functions like a list of populations, so with index <i>i</i> returns a <code>Population</code> object. The <code>Population</code> object functions like an dictionary, where the <i>id</i> of each individual is each key, and the <code>Individual</code> object is each value. Each <i>id</i> is unique to an <code>Individual</code> is assigned during its creation. When loaded through the <code>DataExplorer</code>, the <code>Individual</code> comes preloaded with a number of properties that provide information of it. One of which its fitness, which is shown above.
 </p>
-</div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5"><span class="section-number-3">3.2</span> Genealogy</h3>
+<h3 id="orgheadline5">Short example</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+The code below is a one-liner version of the code shown in the previous section for loading the data. It makes use of list comprehension, evaluates faster, and is more concise.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #0000FF;">import</span> numpy <span style="color: #0000FF;">as</span> np
+<span style="color: #0000FF;">import</span> matplotlib.pyplot <span style="color: #0000FF;">as</span> plt
+<span style="color: #0000FF;">from</span> structopt.utilities.job_manager <span style="color: #0000FF;">import</span> JobManager
+
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Initialization through the JobManager</span>
+<span style="color: #BA36A5;">calcdir</span> = <span style="color: #008000;">'job_manager_examples/Pt561-LAMMPS-STEM'</span>
+<span style="color: #BA36A5;">job</span> = JobManager(calcdir)
+<span style="color: #BA36A5;">DE</span> = job.get_data_explorer()
+
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Get the average fitnesses</span>
+<span style="color: #BA36A5;">avg_fit</span> = np.mean([[ind.fitness <span style="color: #0000FF;">for</span> ind <span style="color: #0000FF;">in</span> pop.values()] <span style="color: #0000FF;">for</span> pop <span style="color: #0000FF;">in</span> DE], axis=1)
+
+plt.figure(1, (4, 3))
+plt.plot(<span style="color: #006FE0;">range</span>(<span style="color: #006FE0;">len</span>(avg_fit)), avg_fit, c=<span style="color: #008000;">'k'</span>)
+plt.xlabel(<span style="color: #008000;">'Generation'</span>)
+plt.ylabel(<span style="color: #008000;">'Fitness'</span>)
+plt.tight_layout()
+plt.savefig(<span style="color: #008000;">'images/average-fitness.png'</span>, dpi=300)
+</pre>
 </div>
+</div>
+</div>
+
 <div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6"><span class="section-number-3">3.3</span> Structures</h3>
+<h3 id="orgheadline6">Multiple fitness values</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+One of the hallmarks of StructOpt is its ability to incorporate multiple fitness evaluations into its objective function. The code below analyzes an example calculation where a nanoparticle was fit to a simulated STEM image of a known nanoparticle structure. In this case, we are interested in the fitness of the lowest energy structure.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #0000FF;">import</span> matplotlib.pyplot <span style="color: #0000FF;">as</span> plt
+<span style="color: #0000FF;">from</span> structopt.utilities.job_manager <span style="color: #0000FF;">import</span> JobManager
+
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Initialization through the JobManager</span>
+<span style="color: #BA36A5;">calcdir</span> = <span style="color: #008000;">'job_manager_examples/Pt561-LAMMPS-STEM'</span>
+<span style="color: #BA36A5;">job</span> = JobManager(calcdir)
+<span style="color: #BA36A5;">DE</span> = job.get_data_explorer()
+
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">Get the average fitnesses</span>
+<span style="color: #BA36A5;">min_LAMMPS</span> = [<span style="color: #006FE0;">min</span>([ind.LAMMPS <span style="color: #0000FF;">for</span> ind <span style="color: #0000FF;">in</span> pop.values()]) <span style="color: #0000FF;">for</span> pop <span style="color: #0000FF;">in</span> DE]
+<span style="color: #BA36A5;">min_STEM</span> = [<span style="color: #006FE0;">min</span>([ind.STEM <span style="color: #0000FF;">for</span> ind <span style="color: #0000FF;">in</span> pop.values()]) <span style="color: #0000FF;">for</span> pop <span style="color: #0000FF;">in</span> DE]
+
+<span style="color: #BA36A5;">fig</span> = plt.figure(1, (4, 4))
+<span style="color: #BA36A5;">ax_STEM</span> = fig.add_subplot(211)
+<span style="color: #BA36A5;">ax_LAMMPS</span> = fig.add_subplot(212)
+
+ax_STEM.plot(<span style="color: #006FE0;">range</span>(<span style="color: #006FE0;">len</span>(min_STEM)), min_STEM, c=<span style="color: #008000;">'k'</span>)
+ax_LAMMPS.plot(<span style="color: #006FE0;">range</span>(<span style="color: #006FE0;">len</span>(min_LAMMPS)), min_LAMMPS, c=<span style="color: #008000;">'k'</span>)
+
+ax_STEM.set_xticklabels([])
+ax_LAMMPS.set_xlabel(<span style="color: #008000;">'Generations'</span>)
+ax_STEM.set_ylabel(r<span style="color: #008000;">'$\chi^{2}$'</span>)
+ax_LAMMPS.set_ylabel(r<span style="color: #008000;">'$E_{f}$ (eV/atom)'</span>)
+plt.tight_layout()
+plt.savefig(<span style="color: #008000;">'images/fitness-LAMMPS-STEM.png'</span>, dpi=300)
+plt.show()
+</pre>
 </div>
+
+
+<div class="figure">
+<p><img src="./images/fitness-LAMMPS-STEM.png" alt="fitness-LAMMPS-STEM.png" width="400" />
+</p>
+<p><span class="figure-number">Figure 3:</span> Evolution of the value of both the STEM (top) and LAMMPS (bottom) fitness functions</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">Genealogy</h2>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">Structures</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2013-02-05 Tue</p>
-<p class="author">Author: Zhongnan Xu</p>
-<p class="date">Created: 2017-01-23 Mon 11:03</p>
+<p class="date">Created: 2017-01-23 Mon 16:46</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
