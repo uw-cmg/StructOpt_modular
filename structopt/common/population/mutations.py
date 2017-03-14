@@ -8,47 +8,46 @@ class Mutations(object):
 
     @single_core
     def __init__(self, parameters):
+        """
+        Keywords in parameters:
+        keep_original : Add mutated individuals to the population without removing the individual they were mutated from.
+        keep_original_best : If the individual with the lowest fitness is mutated, do not remove its un-mutated parent from the population.
+        """
         self.parameters = parameters
-        self.preserve_best = False
-        self.keep_original = False
-        self.keep_original_best = False
-        if 'preserve_best' in parameters and parameters['preserve_best']:
-            self.preserve_best = True
-        if 'keep_original' in parameters and parameters['keep_original']:
-            self.keep_original = True
-        if 'keep_original_best' in parameters and parameters['keep_original_best']:
-            self.keep_original_best = True
+        self.keep_original = parameters.get('keep_original', False)
+        self.keep_original_best = parameters.get('keep_original_best', False)
 
     @single_core
     def mutate(self, population):
-        fits = [ind._fitness if ind._fitted else np.inf for ind in population]
-        min_fit_index = fits.index(min(fits))
-        original_ids = [individual.id for individual in population]
-        for i, individual in enumerate(population):
-            # Skip individuals that were added in previous mutations and
-            # have already been mutated
-            if individual.id not in original_ids:
-                continue
+        if self.keep_original or self.keep_original_best:
+            fits = {individual.id: (individual.fitness if individual._fitted else np.inf) for individual in population}
+            min_fit_id = min(fits, key=fits.get)
 
+        # Make sure not to edit the population in the for loop!
+        to_remove = []
+        to_add = []
+        for individual in population:
             individual.mutations.select_mutation()
 
-            if self.preserve_best and i == min_fit_index:
-                individual.mutations.selected_mutation = None
-
-            if ((self.keep_original and individual.mutations.selected_mutation is not None)
-                or (self.keep_original_best and i == min_fit_index)):
-
-                # Save and delete the original individual's mutation
-                selected_mutation = individual.mutations.selected_mutation
-                individual.mutations.selected_mutation = None
-
-                # Make a new individual, attach the mutation, add to popualtion
-                individual = individual.copy()
-                individual.mutations.selected_mutation = selected_mutation
-                population.add(individual)
-
             if individual.mutations.selected_mutation is not None:
-                individual.mutate()
+                # Duplicate the individual and reset some values
+                mutated = individual.copy()
+                mutated.mutated_from = individual.id
+                mutated.mutations.selected_mutation = individual.mutations.selected_mutation
+                individual.mutations.selected_mutation = None
+
+                # Perform the mutation
+                mutated.mutate(select_new=False)
+
+                # Replace the individual with the mutated one
+                if not self.keep_original and not (self.keep_original_best and individual.id == min_fit_id):
+                    to_remove.append(individual)
+                to_add.append(mutated)
+
+        for individual in to_remove:
+            population.remove(individual)
+        for mutated in to_add:
+            population.add(mutated)
 
         return population
 
@@ -56,3 +55,4 @@ class Mutations(object):
     @single_core
     def post_processing(self):
         pass
+

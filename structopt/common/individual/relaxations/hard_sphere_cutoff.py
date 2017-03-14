@@ -1,4 +1,4 @@
-from ase.calculators.neighborlist import NeighborList
+from ase.neighborlist import NeighborList
 
 from structopt.tools import root, single_core, parallel
 import gparameters

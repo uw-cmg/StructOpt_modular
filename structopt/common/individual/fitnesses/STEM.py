@@ -33,21 +33,11 @@ class STEM(object):
         if parameters is None:
             parameters = {}
         self.parameters = parameters
-        self.parameters.setdefault('zed', 1)
+        self.parameters.setdefault('kwargs', {})
+        self.parameters.kwargs.setdefault('zed', 1)
         self.psf = None
         self.target = None
         self.phantom = True
-
-        if 'logging' not in gparameters:
-            gparameters.logging = DictionaryObject({'path': '.'})
-            gparameters.generation = 0
-            gparameters.mpi = DictionaryObject({'rank': 0})
-
-        # Set default normalization to E = E/nprotons
-        if "normalize" not in self.parameters:
-            self.parameters.setdefault("normalize", {})
-        self.parameters['normalize'].setdefault('nprotons', True)
-        self.parameters['normalize'].setdefault('SSE', False)
 
         # If running within StructOpt, create directory for saving files
         # and faster loading of PSF and target data
@@ -108,7 +98,7 @@ class STEM(object):
             self.generate_target()
 
         image = self.get_image(individual)
-        zed = self.parameters['zed']
+        zed = self.parameters.kwargs['zed']
         image_Z_tot = np.sum(image ** (1/zed))
         if self.phantom == True:
             target_Z_tot = np.sum(self.target ** (1/zed))
@@ -122,9 +112,9 @@ class STEM(object):
     def get_linear_convolution(self, individual):
         """Calculate linear convoluted potential of an individual"""
 
-        r = self.parameters['resolution']
-        zed = self.parameters['zed']
-        xmax, ymax = self.parameters['dimensions']
+        r = self.parameters.kwargs['resolution']
+        zed = self.parameters.kwargs['zed']
+        xmax, ymax = self.parameters.kwargs['dimensions']
         if isinstance(xmax, float):
             nx = int(xmax * r)
             ny = int(ymax * r)
@@ -180,9 +170,9 @@ class STEM(object):
                 self.psf = np.load(npy)
             return
 
-        HWHM = self.parameters['HWHM']
-        r = self.parameters['resolution']
-        a, b = self.parameters['dimensions']
+        HWHM = self.parameters.kwargs['HWHM']
+        r = self.parameters.kwargs['resolution']
+        a, b = self.parameters.kwargs['dimensions']
 
         if isinstance(a, float):
             N_a = int(a * r)
@@ -228,11 +218,11 @@ class STEM(object):
         if self.psf is None:
             self.generate_psf()
 
-        if not self.parameters['target'].endswith('.xyz'):
-            self.target = self.read_target(self.parameters['target'])
+        if not self.parameters.kwargs['target'].endswith('.xyz'):
+            self.target = self.read_target(self.parameters.kwargs['target'])
             self.phantom = False
         else:
-            atoms = read(self.parameters['target'])
+            atoms = read(self.parameters.kwargs['target'])
             self.target = self.get_image(atoms)
             self.phantom = True
 
@@ -262,8 +252,8 @@ class STEM(object):
 
         image = np.fft.ifft2(ft_psf * ft_V, axes=(0, 1)).real
 
-        if 'multislice' in self.parameters:
-            image = self.get_multislice(image, self.parameters['multislice'])
+        if 'multislice' in self.parameters.kwargs:
+            image = self.get_multislice(image, self.parameters.kwargs['multislice'])
 
         return image
 
@@ -277,7 +267,7 @@ class STEM(object):
         else:
             scale = multislice_params['fit_resolution']
 
-        image *= (self.parameters['resolution'] / scale) ** 2
+        image *= (self.parameters.kwargs['resolution'] / scale) ** 2
 
         if plot_type == 'log':
             image = np.log(image + 1)
@@ -307,3 +297,4 @@ class STEM(object):
             image = np.reshape(image, shape)
 
         return image
+

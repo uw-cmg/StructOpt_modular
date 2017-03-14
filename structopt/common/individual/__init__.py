@@ -189,11 +189,11 @@ class Individual(ase.Atoms):
     def positions(self):
         return self.get_positions()
 
-
-    def wrap(self, *args, **kwargs):
-        super().wrap(*args, **kwargs)
-        self.set_scaled_positions(self.get_scaled_positions() % [1, 1, 1])
-
+    def wrap(self, center=(0.5, 0.5, 0.5), pbc=None, eps=1e-7):
+        if pbc is None:
+            pbc = self.pbc
+        self.set_positions(ase.geometry.wrap_positions(
+            self.positions, self.cell, pbc, center, eps))
 
     @property
     @single_core
@@ -202,13 +202,14 @@ class Individual(ase.Atoms):
 
 
     @parallel
-    def mutate(self):
+    def mutate(self, select_new=True):
         """Mutate an individual.
 
         Args:
             individual (Individual): the individual to mutate
         """
-        self.mutations.select_mutation()
+        if select_new:
+            self.mutations.select_mutation()
         self.mutations.mutate(self)
 
 
@@ -291,8 +292,8 @@ class Individual(ase.Atoms):
         new.set_cell(self.get_cell())
         new.set_pbc(self.get_pbc())
         new.mutation_tag = self.mutation_tag
-        new.crossover_tag = self.crossover_tag = None
-        new.fitted = self._fitted
+        new.crossover_tag = self.crossover_tag
+        new._fitted = self._fitted
         new._relaxed = self._relaxed
         new._fitness = self._fitness
         new._Q_l = self._Q_l

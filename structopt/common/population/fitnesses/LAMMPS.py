@@ -19,6 +19,10 @@ def fitness(population, parameters):
         logger = logging.getLogger('output')
 
     to_fit = [individual for individual in population if not individual._fitted]
+
+    if not to_fit:
+        return [individual.LAMMPS for individual in population]
+
     if parameters.use_mpi4py:
         ncores = gparameters.mpi.ncores
     else:

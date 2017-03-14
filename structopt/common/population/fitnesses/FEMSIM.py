@@ -16,6 +16,11 @@ def fitness(population, parameters):
     from mpi4py import MPI
 
     to_fit = [individual for individual in population if not individual._fitted]
+    if parameters.skip_bad_lammps and all(hasattr(individual, "LAMMPS") for individual in population):
+        to_fit = [individual for individual in to_fit if individual.LAMMPS != np.inf]
+
+    for individual in to_fit:
+        individual.fitnesses.FEMSIM.setup_individual_evaluation(individual)
 
     if to_fit:
         ncores = gparameters.mpi.ncores
@@ -56,7 +61,7 @@ def fitness(population, parameters):
                 info.Set(key, value)
 
         # Run the multiple spawn
-        individuals_per_iteration = ncores // cores_per_individual
+        individuals_per_iteration = max(1, ncores // cores_per_individual)  # Error correction if the user allowed more cores for MPMD than they are running on
         individuals_per_iteration = min(individuals_per_iteration, len(to_fit))
         num_iterations = math.ceil(len(to_fit) / individuals_per_iteration)
         for i in range(num_iterations):

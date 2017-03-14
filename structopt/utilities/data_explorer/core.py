@@ -6,6 +6,7 @@ import importlib
 import weakref
 from collections import defaultdict, Counter
 import numpy as np
+import warnings
 
 from .common import lazy, lazyproperty
 
@@ -14,8 +15,9 @@ from structopt.tools.dictionaryobject import DictionaryObject
 
 
 def parse_gene(gene):
-    gene_tester = re.compile('(?P<cross>\(\d+\+\d+\)\D+)?(?P<id>\d+)(?P<mut>m\D+)?')
-    crossover, id, mutation = gene_tester.findall(gene)[0]
+    gene_tester = re.compile('(?P<id>\d+)?(?P<cross>c\D+\(\d+\+\d+\))?(?P<mut>m\D+\(\d+\))?')
+    matches = gene_tester.search(gene).groups()
+    id, crossover, mutation = matches
     return int(id), crossover or None, mutation or None
 
 
@@ -23,7 +25,6 @@ class DataExplorer(object):
     def __init__(self, dir):
         self.genealogy_file = os.path.join(dir, 'genealogy.log')
         self.fitnesses_file = os.path.join(dir, 'fitnesses.log')
-        self.XYZs = os.path.join(dir, 'XYZs')
         self.output_file = os.path.join(dir, 'output.log')
         self._icache = {}
         self._created_killed = None
@@ -57,19 +58,19 @@ class DataExplorer(object):
         fitnesses = {}
         for line in open(self.fitnesses_file):
             firsthalf = re.compile(".+ : INFO : Generation (\d+), Individual (\d+):(.*)")
-            secondhalf = re.compile("([\w]+): ([-\d]+.\d+)")
+            secondhalf = re.compile("([\w]+): ([-\d]+.\d+|inf)")
             generation, id, fitness_str = firsthalf.findall(line)[0]
-            fitnesses[(int(generation), int(id))] = {fit: float(value) for fit, value in secondhalf.findall(fitness_str)}
+            fitnesses[int(id)] = {fit: float(value) for fit, value in secondhalf.findall(fitness_str)}
         return fitnesses
 
-    def _get_fitness(self, id, generation):
-        fits = self._fitnesses[(generation, id)]
+    def _get_fitness(self, id):
+        fits = self._fitnesses[id]
         weights = {name: module.weight for name, module in self.parameters.fitnesses.items()}
         fitness = sum(fits[module]*weights[module] for module in fits)
         return fitness
 
-    def _get_module_fitness(self, id, generation, module):
-        return self._fitnesses[(generation, id)][module]
+    def _get_module_fitness(self, id, module):
+        return self._fitnesses[id][module]
 
     def __getitem__(self, index):
         return self.generations[index]
@@ -77,28 +78,28 @@ class DataExplorer(object):
     def __len__(self):
         return len(self.generations)
 
-    def get_historical_individual(self, id):
-        try:
-            history = self._icache[id]
-        except KeyError:
-            history = IndividualHistory(id, self)
-            self._icache[id] = history
-        return history
+    def get_individual(self, id):
+        """Returns the Individual object for the given id or the id if not found."""
+        created, killed = self._get_created_killed(id)
+        if created == np.inf or created == -np.inf:
+            return id
+        return self.generations[created][id]
 
-    def _get_historical_info(self, id):
+    def _get_created_killed(self, id):
+        """
+        Returns
+        -------
+            tuple<int, int> : (created_on, killed_on)
+        """
         if self._created_killed is None:
-            #print("Parsing Genealogy file...")
             created_killed = defaultdict(lambda: [np.inf, -np.inf])
             for generation, population in enumerate(self):
-                #sys.stdout.write("\r%d%%" % generation)
-                #sys.stdout.flush()
                 for id_ in population.keys():
                     if generation < created_killed[id_][0]:
                         created_killed[id_][0] = generation
                     if generation > created_killed[id_][1]:
-                        created_killed[id_][1] = generation
+                        created_killed[id_][1] = generation + 1
             self._created_killed = created_killed
-            #print('')
         return self._created_killed[id]
 
 
@@ -112,7 +113,10 @@ class Generations(object):
         if isinstance(self._data[index], Population):
             return self._data[index]
         else:
-            self._data[index] = Population(index, self._data[index], self._dataexplorer())
+            generation, data = self._data[index].split(": ")  # Split at : in "Generation n: ..."
+            generation = int(generation.split(" ")[-1])  # Get n from "Generation n"
+            assert generation == index
+            self._data[index] = Population(generation, data, self._dataexplorer())
             return self._data[index]
 
     def __len__(self):
@@ -146,9 +150,8 @@ class Population(dict):
                 self._load()
                 if key not in self._data:
                     raise KeyError(key)
-            history = self._dataexplorer().get_historical_individual(key)
             ct, mt = self._data[key]
-            self[key] = Individual(key, self.generation, history, self._dataexplorer(), ct, mt)
+            self[key] = Individual(key, self._dataexplorer(), ct, mt)
         return super().__getitem__(key)
 
     def __len__(self):
@@ -162,8 +165,8 @@ class Population(dict):
     def items(self):
         if not self._loaded:
             self._load()
-        for key in self:
-            self[key]
+        for id in self:
+            self[id]  # Access the id to call __getitem__ and make sure the individual is loaded
         return super().items()
 
     def values(self):
@@ -179,36 +182,54 @@ class Population(dict):
         return super().__iter__()
 
 
-class IndividualHistory(dict):
-    def __init__(self, id, dataexplorer):
+class Individual(object):
+    def __init__(self, id, dataexplorer, crossover_tag=None, mutation_tag=None):
         self._id = id
         self._dataexplorer = weakref.ref(dataexplorer)
         self._created_on = None
         self._killed_on = None
         self._loaded = False
+        self._structure = None
 
-    def __repr__(self):
-        return "<IndividualHistory {}>".format(self.id)
-    __str__ = __repr__
+        self.mutation_tag = mutation_tag
+        self.crossover_tag = crossover_tag
+        if self.mutation_tag is not None:
+            parent = re.compile('m(\w+)\((\d+)\)')
+            tag, parent = parent.search(self.mutation_tag).groups()
+            self.mutation_tag = tag
+            self._mutated_from = int(parent)
+        if self.crossover_tag is not None:
+            parents = re.compile('c(\w+)\((\d+)\+(\d+)\)')
+            tag, parent1, parent2 = parents.search(self.crossover_tag).groups()
+            self._parent1 = int(parent1)
+            self._parent2 = int(parent2)
+            self.crossover_tag = tag
+
+    def __hash__(self):
+        return id(self)
 
     @property
     def id(self):
         return self._id
 
-    def __hash__(self):
-        return self.id
+    @property
+    def generations(self):
+        return list(range(self.created_on, self.killed_on))
 
-    def _load(self):
-        super().__init__({generation: None for generation in range(self.created_on, self.killed_on+1)})
-
-    def __getitem__(self, generation):
-        return self._dataexplorer()[generation][self.id]
+    @property
+    def parents(self):
+        ps = {}
+        if self.mutation_tag is not None:
+            ps["mutation"] = self._dataexplorer().get_individual(self._mutated_from)
+        if self.crossover_tag is not None:
+            ps["crossover"] = [self._dataexplorer().get_individual(self._parent1), self._dataexplorer().get_individual(self._parent2)]
+        return ps
 
     @property
     def created_on(self):
         if self._created_on is not None:
             return self._created_on
-        c, k = self._dataexplorer()._get_historical_info(self.id)
+        c, k = self._dataexplorer()._get_created_killed(self.id)
         self._created_on = c
         self._killed_on = k
         return self._created_on
@@ -217,84 +238,36 @@ class IndividualHistory(dict):
     def killed_on(self):
         if self._killed_on is not None:
             return self._killed_on
-        c, k = self._dataexplorer()._get_historical_info(self.id)
+        c, k = self._dataexplorer()._get_created_killed(self.id)
         self._created_on = c
         self._killed_on = k
         return self._killed_on
 
-    def __contains__(self, item):
-        if not self._loaded:
-            self._load()
-        return super().__contains__(item)
-
-    def __iter__(self):
-        if not self._loaded:
-            self._load()
-        return super().__iter__()
-
-
-class Individual(object):
-    def __init__(self, id, generation, history, dataexplorer, crossover_tag=None, mutation_tag=None):
-        self._id = id
-        self._history = history
-        self._dataexplorer = weakref.ref(dataexplorer)
-        self._generation = generation
-        self._loaded = False
-
-        self.mutation_tag = mutation_tag
-        self.crossover_tag = crossover_tag
-        if self.mutation_tag is not None:
-            self.mutation_tag = self.mutation_tag
-        if self.crossover_tag is not None:
-            parents = re.compile('\((\d+)\+(\d+)\)(\w+)')
-            parent1, parent2, tag = parents.findall(self.crossover_tag)[0]
-            self.parent1 = int(parent1)
-            self.parent2 = int(parent2)
-            self.crossover_tag = tag
-
-    def __hash__(self):
-        return id(self)
-        #return (self.id, self.generation)
-
-    @property
-    def id(self):
-        return self._id
-    @property
-    def generation(self):
-        return self._generation
-
-    @property
-    def history(self):
-        return self._history
-
     @lazyproperty
     def fitness(self):
-        return self._dataexplorer()._get_fitness(self.id, self.generation)
+        return self._dataexplorer()._get_fitness(self.id)
 
     @lazyproperty
     def LAMMPS(self):
-        return self._dataexplorer()._get_module_fitness(self.id, self.generation, "LAMMPS")
+        return self._dataexplorer()._get_module_fitness(self.id, "LAMMPS")
 
     @lazyproperty
     def STEM(self):
-        return self._dataexplorer()._get_module_fitness(self.id, self.generation, "STEM")
+        return self._dataexplorer()._get_module_fitness(self.id, "STEM")
 
     @lazyproperty
     def FEMSIM(self):
-        return self._dataexplorer()._get_module_fitness(self.id, self.generation, "FEMSIM")
+        return self._dataexplorer()._get_module_fitness(self.id, "FEMSIM")
 
     def __repr__(self):
-        return "<Individual {} @{}>".format(self.id, self.generation)
-        if self.mutation_tag is None:
-            mtag = ''
-        else:
-            mtag = 'm' + self.mutation_tag
-        if self.crossover_tag is None:
-            return '{id}{mtag}'.format(id=self.id, mtag=mtag)
-            #return '{id}{mtag} @{created_on}'.format(id=self.id, mtag=mtag, created_on=self.created_on)
-        else:
-            return '({p1}+{p2}){ctag}{id}{mtag}'.format(p1=self.parent1, p2=self.parent2, ctag=self.crossover_tag or '', id=self.id, mtag=mtag)
-            #return '({p1}+{p2}){ctag}{id}{mtag} @{created_on}'.format(p1=self.parent1, p2=self.parent2, ctag=self.crossover_tag or '', id=self.id, mtag=mtag, created_on=self.created_on)
+        tag = '{id}{ctag}{mtag}'.format(
+                                         id=self.id,
+                                         ctag="c{t}({p1}+{p2})".format(t=self.crossover_tag, p1=self._parent1, p2=self._parent2) if self.crossover_tag else '',
+                                         mtag="m{t}({p})".format(t=self.mutation_tag, p=self._mutated_from) if self.mutation_tag else '',
+                                        )
+        return "<Individual {}>".format(tag)
+        #return "<Individual {} @{}>".format(tag, self.generations)
+
     __str__ = __repr__
 
     def load_structure(self, filename=None):
@@ -305,7 +278,7 @@ class Individual(object):
         module = importlib.import_module('structopt.{}'.format(self.structure_type))
         Structure = getattr(module, self.structure_type.title())
         if filename is None:
-            filename = os.path.join(self._dataexplorer().XYZs, 'generation{}'.format(self.generation), 'individual{}.xyz'.format(self.id))
+            filename = os.path.join(self._dataexplorer().parameters.logging.path, 'modelfiles', 'individual{}.xyz'.format(self.id))
         generator_parameters = {"read_xyz": {"filename": filename}}
         self._structure = Structure(id=self.id,
                               relaxation_parameters=parameters.relaxations,
@@ -318,58 +291,45 @@ class Individual(object):
 
     def __getattr__(self, key):
         if not self._loaded:
-            raise AttributeError("'{}' has no attribute '{}'".format(self.__class__.__name__, key))
-        return getattr(self._structure, key)
+            self.load_structure()
+            if hasattr(self._structure, key):
+                return getattr(self._structure, key)
+        return super().__getattribute__(key)
 
     def __len__(self):
         return len(self._structure)
 
-    def get_parents(self, dataexplorer):
-        mparent = None
-        c1parent = None
-        c2parent = None
-        if self.crossover_tag is not None:
-            c1parent = dataexplorer[self.generation-1][self.parent1]
-            c2parent = dataexplorer[self.generation-1][self.parent2]
-        elif self.mutation_tag is not None:
-                mparent = dataexplorer[self.generation-1][self.id]
-        return mparent, c1parent, c2parent
+    @lazyproperty
+    def ancestry(self):
+        """
+        Returns
+        -------
+            list<Individual> : All ancestors of this individual.
+        """
+        ancestry = []
+        parents = []
+        if "mutation" in self.parents:
+            parents.append(self.parents["mutation"])
+        if "crossover" in self.parents:
+            for p in self.parents["crossover"]:
+                parents.append(p)
+        ancestry.extend(parents)
+        for parent in parents:
+            if parent is not None and not isinstance(parent, int):
+                ancestry.extend(parent.ancestry)
 
-    def full_history(self, generations):
-        if not hasattr(self, '_full_history'):
-            history = []
-            history.append((self.created_on, self))
-            for parent in self.get_parents(generations):
-                if parent is None: continue
-                history.extend(parent.history(generations))
-            self._full_history = history
-        return self._full_history
-        #history = defaultdict(list)
-        #history[self.created_on].append(self)
-        #for parent in self.get_parents(generations):
-        #    if parent is None: continue
-        #    history[parent.created_on].append(parent.history(generations))
-        #return dict(history)
+        if any(isinstance(individual, int) for individual in ancestry):
+            warnings.warn("WARNING: At least one parent individual was killed in the same generation it was created, and we therefore do not have data for it. The ancestry is there truncated.")
 
-    def print_history(self, generations):
-        history = self.full_history(generations)
-        dhist = defaultdict(list)
-        for gen, ind in history:
-            dhist[gen].append(ind)
-        for gen, hist in sorted(dhist.items()):
-            print('{gen}: {hist}'.format(gen=gen, hist=', '.join(str(i) for i in set(hist))))
+        return ancestry
 
-    def count_modifiers(self, generations):
-        return self._count_modifiers(self.full_history(generations))
-
-    @staticmethod
-    def _count_modifiers(history):
-        crossovers = Counter()
-        mutations = Counter()
-        for gen, individual in history:
-            crossovers[individual.crossover_tag] += 1
-            mutations[individual.mutation_tag] += 1
-        crossovers.pop(None, None)
-        mutations.pop(None, None)
-        return crossovers, mutations
+    def get_modifier_counts(self):
+        ancestry = [individual for individual in self.ancestry if not isinstance(individual, int)]
+        counter = Counter()
+        for individual in ancestry:
+            counter[individual.mutation_tag] += 1
+            counter[individual.crossover_tag] += 1
+        if None in counter:
+            del counter[None]
+        return counter
 

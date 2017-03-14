@@ -18,8 +18,8 @@ class FEMSIM(object):
         # These variables never change
         self.parameters = self.read_inputs(parameters)
         # Multiply the experimental data by the thickness scaling factor
-        self.vk = np.multiply(self.parameters.thickness_scaling_factor, self.vk)
-        self.vk_err = np.multiply(self.parameters.thickness_scaling_factor, self.vk_err)
+        self.vk = np.multiply(self.parameters.kwargs.thickness_scaling_factor, self.vk)
+        self.vk_err = np.multiply(self.parameters.kwargs.thickness_scaling_factor, self.vk_err)
         self.parameters.path = gparameters.logging.path
 
         # These parameteres do not need to exist between generations
@@ -28,12 +28,12 @@ class FEMSIM(object):
         self.folder = None
         self.paramfilename = None
 
-        assert self.parameters.xsize == self.parameters.ysize == self.parameters.zsize
+        assert self.parameters.kwargs.xsize == self.parameters.kwargs.ysize == self.parameters.kwargs.zsize
 
 
     @single_core
     def read_inputs(self, parameters):
-        data = open(parameters.vk_data_filename).readlines()
+        data = open(parameters.kwargs.vk_data_filename).readlines()
         data.pop(0)  # Comment line
         data = [line.strip().split()[:3] for line in data]
         data = [[float(line[0]), float(line[1]), float(line[2])] for line in data]
@@ -57,7 +57,6 @@ class FEMSIM(object):
         structures and concatenated into MPI.COMM_SELF.Spawn_multiple:
         https://github.com/mpi4py/mpi4py/blob/2acfc552c42846628304e54a3b87e2bf3a59af07/src/mpi4py/MPI/Comm.pyx#L1555
         """
-        self.setup_individual_evaluation(individual)
         femsim_command = os.environ['FEMSIM_COMMAND']
         args = [self.base, self.paramfilename]
         info = {'wdir': self.folder}
@@ -72,38 +71,38 @@ class FEMSIM(object):
         logger.info('Received individual HI = {0} for FEMSIM evaluation'.format(individual.id))
 
         # Make individual folder and copy files there
-        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/Individual{i}'.format(gen=gparameters.generation, i=individual.id)))
+        self.folder = os.path.abspath(os.path.join(self.parameters.path, 'FEMSIM/generation{gen}/individual{i}'.format(gen=gparameters.generation, i=individual.id)))
         os.makedirs(self.folder, exist_ok=True)
-        if not os.path.isfile(os.path.join(self.folder, self.parameters.vk_data_filename)):
-            shutil.copy(self.parameters.vk_data_filename, os.path.join(self.folder, self.parameters.vk_data_filename))
+        if not os.path.isfile(os.path.join(self.folder, self.parameters.kwargs.vk_data_filename)):
+            shutil.copy(self.parameters.kwargs.vk_data_filename, os.path.join(self.folder, self.parameters.kwargs.vk_data_filename))
 
         self.paramfilename = os.path.join(self.folder, "femsim.{}.in".format(individual.id))
-        shutil.copy(self.parameters.parameter_filename, self.paramfilename)
+        shutil.copy(self.parameters.kwargs.parameter_filename, self.paramfilename)
         self.write_paramfile(individual)
 
-        base = 'indiv{i}'.format(i=individual.id)
-        self.base = base
+        self.base = 'indiv{i}'.format(i=individual.id)
 
 
     @single_core
     def write_paramfile(self, individual):
         # Write structure file to disk so that the fortran femsim can read it in
-        individual.set_cell([[self.parameters.xsize, 0., 0.], [0., self.parameters.ysize, 0.], [0., 0., self.parameters.zsize]])
+        individual.set_cell([[self.parameters.kwargs.xsize, 0., 0.], [0., self.parameters.kwargs.ysize, 0.], [0., 0., self.parameters.kwargs.zsize]])
         individual.wrap()
         for index in range(0, 3):
             lo = np.amin(individual.get_positions()[:, index])
             hi = np.amax(individual.get_positions()[:, index])
             assert lo >= 0
-            assert hi <= self.parameters.xsize
-        comment = "{} {} {}".format(self.parameters.xsize, self.parameters.ysize, self.parameters.zsize)
-        write_xyz(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id)), individual, comment=comment)
+            assert hi <= self.parameters.kwargs.xsize
+        comment = "{} {} {}".format(self.parameters.kwargs.xsize, self.parameters.kwargs.ysize, self.parameters.kwargs.zsize)
+        filename = os.path.join(gparameters.logging.path, 'modelfiles', 'individual{id}.xyz'.format(id=individual.id))
+        write_xyz(filename, individual, comment=comment)
 
         with open(self.paramfilename, 'w') as f:
             f.write('# Parameter file for generation {gen}, individual {i}\n'.format(gen=gparameters.generation, i=individual.id))
-            f.write('{}\n'.format(os.path.join(self.folder, 'structure_{i}.xyz'.format(i=individual.id))))
-            f.write('{}\n'.format(self.parameters.vk_data_filename))
-            f.write('{}\n'.format(self.parameters.Q))
-            f.write('{} {} {}\n'.format(self.parameters.nphi, self.parameters.npsi, self.parameters.ntheta))
+            f.write('{}\n'.format(filename))
+            f.write('{}\n'.format(self.parameters.kwargs.vk_data_filename))
+            f.write('{}\n'.format(self.parameters.kwargs.Q))
+            f.write('{} {} {}\n'.format(self.parameters.kwargs.nphi, self.parameters.kwargs.npsi, self.parameters.kwargs.ntheta))
 
 
     @single_core

@@ -15,8 +15,7 @@ class Fitnesses(object):
 
         for module in self.parameters:
             # Initialize the class that was imported at the top of the file and append it to the modules list
-            parameters = getattr(self.parameters[module], 'kwargs')
-            setattr(self, module, globals()[module](parameters=parameters))
+            setattr(self, module, globals()[module](parameters=parameters[module]))
             self.modules.append(getattr(self, module))
             self.module_names.append(module)
 

@@ -22,6 +22,10 @@ class Fitnesses(object):
         Args:
             population (Population): the population to evaluate
         """
+        to_fit = [individual for individual in population if not individual._fitted]
+        if not to_fit:
+            return [individual.fitness for individual in population]
+
         fitnesses = np.zeros((len(population),), dtype=np.float)
         # Run each fitness module on the population. Create sorted
         # module list so all cores run modules in the same order
@@ -33,8 +37,7 @@ class Fitnesses(object):
             if gparameters.mpi.rank == 0:
                 print("Running fitness {} on the entire population".format(module_name))
 
-            parameters = getattr(module_parameters, 'kwargs')
-            fits = module.fitness(population, parameters=parameters)
+            fits = module.fitness(population, parameters=module_parameters)
 
             # Calculate the full objective function with weights
             weight = getattr(module_parameters, 'weight')

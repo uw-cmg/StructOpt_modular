@@ -66,10 +66,17 @@ class LAMMPS(object):
         calc = lammps(self.parameters, calcdir=calcdir)
         individual.set_calculator(calc)
         try:
+            # We will manually run the lammps calculator's calculate.
+            #  Normally calc.calculate would get run with default arguments via:
+            #  ase.get_potential_energy -> lammps.get_potential_energy -> lammps.update -> lammps.calculate
+            #  but we want to run it with a custom trajectory file output location, so we manually call calculate.
+            #  Then, when ase calls calculate, it won't run because it's already been finished.
+            trj_file = os.path.join(gparameters.logging.path, "modelfiles", "individual{}.trj".format(individual.id))
+            calc.calculate(individual, trj_file=trj_file)
             E = individual.get_potential_energy()
             print("Finished relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
         except RuntimeError:
-            E = np.nan
+            E = np.inf
             print("Error relaxing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         individual.LAMMPS = E
@@ -100,12 +107,18 @@ class LAMMPS(object):
 
         calc = lammps(self.parameters, calcdir=calcdir)
         individual.set_calculator(calc)
-
         try:
+            # We will manually run the lammps calculator's calculate.
+            #  Normally calc.calculate would get run with default arguments via:
+            #  ase.get_potential_energy -> lammps.get_potential_energy -> lammps.update -> lammps.calculate
+            #  but we want to run it with a custom trajectory file output location, so we manually call calculate.
+            #  Then, when ase calls calculate, it won't run because it's already been finished.
+            trj_file = os.path.join(gparameters.logging.path, "modelfiles", "individual{}.trj".format(individual.id))
+            calc.calculate(individual, trj_file=trj_file)
             E = individual.get_potential_energy()
             print("Finished repairing individual {} on rank {} with LAMMPS".format(individual.id, rank))
         except RuntimeError:
-            E = np.nan
+            E = np.inf
             print("Error repairing individual {} on rank {} with LAMMPS".format(individual.id, rank))
 
         return E

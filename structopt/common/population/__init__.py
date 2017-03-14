@@ -155,6 +155,12 @@ class Population(SortedDict):
 
 
     @single_core
+    def remove(self, individual):
+        """Removes `individual` form the population."""
+        del self[individual.id]
+
+
+    @single_core
     def replace(self, a_list):
         """Deletes the current list of individuals and replaces them with the ones in a_list."""
         if self is a_list:
@@ -169,14 +175,19 @@ class Population(SortedDict):
         Assigns an id to an individual if it doesn't already have one."""
         for individual in individuals:
             if individual.id is None:
-                individual.id = self._max_individual_id + 1
-                self._max_individual_id += 1
+                individual.id = self.get_new_id()
             if individual.id > self._max_individual_id:
                 self._max_individual_id = individual.id
         super().update((individual.id, individual) for individual in individuals)
 
 
     extend = update
+
+
+    @single_core
+    def get_new_id(self):
+        self._max_individual_id += 1
+        return self._max_individual_id
 
 
     @parallel
@@ -213,23 +224,31 @@ class Population(SortedDict):
         self.relaxations.relax(self)
 
 
-    @root
+    @parallel
     def apply_fingerprinters(self):
-        """
-        """
-        self.fingerprinters.select_fingerprinter()
-        if self.fingerprinters.selected_fingerprinter is not None:
-            self.fingerprinters.remove_duplicates(self, nkeep=self.initial_number_of_individuals, keep_best=self.parameters.fingerprinters.keep_best)
+        """Apply fingerprinters on the entire population."""
 
+        self.fingerprinters.select_fingerprinter()
+        killed = []
+        if self.fingerprinters.selected_fingerprinter is not None:
+            killed = self.fingerprinters.remove_duplicates(self, nkeep=self.initial_number_of_individuals, keep_best=self.parameters.fingerprinters.keep_best)
+        return killed
+
+
+    @parallel
+    def kill(self):
+        """Remove individuals from the population based on a predator scheme."""
+        killed = self.__kill()  # Create a new population on the root core
+        self.bcast()  # Broadcast the new population
+        return killed  # Return the killed individuals on all core
 
     @root
-    def kill(self):
-        """Remove individuals from the population based on a predator scheme.
-        """
+    def __kill(self):
+        """A private method that guarantees the predator is run only on the root but
+        allows `self` to be broadcast without returning `self`."""
         self.predators.select_predator()
-        self.predators.kill(self, nkeep=self.initial_number_of_individuals)
-        return self
-
+        killed = self.predators.kill(self, nkeep=self.initial_number_of_individuals)
+        return killed
 
     @root
     def select(self):

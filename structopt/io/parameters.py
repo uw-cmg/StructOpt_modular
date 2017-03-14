@@ -21,7 +21,7 @@ def read(input):
     elif isinstance(input, str) and os.path.exists(input):
         parameters = DictionaryObject(json.load(open(input)))
     else:
-        raise IOError('Error in input or input file')
+        raise IOError("Error in input or input file. Got:\n{}\nas input.".format(input))
 
     parameters = set_default(parameters)
     return parameters
@@ -32,15 +32,15 @@ def set_default_mpi_parameters(parameters):
     use_mpi4py = True
     if 'relaxations' in parameters:
         for module in parameters.relaxations:
-            parameters.relaxations[module].kwargs.setdefault('use_mpi4py', False)
-            parameters.relaxations[module].kwargs.setdefault('MPMD', 0)
-            if parameters.relaxations[module].kwargs.use_mpi4py:
+            parameters.relaxations[module].setdefault('use_mpi4py', False)
+            parameters.relaxations[module].setdefault('MPMD', 0)
+            if parameters.relaxations[module].use_mpi4py:
                 use_mpi4py = True
     if 'fitnesses' in parameters:
         for module in parameters.fitnesses:
-            parameters.fitnesses[module].kwargs.setdefault('use_mpi4py', False)
-            parameters.fitnesses[module].kwargs.setdefault('MPMD', 0)
-            if parameters.fitnesses[module].kwargs.use_mpi4py:
+            parameters.fitnesses[module].setdefault('use_mpi4py', False)
+            parameters.fitnesses[module].setdefault('MPMD', 0)
+            if parameters.fitnesses[module].use_mpi4py:
                 use_mpi4py = True
 
     parameters.setdefault('mpi', {})
@@ -108,6 +108,26 @@ def set_default(parameters):
     if 'fingerprinters' in parameters:
         parameters.fingerprinters.setdefault('keep_best', False)
 
+
+    try:
+        parameters.fitnesses.FEMSIM.skip_bad_lammps = False
+    except:
+        pass
+    try:
+        # Set default LAMMPS normalization to E = E/natoms
+        parameters.fitnesses.LAMMPS.setdefault("normalize", {})
+        parameters.fitnesses.LAMMPS.normalize.setdefault('natoms', True)
+    except:
+        pass
+    try:
+        # Set default STEM normalization to E = E/nprotons
+        parameters.fitnesses.STEM.setdefault("normalize", {})
+        parameters.fitnesses.STEM.normalize.setdefault('nprotons', True)
+        parameters.fitnesses.STEM.normalize.setdefault('SSE', False)
+    except:
+        pass
+
+
     # Make sure every operation is defined, and that every operation has a
     # kwargs
     for operation in MODULES:
@@ -118,3 +138,4 @@ def set_default(parameters):
                     parameters[operation][operator].setdefault('kwargs', {})
 
     return parameters
+

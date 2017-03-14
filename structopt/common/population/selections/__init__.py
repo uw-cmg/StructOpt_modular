@@ -19,7 +19,9 @@ class Selections(object):
         self.parameters = parameters
         self.selections = {getattr(self, name): self.parameters[name]['probability'] for name in self.parameters}
         self.kwargs = {getattr(self, name): self.parameters[name]['kwargs'] for name in self.parameters}
-        assert sum(self.selections.values()) == 1.0
+        total_probability = sum(self.selections.values())
+        assert total_probability <= 1.0
+        self.selections[None] = 1.0 - total_probability
         self.selected_selection = None
 
 
