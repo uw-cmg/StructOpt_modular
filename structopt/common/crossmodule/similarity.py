@@ -1,9 +1,7 @@
 import numpy as np
 from scipy.signal import fftconvolve
 from ase.cluster.octahedron import Octahedron
-from ase.visualize import view
 
-from structopt.cluster.individual.generators import fcc
 from structopt.common.crossmodule.analysis import get_avg_radii
 
 def get_chi2(atoms1, atoms2, cutoff=0.8, r=2.0, HWHM=0.4):
@@ -22,11 +20,17 @@ def get_chi2(atoms1, atoms2, cutoff=0.8, r=2.0, HWHM=0.4):
     dists = np.linalg.norm(pos1 - np.transpose(pos2, (1, 0, 2)), axis=2)
 
     nn_dists = np.min(dists, axis=1)
-    x_fp = np.sum(nn_dists > cutoff)
-    x_fn = np.sum(np.min(dists, axis=0) > cutoff)
+    n_fp = np.sum(nn_dists > cutoff)
+    n_fn = np.sum(np.min(dists, axis=0) > cutoff)
     chi2 = nn_dists[nn_dists <= cutoff]
 
-    return x_fp, x_fn, chi2
+    # Calculate incorrect atom placements
+    nns = np.argmin(dists, axis=1)
+    syms1 = atoms1.get_chemical_symbols()
+    syms2 = atoms2.get_chemical_symbols()
+    n_fe = sum([1 for i, j in enumerate(nns) if syms1[j] != syms2[i] and dists[i][j] < cutoff])
+
+    return n_fp, n_fn, n_fe, chi2
 
 def get_chi2_column(atoms1, atoms2, cutoff=0.2, r=2.0, HWHM=0.4):
     """Calculates the error per column of atoms in the z-direction"""

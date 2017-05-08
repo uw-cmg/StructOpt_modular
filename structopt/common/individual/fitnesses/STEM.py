@@ -306,4 +306,54 @@ class STEM(object):
             image = np.dot(A, X)
             image = np.reshape(image, shape)
 
+        elif plot_type == 'surrounding':
+
+            top_left = np.roll(np.roll(image, 1, 1), 1, 0)
+            top = np.roll(image, 1, 0)
+            top_right = np.roll(np.roll(image, -1, 1), 1, 0)
+            left = np.roll(image, 1, 1)
+            right = np.roll(image, -1, 1)
+            bot_left = np.roll(np.roll(image, 1, 1), -1, 0)
+            bot = np.roll(image, -1, 0)
+            bot_right = np.roll(np.roll(image, -1, 1), -1, 0)
+
+            A0 = np.ones(image.shape).flatten()
+            A1 = image.flatten()
+            A2 = top_left.flatten()
+            A3 = top.flatten()
+            A4 = top_right.flatten()
+            A5 = left.flatten()
+            A6 = right.flatten()
+            A7 = bot_left.flatten()
+            A8 = bot.flatten()
+            A9 = bot_right.flatten()
+            A10 = image.flatten() ** 2
+            A11 = top_left.flatten() ** 2
+            A12 = top.flatten() ** 2
+            A13 = top_right.flatten() ** 2
+            A14 = left.flatten() ** 2
+            A15 = right.flatten() ** 2
+            A16 = bot_left.flatten() ** 2
+            A17 = bot.flatten() ** 2
+            A18 = bot_right.flatten() ** 2
+            A19 = image.flatten() ** 3
+            A20 = top_left.flatten() ** 3
+            A21 = top.flatten() ** 3
+            A22 = top_right.flatten() ** 3
+            A23 = left.flatten() ** 3
+            A24 = right.flatten() ** 3
+            A25 = bot_left.flatten() ** 3
+            A26 = bot.flatten() ** 3
+            A27 = bot_right.flatten() ** 3
+
+            A = np.vstack([A27, A26, A25, A24, A23, A22, A21, A20, A19,
+                           A18, A17, A16, A15, A14, A13, A12, A11, A10, 
+                           A9, A8, A7, A6, A5, A4, A3, A2, A1, A0]).T
+
+            X = coeffs
+
+            shape = image.shape
+            image = np.dot(A, X)
+            image = np.reshape(image, shape)
+
         return image
